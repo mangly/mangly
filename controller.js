@@ -1,7 +1,7 @@
 const ps = require('python-shell')
 
-function Psmc_Data(graphic, theta, rho){
-    this.graphic = graphic;
+function Psmc_Data(x_y, theta, rho){
+    this.x_y = x_y;
     this.theta = theta;
     this.rho = rho;
 }
@@ -22,12 +22,12 @@ exports.Application.prototype.Add_Psmc_Data = function(path, python_script){
         if (err) throw err;
       
         else{
-          var json = JSON.parse(results[0])
+          this.psmc_data_collection.push(new Psmc_Data(JSON.parse(results[0]), results[1], results[2]));
         }
     });
 }
 
-exports.Application.prototype.Plot = function(data, chart){
-    data.data.datasets.push(json)
+exports.Application.prototype.Plot = function(data, chart, x_y){
+    data.data.datasets.push(x_y)
     chart.update() 
 }
