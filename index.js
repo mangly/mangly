@@ -91,6 +91,7 @@ $(document).ready(function () {
 
     var app = new application.Application();
 
-    app.Plot(data,myChart,'','get_Psmc_Results.py');
-    
+    app.Add_Psmc_Data('','get_Psmc_Results.py', function(){
+        app.Plot(data, myChart);
+    });
 })

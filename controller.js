@@ -11,7 +11,7 @@ exports.Application = function()
     this.psmc_data_collection = [];
 }
 
-exports.Application.prototype.Add_Psmc_Data = function(path, python_script){
+exports.Application.prototype.Add_Psmc_Data = function(path, python_script, callback){
     var psmc_collection = this.psmc_data_collection;
     let options = {
         mode: 'text',
@@ -23,6 +23,7 @@ exports.Application.prototype.Add_Psmc_Data = function(path, python_script){
       
         else{
           psmc_collection.push(new Psmc_Data(JSON.parse(results[0]), results[1], results[2]));
+          callback()
         }
     });
 }
