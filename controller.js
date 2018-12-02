@@ -12,7 +12,7 @@ exports.Application = function()
 }
 
 exports.Application.prototype.Add_Psmc_Data = function(path, python_script){
-
+    var psmc_collection = this.psmc_data_collection;
     let options = {
         mode: 'text',
         args: [path]
@@ -22,12 +22,15 @@ exports.Application.prototype.Add_Psmc_Data = function(path, python_script){
         if (err) throw err;
       
         else{
-          this.psmc_data_collection.push(new Psmc_Data(JSON.parse(results[0]), results[1], results[2]));
+          psmc_collection.push(new Psmc_Data(JSON.parse(results[0]), results[1], results[2]));
         }
     });
 }
 
-exports.Application.prototype.Plot = function(data, chart, x_y){
-    data.data.datasets.push(x_y)
+exports.Application.prototype.Plot = function(data, chart){
+    this.psmc_data_collection.forEach(element => {
+        data.data.datasets.push(element.x_y)
+    });
+    
     chart.update() 
 }
