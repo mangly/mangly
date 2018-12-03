@@ -37,6 +37,9 @@ def get_PSMC_results(filename):
     #return(time, IICR_2, theta, rho)
     return(time_IICR_2, theta, rho)
 
-print(json.dumps(get_PSMC_results('/media/hector/Datos/Escuela/TESIS/WILLY/Softwareold/Dai_upper.psmc')[0]))
-print(get_PSMC_results('/media/hector/Datos/Escuela/TESIS/WILLY/Softwareold/Dai_upper.psmc')[1])
-print(get_PSMC_results('/media/hector/Datos/Escuela/TESIS/WILLY/Softwareold/Dai_upper.psmc')[2])
+path = str(sys.argv[1])
+
+print(json.dumps(get_PSMC_results(path)[0]))
+print(get_PSMC_results(path)[1])
+print(get_PSMC_results(path)[2])
+
