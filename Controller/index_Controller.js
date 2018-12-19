@@ -93,7 +93,7 @@ $(document).ready(function () {
 
                 title: {
                     display: true,
-                    text: 'Título del gráfico',
+                    text: 'Graph of models',
                     fontColor:'white',
                     fontFamily:'Nunito,sans-serif'
                   }
