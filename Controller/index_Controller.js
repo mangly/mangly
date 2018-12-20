@@ -9,7 +9,7 @@ const {dialog} = require('electron').remote;
 //import Application from '../Model/Application';
 
 var Application = require('../Model/Application');
-var Application_Utilities =require('../Model/Application_Utilities');
+var Visual_Utilities =require('../Utilities/Visual_Utilities');
 
 
 $(document).ready(function () {
@@ -157,7 +157,7 @@ $(document).ready(function () {
        // Open a File or Files selected for user
         dialog.showOpenDialog(options, function (arrPath) {
             application.Add_File(arrPath, function(){
-                Application_Utilities.Visualize_App(application, myChart);
+                Visual_Utilities.Visualize_App(application, myChart);
                 
                 myChart.data.datasets.forEach(function(element){
                    if(!edit_collection_control.includes(element.label)){
@@ -185,12 +185,12 @@ $(document).ready(function () {
                 //Element clicked
                 itemTarget= $(event.target);
 
-                Application_Utilities.Show_time(itemTarget.text(), myChart.data, time, 'x');
-                Application_Utilities.Show_time(itemTarget.text(), myChart.data, IICR, 'y');
+                Visual_Utilities.Show_Graph_Time_IICR(itemTarget.text(), myChart.data, time, 'x');
+                Visual_Utilities.Show_Graph_Time_IICR(itemTarget.text(), myChart.data, IICR, 'y');
 
                 $('#graphic').html(itemTarget.text());
 
-                var parametters = Application_Utilities.getParametters(itemTarget.text(), application);
+                var parametters = Visual_Utilities.getParametters(itemTarget.text(), application);
                 if(parametters.length!=1){
                     $('#theta').html(parametters[0]);
                     $('#rho').html(parametters[1]);
@@ -203,7 +203,7 @@ $(document).ready(function () {
 
     $(".colorpicker-element").on("change", function () {
         var color = $(this).val();
-        Application_Utilities.Update_Colors(myChart,time,IICR, itemTarget,color);
+        Visual_Utilities.Update_Colors(myChart,time,IICR, itemTarget,color);
       });
 
       $('#edit').on('click', function(){
