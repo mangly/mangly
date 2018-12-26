@@ -1,7 +1,7 @@
 'use strict'
 
 const Python_Communicator = require('./Python_Communicator');
-const Application_Utilities = require('./Application_Utilities');
+const Application_Utilities = require('../Utilities/Application_Utilities');
 const Psmc = require('./Psmc');
 const Msmc = require('./Msmc');
 

@@ -17,7 +17,7 @@ $(document).ready(function () {
     var application = new Application();
 
 
-    //Data of PSMC's and MSMC's functions
+    //Data for all functions
     var myChart = new Chart(document.getElementById("mycanvas"), {
         type: 'line',
         data: {
@@ -100,47 +100,47 @@ $(document).ready(function () {
         },
     });
 
-    var time = new Chart(document.getElementById("mycanvas2"), {
-        type: 'bar',
-        data: {
-          labels: [],
-          datasets: [
-            {
-              label: "Population (millions)",
-              backgroundColor: [],
-              data: []
-            }
-          ]
-        },
-        options: {
-          legend: { display: false },
-          title: {
-            display: true,
-            text: 'Predicted world population (millions) in 2050'
-          }
-        }
-    });
+    // var time = new Chart(document.getElementById("mycanvas2"), {
+    //     type: 'bar',
+    //     data: {
+    //       labels: [],
+    //       datasets: [
+    //         {
+    //           label: "Population (millions)",
+    //           backgroundColor: [],
+    //           data: []
+    //         }
+    //       ]
+    //     },
+    //     options: {
+    //       legend: { display: false },
+    //       title: {
+    //         display: true,
+    //         text: 'Predicted world population (millions) in 2050'
+    //       }
+    //     }
+    // });
 
-    var IICR = new Chart(document.getElementById("mycanvas3"), {
-        type: 'bar',
-        data: {
-          labels: [],
-          datasets: [
-            {
-              label: "Population (millions)",
-              backgroundColor: [],
-              data: []
-            }
-          ]
-        },
-        options: {
-          legend: { display: false },
-          title: {
-            display: true,
-            text: 'Predicted world population (millions) in 2050'
-          }
-        }
-    });
+    // var IICR = new Chart(document.getElementById("mycanvas3"), {
+    //     type: 'bar',
+    //     data: {
+    //       labels: [],
+    //       datasets: [
+    //         {
+    //           label: "Population (millions)",
+    //           backgroundColor: [],
+    //           data: []
+    //         }
+    //       ]
+    //     },
+    //     options: {
+    //       legend: { display: false },
+    //       title: {
+    //         display: true,
+    //         text: 'Predicted world population (millions) in 2050'
+    //       }
+    //     }
+    // });
 
     var edit_collection_control = [];
     $('#open_file').on('click', function () {
@@ -173,40 +173,50 @@ $(document).ready(function () {
     var itemTarget='';
     $('#nameGraph').on('click', function(){
         if ($(event.target).is('.item_Color'))
-        {
-                var list = $('.item_Color')
-                list.css('background-color','black');
-                list.css('color','white');
+        {      
+            //Element clicked
+            itemTarget= $(event.target);
 
-                //For select the graphics
-                $(event.target).css('background-color', '#ffffff');
-                $(event.target).css('color', 'black');
+            var list = $('.item_Color')
+            list.css('background-color','black');
+            list.css('color','white');
 
-                //Element clicked
-                itemTarget= $(event.target);
+            //For select the graphics
+            itemTarget.css('background-color', '#ffffff');
+            itemTarget.css('color', 'black');
 
-                Visual_Utilities.Show_Graph_Time_IICR(itemTarget.text(), myChart.data, time, 'x');
-                Visual_Utilities.Show_Graph_Time_IICR(itemTarget.text(), myChart.data, IICR, 'y');
+            // Visual_Utilities.Show_Graph_Time_IICR(itemTarget.text(), myChart.data, time, 'x');
+            // Visual_Utilities.Show_Graph_Time_IICR(itemTarget.text(), myChart.data, IICR, 'y');
 
-                $('#graphic').html(itemTarget.text());
+            $('#graphic').html(itemTarget.text());
 
-                var parametters = Visual_Utilities.getParametters(itemTarget.text(), application);
-                if(parametters.length!=1){
-                    $('#theta').html(parametters[0]);
-                    $('#rho').html(parametters[1]);
-                    $('#model').html(parametters[2]);
-                }
+            var parametters = Visual_Utilities.getParametters(itemTarget.text(), application);
 
-                else $('#model').html(parametters[0]);
+            if(parametters.length!=1){
+                $('#theta').html(parametters[0]);
+                $('#rho').html(parametters[1]);
+                $('#model').html(parametters[2]);
+            }
+
+            else $('#model').html(parametters[0]);
         }
     })
 
+    $('#nameGraph').on('focusout', function(){
+        if($(event.target).is('.edit-text'))
+        {
+            //console.log(itemTarget.parent())
+            $(event.target).parent().html('<a href="#" class="item_Color pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:'+itemTarget.children('i')[0].style.color+'"></i>'+$(event.target)[0].value+'</a>')
+        }
+    });
+
     $(".colorpicker-element").on("change", function () {
         var color = $(this).val();
-        Visual_Utilities.Update_Colors(myChart,time,IICR, itemTarget,color);
+        Visual_Utilities.Update_Colors(myChart, itemTarget, color);
       });
 
       $('#edit').on('click', function(){
-            itemTarget.parent().html('<input type="text" class="form-control" placeholder="">')
+        //console.log(itemTarget.parent())
+            itemTarget.parent().html('<input type="text" class="form-control edit-text" placeholder="">')
       });
 })
