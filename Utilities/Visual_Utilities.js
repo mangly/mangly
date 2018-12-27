@@ -1,17 +1,33 @@
 'use strict'
 
+const Application_Utilities = require('./Application_Utilities');
+
 class Visual_Utilities {
 
     static Visualize_App(application, chart)
     {
-        chart.data.datasets=[];
-        application.psmc_collection.forEach(element => {
-            chart.data.datasets.push(element.x_y);
-        });
+        var graph = {'data':'', 'label':'','fill':'false', 'borderColor': 'white', 'backgroundColor': '', 'borderWidth': '1', 'steppedLine': 'true'}
 
-        application.msmc_collection.forEach(element => {
-            chart.data.datasets.push(element.x_y);
-        });
+        for (const element of application.psmc_collection) {
+            var data = Application_Utilities.Generate_Data_To_Chart(element.time, element.IICR_2);
+            
+            graph.data = data;
+            graph.label = element.name;
+            chart.data.datasets.push(graph);
+
+            
+        }
+
+console.log(chart.data.datasets)
+
+        // chart.data.datasets=[];
+        // application.psmc_collection.forEach(element => {
+        //     chart.data.datasets.push(element.x_y);
+        // });
+
+        // application.msmc_collection.forEach(element => {
+        //     chart.data.datasets.push(element.x_y);
+        // });
 
         chart.update();
     }

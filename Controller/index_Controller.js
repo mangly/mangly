@@ -159,13 +159,13 @@ $(document).ready(function () {
             application.Add_File(arrPath, function(){
                 Visual_Utilities.Visualize_App(application, myChart);
                 
-                myChart.data.datasets.forEach(function(element){
-                   if(!edit_collection_control.includes(element.label)){
-                        $('#nameGraph').append('<li class="@@carouselactive"><a href="#" class="item_Color pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:'+element.backgroundColor+'"></i>'+element.label+'</a></li>'); 
-                        edit_collection_control.push(element.label);
-                        $('#nameGraph').removeAttr('hidden');
-                   }
-                })
+                // myChart.data.datasets.forEach(function(element){
+                //    if(!edit_collection_control.includes(element.label)){
+                //         $('#nameGraph').append('<li class="@@carouselactive"><a href="#" class="item_Color pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:'+element.backgroundColor+'"></i>'+element.label+'</a></li>'); 
+                //         edit_collection_control.push(element.label);
+                //         $('#nameGraph').removeAttr('hidden');
+                //    }
+                // })
             })
         })
     })
