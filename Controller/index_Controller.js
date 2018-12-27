@@ -56,7 +56,7 @@ $(document).ready(function () {
                     ticks:{
                         fontColor:"white"
                     },
-                    type: 'logarithmic',
+                    // type: 'logarithmic',
                     gridLines:{
                         display:false,
                         color:"white"
@@ -100,48 +100,6 @@ $(document).ready(function () {
         },
     });
 
-    // var time = new Chart(document.getElementById("mycanvas2"), {
-    //     type: 'bar',
-    //     data: {
-    //       labels: [],
-    //       datasets: [
-    //         {
-    //           label: "Population (millions)",
-    //           backgroundColor: [],
-    //           data: []
-    //         }
-    //       ]
-    //     },
-    //     options: {
-    //       legend: { display: false },
-    //       title: {
-    //         display: true,
-    //         text: 'Predicted world population (millions) in 2050'
-    //       }
-    //     }
-    // });
-
-    // var IICR = new Chart(document.getElementById("mycanvas3"), {
-    //     type: 'bar',
-    //     data: {
-    //       labels: [],
-    //       datasets: [
-    //         {
-    //           label: "Population (millions)",
-    //           backgroundColor: [],
-    //           data: []
-    //         }
-    //       ]
-    //     },
-    //     options: {
-    //       legend: { display: false },
-    //       title: {
-    //         display: true,
-    //         text: 'Predicted world population (millions) in 2050'
-    //       }
-    //     }
-    // });
-
     var edit_collection_control = [];
     $('#open_file').on('click', function () {
         
@@ -157,6 +115,8 @@ $(document).ready(function () {
        // Open a File or Files selected for user
         dialog.showOpenDialog(options, function (arrPath) {
             application.Add_File(arrPath, function(){
+                application.Scale_Psmc_Graph();
+                application.Scale_Msmc_Graph();
                 Visual_Utilities.Visualize_App(application, myChart);
                 
                 // myChart.data.datasets.forEach(function(element){
@@ -185,12 +145,10 @@ $(document).ready(function () {
             itemTarget.css('background-color', '#ffffff');
             itemTarget.css('color', 'black');
 
-            // Visual_Utilities.Show_Graph_Time_IICR(itemTarget.text(), myChart.data, time, 'x');
-            // Visual_Utilities.Show_Graph_Time_IICR(itemTarget.text(), myChart.data, IICR, 'y');
 
             $('#graphic').html(itemTarget.text());
 
-            var parametters = Visual_Utilities.getParametters(itemTarget.text(), application);
+            var parametters = Visual_Utilities.Get_Parametters(itemTarget.text(), application);
 
             if(parametters.length!=1){
                 $('#theta').html(parametters[0]);
