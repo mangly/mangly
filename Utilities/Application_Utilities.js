@@ -6,13 +6,22 @@ class Application_Utilities {
         for (let index = 0; index < app_collection.length; index++) {
             const element = app_collection[index];
 
-            if(element.name && (element.name==element_name)) return true;
+            if(element.name && (element.name == element_name)) return true;
         }
 
         return false;
     }
 
-    static Generate_Data_To_Chart(vector_X, vector_Y, callback)
+    static Contain_Graph(graph, chart)
+    {
+        for (const element of chart.data.datasets) {
+            if(graph.label == element.label) return true;
+        }
+
+        return false;
+    }
+
+    static Generate_Data_To_Chart(vector_X, vector_Y)
     {
         var result = [];
 
