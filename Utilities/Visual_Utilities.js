@@ -29,7 +29,7 @@ class Visual_Utilities {
         for (const element of application.msmc_collection) {
 
             var color =  this.Get_Random_Color();       
-            var graph = {'data': Application_Utilities.Generate_Data_To_Chart(element.time, element.IICR_k), 'label':element.name,'fill':'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '2', 'steppedLine': 'true'};
+            var graph = {'data': Application_Utilities.Generate_Data_To_Chart(element.time, element.IICR_k), 'label':element.name,'fill':'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true'};
             
             if(!Application_Utilities.Contain_Graph(graph, chart)) chart.data.datasets.push(graph); 
             
@@ -64,7 +64,6 @@ class Visual_Utilities {
             if(element.name==name) return ['-', '-', 'Multiple Sequentially Markovian Coalescent'];
         }
     }
-
 
 }
 

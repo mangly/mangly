@@ -119,19 +119,19 @@ $(document).ready(function () {
                 application.Scale_Msmc_Graph();
                 Visual_Utilities.Visualize_App(application, myChart);
                 
-                // myChart.data.datasets.forEach(function(element){
-                //    if(!edit_collection_control.includes(element.label)){
-                //         $('#nameGraph').append('<li class="@@carouselactive"><a href="#" class="item_Color pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:'+element.backgroundColor+'"></i>'+element.label+'</a></li>'); 
-                //         edit_collection_control.push(element.label);
-                //         $('#nameGraph').removeAttr('hidden');
-                //    }
-                // })
+                myChart.data.datasets.forEach(function(element){
+                   if(!edit_collection_control.includes(element.label)){
+                        $('#list-graphics').append('<li class="@@carouselactive"><a href="#" class="item_Color"><i class="zmdi zmdi-album pr-4 album" style="color:'+element.backgroundColor+'"></i>'+element.label+'</a></li>'); 
+                        edit_collection_control.push(element.label);
+                        $('#list-graphics').removeAttr('hidden');
+                   }
+                })
             })
         })
     })
 
     var itemTarget='';
-    $('#nameGraph').on('click', function(){
+    $('#list-graphics').on('click', function(){
         if ($(event.target).is('.item_Color'))
         {      
             //Element clicked
@@ -160,7 +160,7 @@ $(document).ready(function () {
         }
     })
 
-    $('#nameGraph').on('focusout', function(){
+    $('#list-graphics').on('focusout', function(){
         if($(event.target).is('.edit-text'))
         {
             //console.log(itemTarget.parent())
