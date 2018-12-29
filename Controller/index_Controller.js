@@ -93,7 +93,7 @@ $(document).ready(function () {
 
                 title: {
                     display: true,
-                    text: 'Graph of models',
+                    text: '',
                     fontColor:'white',
                     fontFamily:'Nunito,sans-serif'
                   }
@@ -121,9 +121,9 @@ $(document).ready(function () {
                 
                 myChart.data.datasets.forEach(function(element){
                    if(!edit_collection_control.includes(element.label)){
-                        $('#list-graphics').append('<li class="@@carouselactive"><a href="#" class="item_Color"><i class="zmdi zmdi-album pr-4 album" style="color:'+element.backgroundColor+'"></i>'+element.label+'</a></li>'); 
+                        $('#list-graphics').append('<li class="@@carouselactive"><a href="#" class="graph"><i class="zmdi zmdi-album pr-4 album" style="color:'+element.backgroundColor+'"></i>'+element.label+'</a></li>'); 
                         edit_collection_control.push(element.label);
-                        $('#list-graphics').removeAttr('hidden');
+                        // $('#list-graphics').removeAttr('hidden');
                    }
                 })
             })
@@ -132,18 +132,19 @@ $(document).ready(function () {
 
     var itemTarget='';
     $('#list-graphics').on('click', function(){
-        if ($(event.target).is('.item_Color'))
+        if ($(event.target).is('.graph'))
         {      
             //Element clicked
             itemTarget= $(event.target);
 
-            var list = $('.item_Color')
+            var list = $('.graph')
             list.css('background-color','black');
             list.css('color','white');
 
-            //For select the graphics
+            //For select the graph
             itemTarget.css('background-color', '#ffffff');
             itemTarget.css('color', 'black');
+            $('#change-color').removeAttr('disabled');
 
 
             $('#graphic').html(itemTarget.text());
@@ -164,7 +165,7 @@ $(document).ready(function () {
         if($(event.target).is('.edit-text'))
         {
             //console.log(itemTarget.parent())
-            $(event.target).parent().html('<a href="#" class="item_Color pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:'+itemTarget.children('i')[0].style.color+'"></i>'+$(event.target)[0].value+'</a>')
+            $(event.target).parent().html('<a href="#" class="graph pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:'+itemTarget.children('i')[0].style.color+'"></i>'+$(event.target)[0].value+'</a>')
         }
     });
 
