@@ -4,8 +4,7 @@ const Application_Utilities = require('./Application_Utilities');
 
 class Visual_Utilities {
 
-    static Get_Random_Color()
-    {
+    static Get_Random_Color() {
         var color = Math.floor(Math.random() * Math.pow(256, 3)).toString(16);
 
         while (color.length < 6) {
@@ -15,35 +14,34 @@ class Visual_Utilities {
         return "#" + color;
     }
 
-    static Visualize_App(application, chart)
-    {
+    static Visualize_App(application, chart) {
         for (const element of application.psmc_collection) {
 
-            var color = this.Get_Random_Color();     
-            var graph = {'data': Application_Utilities.Generate_Data_To_Chart(element.time, element.IICR_2), 'label':element.name,'fill':'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true'};
-            
-            if(!Application_Utilities.Contain_Graph(graph, chart)) chart.data.datasets.push(graph); 
-            
+            var color = this.Get_Random_Color();
+            var graph = { 'data': Application_Utilities.Generate_Data_To_Chart(element.time, element.IICR_2), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
+
+            if (!Application_Utilities.Contain_Graph(graph, chart)) chart.data.datasets.push(graph);
+
         }
 
         for (const element of application.msmc_collection) {
 
-            var color =  this.Get_Random_Color();       
-            var graph = {'data': Application_Utilities.Generate_Data_To_Chart(element.time, element.IICR_k), 'label':element.name,'fill':'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true'};
-            
-            if(!Application_Utilities.Contain_Graph(graph, chart)) chart.data.datasets.push(graph); 
-            
+            var color = this.Get_Random_Color();
+            var graph = { 'data': Application_Utilities.Generate_Data_To_Chart(element.time, element.IICR_k), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
+
+            if (!Application_Utilities.Contain_Graph(graph, chart)) chart.data.datasets.push(graph);
+
         }
 
         chart.update();
     }
 
-    static Update_Colors(general_chart, function_target, color){
+    static Update_Colors(general_chart, function_target, color) {
 
         general_chart.data.datasets.forEach(function(element) {
-            if(element.label==function_target.text().trim()){
-                element.borderColor=color;
-                element.backgroundColor=color;
+            if (element.label == function_target.text().trim()) {
+                element.borderColor = color;
+                element.backgroundColor = color;
                 function_target.children('.album').css('color', color);
             }
         });
@@ -52,17 +50,57 @@ class Visual_Utilities {
     }
 
 
-    static Get_Parametters(name, application)
-    {
-        for(var element of application.psmc_collection)
-        {
-            if(element.name==name) return [element.theta, element.rho, 'Pairwise Sequentially Markovian Coalescent'];
+    static Get_Parametters(name, application) {
+        for (var element of application.psmc_collection) {
+            if (element.name == name) return [element.theta, element.rho, 'Pairwise Sequentially Markovian Coalescent'];
         }
 
-        for(var element of application.msmc_collection)
-        {
-            if(element.name==name) return ['-', '-', 'Multiple Sequentially Markovian Coalescent'];
+        for (var element of application.msmc_collection) {
+            if (element.name == name) return ['-', '-', 'Multiple Sequentially Markovian Coalescent'];
         }
+    }
+
+    static Change_Axis_Scale(chart, new_scale, axis) {
+
+        if (axis == 'x') chart.options.scales.xAxes[0] = {
+            type : new_scale,
+
+            ticks:{
+                fontColor:"white"
+            },
+            
+            gridLines:{
+                display:false,
+                color:"white"
+            },
+           
+            scaleLabel: {
+                display: true,
+                labelString: 'Years',
+                fontColor: 'white'
+            }
+        }
+
+        else if (axis == 'y') chart.options.scales.yAxes[0] = {
+            type : new_scale,
+
+            ticks:{
+                fontColor:"white"
+            },
+            
+            gridLines:{
+                display:false,
+                color:"white"
+            },
+
+            scaleLabel: {
+                display: true,
+                labelString: 'Effective population size',
+                fontColor: 'white'
+            }
+        }
+
+        chart.update();
     }
 
 }

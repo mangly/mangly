@@ -36,10 +36,12 @@ $(document).ready(function () {
             },
             scales: {
                 xAxes: [{
+                    type: 'logarithmic',
+
                     ticks:{
                         fontColor:"white"
                     },
-                    type: 'logarithmic',
+                    
                     gridLines:{
                         display:false,
                         color:"white"
@@ -53,10 +55,12 @@ $(document).ready(function () {
                 }],
 
                 yAxes: [{
+                    type: 'linear',
+
                     ticks:{
                         fontColor:"white"
                     },
-                    // type: 'logarithmic',
+                    
                     gridLines:{
                         display:false,
                         color:"white"
@@ -177,5 +181,21 @@ $(document).ready(function () {
       $('#edit').on('click', function(){
         //console.log(itemTarget.parent())
             itemTarget.parent().html('<input type="text" class="form-control edit-text" placeholder="">')
+      });
+
+      $('#scaleX').on('change', function () {
+        Visual_Utilities.Change_Axis_Scale(myChart, $(this).val().toLowerCase(), 'x');
+        console.log('x es ' +myChart.options.scales.xAxes[0].type);
+        // console.log(myChart.options.scales.xAxes[0].type)
+        //  console.log('ok'); 
+        //  console.log($(this).val().toLowerCase())
+      });
+
+      $('#scaleY').on('change', function () {
+        Visual_Utilities.Change_Axis_Scale(myChart, $(this).val().toLowerCase(), 'y');
+        console.log(myChart.options.scales.yAxes[0].type);
+        // console.log(myChart.options.scales.xAxes[0].type)
+        //  console.log('ok'); 
+        //  console.log($(this).val().toLowerCase())
       });
 })
