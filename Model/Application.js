@@ -29,10 +29,10 @@ class Application {
         })
     }
 
-    Scale_Psmc_Graph()
+    Scale_Psmc_Graph(mu = 1.25e-8, s = 100)
     {
-        var mu = 1.25e-8;
-        var s = 100;
+        // var mu = 1.25e-8;
+        // var s = 100;
 
         for (const element of this.psmc_collection) {
             for (let index = 0; index < element.time.length; index++) {
@@ -45,9 +45,9 @@ class Application {
         // psmc_size = [N * l for l in psmc_IICR2]
     }
 
-    Scale_Msmc_Graph()
+    Scale_Msmc_Graph(mu = 1.25e-8)
     {
-        var mu = 1.25e-8;
+        //var mu = 1.25e-8;
 
         for (const element of this.msmc_collection) {
             for (let index = 0; index < element.time.length; index++) {

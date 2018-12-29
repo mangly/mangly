@@ -168,7 +168,6 @@ $(document).ready(function () {
     $('#list-graphics').on('focusout', function(){
         if($(event.target).is('.edit-text'))
         {
-            //console.log(itemTarget.parent())
             $(event.target).parent().html('<a href="#" class="graph pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:'+itemTarget.children('i')[0].style.color+'"></i>'+$(event.target)[0].value+'</a>')
         }
     });
@@ -179,23 +178,15 @@ $(document).ready(function () {
       });
 
       $('#edit').on('click', function(){
-        //console.log(itemTarget.parent())
             itemTarget.parent().html('<input type="text" class="form-control edit-text" placeholder="">')
       });
 
       $('#scaleX').on('change', function () {
         Visual_Utilities.Change_Axis_Scale(myChart, $(this).val().toLowerCase(), 'x');
         console.log('x es ' +myChart.options.scales.xAxes[0].type);
-        // console.log(myChart.options.scales.xAxes[0].type)
-        //  console.log('ok'); 
-        //  console.log($(this).val().toLowerCase())
       });
 
       $('#scaleY').on('change', function () {
         Visual_Utilities.Change_Axis_Scale(myChart, $(this).val().toLowerCase(), 'y');
-        console.log(myChart.options.scales.yAxes[0].type);
-        // console.log(myChart.options.scales.xAxes[0].type)
-        //  console.log('ok'); 
-        //  console.log($(this).val().toLowerCase())
       });
 })
