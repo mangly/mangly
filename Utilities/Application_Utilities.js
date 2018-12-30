@@ -12,9 +12,9 @@ class Application_Utilities {
         return false;
     }
 
-    static Contain_Graph(graph, chart) {
+    static Contain_Graphic(name_graphic, chart) {
         for (const element of chart.data.datasets) {
-            if (graph.label == element.label) return true;
+            if (name_graphic == element.label) return true;
         }
 
         return false;

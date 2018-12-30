@@ -120,7 +120,7 @@ $(document).ready(function () {
         // Open a File or Files selected for user
         dialog.showOpenDialog(options, function (arrPath) {
             application.Add_File(arrPath, function () {
-                // application.Scale_Functions();
+
                 Visual_Utilities.Visualize_App(application, myChart);
 
                 myChart.data.datasets.forEach(function (element) {

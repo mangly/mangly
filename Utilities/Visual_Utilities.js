@@ -16,15 +16,18 @@ class Visual_Utilities {
 
     static Visualize_App(application, chart) {
         var IICR = [];
-        for (const element of application.Scale_Functions()) {
-            if (element.type == 'psmc') IICR = element.IICR_2;
-            else IICR = element.IICR_k;
+        var scale_function = application.Scale_Functions();
 
-            var color = this.Get_Random_Color();
-            var graph = { 'data': Application_Utilities.Generate_Data_To_Chart(element.time, IICR), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
+        for (const element of scale_function) {
+            if (!Application_Utilities.Contain_Graphic(element.name, chart)) {
 
-            if (!Application_Utilities.Contain_Graph(graph, chart)) chart.data.datasets.push(graph);
+                if (element.model == 'psmc') IICR = element.IICR_2;
+                else IICR = element.IICR_k;
 
+                var color = this.Get_Random_Color();
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element.time, IICR), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
+                chart.data.datasets.push(graphic);
+            }
         }
 
         chart.update();
@@ -43,10 +46,10 @@ class Visual_Utilities {
         general_chart.update();
     }
 
-    static Update_Scale(chart, application, name_graphic, type, s) {
+    static Update_Scale(chart, application, name_graphic, model, s) {
         var funct = '';
 
-        if (type == 'Pairwise Sequentially Markovian Coalescent') {
+        if (model == 'Pairwise Sequentially Markovian Coalescent') {
             for (const element of application.psmc_collection) {
                 if (element.name == name_graphic) {
                     funct = element.Clone();

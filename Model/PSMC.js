@@ -7,7 +7,7 @@ class PSMC {
         this.IICR_2 = IICR_2;
         this.theta = theta;
         this.rho = rho;
-        this.type = 'psmc';
+        this.model = 'psmc';
     }
 
     Clone() {

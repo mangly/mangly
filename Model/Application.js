@@ -22,7 +22,7 @@ class Application {
             for (const element of results.file_collection) {
                 if (element.model == 'psmc' && !Application_Utilities.Contain(element.name, psmc_collection)) psmc_collection.push(new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho));
 
-                else if (!Application_Utilities.Contain(element.name, msmc_collection)) msmc_collection.push(new MSMC(element.name, element.time, element.IICR_k));
+                else if (element.model == 'msmc' && !Application_Utilities.Contain(element.name, msmc_collection)) msmc_collection.push(new MSMC(element.name, element.time, element.IICR_k));
             }
 
             callback();
@@ -46,13 +46,15 @@ class Application {
 
     Scale_Functions() {
         var collection_scaled = [];
+        var general_collection = $.merge(this.psmc_collection, this.msmc_collection);
 
-        for (const element of $.merge(this.psmc_collection, this.msmc_collection)) {
+        for (const element of general_collection) {
+
             collection_scaled.push(element.Clone());
         }
 
         for (const element of collection_scaled) {
-            if (element.type == 'psmc') this.Scale_Psmc_Function(element);
+            if (element.model == 'psmc') this.Scale_Psmc_Function(element);
             else this.Scale_Msmc_Function(element);
 
         }

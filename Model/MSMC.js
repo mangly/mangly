@@ -5,7 +5,7 @@ class MSMC {
         this.name = name;
         this.time = time;
         this.IICR_k = IICR_k;
-        this.type = 'msmc';
+        this.model = 'msmc';
     }
 
     Clone() {
