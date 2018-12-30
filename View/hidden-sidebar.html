@@ -37,7 +37,7 @@
                 <i class="zmdi zmdi-menu"></i>
             </div>
 
-            <div class="logo hidden-sm-down pl-2 pt-1" data-sa-action="aside-open" data-sa-target=".sidebar">
+            <div id="open-menu" class="logo hidden-sm-down pl-2 pt-1" data-sa-action="aside-open" data-sa-target=".sidebar">
                 <h1><a href="#">MENU</a></h1>
             </div>
             <ul class="top-nav">
@@ -368,7 +368,7 @@
 
                 <ul class="navigation">
                     <li class="navigation__sub @@uiactive">
-                        <a href="#"><i class="zmdi zmdi-file"></i> File</a>
+                        <a id="expand-file" href="#"><i class="zmdi zmdi-file"></i>File</a>
                         <ul style="background-color:#161617">
                             <li class="@@colorsactive"><a id="open_file" href="#" class="listview__item">
                                     <div class="listview__heading">Open File...</div>
@@ -394,7 +394,7 @@
                             <div class="progress-bar" role="progressbar" style="width: 0" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                         </div> -->
                     <li class="navigation__sub @@componentsactive">
-                        <a href="#"><i class="zmdi zmdi-format-list-numbered"></i>List of graphics</a>
+                        <a href="#"><i class="zmdi zmdi-format-list-numbered"></i>Select a graphic</a>
                         <ul class="navigation__sub" id="list-graphics">
                             <!-- <li class="@@collapseactive"><a href="#" class="pl-4">
                                             <p>Select color</p>
@@ -578,104 +578,107 @@
                     <div class="card">
                         <div class="card-header">Options</div>
                         <div class="card-body" style="height: 600px; max-height: 600px; overflow-y: scroll">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <p>Select color</p>
+                            <div id="psmc-msmc-options">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <p>Select color</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="zmdi zmdi-invert-colors"></i></span>
+                                                    <div class="form-group color-picker">
+                                                        <input id="change-color" type="text" class="form-control color-picker__value"
+                                                            value="disabled">
+                                                        <i class="color-picker__preview" style="background-color: #000000"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="zmdi zmdi-invert-colors"></i></span>
-                                                <div class="form-group color-picker">
-                                                    <input id="change-color" type="text" class="form-control color-picker__value"
-                                                        value="disabled" disabled>
-                                                    <i class="color-picker__preview" style="background-color: #000000"></i>
+
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-7"></div>
+                                            <div class="col-lg-5">
+                                                <p>Edit / Remove</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-7"></div>
+                                            <div class="col-lg-5">
+                                                <span><i class="zmdi zmdi-edit zmdi-hc-2x"></i><i class="zmdi zmdi-delete zmdi-hc-2x pl-4"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-12">Scale</div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <span class="font-italic">Axis X</span>
+                                                <div class="form-group">
+
+                                                    <select id="scaleX" class="select2" data-minimum-results-for-search="Infinity">
+                                                        <option>Logarithmic</option>
+                                                        <option>Linear</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <span class="font-italic">Axis Y</span>
+                                                <div class="form-group">
+
+                                                    <select id="scaleY" class="select2" data-minimum-results-for-search="Infinity">
+                                                        <option>Linear</option>
+                                                        <option>Logarithmic</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <div class="col-lg-7"></div>
-                                        <div class="col-lg-5">
-                                            <p>Edit / Remove</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-7"></div>
-                                        <div class="col-lg-5">
-                                            <span><i class="zmdi zmdi-edit zmdi-hc-2x"></i><i class="zmdi zmdi-delete zmdi-hc-2x pl-4"></i></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="row">
-                                <div class="col-lg-12">Scale</div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <span class="font-italic">Axis X</span>
-                                            <div class="form-group">
-
-                                                <select id="scaleX" class="select2" data-minimum-results-for-search="Infinity">
-                                                    <option>Logarithmic</option>
-                                                    <option>Linear</option>
-                                                </select>
+                                <br>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <span class="font-italic">Mu</span>
+                                                <div class="form-group">
+                                                    <input id="input-mu" type="text" class="form-control" placeholder=""
+                                                        value="1.25e-8">
+                                                    <i class="form-group__bar"></i>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <span class="font-italic">Axis Y</span>
-                                            <div class="form-group">
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <span class="font-italic">S</span>
+                                                <div id="slider"></div>
 
-                                                <select id="scaleY" class="select2" data-minimum-results-for-search="Infinity">
-                                                    <option>Linear</option>
-                                                    <option>Logarithmic</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <span class="font-italic">Mu</span>
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="" value="1.25e-8">
-                                                <i class="form-group__bar"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <span class="font-italic">S</span>
-                                            <div id="input-slider"></div>
-
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" id="input-slider-value" />
-                                                        <i class="form-group__bar"></i>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="form-group">
+                                                            <input type="text" class="form-control" id="input-slider-value" />
+                                                            <i class="form-group__bar"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -683,8 +686,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- <li class="@@carouselactive"><a href="#" class="pl-4">Edit / Remove<i class="zmdi zmdi-edit pr-4 pl-4" id="edit"></i><i class="zmdi zmdi-delete"></a></i> -->
+                            <!-- <button class="btn btn-light" data-toggle="modal" data-target="#modal-default">Default modal</button> -->
                         </div>
                     </div>
                 </div>
@@ -698,6 +700,25 @@
                 </div>
             </div>
         </section>
+
+        <!-- Modal window -->
+        <div class="modal fade" id="modal-default" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title pull-left">Warning</h5>
+                    </div>
+                    <div class="modal-body">
+                        You must have a graphic LOADED and SELECTED. Go to the MENU ( See File -> Open File... OR
+                        Select a graphic )
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-link">Save changes</button> -->
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
 

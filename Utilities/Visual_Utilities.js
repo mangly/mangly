@@ -38,7 +38,7 @@ class Visual_Utilities {
 
     static Update_Colors(general_chart, function_target, color) {
 
-        general_chart.data.datasets.forEach(function(element) {
+        general_chart.data.datasets.forEach(function (element) {
             if (element.label == function_target.text().trim()) {
                 element.borderColor = color;
                 element.backgroundColor = color;
@@ -49,6 +49,39 @@ class Visual_Utilities {
         general_chart.update();
     }
 
+    static Update_Scale(chart, application, name_graphic, type) {
+        var funct = '';
+
+        if (type == 'Pairwise Sequentially Markovian Coalescent') {
+            for (const element of application.psmc_collection) {
+                if (element.name == name_graphic) {
+                    funct = element;
+                    application.Scale_Psmc_Function(funct);
+                    break;
+                }
+            }
+        }
+
+        else {
+            for (const element of application.msmc_collection) {
+                if (element.name == name_graphic) {
+                    funct = element;
+                    application.Scale_Msmc_Function(funct);
+                    break;
+                }
+            }
+        }
+
+        for (let index = 0; index < chart.data.datasets.length; index++) {
+            const element = chart.data.datasets[index];
+
+            if (element.label == funct.name) {
+                chart.data.datasets[index].data = Application_Utilities.Generate_Data_To_Chart(funct.time, funct.IICR_2);
+            }
+        }
+
+        chart.update();
+    }
 
     static Get_Parametters(name, application) {
         for (var element of application.psmc_collection) {
@@ -63,17 +96,17 @@ class Visual_Utilities {
     static Change_Axis_Scale(chart, new_scale, axis) {
 
         if (axis == 'x') chart.options.scales.xAxes[0] = {
-            type : new_scale,
+            type: new_scale,
 
-            ticks:{
-                fontColor:"white"
+            ticks: {
+                fontColor: "white"
             },
-            
-            gridLines:{
-                display:false,
-                color:"white"
+
+            gridLines: {
+                display: false,
+                color: "white"
             },
-           
+
             scaleLabel: {
                 display: true,
                 labelString: 'Years',
@@ -82,15 +115,15 @@ class Visual_Utilities {
         }
 
         else if (axis == 'y') chart.options.scales.yAxes[0] = {
-            type : new_scale,
+            type: new_scale,
 
-            ticks:{
-                fontColor:"white"
+            ticks: {
+                fontColor: "white"
             },
-            
-            gridLines:{
-                display:false,
-                color:"white"
+
+            gridLines: {
+                display: false,
+                color: "white"
             },
 
             scaleLabel: {
