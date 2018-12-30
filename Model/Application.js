@@ -45,13 +45,19 @@ class Application {
     }
 
     Scale_Functions() {
-        for (const element of this.psmc_collection) {
-            this.Scale_Psmc_Function(element);
+        var collection_scaled = [];
+
+        for (const element of $.merge(this.psmc_collection, this.msmc_collection)) {
+            collection_scaled.push(element.Clone());
         }
 
-        for (const element of this.msmc_collection) {
-            this.Scale_Msmc_Function(element);
+        for (const element of collection_scaled) {
+            if (element.type == 'psmc') this.Scale_Psmc_Function(element);
+            else this.Scale_Msmc_Function(element);
+
         }
+
+        return collection_scaled;
     }
 }
 

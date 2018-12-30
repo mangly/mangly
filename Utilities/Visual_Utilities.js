@@ -15,19 +15,13 @@ class Visual_Utilities {
     }
 
     static Visualize_App(application, chart) {
-        for (const element of application.psmc_collection) {
+        var IICR = [];
+        for (const element of application.Scale_Functions()) {
+            if (element.type == 'psmc') IICR = element.IICR_2;
+            else IICR = element.IICR_k;
 
             var color = this.Get_Random_Color();
-            var graph = { 'data': Application_Utilities.Generate_Data_To_Chart(element.time, element.IICR_2), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
-
-            if (!Application_Utilities.Contain_Graph(graph, chart)) chart.data.datasets.push(graph);
-
-        }
-
-        for (const element of application.msmc_collection) {
-
-            var color = this.Get_Random_Color();
-            var graph = { 'data': Application_Utilities.Generate_Data_To_Chart(element.time, element.IICR_k), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
+            var graph = { 'data': Application_Utilities.Generate_Data_To_Chart(element.time, IICR), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
 
             if (!Application_Utilities.Contain_Graph(graph, chart)) chart.data.datasets.push(graph);
 
@@ -49,14 +43,14 @@ class Visual_Utilities {
         general_chart.update();
     }
 
-    static Update_Scale(chart, application, name_graphic, type) {
+    static Update_Scale(chart, application, name_graphic, type, s) {
         var funct = '';
 
         if (type == 'Pairwise Sequentially Markovian Coalescent') {
             for (const element of application.psmc_collection) {
                 if (element.name == name_graphic) {
-                    funct = element;
-                    application.Scale_Psmc_Function(funct);
+                    funct = element.Clone();
+                    application.Scale_Psmc_Function(funct, 1.25e-8, s);
                     break;
                 }
             }

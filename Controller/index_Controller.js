@@ -11,7 +11,6 @@ const { dialog } = require('electron').remote;
 var Application = require('../Model/Application');
 var Visual_Utilities = require('../Utilities/Visual_Utilities');
 
-
 $(document).ready(function () {
     $('#psmc-msmc-options *').attr('disabled', 'disabled');
 
@@ -121,7 +120,7 @@ $(document).ready(function () {
         // Open a File or Files selected for user
         dialog.showOpenDialog(options, function (arrPath) {
             application.Add_File(arrPath, function () {
-                application.Scale_Functions();
+                // application.Scale_Functions();
                 Visual_Utilities.Visualize_App(application, myChart);
 
                 myChart.data.datasets.forEach(function (element) {
@@ -165,11 +164,11 @@ $(document).ready(function () {
         }
     })
 
-    $('#list-graphics').on('focusout', function () {
-        if ($(event.target).is('.edit-text')) {
-            $(event.target).parent().html('<a href="#" class="graph pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:' + itemTarget.children('i')[0].style.color + '"></i>' + $(event.target)[0].value + '</a>')
-        }
-    });
+    // $('#list-graphics').on('focusout', function () {
+    //     if ($(event.target).is('.edit-text')) {
+    //         $(event.target).parent().html('<a href="#" class="graph pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:' + itemTarget.children('i')[0].style.color + '"></i>' + $(event.target)[0].value + '</a>')
+    //     }
+    // });
 
     $(".colorpicker-element").on("change", function () {
         var color = $(this).val();
@@ -212,11 +211,11 @@ $(document).ready(function () {
     })
 
     slider.noUiSlider.on("update", function (a, b) {
-        document.getElementById("input-slider-value").value = a[b]
+        document.getElementById("input-slider-value").value = a[b];
     });
 
     slider.noUiSlider.on('slide', function () {
-        Visual_Utilities.Update_Scale(myChart, application, itemTarget.text(), $('#model').html());
+        Visual_Utilities.Update_Scale(myChart, application, itemTarget.text(), $('#model').html(), $('#input-slider-value').val());
         // console.log($('#model').html())
         // application.Scale_Psmc_Graph(parseFloat($('#input-mu').val()), parseFloat($('#input-slider-value').val()));
         // myChart.update();
