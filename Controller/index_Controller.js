@@ -10,6 +10,7 @@ const { dialog } = require('electron').remote;
 
 var Application = require('../Model/Application');
 var Visual_Utilities = require('../Utilities/Visual_Utilities');
+var Application_Utilities = require('../Utilities/Application_Utilities');
 
 $(document).ready(function () {
     $('#psmc-msmc-options *').attr('disabled', 'disabled');
@@ -202,23 +203,50 @@ $(document).ready(function () {
         }
     });
 
-    var slider = document.getElementById("slider");
+    var slider_mu = document.getElementById("slider-mu");
 
-    noUiSlider.create(slider, {
-        start: [100],
+    noUiSlider.create(slider_mu, {
+        start: [1.25],
         connect: "lower",
-        range: { min: 0, max: 1000 }
+        range: { min: 1, max: 3 },
+
+        format: wNumb({
+            decimals: 10,
+            // postfix:'e-8',
+
+            encoder: function (a) {
+                return a * 1e-8;
+            }
+        })
     })
 
-    slider.noUiSlider.on("update", function (a, b) {
-        document.getElementById("input-slider-value").value = a[b];
+    slider_mu.noUiSlider.on("update", function (a, b) {
+        document.getElementById("input-slider-value-mu").value = a[b];
     });
 
-    slider.noUiSlider.on('slide', function () {
-        Visual_Utilities.Update_Scale(myChart, application, itemTarget.text(), $('#model').html(), $('#input-slider-value').val());
-        // console.log($('#model').html())
-        // application.Scale_Psmc_Graph(parseFloat($('#input-mu').val()), parseFloat($('#input-slider-value').val()));
-        // myChart.update();
-        // console.log($('#input-slider-value').val())
+    $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()))
+    slider_mu.noUiSlider.on('slide', function () {
+        Visual_Utilities.Update_Scale(myChart, application, itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val());
+        $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()))
+    })
+
+    var slider_s = document.getElementById("slider-s");
+
+    noUiSlider.create(slider_s, {
+        start: [100],
+        connect: "lower",
+        range: { min: 1, max: 1000 },
+
+        format: wNumb({
+            decimals: 0,
+        })
+    })
+
+    slider_s.noUiSlider.on("update", function (a, b) {
+        document.getElementById("input-slider-value-s").value = a[b];
+    });
+
+    slider_s.noUiSlider.on('slide', function () {
+        Visual_Utilities.Update_Scale(myChart, application, itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val(), $('#input-slider-value-s').val());
     })
 })

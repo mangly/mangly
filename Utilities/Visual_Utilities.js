@@ -46,14 +46,14 @@ class Visual_Utilities {
         general_chart.update();
     }
 
-    static Update_Scale(chart, application, name_graphic, model, s) {
+    static Update_Scale(chart, application, name_graphic, model, mu, s) {
         var funct = '';
 
         if (model == 'Pairwise Sequentially Markovian Coalescent') {
             for (const element of application.psmc_collection) {
                 if (element.name == name_graphic) {
                     funct = element.Clone();
-                    application.Scale_Psmc_Function(funct, 1.25e-8, s);
+                    application.Scale_Psmc_Function(funct, mu, s);
                     break;
                 }
             }
