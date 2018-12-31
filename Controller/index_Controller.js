@@ -155,13 +155,9 @@ $(document).ready(function () {
 
             var parametters = Visual_Utilities.Get_Parametters(itemTarget.text(), application);
 
-            if (parametters.length != 1) {
-                $('#theta').html(parametters[0]);
-                $('#rho').html(parametters[1]);
-                $('#model').html(parametters[2]);
-            }
-
-            else $('#model').html(parametters[0]);
+            $('#theta').html(parametters[0]);
+            $('#rho').html(parametters[1]);
+            $('#model').html(parametters[2]);
         }
     })
 

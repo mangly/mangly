@@ -48,12 +48,13 @@ class Visual_Utilities {
 
     static Update_Scale(chart, application, name_graphic, model, mu, s) {
         var funct = '';
-
+        var IICR=[];
         if (model == 'Pairwise Sequentially Markovian Coalescent') {
             for (const element of application.psmc_collection) {
                 if (element.name == name_graphic) {
                     funct = element.Clone();
                     application.Scale_Psmc_Function(funct, mu, s);
+                    IICR = funct.IICR_2;
                     break;
                 }
             }
@@ -62,8 +63,9 @@ class Visual_Utilities {
         else {
             for (const element of application.msmc_collection) {
                 if (element.name == name_graphic) {
-                    funct = element;
-                    application.Scale_Msmc_Function(funct);
+                    funct = element.Clone();
+                    application.Scale_Msmc_Function(funct, mu);
+                    IICR = funct.IICR_k;
                     break;
                 }
             }
@@ -73,7 +75,7 @@ class Visual_Utilities {
             const element = chart.data.datasets[index];
 
             if (element.label == funct.name) {
-                chart.data.datasets[index].data = Application_Utilities.Generate_Data_To_Chart(funct.time, funct.IICR_2);
+                chart.data.datasets[index].data = Application_Utilities.Generate_Data_To_Chart(funct.time, IICR);
             }
         }
 
@@ -81,13 +83,19 @@ class Visual_Utilities {
     }
 
     static Get_Parametters(name, application) {
-        for (var element of application.psmc_collection) {
-            if (element.name == name) return [element.theta, element.rho, 'Pairwise Sequentially Markovian Coalescent'];
+        var collection = $.merge(application.psmc_collection, application.msmc_collection);
+
+        for (const element of collection) {
+            if (element.name == name) {
+                if (element.model == 'psmc') {
+                    return [element.theta, element.rho, 'Pairwise Sequentially Markovian Coalescent'];
+                }
+
+                else return ['-', '-', 'Multiple Sequentially Markovian Coalescent'];
+            }
         }
 
-        for (var element of application.msmc_collection) {
-            if (element.name == name) return ['-', '-', 'Multiple Sequentially Markovian Coalescent'];
-        }
+        return 'not found';
     }
 
     static Change_Axis_Scale(chart, new_scale, axis) {
