@@ -48,7 +48,7 @@ class Visual_Utilities {
 
     static Update_Scale(chart, application, name_graphic, model, mu, s) {
         var funct = '';
-        var IICR=[];
+        var IICR = [];
         if (model == 'Pairwise Sequentially Markovian Coalescent') {
             for (const element of application.psmc_collection) {
                 if (element.name == name_graphic) {
@@ -139,6 +139,15 @@ class Visual_Utilities {
         }
 
         chart.update();
+    }
+
+    static Visualize_Information_Of_Functions(name_function, name, theta, rho, model, application) {
+        var parametters = this.Get_Parametters(name_function, application);
+
+        name.html(name_function);
+        theta.html(parametters[0]);
+        rho.html(parametters[1]);
+        model.html(parametters[2]);
     }
 
 }

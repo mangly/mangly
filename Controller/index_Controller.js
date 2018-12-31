@@ -150,22 +150,9 @@ $(document).ready(function () {
             itemTarget.css('color', 'black');
             $('#psmc-msmc-options *').removeAttr('disabled');
 
-
-            $('#graphic').html(itemTarget.text());
-
-            var parametters = Visual_Utilities.Get_Parametters(itemTarget.text(), application);
-
-            $('#theta').html(parametters[0]);
-            $('#rho').html(parametters[1]);
-            $('#model').html(parametters[2]);
+            Visual_Utilities.Visualize_Information_Of_Functions(itemTarget.text(), $('#graphic'), $('#theta'), $('#rho'), $('#model'), application);
         }
     })
-
-    // $('#list-graphics').on('focusout', function () {
-    //     if ($(event.target).is('.edit-text')) {
-    //         $(event.target).parent().html('<a href="#" class="graph pl-4"><i class="zmdi zmdi-album pr-4 album" style="color:' + itemTarget.children('i')[0].style.color + '"></i>' + $(event.target)[0].value + '</a>')
-    //     }
-    // });
 
     $(".colorpicker-element").on("change", function () {
         var color = $(this).val();
