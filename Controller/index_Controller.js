@@ -13,7 +13,12 @@ var Visual_Utilities = require('../Utilities/Visual_Utilities');
 var Application_Utilities = require('../Utilities/Application_Utilities');
 
 $(document).ready(function () {
-    $('#psmc-msmc-options *').attr('disabled', 'disabled');
+    $('#options-color-edit-remove *').attr('disabled', 'disabled');
+    $('#options-scale-axis *').attr('disabled', 'disabled');
+    $('#option-mu *').attr('disabled', 'disabled');
+    $('#option-s *').attr('disabled', 'disabled');
+
+
 
     // Instance of Application
     var application = new Application();
@@ -131,6 +136,8 @@ $(document).ready(function () {
                         // $('#list-graphics').removeAttr('hidden');
                     }
                 })
+
+                $('#options-scale-axis *').removeAttr('disabled');
             })
         })
     })
@@ -148,7 +155,16 @@ $(document).ready(function () {
             //For select the graph
             itemTarget.css('background-color', '#ffffff');
             itemTarget.css('color', 'black');
-            $('#psmc-msmc-options *').removeAttr('disabled');
+
+            $('#options-color-edit-remove *').removeAttr('disabled');
+            $('#option-mu *').removeAttr('disabled');
+
+            if (Visual_Utilities.Get_Parametters(itemTarget.text(), application)[2] == 'Pairwise Sequentially Markovian Coalescent') $('#option-s *').removeAttr('disabled');
+
+            else {
+                $('#option-s *').attr('disabled', 'disabled');
+                slider_s.noUiSlider.set(100);
+            }
 
             Visual_Utilities.Visualize_Information_Of_Functions(itemTarget.text(), $('#graphic'), $('#theta'), $('#rho'), $('#model'), application);
         }
@@ -171,8 +187,8 @@ $(document).ready(function () {
         Visual_Utilities.Change_Axis_Scale(myChart, $(this).val().toLowerCase(), 'y');
     });
 
-    $('#psmc-msmc-options').on('click', function () {
-        if ($('#psmc-msmc-options *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
+    $('#options').on('click', function () {
+        if (!$(event.target).is('#options-scale-axis *') && $('#options #option-mu *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
     });
 
     var expand_file = false;
@@ -206,6 +222,10 @@ $(document).ready(function () {
     slider_mu.noUiSlider.on("update", function (a, b) {
         document.getElementById("input-slider-value-mu").value = a[b];
     });
+
+    // slider_mu.noUiSlider.on("set", function (a, b) {
+    //     $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()))
+    // });
 
     $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()))
     slider_mu.noUiSlider.on('slide', function () {
