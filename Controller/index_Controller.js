@@ -8,9 +8,10 @@ const { dialog } = require('electron').remote;
 
 //import Application from '../Model/Application';
 
-var Application = require('../Model/Application');
-var Visual_Utilities = require('../Utilities/Visual_Utilities');
+var Application = require('../Model/Logic_Application');
+// var Visual_Utilities = require('../Utilities/Visual_Utilities');
 var Application_Utilities = require('../Utilities/Application_Utilities');
+var Visual_Application = require('../GUI/Visual_Application')
 
 $(document).ready(function () {
     $('#options-color-edit-remove *').attr('disabled', 'disabled');
@@ -19,97 +20,9 @@ $(document).ready(function () {
     $('#option-s *').attr('disabled', 'disabled');
 
 
+    // Instance Visual Application
 
-    // Instance of Application
-    var application = new Application();
-
-
-    //Data for all functions
-    var myChart = new Chart(document.getElementById("mycanvas"), {
-        type: 'line',
-        data: {
-            datasets: [],
-        },
-        scaleFontColor: 'red',
-        options: {
-            tooltips: {
-                enabled: false
-            },
-            hover: {
-                mode: null
-            },
-            animation: {
-                duration: 100
-            },
-            scales: {
-                xAxes: [{
-                    type: 'logarithmic',
-
-                    ticks: {
-                        fontColor: "white"
-                    },
-
-                    gridLines: {
-                        display: false,
-                        color: "white"
-                    },
-
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Years',
-                        fontColor: 'white'
-                    }
-                }],
-
-                yAxes: [{
-                    type: 'linear',
-
-                    ticks: {
-                        fontColor: "white"
-                    },
-
-                    gridLines: {
-                        display: false,
-                        color: "white"
-                    },
-
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Effective population size',
-                        fontColor: 'white'
-                    }
-                }],
-            },
-
-            elements: {
-                line: {
-                    tension: 0,
-                },
-
-                point: {
-                    radius: 0,
-                }
-            },
-
-            legend: {
-                display: true,
-                labels: {
-                    usePointStyle: true,
-                    fontColor: 'white',
-                    fill: true,
-                    boxWidth: 10,
-                },
-                position: 'bottom'
-            },
-
-            title: {
-                display: true,
-                text: '',
-                fontColor: 'white',
-                fontFamily: 'Nunito,sans-serif'
-            }
-        },
-    });
+    var visual_application = new Visual_Application(new Application());
 
     var edit_collection_control = [];
     $('#open_file').on('click', function () {
@@ -125,11 +38,11 @@ $(document).ready(function () {
 
         // Open a File or Files selected for user
         dialog.showOpenDialog(options, function (arrPath) {
-            application.Add_File(arrPath, function () {
+            visual_application.application.Add_File(arrPath, function () {
 
-                Visual_Utilities.Visualize_App(application, myChart);
+                visual_application.Visualize_App();
 
-                myChart.data.datasets.forEach(function (element) {
+                visual_application.chart.data.datasets.forEach(function (element) {
                     if (!edit_collection_control.includes(element.label)) {
                         $('#list-graphics').append('<li class="@@carouselactive"><a href="#" class="graph"><i class="zmdi zmdi-album pr-4 album" style="color:' + element.backgroundColor + '"></i>' + element.label + '</a></li>');
                         edit_collection_control.push(element.label);
@@ -159,20 +72,20 @@ $(document).ready(function () {
             $('#options-color-edit-remove *').removeAttr('disabled');
             $('#option-mu *').removeAttr('disabled');
 
-            if (Visual_Utilities.Get_Parametters(itemTarget.text(), application)[2] == 'Pairwise Sequentially Markovian Coalescent') $('#option-s *').removeAttr('disabled');
+            if (visual_application.Get_Parametters(itemTarget.text())[2] == 'Pairwise Sequentially Markovian Coalescent') $('#option-s *').removeAttr('disabled');
 
             else {
                 $('#option-s *').attr('disabled', 'disabled');
                 slider_s.noUiSlider.set(100);
             }
 
-            Visual_Utilities.Visualize_Information_Of_Functions(itemTarget.text(), $('#graphic'), $('#theta'), $('#rho'), $('#model'), application);
+            visual_application.Visualize_Information_Of_Functions(itemTarget.text(), $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
     })
 
     $(".colorpicker-element").on("change", function () {
         var color = $(this).val();
-        Visual_Utilities.Update_Colors(myChart, itemTarget, color);
+        visual_application.Update_Colors(itemTarget, color);
     });
 
     $('#edit').on('click', function () {
@@ -180,11 +93,11 @@ $(document).ready(function () {
     });
 
     $('#scaleX').on('change', function () {
-        Visual_Utilities.Change_Axis_Scale(myChart, $(this).val().toLowerCase(), 'x');
+        visual_application.Change_Axis_Scale($(this).val().toLowerCase(), 'x');
     });
 
     $('#scaleY').on('change', function () {
-        Visual_Utilities.Change_Axis_Scale(myChart, $(this).val().toLowerCase(), 'y');
+        visual_application.Change_Axis_Scale($(this).val().toLowerCase(), 'y');
     });
 
     $('#options').on('click', function () {
@@ -229,7 +142,7 @@ $(document).ready(function () {
 
     $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()))
     slider_mu.noUiSlider.on('slide', function () {
-        Visual_Utilities.Update_Scale(myChart, application, itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val());
+        visual_application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val());
         $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()))
     })
 
@@ -250,6 +163,10 @@ $(document).ready(function () {
     });
 
     slider_s.noUiSlider.on('slide', function () {
-        Visual_Utilities.Update_Scale(myChart, application, itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val(), $('#input-slider-value-s').val());
+        visual_application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val(), $('#input-slider-value-s').val());
     })
+
+    var vs = new Visual_Application();
+
+    console.log(vs.chart.data);
 })
