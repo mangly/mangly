@@ -3,9 +3,9 @@
 const Application_Utilities = require('../Utilities/Application_Utilities');
 
 class Visual_Application {
-    constructor(application) {
+    constructor(canvas, application) {
         this.application = application;
-        this.chart = new Chart(document.getElementById("mycanvas"), {
+        this.chart = new Chart(canvas, {
             type: 'line',
             data: {
                 datasets: [],
@@ -102,18 +102,23 @@ class Visual_Application {
         return "#" + color;
     }
 
-    Visualize_App() {
-        var IICR = [];
-        var scale_function = this.application.Scale_Functions();
-
-        for (const element of scale_function) {
+    Visualize() {
+        var element_scale_by_default;
+        var IICR;
+        for (const element of this.application.functions_collection) {
             if (!Application_Utilities.Contain_Graphic(element.name, this.chart)) {
+                if (element.model == 'psmc') {
+                    element_scale_by_default = this.application.Scale_Psmc_Function(element.Clone());
+                    IICR = element_scale_by_default.IICR_2;
+                }
 
-                if (element.model == 'psmc') IICR = element.IICR_2;
-                else IICR = element.IICR_k;
+                else {
+                    element_scale_by_default = this.application.Scale_Msmc_Function(element.Clone());
+                    IICR = element_scale_by_default.IICR_k;
+                }
 
                 var color = this.Get_Random_Color();
-                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element.time, IICR), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
                 this.chart.data.datasets.push(graphic);
             }
         }
@@ -135,27 +140,24 @@ class Visual_Application {
     }
 
     Update_Scale(name_graphic, model, mu, s) {
-        var funct = '';
-        var IICR = [];
-        if (model == 'Pairwise Sequentially Markovian Coalescent') {
-            for (const element of this.application.psmc_collection) {
-                if (element.name == name_graphic) {
-                    funct = element.Clone();
-                    this.application.Scale_Psmc_Function(funct, mu, s);
-                    IICR = funct.IICR_2;
-                    break;
-                }
-            }
-        }
+        var funct;
+        var IICR;
 
-        else {
-            for (const element of this.application.msmc_collection) {
-                if (element.name == name_graphic) {
-                    funct = element.Clone();
-                    this.application.Scale_Msmc_Function(funct, mu);
-                    IICR = funct.IICR_k;
-                    break;
+        for (let index = 0; index < this.application.functions_collection.length; index++) {
+            const element = this.application.functions_collection[index];
+
+            if (element.name == name_graphic) {
+                if (model == 'Pairwise Sequentially Markovian Coalescent') {
+                    funct = this.application.Scale_Psmc_Function(element.Clone(), mu, s);
+                    IICR = funct.IICR_2;
                 }
+
+                else {
+                    funct = this.application.Scale_Msmc_Function(element.Clone(), mu);
+                    IICR = funct.IICR_k;
+                }
+
+                break;
             }
         }
 
@@ -171,9 +173,7 @@ class Visual_Application {
     }
 
     Get_Parametters(name) {
-        var collection = $.merge(this.application.psmc_collection, this.application.msmc_collection);
-
-        for (const element of collection) {
+        for (const element of this.application.functions_collection) {
             if (element.name == name) {
                 if (element.model == 'psmc') {
                     return [element.theta, element.rho, 'Pairwise Sequentially Markovian Coalescent'];

@@ -1,28 +1,39 @@
 'use strict'
 
 const Python_Communicator = require('./Python_Communicator');
-const Application_Utilities = require('../Utilities/Application_Utilities');
 const PSMC = require('./PSMC');
 const MSMC = require('./MSMC');
 
-
 class Application {
     constructor() {
-        this.psmc_collection = [];
-        this.msmc_collection = [];
+        this.functions_collection = [];
+    }
+
+    Contain(element_name) {
+        for (let index = 0; index < this.functions_collection.length; index++) {
+            const element = this.functions_collection[index];
+
+            if (element.name && (element.name == element_name)) return true;
+        }
+
+        return false;
     }
 
     Add_File(path_collection, callback) {
-
-        var psmc_collection = this.psmc_collection;
-        var msmc_collection = this.msmc_collection;
-
-        Python_Communicator.get_File_Results(path_collection, 'get_File_Results.py', function (results) {
+        Python_Communicator.get_File_Results(path_collection, 'get_File_Results.py', (results) => {
 
             for (const element of results.file_collection) {
-                if (element.model == 'psmc' && !Application_Utilities.Contain(element.name, psmc_collection)) psmc_collection.push(new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho));
+                if (!this.Contain(element.name)) {
+                    if (element.model == 'psmc') {
+                        var psmc = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho);
+                        this.functions_collection.push(psmc);
+                    }
 
-                else if (element.model == 'msmc' && !Application_Utilities.Contain(element.name, msmc_collection)) msmc_collection.push(new MSMC(element.name, element.time, element.IICR_k));
+                    else {
+                        var msmc = new MSMC(element.name, element.time, element.IICR_k);
+                        this.functions_collection.push(msmc);
+                    }
+                }
             }
 
             callback();
@@ -35,6 +46,8 @@ class Application {
             funct.time[index] = 2 * N * funct.time[index];
             funct.IICR_2[index] = N * funct.IICR_2[index];
         }
+
+        return funct;
     }
 
     Scale_Msmc_Function(funct, mu = 1.25e-8) {
@@ -42,24 +55,8 @@ class Application {
             funct.time[index] = funct.time[index] / mu;
             funct.IICR_k[index] = 1 / funct.IICR_k[index] / (2 * mu);
         }
-    }
 
-    Scale_Functions() {
-        var collection_scaled = [];
-        var general_collection = $.merge(this.psmc_collection, this.msmc_collection);
-
-        for (const element of general_collection) {
-
-            collection_scaled.push(element.Clone());
-        }
-
-        for (const element of collection_scaled) {
-            if (element.model == 'psmc') this.Scale_Psmc_Function(element);
-            else this.Scale_Msmc_Function(element);
-
-        }
-
-        return collection_scaled;
+        return funct;
     }
 }
 
