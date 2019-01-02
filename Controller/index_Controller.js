@@ -140,21 +140,15 @@ $(document).ready(function () {
         })
     })
 
-    slider_mu.noUiSlider.on("update", function (a, b) {
-        document.getElementById("input-slider-value-mu").value = a[b];
-    });
+    if ($('#options #option-mu *').attr('disabled') == 'disabled') {
+        slider_mu.noUiSlider.on("update", function (a, b) {
+            $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
+        });
+    }
 
-    // slider_mu.noUiSlider.on("set", function (a, b) {
-    //     $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
-    // });
-
-    document.getElementById("input-slider-value-mu").value = Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val());
-
-    $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()));
-
-    slider_mu.noUiSlider.on('slide', function () {
+    slider_mu.noUiSlider.on('slide', function (a, b) {
         application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val());
-        $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()));
+        $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
     })
 
     var slider_s = document.getElementById("slider-s");
@@ -169,9 +163,11 @@ $(document).ready(function () {
         })
     })
 
-    slider_s.noUiSlider.on("update", function (a, b) {
-        document.getElementById("input-slider-value-s").value = a[b];
-    });
+    if ($('#options #option-s *').attr('disabled') == 'disabled') {
+        slider_s.noUiSlider.on("update", function (a, b) {
+            document.getElementById("input-slider-value-s").value = a[b];
+        });
+    }
 
     slider_s.noUiSlider.on('slide', function () {
         application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val(), $('#input-slider-value-s').val());
