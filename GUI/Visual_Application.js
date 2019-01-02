@@ -92,6 +92,14 @@ class Visual_Application {
         });
     }
 
+    Contain(name_graphic) {
+        for (const element of this.chart.data.datasets) {
+            if (name_graphic == element.label) return element;
+        }
+
+        return null;
+    }
+
     Get_Random_Color() {
         var color = Math.floor(Math.random() * Math.pow(256, 3)).toString(16);
 
@@ -106,7 +114,7 @@ class Visual_Application {
         var element_scale_by_default;
         var IICR;
         for (const element of this.application.functions_collection) {
-            if (!Application_Utilities.Contain_Graphic(element.name, this.chart)) {
+            if (this.Contain(element.name) == null) {
                 if (element.model == 'psmc') {
                     element_scale_by_default = this.application.Scale_Psmc_Function(element.Clone());
                     IICR = element_scale_by_default.IICR_2;
@@ -118,7 +126,7 @@ class Visual_Application {
                 }
 
                 var color = this.Get_Random_Color();
-                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': '3', 'steppedLine': 'true' };
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true', 'Mu' : 1.25e-8, 'S': 100};
                 this.chart.data.datasets.push(graphic);
             }
         }
@@ -166,6 +174,8 @@ class Visual_Application {
 
             if (element.label == funct.name) {
                 this.chart.data.datasets[index].data = Application_Utilities.Generate_Data_To_Chart(funct.time, IICR);
+                this.chart.data.datasets[index].Mu = mu;
+                this.chart.data.datasets[index].S = s;
             }
         }
 

@@ -71,7 +71,15 @@ $(document).ready(function () {
             $('#options-color-edit-remove *').removeAttr('disabled');
             $('#option-mu *').removeAttr('disabled');
 
-            if (application.Get_Parametters(itemTarget.text())[2] == 'Pairwise Sequentially Markovian Coalescent') $('#option-s *').removeAttr('disabled');
+            if (application.Get_Parametters(itemTarget.text())[2] == 'Pairwise Sequentially Markovian Coalescent') {
+                $('#option-s *').removeAttr('disabled');
+
+                var graphic = application.Contain(itemTarget.text());
+
+                //console.log(slider_s.noUiSlider.value);
+                // slider_s.noUiSlider.set(graphic.S);
+                // slider_mu.noUiSlider.set(Application_Utilities.Convert_Decimal_Scientific_Notation(graphic.Mu));
+            }
 
             else {
                 $('#option-s *').attr('disabled', 'disabled');
@@ -114,6 +122,8 @@ $(document).ready(function () {
         }
     });
 
+
+    // Sliders configurations
     var slider_mu = document.getElementById("slider-mu");
 
     noUiSlider.create(slider_mu, {
@@ -123,7 +133,6 @@ $(document).ready(function () {
 
         format: wNumb({
             decimals: 10,
-            // postfix:'e-8',
 
             encoder: function (a) {
                 return a * 1e-8;
@@ -136,13 +145,16 @@ $(document).ready(function () {
     });
 
     // slider_mu.noUiSlider.on("set", function (a, b) {
-    //     $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()))
+    //     $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
     // });
 
-    $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()))
+    document.getElementById("input-slider-value-mu").value = Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val());
+
+    $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()));
+
     slider_mu.noUiSlider.on('slide', function () {
         application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val());
-        $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()))
+        $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation($('#input-slider-value-mu').val()));
     })
 
     var slider_s = document.getElementById("slider-s");

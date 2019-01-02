@@ -1,14 +1,6 @@
 'use strict'
 
 class Application_Utilities {
-    
-    static Contain_Graphic(name_graphic, chart) {
-        for (const element of chart.data.datasets) {
-            if (name_graphic == element.label) return true;
-        }
-
-        return false;
-    }
 
     static Generate_Data_To_Chart(vector_X, vector_Y) {
         var result = [];
