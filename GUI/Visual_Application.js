@@ -126,7 +126,7 @@ class Visual_Application {
                 }
 
                 var color = this.Get_Random_Color();
-                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true', 'Mu' : 1.25e-8, 'S': 100};
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true', 'Mu': 1.25, 'S': 100 };
                 this.chart.data.datasets.push(graphic);
             }
         }
@@ -174,7 +174,7 @@ class Visual_Application {
 
             if (element.label == funct.name) {
                 this.chart.data.datasets[index].data = Application_Utilities.Generate_Data_To_Chart(funct.time, IICR);
-                this.chart.data.datasets[index].Mu = mu;
+                this.chart.data.datasets[index].Mu = mu * Math.pow(10, 8);
                 this.chart.data.datasets[index].S = s;
             }
         }

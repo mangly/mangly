@@ -71,19 +71,18 @@ $(document).ready(function () {
             $('#options-color-edit-remove *').removeAttr('disabled');
             $('#option-mu *').removeAttr('disabled');
 
+            var graphic = application.Contain(itemTarget.text());
             if (application.Get_Parametters(itemTarget.text())[2] == 'Pairwise Sequentially Markovian Coalescent') {
                 $('#option-s *').removeAttr('disabled');
 
-                var graphic = application.Contain(itemTarget.text());
-
-                //console.log(slider_s.noUiSlider.value);
-                // slider_s.noUiSlider.set(graphic.S);
-                // slider_mu.noUiSlider.set(Application_Utilities.Convert_Decimal_Scientific_Notation(graphic.Mu));
+                slider_s.noUiSlider.set(graphic.S);
+                slider_mu.noUiSlider.set(graphic.Mu);
             }
 
             else {
                 $('#option-s *').attr('disabled', 'disabled');
                 slider_s.noUiSlider.set(100);
+                slider_mu.noUiSlider.set(graphic.Mu);
             }
 
             application.Visualize_Information_Of_Functions(itemTarget.text(), $('#graphic'), $('#theta'), $('#rho'), $('#model'));
@@ -147,7 +146,7 @@ $(document).ready(function () {
     }
 
     slider_mu.noUiSlider.on('slide', function (a, b) {
-        application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val());
+        application.Update_Scale(itemTarget.text(), $('#model').html(), a[b], $('#input-slider-value-s').val());
         $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
     })
 
@@ -169,7 +168,7 @@ $(document).ready(function () {
         });
     }
 
-    slider_s.noUiSlider.on('slide', function () {
-        application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val(), $('#input-slider-value-s').val());
+    slider_s.noUiSlider.on('slide', function (a, b) {
+        application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val(), a[b]);
     })
 })
