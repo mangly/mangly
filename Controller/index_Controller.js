@@ -54,7 +54,7 @@ $(document).ready(function () {
         })
     })
 
-    var itemTarget = '';
+    var itemTarget;
     $('#list-graphics').on('click', function () {
         if ($(event.target).is('.graph')) {
             //Element clicked
@@ -107,7 +107,10 @@ $(document).ready(function () {
     });
 
     $('#options').on('click', function () {
-        if (!$(event.target).is('#options-scale-axis *') && $('#options #option-mu *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
+        if ($('#options-scale-axis *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
+
+        else if (!$(event.target).is('#options-scale-axis *')) if (!itemTarget) $('#modal-default').modal('show');
+        // if (!$(event.target).is('#options-scale-axis *') && $('#options #option-mu *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
     });
 
     var expand_file = false;
@@ -139,7 +142,7 @@ $(document).ready(function () {
         })
     })
 
-    if ($('#options #option-mu *').attr('disabled') == 'disabled') {
+    if ($('#option-mu *').attr('disabled') == 'disabled') {
         slider_mu.noUiSlider.on("update", function (a, b) {
             $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
         });
