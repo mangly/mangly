@@ -174,4 +174,12 @@ $(document).ready(function () {
     slider_s.noUiSlider.on('slide', function (a, b) {
         application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val(), a[b]);
     })
+
+    $('#test').on('click', function () {
+        application.application.Get_NSSC_Vectors(function () {
+            application.Visualize_NSSC();
+            console.log('done!!!!!!!')
+        });
+    });
+
 })

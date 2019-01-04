@@ -1,17 +1,19 @@
 'use strict'
 
-const Python_Communicator = require('./Python_Communicator');
+const Python_Communicator = require('../Utilities/Python_Communicator');
 const PSMC = require('./PSMC');
 const MSMC = require('./MSMC');
+const NSSC = require('./NSSC');
 
 class Application {
     constructor() {
-        this.functions_collection = [];
+        this.psmc_msmc_collection = [];
+        this.nssc_collection = [];
     }
 
     Contain(element_name) {
-        for (let index = 0; index < this.functions_collection.length; index++) {
-            const element = this.functions_collection[index];
+        for (let index = 0; index < this.psmc_msmc_collection.length; index++) {
+            const element = this.psmc_msmc_collection[index];
 
             if (element.name && (element.name == element_name)) return true;
         }
@@ -20,21 +22,32 @@ class Application {
     }
 
     Add_File(path_collection, callback) {
-        Python_Communicator.get_File_Results(path_collection, 'get_File_Results.py', (results) => {
+        Python_Communicator.get_File_Results(path_collection, 'Python_Scripts/get_File_Results.py', (results) => {
 
             for (const element of results.file_collection) {
                 if (!this.Contain(element.name)) {
                     if (element.model == 'psmc') {
                         var psmc = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho);
-                        this.functions_collection.push(psmc);
+                        this.psmc_msmc_collection.push(psmc);
                     }
 
                     else {
                         var msmc = new MSMC(element.name, element.time, element.IICR_k);
-                        this.functions_collection.push(msmc);
+                        this.psmc_msmc_collection.push(msmc);
                     }
                 }
             }
+
+            callback();
+        })
+    }
+
+    Get_NSSC_Vectors(callback) {
+        Python_Communicator.get_Model_NSSC('Python_Scripts/get_Model_NSSC.py', (results) => {
+
+            var nssc = new NSSC(results.name, results.x_vector, results.IICR_specie);
+            this.nssc_collection.push(nssc);
+            // console.log(this.nssc_collection);
 
             callback();
         })

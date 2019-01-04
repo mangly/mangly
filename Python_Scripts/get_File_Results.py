@@ -61,11 +61,6 @@ def get_File_collection_result(path_collection):
         elif(name_and_extension.endswith('msmc') or name_and_extension.endswith('txt')):
             file_result = get_MSMC_results(path)
 
-        
-        # x_y = file_result['x_y']
-        # r = lambda: random.randint(0,255)
-        # x_y['borderColor']='#%02X%02X%02X' % (r(),r(),r())
-        # x_y['backgroundColor']=x_y['borderColor']
         file_result['name'] = name
         file_collection.append(file_result)
     

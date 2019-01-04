@@ -113,7 +113,7 @@ class Visual_Application {
     Visualize() {
         var element_scale_by_default;
         var IICR;
-        for (const element of this.application.functions_collection) {
+        for (const element of this.application.psmc_msmc_collection) {
             if (this.Contain(element.name) == null) {
                 if (element.model == 'psmc') {
                     element_scale_by_default = this.application.Scale_Psmc_Function(element.Clone());
@@ -129,6 +129,16 @@ class Visual_Application {
                 var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true', 'Mu': 1.25, 'S': 100 };
                 this.chart.data.datasets.push(graphic);
             }
+        }
+
+        this.chart.update();
+    }
+
+    Visualize_NSSC(){
+        for (const element of this.application.nssc_collection) {
+            var color = this.Get_Random_Color();
+            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element.x_vector, element.IICR_specie), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true'};
+            this.chart.data.datasets.push(graphic);
         }
 
         this.chart.update();
@@ -151,8 +161,8 @@ class Visual_Application {
         var funct;
         var IICR;
 
-        for (let index = 0; index < this.application.functions_collection.length; index++) {
-            const element = this.application.functions_collection[index];
+        for (let index = 0; index < this.application.psmc_msmc_collection.length; index++) {
+            const element = this.application.psmc_msmc_collection[index];
 
             if (element.name == name_graphic) {
                 if (model == 'Pairwise Sequentially Markovian Coalescent') {
@@ -183,7 +193,7 @@ class Visual_Application {
     }
 
     Get_Parametters(name) {
-        for (const element of this.application.functions_collection) {
+        for (const element of this.application.psmc_msmc_collection) {
             if (element.name == name) {
                 if (element.model == 'psmc') {
                     return [element.theta, element.rho, 'Pairwise Sequentially Markovian Coalescent'];
