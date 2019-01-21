@@ -126,7 +126,7 @@ class Visual_Application {
                 }
 
                 var color = this.Get_Random_Color();
-                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true', 'Mu': 1.25, 'S': 100 };
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true', 'Mu': 1.25, 'S': 100, 'model': element.model };
                 this.chart.data.datasets.push(graphic);
             }
         }
@@ -134,10 +134,10 @@ class Visual_Application {
         this.chart.update();
     }
 
-    Visualize_NSSC(){
+    Visualize_NSSC() {
         for (const element of this.application.nssc_collection) {
             var color = this.Get_Random_Color();
-            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element.x_vector, element.IICR_specie), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true'};
+            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element.x_vector, element.IICR_specie), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
             this.chart.data.datasets.push(graphic);
         }
 

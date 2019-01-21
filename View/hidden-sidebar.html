@@ -20,6 +20,24 @@
 
     <!-- App styles -->
     <link rel="stylesheet" href="css/app.min.css">
+
+    <!-- Styles inline -->
+    <style>
+        .custom-control--char .custom-control-input:checked + .custom-control--char__helper > i 
+        {
+            background-color:transparent;
+        }
+        .custom-control--char__helper
+        {
+            position: relative;
+        }
+
+        .listview__item
+        {
+            padding: 0;
+        }
+    </style>
+
 </head>
 
 <body data-sa-theme="4">
@@ -168,7 +186,7 @@
                         </div> -->
                     <li class="navigation__sub @@componentsactive">
                         <a href="#"><i class="zmdi zmdi-format-list-numbered"></i>Select a graphic</a>
-                        <ul class="navigation__sub" id="list-graphics">
+                        <ul class="navigation__sub">
                             <!-- <li class="@@collapseactive"><a href="#" class="pl-4">
                                             <p>Select color</p>
                                             <div class="input-group">
@@ -347,10 +365,155 @@
             </div>
 
             <div class="row">
-
                 <div class="col-lg-4 col-md-12 col-sm-12">
                     <div id="options">
                         <div class="card">
+                            <div class="card-header">Options</div>
+                            <div class="card-body" style="height: 600px; max-height: 600px; overflow-y: scroll">
+                                <!-- <h4 class="card-title">Justified tab links</h4>
+                                        <h6 class="card-subtitle">To proportionately fill all available space with your <code>.nav-items</code>, use <code>.nav-fill</code></h6> -->
+
+                                <div class="tab-container">
+                                    <ul class="nav nav-tabs nav-fill" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#graphics" role="tab">Graphics</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#axises" role="tab">Axises</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#psmc-msmc" role="tab">Psmc /
+                                                Msmc</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#settings-4" role="tab">Nssc</a>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div class="tab-pane active fade show" id="graphics" role="tabpanel">
+                                            <br>
+                                            <p>Edit color:</p>
+                                            <div class="input-group" style="width: 50%">
+                                                <span class="input-group-addon"><i class="zmdi zmdi-invert-colors"></i></span>
+                                                <div class="form-group color-picker">
+                                                    <input id="change-color" type="text" class="form-control color-picker__value"
+                                                        value="disabled">
+                                                    <i class="color-picker__preview" style="background-color: #000000"></i>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="listview" id="list-graphics">List:
+
+                                                <div class="clearfix mb-3"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="axises" role="tabpanel">
+                                            <br>
+                                            <div id="options-scale-axis">
+                                                <div class="row">
+                                                    <div class="col-lg-12">Scale:</div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <span class="font-italic">Axis X</span>
+                                                                <div class="form-group">
+
+                                                                    <select id="scaleX" class="select2"
+                                                                        data-minimum-results-for-search="Infinity">
+                                                                        <option>Logarithmic</option>
+                                                                        <option>Linear</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <span class="font-italic">Axis Y</span>
+                                                                <div class="form-group">
+
+                                                                    <select id="scaleY" class="select2"
+                                                                        data-minimum-results-for-search="Infinity">
+                                                                        <option>Linear</option>
+                                                                        <option>Logarithmic</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="psmc-msmc" role="tabpanel">
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-lg-12">Scale parametters:</div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div id="option-mu">
+                                                            <div class="col-lg-12">
+                                                                <span class="font-italic">Mu</span>
+                                                                <div id="slider-mu"></div>
+
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" id="input-slider-value-mu"
+                                                                                readonly />
+                                                                            <i class="form-group__bar"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="row">
+                                                        <div id="option-s">
+                                                            <div class="col-lg-12">
+                                                                <span class="font-italic">S</span>
+                                                                <div id="slider-s"></div>
+
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" id="input-slider-value-s"
+                                                                                readonly />
+                                                                            <i class="form-group__bar"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="settings-4" role="tabpanel">
+                                            <p>Nullam id dolor id nibh ultricies vehicula ut id elit. Aenean eu leo
+                                                quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Fusce
+                                                dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+                                                fermentum massa justo sit amet risus. Aenean eu leo quam. Pellentesque
+                                                ornare sem lacinia quam venenatis vestibulum. Maecenas faucibus mollis
+                                                interdum.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="card">
                             <div class="card-header">Options</div>
                             <div class="card-body" style="height: 600px; max-height: 600px; overflow-y: scroll">
                                 <div id="options-color-edit-remove">
@@ -476,10 +639,8 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- <button class="btn btn-light" data-toggle="modal" data-target="#modal-default">Default modal</button> -->
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-12 col-sm-12">

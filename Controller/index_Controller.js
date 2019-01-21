@@ -43,7 +43,9 @@ $(document).ready(function () {
 
                 application.chart.data.datasets.forEach(function (element) {
                     if (!edit_collection_control.includes(element.label)) {
-                        $('#list-graphics').append('<li class="@@carouselactive"><a href="#" class="graph"><i class="zmdi zmdi-album pr-4 album" style="color:' + element.backgroundColor + '"></i>' + element.label + '</a></li>');
+                        var html = '<div class="pb-4 listview__item"><label class="pr-4 custom-control custom-control--char"><input class="custom-control-input" type="checkbox"><span class="custom-control--char__helper" style="background-color:' + element.backgroundColor + '"><i></i></span></label><div class="listview__content"><div class="listview__heading">' + element.label + '</div><p>' + element.model + ' model</p></div><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-edit zmdi-hc-2x"></i></span></label><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></span></label></div>'
+                        // $('#list-graphics').append('<li class="@@carouselactive"><a href="#" class="graph"><i class="zmdi zmdi-album pr-4 album" style="color:' + element.backgroundColor + '"></i>' + element.label + '</a></li>');
+                        $('#list-graphics').append(html);
                         edit_collection_control.push(element.label);
                         // $('#list-graphics').removeAttr('hidden');
                     }
@@ -54,19 +56,28 @@ $(document).ready(function () {
         })
     })
 
+    var items_selecteds = [];
+    var name_item_clicked;
     var itemTarget;
     $('#list-graphics').on('click', function () {
-        if ($(event.target).is('.graph')) {
-            //Element clicked
-            itemTarget = $(event.target);
+        if ($(event.target).is('.custom-control-input')) {
 
-            var list = $('.graph')
-            list.css('background-color', 'black');
-            list.css('color', 'white');
+            name_item_clicked = ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()
+            if (!items_selecteds.includes(name_item_clicked) && $(event.target).prop('checked')) {
+                items_selecteds.push(name_item_clicked);
+                // console.log(items_selecteds)
+            }
+
+            //Element clicked
+            // itemTarget = $(event.target);
+
+            // var list = $('.graph')
+            // list.css('background-color', 'black');
+            // list.css('color', 'white');
 
             //For select the graph
-            itemTarget.css('background-color', '#ffffff');
-            itemTarget.css('color', 'black');
+            // itemTarget.css('background-color', '#ffffff');
+            // itemTarget.css('color', 'black');
 
             $('#options-color-edit-remove *').removeAttr('disabled');
             $('#option-mu *').removeAttr('disabled');
@@ -106,12 +117,12 @@ $(document).ready(function () {
         application.Change_Axis_Scale($(this).val().toLowerCase(), 'y');
     });
 
-    $('#options').on('click', function () {
-        if ($('#options-scale-axis *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
+    // $('#options').on('click', function () {
+    //     if ($('#options-scale-axis *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
 
-        else if (!$(event.target).is('#options-scale-axis *')) if (!itemTarget) $('#modal-default').modal('show');
-        // if (!$(event.target).is('#options-scale-axis *') && $('#options #option-mu *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
-    });
+    //     else if (!$(event.target).is('#options-scale-axis *')) if (!itemTarget) $('#modal-default').modal('show');
+    //     // if (!$(event.target).is('#options-scale-axis *') && $('#options #option-mu *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
+    // });
 
     var expand_file = false;
 
