@@ -44,10 +44,11 @@ $(document).ready(function () {
             application.application.Add_File(arrPath, function () {
 
                 application.Visualize();
+                $('aside').removeClass('toggled');
 
                 application.chart.data.datasets.forEach(function (element) {
                     if (!edit_collection_control.includes(element.label)) {
-                        var html = '<div class="pb-4 listview__item"><label class="pr-4 custom-control custom-control--char"><input class="custom-control-input" type="checkbox"><span class="custom-control--char__helper" style="background-color:' + element.backgroundColor + '"><i></i></span></label><div class="listview__content"><div class="listview__heading">' + element.label + '</div><p>' + element.model + ' model</p></div><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-edit zmdi-hc-2x"></i></span></label><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></span></label></div>'
+                        var html = '<div class="ml-0 pb-4 listview__item"><label class="pr-4 custom-control custom-control--char"><input class="custom-control-input" type="checkbox"><span class="custom-control--char__helper" style="background-color:' + element.backgroundColor + '"><i></i></span></label><div class="listview__content"><div class="listview__heading">' + element.label + '</div><p>' + element.model + ' model</p></div><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-edit zmdi-hc-2x"></i></span></label><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></span></label></div>'
                         // $('#list-graphics').append('<li class="@@carouselactive"><a href="#" class="graph"><i class="zmdi zmdi-album pr-4 album" style="color:' + element.backgroundColor + '"></i>' + element.label + '</a></li>');
                         $('#list-graphics').append(html);
                         edit_collection_control.push(element.label);
@@ -63,18 +64,36 @@ $(document).ready(function () {
 
     var name_item_clicked;
     var itemTarget;
+    var legend_color = [];
     $('#list-graphics').on('click', function () {
         if ($(event.target).is('.custom-control-input')) {
 
             name_item_clicked = ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()
             if ($(event.target).prop('checked')) {
-                if (!items_selecteds.includes(name_item_clicked)) items_selecteds.push(name_item_clicked);
+                if (!items_selecteds.includes(name_item_clicked)) {
+                    items_selecteds.push(name_item_clicked);
+                    legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+                }
             }
 
-            else items_selecteds.splice(items_selecteds.indexOf(name_item_clicked), 1);
+            else {
+                var index = items_selecteds.indexOf(name_item_clicked);
+                items_selecteds.splice(index, 1)
+                legend_color.splice(index, 1)
+            };
 
-            $('#options-color-edit-remove *').removeAttr('disabled');
-            $('#option-mu *').removeAttr('disabled');
+            if (items_selecteds.length != 0) {
+                $('#options-color-edit-remove *').removeAttr('disabled');
+                $('#option-mu *').removeAttr('disabled');
+            }
+
+            else {
+                $('#options-color-edit-remove *').attr('disabled', 'disabled');
+                $('#option-mu *').attr('disabled', 'disabled');
+            }
+
+            // $('#options-color-edit-remove *').removeAttr('disabled');
+            // $('#option-mu *').removeAttr('disabled');
 
             var graphic = application.Contain(name_item_clicked);
             if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
@@ -96,12 +115,16 @@ $(document).ready(function () {
 
     $(".colorpicker-element").on("change", function () {
         var color = $(this).val();
-        application.Update_Colors(itemTarget, color);
+
+        for (let index = 0; index < items_selecteds.length; index++) {
+            application.Update_Colors(items_selecteds[index], color, legend_color[index]);
+        }
+
     });
 
-    $('#edit').on('click', function () {
-        itemTarget.parent().html('<input type="text" class="form-control edit-text" placeholder="">')
-    });
+    // $('#edit').on('click', function () {
+    //     itemTarget.parent().html('<input type="text" class="form-control edit-text" placeholder="">')
+    // });
 
     $('#scaleX').on('change', function () {
         application.Change_Axis_Scale($(this).val().toLowerCase(), 'x');
@@ -154,7 +177,11 @@ $(document).ready(function () {
     }
 
     slider_mu.noUiSlider.on('slide', function (a, b) {
-        application.Update_Scale(itemTarget.text(), $('#model').html(), a[b], $('#input-slider-value-s').val());
+
+        for (const element of items_selecteds) {
+            application.Update_Scale(element, a[b], $('#input-slider-value-s').val());
+        }
+
         $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
     })
 

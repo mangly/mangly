@@ -144,20 +144,20 @@ class Visual_Application {
         this.chart.update();
     }
 
-    Update_Colors(function_target, color) {
-
+    Update_Colors(function_name, color, legend_color) {
         this.chart.data.datasets.forEach(function (element) {
-            if (element.label == function_target.text().trim()) {
+            if (element.label == function_name) {
                 element.borderColor = color;
                 element.backgroundColor = color;
-                function_target.children('.album').css('color', color);
+                legend_color.css('background-color', color);
+                // function_target.children('.album').css('color', color);
             }
         });
 
         this.chart.update();
     }
 
-    Update_Scale(name_graphic, model, mu, s) {
+    Update_Scale(name_graphic, mu, s) {
         var funct;
         var IICR;
 
@@ -165,7 +165,7 @@ class Visual_Application {
             const element = this.application.psmc_msmc_collection[index];
 
             if (element.name == name_graphic) {
-                if (model == 'Pairwise Sequentially Markovian Coalescent') {
+                if (element.model == 'psmc') {
                     funct = this.application.Scale_Psmc_Function(element.Clone(), mu, s);
                     IICR = funct.IICR_2;
                 }
