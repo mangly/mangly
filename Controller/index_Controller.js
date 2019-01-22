@@ -13,6 +13,7 @@ var Application_Utilities = require('../Utilities/Application_Utilities');
 var Visual_Application = require('../GUI/Visual_Application')
 
 $(document).ready(function () {
+
     $('#options-color-edit-remove *').attr('disabled', 'disabled');
     $('#options-scale-axis *').attr('disabled', 'disabled');
     $('#option-mu *').attr('disabled', 'disabled');
@@ -22,6 +23,9 @@ $(document).ready(function () {
     // Instance Visual Application
 
     var application = new Visual_Application($('#mycanvas'), new Application());
+
+    var items_selecteds = [];
+    application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
 
     var edit_collection_control = [];
     $('#open_file').on('click', function () {
@@ -56,34 +60,24 @@ $(document).ready(function () {
         })
     })
 
-    var items_selecteds = [];
+
     var name_item_clicked;
     var itemTarget;
     $('#list-graphics').on('click', function () {
         if ($(event.target).is('.custom-control-input')) {
 
             name_item_clicked = ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()
-            if (!items_selecteds.includes(name_item_clicked) && $(event.target).prop('checked')) {
-                items_selecteds.push(name_item_clicked);
-                // console.log(items_selecteds)
+            if ($(event.target).prop('checked')) {
+                if (!items_selecteds.includes(name_item_clicked)) items_selecteds.push(name_item_clicked);
             }
 
-            //Element clicked
-            // itemTarget = $(event.target);
-
-            // var list = $('.graph')
-            // list.css('background-color', 'black');
-            // list.css('color', 'white');
-
-            //For select the graph
-            // itemTarget.css('background-color', '#ffffff');
-            // itemTarget.css('color', 'black');
+            else items_selecteds.splice(items_selecteds.indexOf(name_item_clicked), 1);
 
             $('#options-color-edit-remove *').removeAttr('disabled');
             $('#option-mu *').removeAttr('disabled');
 
-            var graphic = application.Contain(itemTarget.text());
-            if (application.Get_Parametters(itemTarget.text())[2] == 'Pairwise Sequentially Markovian Coalescent') {
+            var graphic = application.Contain(name_item_clicked);
+            if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
                 $('#option-s *').removeAttr('disabled');
 
                 slider_s.noUiSlider.set(graphic.S);
@@ -96,7 +90,7 @@ $(document).ready(function () {
                 slider_mu.noUiSlider.set(graphic.Mu);
             }
 
-            application.Visualize_Information_Of_Functions(itemTarget.text(), $('#graphic'), $('#theta'), $('#rho'), $('#model'));
+            application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
     })
 

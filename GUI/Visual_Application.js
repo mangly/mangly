@@ -249,13 +249,28 @@ class Visual_Application {
         this.chart.update();
     }
 
-    Visualize_Information_Of_Functions(name_function, name, theta, rho, model) {
-        var parametters = this.Get_Parametters(name_function, this.application);
+    Visualize_Information_Of_Functions(items_selecteds, name, theta, rho, model) {
+        if (items_selecteds.length == 1) {
+            var parametters = this.Get_Parametters(items_selecteds[0], this.application);
 
-        name.html(name_function);
-        theta.html(parametters[0]);
-        rho.html(parametters[1]);
-        model.html(parametters[2]);
+            name.html(items_selecteds[0]);
+            theta.html(parametters[0]);
+            rho.html(parametters[1]);
+            model.html(parametters[2]);
+        }
+
+        else {
+            this.Initialize_Information_Of_Functions(name, theta, rho, model);
+            if (items_selecteds.length > 1) name.text('Some function are selected');
+        }
+
+    }
+
+    Initialize_Information_Of_Functions(name, theta, rho, model) {
+        name.text('There is no graph selected by the user')
+        theta.text('-');
+        rho.text('-');
+        model.text('-');
     }
 
 }
