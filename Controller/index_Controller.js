@@ -41,14 +41,14 @@ $(document).ready(function () {
 
         // Open a File or Files selected for user
         dialog.showOpenDialog(options, function (arrPath) {
-            application.application.Add_File(arrPath, function () {
+            application.logic_application.Add_File(arrPath, function () {
 
                 application.Visualize();
                 $('aside').removeClass('toggled');
 
                 application.chart.data.datasets.forEach(function (element) {
                     if (!edit_collection_control.includes(element.label)) {
-                        var html = '<div class="ml-0 pb-4 listview__item"><label class="pr-4 custom-control custom-control--char"><input class="custom-control-input" type="checkbox"><span class="custom-control--char__helper" style="background-color:' + element.backgroundColor + '"><i></i></span></label><div class="listview__content"><div class="listview__heading">' + element.label + '</div><p>' + element.model + ' model</p></div><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-edit zmdi-hc-2x"></i></span></label><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></span></label></div>'
+                        var html = '<div class="pb-4 listview__item"><label class="pl-0 pr-4 custom-control custom-control--char"><input class="custom-control-input" type="checkbox"><span class="custom-control--char__helper" style="background-color:' + element.backgroundColor + '"><i></i></span></label><div class="listview__content"><div class="listview__heading">' + element.label + '</div><p>' + element.model + ' model</p></div><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-edit zmdi-hc-2x"></i></span></label><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></span></label></div>'
                         // $('#list-graphics').append('<li class="@@carouselactive"><a href="#" class="graph"><i class="zmdi zmdi-album pr-4 album" style="color:' + element.backgroundColor + '"></i>' + element.label + '</a></li>');
                         $('#list-graphics').append(html);
                         edit_collection_control.push(element.label);
@@ -57,6 +57,8 @@ $(document).ready(function () {
                 })
 
                 $('#options-scale-axis *').removeAttr('disabled');
+                $('#reset-scales').removeAttr('hidden');
+                $('#switch-selection').removeAttr('disabled');
             })
         })
     })
@@ -65,49 +67,105 @@ $(document).ready(function () {
     var name_item_clicked;
     var itemTarget;
     var legend_color = [];
+
+    $('#switch-selection').on('change', function () {
+        $('.custom-control-input').prop('checked', false);
+        legend_color = [];
+        items_selecteds = [];
+        slider_s.noUiSlider.set(100);
+        slider_mu.noUiSlider.set(1.25);
+    });
+
     $('#list-graphics').on('click', function () {
         if ($(event.target).is('.custom-control-input')) {
 
-            name_item_clicked = ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()
-            if ($(event.target).prop('checked')) {
-                if (!items_selecteds.includes(name_item_clicked)) {
-                    items_selecteds.push(name_item_clicked);
-                    legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+            name_item_clicked = ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text();
+
+            if (!$('#switch-selection').prop('checked')) {
+                $('.custom-control-input').each(function () {
+                    if (($(this).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text() != ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()) {
+                        $(this).prop('checked', false);
+                    }
+                });
+
+                legend_color = [];
+                items_selecteds = [];
+                items_selecteds.push(name_item_clicked);
+                legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+            }
+
+            else {
+                if ($(event.target).prop('checked')) {
+                    if (!items_selecteds.includes(name_item_clicked)) {
+                        items_selecteds.push(name_item_clicked);
+                        legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+                    }
+                }
+                else {
+                    var index = items_selecteds.indexOf(name_item_clicked);
+                    items_selecteds.splice(index, 1)
+                    legend_color.splice(index, 1)
                 }
             }
 
-            else {
-                var index = items_selecteds.indexOf(name_item_clicked);
-                items_selecteds.splice(index, 1)
-                legend_color.splice(index, 1)
-            };
+            // var graphic = application.logic_application.Contain(name_item_clicked);
 
-            if (items_selecteds.length != 0) {
-                $('#options-color-edit-remove *').removeAttr('disabled');
-                $('#option-mu *').removeAttr('disabled');
-            }
 
-            else {
-                $('#options-color-edit-remove *').attr('disabled', 'disabled');
-                $('#option-mu *').attr('disabled', 'disabled');
-            }
+            // if (items_selecteds.length != 0) {
+            $('#options-color-edit-remove *').removeAttr('disabled');
+
+            // }
+
+            // else {
+            //     // $('#options-color-edit-remove *').attr('disabled', 'disabled');
+
+            // }
 
             // $('#options-color-edit-remove *').removeAttr('disabled');
             // $('#option-mu *').removeAttr('disabled');
 
-            var graphic = application.Contain(name_item_clicked);
-            if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
-                $('#option-s *').removeAttr('disabled');
+            // var graphic = application.logic_application.Contain(name_item_clicked);
+            // if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
+            // $('#option-s *').removeAttr('disabled');
+            // $('#option-mu *').removeAttr('disabled');
 
-                slider_s.noUiSlider.set(graphic.S);
-                slider_mu.noUiSlider.set(graphic.Mu);
+            if (items_selecteds.length == 0 || items_selecteds.length > 1) {
+
+                if (items_selecteds.length == 0) $('#option-mu *').attr('disabled', 'disabled');
+
+                if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
+                    $('#option-s *').removeAttr('disabled');
+                    $('#option-mu *').removeAttr('disabled');
+                    slider_s.noUiSlider.set(100);
+                    slider_mu.noUiSlider.set(1.25);
+                }
+
+                else {
+                    $('#option-mu *').removeAttr('disabled');
+                    slider_mu.noUiSlider.set(1.25);
+                }
             }
 
             else {
-                $('#option-s *').attr('disabled', 'disabled');
-                slider_s.noUiSlider.set(100);
-                slider_mu.noUiSlider.set(graphic.Mu);
+
+                for (const element of items_selecteds) {
+                    var graphic = application.logic_application.Contain(element);
+
+                    if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
+                        $('#option-s *').removeAttr('disabled');
+                        $('#option-mu *').removeAttr('disabled');
+                        slider_s.noUiSlider.set(graphic.S);
+                        slider_mu.noUiSlider.set(graphic.Mu);
+                    }
+
+                    else {
+                        $('#option-mu *').removeAttr('disabled');
+                        slider_mu.noUiSlider.set(graphic.Mu);
+                    }
+
+                }
             }
+            // }
 
             application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
@@ -207,8 +265,14 @@ $(document).ready(function () {
         application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val(), a[b]);
     })
 
+    $('#reset-scales').on('click', function () {
+        application.Reset_Scales(application.logic_application.psmc_msmc_collection);
+        slider_s.noUiSlider.set(100);
+        slider_mu.noUiSlider.set(1.25);
+    });
+
     $('#test').on('click', function () {
-        application.application.Get_NSSC_Vectors(function () {
+        application.logic_application.Get_NSSC_Vectors(function () {
             application.Visualize_NSSC();
             console.log('done!!!!!!!')
         });

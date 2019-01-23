@@ -1,13 +1,15 @@
 'use strict'
 
 class PSMC {
-    constructor(name, time, IICR_2, theta, rho) {
+    constructor(name, time, IICR_2, theta, rho, Mu, S) {
         this.name = name;
         this.time = time;
         this.IICR_2 = IICR_2;
         this.theta = theta;
         this.rho = rho;
         this.model = 'psmc';
+        this.Mu = Mu;
+        this.S = S;
     }
 
     Clone() {
