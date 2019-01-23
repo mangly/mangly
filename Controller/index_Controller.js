@@ -65,7 +65,6 @@ $(document).ready(function () {
 
 
     var name_item_clicked;
-    var itemTarget;
     var legend_color = [];
 
     $('#switch-selection').on('change', function () {
@@ -113,6 +112,8 @@ $(document).ready(function () {
 
             // if (items_selecteds.length != 0) {
             $('#options-color-edit-remove *').removeAttr('disabled');
+            $('#option-s *').removeAttr('disabled');
+            $('#option-mu *').removeAttr('disabled');
 
             // }
 
@@ -166,7 +167,22 @@ $(document).ready(function () {
                 }
             }
             // }
+            for (const element of items_selecteds) {
+                var graphic = application.logic_application.Contain(element);
+                var found = false;
 
+                if (graphic.model == 'msmc') {
+                    $('#option-s *').attr('disabled', 'disabled');
+                    found = true;
+                    break;
+                }
+
+                if (!found) {
+                    slider_s.noUiSlider.set(100);
+                    $('#option-s *').removeAttr('disabled');
+                }
+
+            }
             application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
     })
@@ -262,13 +278,16 @@ $(document).ready(function () {
     }
 
     slider_s.noUiSlider.on('slide', function (a, b) {
-        application.Update_Scale(itemTarget.text(), $('#model').html(), $('#input-slider-value-mu').val(), a[b]);
+        for (const element of items_selecteds) {
+            application.Update_Scale(element, $('#input-slider-value-mu').val(), a[b]);
+        }
     })
 
     $('#reset-scales').on('click', function () {
         application.Reset_Scales(application.logic_application.psmc_msmc_collection);
         slider_s.noUiSlider.set(100);
         slider_mu.noUiSlider.set(1.25);
+        $('.custom-control-input').prop('checked', false);
     });
 
     $('#test').on('click', function () {
