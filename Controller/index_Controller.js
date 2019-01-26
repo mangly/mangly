@@ -160,29 +160,31 @@ $(document).ready(function () {
                     }
 
                     else {
-                        $('#option-mu *').removeAttr('disabled');
+                        
+                        slider_s.noUiSlider.set(100);
                         slider_mu.noUiSlider.set(graphic.Mu);
+                        $('#option-s *').attr('disabled', 'disabled');
                     }
 
                 }
             }
             // }
-            for (const element of items_selecteds) {
-                var graphic = application.logic_application.Contain(element);
-                var found = false;
+            // for (const element of items_selecteds) {
+            //     var graphic = application.logic_application.Contain(element);
+            //     var found = false;
 
-                if (graphic.model == 'msmc') {
-                    $('#option-s *').attr('disabled', 'disabled');
-                    found = true;
-                    break;
-                }
+            //     if (graphic.model == 'msmc') {
+            //         $('#option-s *').attr('disabled', 'disabled');
+            //         found = true;
+            //         break;
+            //     }
 
-                if (!found) {
-                    slider_s.noUiSlider.set(100);
-                    $('#option-s *').removeAttr('disabled');
-                }
+            //     if (found) {
+            //         slider_s.noUiSlider.set(100);
+            //         // $('#option-s *').removeAttr('disabled');
+            //     }
 
-            }
+            // }
             application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
     })
