@@ -21,6 +21,9 @@
     <!-- App styles -->
     <link rel="stylesheet" href="css/app.min.css">
 
+    <!-- <link href="../archivos_estaticos/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet"> -->
+    <!-- <link href="../archivos_estaticos/handsontable-pro-master/dist/handsontable.full.min.css" rel="stylesheet"> -->
+
     <!-- Styles inline -->
     <style>
         .custom-control--char .custom-control-input:checked + .custom-control--char__helper > i 
@@ -159,11 +162,16 @@
 
                 <ul class="navigation">
                     <li class="navigation__sub @@uiactive">
-                        <a id="expand-file" href="#"><i class="zmdi zmdi-file"></i>File</a>
+                        <a id="expand-file" href="#"><i class="zmdi zmdi-file"></i>Plot</a>
                         <ul style="background-color:#161617">
                             <li class="@@colorsactive"><a id="open_file" href="#" class="listview__item">
-                                    <div class="listview__heading">Open File...</div>
-                                    <p>Open a file selected for the user</p>
+                                    <div class="listview__heading">Load File...</div>
+                                    <p>Plot the function contained in the selected file</p>
+                                </a></li>
+
+                            <li class="@@colorsactive"><a id="build_nssc_function" href="#" class="listview__item">
+                                    <div class="listview__heading">NSSC</div>
+                                    <p>Build a NSSC function</p>
                                 </a></li>
                             <!-- <li class="@@cssanimationsactive"><a href="css-animations.html">CSS Animations</a></li>
                             <li class="@@buttonsactive"><a href="buttons.html">Buttons</a></li>
@@ -369,7 +377,7 @@
                                                 Msmc</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#settings-4" role="tab">Nssc</a>
+                                            <a class="nav-link" data-toggle="tab" href="#nssc" role="tab">Nssc</a>
                                         </li>
                                     </ul>
 
@@ -377,42 +385,53 @@
                                         <div class="tab-pane active fade show" id="graphics" role="tabpanel">
                                             <div id="options-color-edit-remove">
                                                 <br>
-                                                <p>Edit color:</p>
-                                                <div class="input-group" style="width: 50%">
-                                                    <span class="input-group-addon"><i class="zmdi zmdi-invert-colors"></i></span>
-                                                    <div class="form-group color-picker">
-                                                        <input id="change-color" type="text" class="form-control color-picker__value"
-                                                            value="disabled">
-                                                        <i class="color-picker__preview" style="background-color: #000000"></i>
-                                                    </div>
-                                                </div>
-                                                <br>
-                                                <br>
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <span>List:</span>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <span class="float-right">Multiple selection:</span>
-                                                    </div>
-                                                    <div class="col-lg-2">
-                                                        <div class="toggle-switch">
-                                                            <input id="switch-selection" class="toggle-switch__checkbox" disabled="" type="checkbox">
-                                                            <i class="toggle-switch__helper"></i>
+                                                <div class="card p-4">
+                                                    <!-- <div class="card-body">
+                                                        <h4 class="card-title">Input Test Masking</h4>
+                                                        <h6 class="card-subtitle">Angular 2 directive for input text
+                                                            masking</h6>
+                                                    </div> -->
+                                                    <p>Edit color:</p>
+
+                                                    <div class="input-group" style="width: 50%">
+                                                        <span class="input-group-addon"><i class="zmdi zmdi-invert-colors"></i></span>
+                                                        <div class="form-group color-picker">
+                                                            <input id="change-color" type="text" class="form-control color-picker__value"
+                                                                value="disabled">
+                                                            <i class="color-picker__preview" style="background-color: #000000"></i>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                                <div class="listview" id="list-graphics">
-                                                    <div class="clearfix mb-3"></div>
+
+                                                <div class="card p-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <span>List:</span>
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <span class="float-right">Multiple selection:</span>
+                                                        </div>
+                                                        <div class="col-lg-2">
+                                                            <div class="toggle-switch">
+                                                                <input id="switch-selection" class="toggle-switch__checkbox"
+                                                                    disabled="" type="checkbox">
+                                                                <i class="toggle-switch__helper"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="listview" id="list-graphics">
+                                                        <br>
+                                                        <div class="clearfix mb-3"></div>
+                                                    </div>
                                                 </div>
-                                                <br>
                                                 <div class="row">
                                                     <div class="col-lg-4"></div>
                                                     <div class="col-lg-4"></div>
                                                     <div class="col-lg-4"> <button id="reset-scales" class="btn btn-light float-right"
                                                             type="submit" hidden>Reset all scales</button></div>
                                                 </div>
+
                                             </div>
                                         </div>
 
@@ -509,13 +528,56 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="settings-4" role="tabpanel">
-                                            <p>Nullam id dolor id nibh ultricies vehicula ut id elit. Aenean eu leo
-                                                quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Fusce
-                                                dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
-                                                fermentum massa justo sit amet risus. Aenean eu leo quam. Pellentesque
-                                                ornare sem lacinia quam venenatis vestibulum. Maecenas faucibus mollis
-                                                interdum.</p>
+                                        <div class="tab-pane fade" id="nssc" role="tabpanel">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">Input Test Masking</h4>
+                                                    <h6 class="card-subtitle">Angular 2 directive for input text
+                                                        masking</h6>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <label>Date</label>
+                                                                <input type="text" class="form-control input-mask"
+                                                                    data-mask="00/00/0000" placeholder="eg: 23/05/2014">
+                                                                <i class="form-group__bar"></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <label>Time</label>
+                                                                <input type="text" class="form-control input-mask"
+                                                                    data-mask="00:00:00" placeholder="eg: 23:06:55">
+                                                                <i class="form-group__bar"></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <label>Date Time</label>
+                                                                <input type="text" class="form-control input-mask"
+                                                                    data-mask="00/00/0000 00:00:00" placeholder="eg: 00/00/0000 00:00:00">
+                                                                <i class="form-group__bar"></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-3">
+                                                            <div class="form-group">
+                                                                <label>CEP</label>
+                                                                <input type="text" class="form-control input-mask"
+                                                                    data-mask="00000-000" placeholder="eg: 00000-000">
+                                                                <i class="form-group__bar"></i>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button id="open-migration-matrix" class="btn btn-light" type="submit">Button</button>
                                         </div>
                                     </div>
                                 </div>
@@ -662,7 +724,7 @@
             </div>
         </section>
 
-        <button id="test" class="btn btn-light" type="submit">Button</button>
+        <!-- <button id="test" class="btn btn-light" type="submit">Button</button> -->
 
         <!-- Modal window -->
         <div class="modal fade" id="modal-default" tabindex="-1">
@@ -692,7 +754,11 @@
         <script src="../archivos_estaticos/ChartJS/Chart.js"></script> -->
 
 
-    <script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- <script src="vendors/bower_components/jquery/dist/jquery.min.js"></script> -->
+    <!-- <script src="../archivos_estaticos/ipgrid-master/scripts/jquery-ui-1.9.2.custom.min.js"></script> -->
+    <script src="../archivos_estaticos/jQuery/jquery-3.1.1.min.js"></script>
+    <!-- <script src="../archivos_estaticos/jQuery/jquery-ui.min.js"></script> -->
     <script src="vendors/bower_components/popper.js/dist/umd/popper.min.js"></script>
     <script src="vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="vendors/bower_components/jquery.scrollbar/jquery.scrollbar.min.js"></script>
@@ -721,6 +787,10 @@
     <script src="demo/js/other-charts.js"></script>
     <script src="demo/js/jqvmap.js"></script>
     <script src="../archivos_estaticos/ChartJS/Chart.js"></script>
+    <!-- <script src="../archivos_estaticos/handsontable-pro-master/dist/handsontable.full.min.js"></script> -->
+
+    <!-- <script src="../archivos_estaticos/tablenavigator-master/dist/jquery.tableNavigator.min.js"></script> -->
+
 
     <!-- App functions and actions -->
     <script src="js/app.min.js"></script>

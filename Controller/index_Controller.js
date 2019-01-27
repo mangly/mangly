@@ -6,6 +6,14 @@
 //const main = remote.require('./main.js')
 const { dialog } = require('electron').remote;
 
+const remote = require('electron').remote;
+
+// const { BrowserWindow } = require('electron').remote;
+
+const main = remote.require('./main.js');
+
+// const main_window = require('../main');
+
 //import Application from '../Model/Application';
 
 var Application = require('../Model/Logic_Application');
@@ -27,7 +35,6 @@ $(document).ready(function () {
     var items_selecteds = [];
     application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
 
-    var edit_collection_control = [];
     $('#open_file').on('click', function () {
 
         var options = {
@@ -44,17 +51,8 @@ $(document).ready(function () {
             application.logic_application.Add_File(arrPath, function () {
 
                 application.Visualize();
-                $('aside').removeClass('toggled');
 
-                application.chart.data.datasets.forEach(function (element) {
-                    if (!edit_collection_control.includes(element.label)) {
-                        var html = '<div class="pb-4 listview__item"><label class="pl-0 pr-4 custom-control custom-control--char"><input class="custom-control-input" type="checkbox"><span class="custom-control--char__helper" style="background-color:' + element.backgroundColor + '"><i></i></span></label><div class="listview__content"><div class="listview__heading">' + element.label + '</div><p>' + element.model + ' model</p></div><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-edit zmdi-hc-2x"></i></span></label><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></span></label></div>'
-                        // $('#list-graphics').append('<li class="@@carouselactive"><a href="#" class="graph"><i class="zmdi zmdi-album pr-4 album" style="color:' + element.backgroundColor + '"></i>' + element.label + '</a></li>');
-                        $('#list-graphics').append(html);
-                        edit_collection_control.push(element.label);
-                        // $('#list-graphics').removeAttr('hidden');
-                    }
-                })
+                $('aside').removeClass('toggled');
 
                 $('#options-scale-axis *').removeAttr('disabled');
                 $('#reset-scales').removeAttr('hidden');
@@ -160,7 +158,7 @@ $(document).ready(function () {
                     }
 
                     else {
-                        
+
                         slider_s.noUiSlider.set(100);
                         slider_mu.noUiSlider.set(graphic.Mu);
                         $('#option-s *').attr('disabled', 'disabled');
@@ -292,11 +290,24 @@ $(document).ready(function () {
         $('.custom-control-input').prop('checked', false);
     });
 
+    $('#build_nssc_function').on('click', function(){
+        $('aside').removeClass('toggled');
+        main.build_nssc_window('form-components')
+        // let build_nssc_window = new BrowserWindow({width: 800, height: 600, parent:main.main_window, modal: true });
+
+        // and load the index.html of the app.
+        //mainWindow.loadFile('index.html')
+        // mainWindow.loadURL(url.format({
+        //   pathname: path.join(__dirname, './View/hidden-sidebar.html'),
+        //   protocol: 'file:',
+        //   slashes: true
+        // }))
+    });
+
     $('#test').on('click', function () {
         application.logic_application.Get_NSSC_Vectors(function () {
             application.Visualize_NSSC();
             console.log('done!!!!!!!')
         });
     });
-
 })

@@ -1,6 +1,6 @@
 // Modules to control application life and create native browser window
 const electron = require('electron');
-const {app, BrowserWindow} = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 
@@ -10,9 +10,9 @@ const Menu = electron.Menu;
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow()
 
   // and load the index.html of the app.
   //mainWindow.loadFile('index.html')
@@ -20,7 +20,7 @@ function createWindow () {
     pathname: path.join(__dirname, './View/hidden-sidebar.html'),
     protocol: 'file:',
     slashes: true
-}))
+  }))
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
@@ -32,16 +32,18 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  mainWindow.maximize()
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', function(){
+app.on('ready', function () {
   createWindow()
   Menu.setApplicationMenu(null);
-}) 
-  
+})
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -59,3 +61,19 @@ app.on('activate', function () {
     createWindow()
   }
 })
+
+exports.build_nssc_window = (filename) => {
+  let build_nssc = new BrowserWindow({ width: 1024, height: 768, title: 'Plot NSSC model' });
+
+
+  build_nssc.loadURL(url.format({
+    pathname: path.join(__dirname, './View/form-components.html'),
+    protocol: 'file:',
+    slashes: true
+  }))
+}
+
+
+// module.exports = { main_window: mainWindow };
+
+// module.exports.main_window = mainWindow;
