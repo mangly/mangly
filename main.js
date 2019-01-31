@@ -4,6 +4,8 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 
+const ipc = electron.ipcMain
+
 const Menu = electron.Menu;
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -12,7 +14,7 @@ let mainWindow
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow()
+  mainWindow = new BrowserWindow({ width: 1600, height: 800 })
 
   // and load the index.html of the app.
   //mainWindow.loadFile('index.html')
@@ -33,7 +35,7 @@ function createWindow() {
     mainWindow = null
   })
 
-  mainWindow.maximize()
+  //mainWindow.maximize()
 }
 
 // This method will be called when Electron has finished
@@ -62,8 +64,9 @@ app.on('activate', function () {
   }
 })
 
-exports.build_nssc_window = (filename) => {
-  let build_nssc = new BrowserWindow({ width: 1024, height: 768, title: 'Plot NSSC model' });
+ipc.on('open_matrix_editor', function(event, args){
+  let build_nssc = new BrowserWindow({ width: 1024, height: 768, title: 'Plot NSSC model'});
+  build_nssc.webContents.openDevTools()
 
 
   build_nssc.loadURL(url.format({
@@ -71,9 +74,9 @@ exports.build_nssc_window = (filename) => {
     protocol: 'file:',
     slashes: true
   }))
-}
 
+  build_nssc.webContents.on('did-finish-load', () => {
+    build_nssc.webContents.send('variable', args)
+  })
+})
 
-// module.exports = { main_window: mainWindow };
-
-// module.exports.main_window = mainWindow;

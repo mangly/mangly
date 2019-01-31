@@ -1,20 +1,9 @@
-'use strict'
-// const electron = require('electron').remote
+const electron = require('electron');
+const ipc = electron.ipcRenderer;
 
-//const remote = require('electron').remote
-
-//const main = remote.require('./main.js')
 const { dialog } = require('electron').remote;
 
 const remote = require('electron').remote;
-
-// const { BrowserWindow } = require('electron').remote;
-
-const main = remote.require('./main.js');
-
-// const main_window = require('../main');
-
-//import Application from '../Model/Application';
 
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
@@ -290,24 +279,16 @@ $(document).ready(function () {
         $('.custom-control-input').prop('checked', false);
     });
 
-    $('#build_nssc_function').on('click', function(){
-        $('aside').removeClass('toggled');
-        main.build_nssc_window('form-components')
-        // let build_nssc_window = new BrowserWindow({width: 800, height: 600, parent:main.main_window, modal: true });
+    $('#open_matrix_editor').on('click', function(){
+        ipc.send('open_matrix_editor', $('#test').val());
 
-        // and load the index.html of the app.
-        //mainWindow.loadFile('index.html')
-        // mainWindow.loadURL(url.format({
-        //   pathname: path.join(__dirname, './View/hidden-sidebar.html'),
-        //   protocol: 'file:',
-        //   slashes: true
-        // }))
+        $('aside').removeClass('toggled');
     });
 
-    $('#test').on('click', function () {
+/*     $('#test').on('click', function () {
         application.logic_application.Get_NSSC_Vectors(function () {
             application.Visualize_NSSC();
             console.log('done!!!!!!!')
         });
-    });
+    }); */
 })

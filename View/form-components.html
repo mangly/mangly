@@ -178,6 +178,7 @@
 
     </main>
 
+    <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
     <!-- Javascript -->
     <!-- Vendors -->
     <script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
@@ -197,6 +198,10 @@
 
     <!-- App functions and actions -->
     <script src="js/app.min.js"></script>
+
+    <script>
+        require('../Controller/nssc_Controller.js')
+    </script>
 </body>
 
 <!--Designed By ALpha-->
