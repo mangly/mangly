@@ -1,12 +1,12 @@
 // Modules to control application life and create native browser window
 const electron = require('electron');
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu} = require('electron');
 const path = require('path');
 const url = require('url');
 
 const ipc = electron.ipcMain
 
-const Menu = electron.Menu;
+/* const Menu = electron.Menu; */
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -43,7 +43,57 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function () {
   createWindow()
+
+/*   const template = [
+    {
+      label: 'Edit',
+      submenu: [
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'pasteandmatchstyle' },
+        { role: 'delete' },
+        { role: 'selectall' }
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        { role: 'reload' },
+        //{ role: 'forcereload' },
+        { role: 'toggledevtools' },
+        { type: 'separator' },
+        { role: 'resetzoom' },
+        { role: 'zoomin' },
+        { role: 'zoomout' },
+        { type: 'separator' },
+        { role: 'togglefullscreen' }
+      ]
+    },
+    {
+      role: 'window',
+      submenu: [
+        { role: 'minimize' },
+        { role: 'close' }
+      ]
+    },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Learn More',
+          click () { require('electron').shell.openExternal('https://electronjs.org') }
+        }
+      ]
+    }
+  ]
+
+  const menu = Menu.buildFromTemplate(template) */
   Menu.setApplicationMenu(null);
+  
 })
 
 
@@ -64,7 +114,7 @@ app.on('activate', function () {
   }
 })
 
-ipc.on('open_matrix_editor', function(event, args){
+ipc.on('open-matrix-editor', function(event, args){
   let build_nssc = new BrowserWindow({ width: 1024, height: 768, title: 'Plot NSSC model'});
   build_nssc.webContents.openDevTools()
 

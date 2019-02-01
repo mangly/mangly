@@ -168,11 +168,6 @@
                                     <div class="listview__heading">Load File...</div>
                                     <p>Plot the function contained in the selected file</p>
                                 </a></li>
-
-                            <li class="@@colorsactive"><a id="open_matrix_editor" href="#" class="listview__item">
-                                    <div class="listview__heading">NSSC</div>
-                                    <p>Build a NSSC function</p>
-                                </a></li>
                             <!-- <li class="@@cssanimationsactive"><a href="css-animations.html">CSS Animations</a></li>
                             <li class="@@buttonsactive"><a href="buttons.html">Buttons</a></li>
                             <li class="@@iconsactive"><a href="icons.html">Icons</a></li>
@@ -384,21 +379,24 @@
                                     <div class="tab-content">
                                         <div class="tab-pane active fade show" id="graphics" role="tabpanel">
                                             <div id="options-color-edit-remove">
-                                                <br>
-                                                <div class="card p-4">
-                                                    <!-- <div class="card-body">
-                                                        <h4 class="card-title">Input Test Masking</h4>
-                                                        <h6 class="card-subtitle">Angular 2 directive for input text
-                                                            masking</h6>
-                                                    </div> -->
-                                                    <p>Edit color:</p>
 
-                                                    <div class="input-group" style="width: 50%">
-                                                        <span class="input-group-addon"><i class="zmdi zmdi-invert-colors"></i></span>
-                                                        <div class="form-group color-picker">
-                                                            <input id="change-color" type="text" class="form-control color-picker__value"
-                                                                value="disabled">
-                                                            <i class="color-picker__preview" style="background-color: #000000"></i>
+                                                <div class="card p-4">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <p>Edit color:</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="input-group" style="width: 50%">
+                                                                <span class="input-group-addon"><i class="zmdi zmdi-invert-colors"></i></span>
+                                                                <div class="form-group color-picker">
+                                                                    <input id="change-color" type="text" class="form-control color-picker__value"
+                                                                        value="disabled">
+                                                                    <i class="color-picker__preview" style="background-color: #000000"></i>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -435,42 +433,44 @@
                                             </div>
                                         </div>
 
-
                                         <div class="tab-pane fade" id="axises" role="tabpanel">
-                                            <br>
-                                            <div id="options-scale-axis">
-                                                <div class="row">
-                                                    <div class="col-lg-12">Scale:</div>
-                                                </div>
-                                                <br>
-                                                <div class="row">
-                                                    <div class="col-lg-6">
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <span class="font-italic">Axis X</span>
-                                                                <div class="form-group">
-
-                                                                    <select id="scaleX" class="select2"
-                                                                        data-minimum-results-for-search="Infinity">
-                                                                        <option>Logarithmic</option>
-                                                                        <option>Linear</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+                                            <div class="card p-4">
+                                                <div id="options-scale-axis">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p>Scale:</p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-lg-6">
-                                                        <div class="row">
-                                                            <div class="col-lg-12">
-                                                                <span class="font-italic">Axis Y</span>
-                                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <span class="font-italic">Axis X</span>
+                                                                    <div class="form-group">
 
-                                                                    <select id="scaleY" class="select2"
-                                                                        data-minimum-results-for-search="Infinity">
-                                                                        <option>Linear</option>
-                                                                        <option>Logarithmic</option>
-                                                                    </select>
+                                                                        <select id="scaleX" class="select2"
+                                                                            data-minimum-results-for-search="Infinity">
+                                                                            <option>Logarithmic</option>
+                                                                            <option>Linear</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-sm-6">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <span class="font-italic">Axis Y</span>
+                                                                    <div class="form-group">
+
+                                                                        <select id="scaleY" class="select2"
+                                                                            data-minimum-results-for-search="Infinity">
+                                                                            <option>Linear</option>
+                                                                            <option>Logarithmic</option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -479,46 +479,49 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="psmc-msmc" role="tabpanel">
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-lg-12">Scale parametters:</div>
-                                            </div>
-                                            <br>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="row">
-                                                        <div id="option-mu">
-                                                            <div class="col-lg-12">
-                                                                <span class="font-italic">Mu</span>
-                                                                <div id="slider-mu"></div>
+                                            <div class="card p-4">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <p>Scale parametters:</p>
+                                                    </div>
+                                                </div>
 
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <input type="text" class="form-control" id="input-slider-value-mu"
-                                                                                readonly />
-                                                                            <i class="form-group__bar"></i>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="row">
+                                                            <div id="option-mu">
+                                                                <div class="col-sm-12">
+                                                                    <span class="font-italic">Mu</span>
+                                                                    <div id="slider-mu"></div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="form-group">
+                                                                                <input type="text" class="form-control"
+                                                                                    id="input-slider-value-mu" readonly />
+                                                                                <i class="form-group__bar"></i>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-lg-6">
-                                                    <div class="row">
-                                                        <div id="option-s">
-                                                            <div class="col-lg-12">
-                                                                <span class="font-italic">S</span>
-                                                                <div id="slider-s"></div>
+                                                    <div class="col-lg-6">
+                                                        <div class="row">
+                                                            <div id="option-s">
+                                                                <div class="col-lg-12">
+                                                                    <span class="font-italic">S</span>
+                                                                    <div id="slider-s"></div>
 
-                                                                <div class="row">
-                                                                    <div class="col-6">
-                                                                        <div class="form-group">
-                                                                            <input type="text" class="form-control" id="input-slider-value-s"
-                                                                                readonly />
-                                                                            <i class="form-group__bar"></i>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="form-group">
+                                                                                <input type="text" class="form-control"
+                                                                                    id="input-slider-value-s" readonly />
+                                                                                <i class="form-group__bar"></i>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -529,55 +532,61 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="nssc" role="tabpanel">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h4 class="card-title">Input Test Masking</h4>
-                                                    <h6 class="card-subtitle">Angular 2 directive for input text
-                                                        masking</h6>
+                                            <div class="card p-4">
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <span>Count of matrix:</span>
+                                                            <input type="text" class="form-control input-mask">
+                                                            <i class="form-group__bar"></i>
+                                                        </div>
+                                                    </div>
 
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <div class="form-group">
-                                                                <label>Date</label>
-                                                                <input type="text" class="form-control input-mask"
-                                                                    data-mask="00/00/0000" placeholder="eg: 23/05/2014">
-                                                                <i class="form-group__bar"></i>
+                                                    <div class="col-sm-8">
+                                                        <span>Order:</span>
+                                                        <div class="row">
+                                                            <div class="col-sm-5">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control input-mask"
+                                                                        placeholder="n">
+                                                                    <i class="form-group__bar"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-1 pt-3"><span>X</span></div>
+                                                            <div class="col-sm-5">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control input-mask"
+                                                                        placeholder="m">
+                                                                    <i class="form-group__bar"></i>
+                                                                </div>
                                                             </div>
                                                         </div>
-
-                                                        <div class="col-sm-3">
-                                                            <div class="form-group">
-                                                                <label>Time</label>
-                                                                <input type="text" class="form-control input-mask"
-                                                                    data-mask="00:00:00" placeholder="eg: 23:06:55">
-                                                                <i class="form-group__bar"></i>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-sm-3">
-                                                            <div class="form-group">
-                                                                <label>Date Time</label>
-                                                                <input type="text" class="form-control input-mask"
-                                                                    data-mask="00/00/0000 00:00:00" placeholder="eg: 00/00/0000 00:00:00">
-                                                                <i class="form-group__bar"></i>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-sm-3">
-                                                            <div class="form-group">
-                                                                <label>CEP</label>
-                                                                <input type="text" class="form-control input-mask"
-                                                                    data-mask="00000-000" placeholder="eg: 00000-000">
-                                                                <i class="form-group__bar"></i>
-                                                            </div>
-                                                        </div>
-
-
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <button id="open-migration-matrix" class="btn btn-light" type="submit">Button</button>
+                                            <div class="card p-4">
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <span>Number of loci:</span>
+                                                            <input type="text" class="form-control input-mask">
+                                                            <i class="form-group__bar"></i>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-8">
+                                                        <div class="form-group">
+                                                            <span>Sampling Vector:</span>
+                                                            <input type="text" class="form-control input-mask">
+                                                            <i class="form-group__bar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <button id="open-matrix-editor" class="btn btn-light" type="submit">Open
+                                                matrix editor</button>
                                         </div>
                                     </div>
                                 </div>

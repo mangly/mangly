@@ -279,8 +279,8 @@ $(document).ready(function () {
         $('.custom-control-input').prop('checked', false);
     });
 
-    $('#open_matrix_editor').on('click', function(){
-        ipc.send('open_matrix_editor', $('#test').val());
+    $('#open-matrix-editor').on('click', function(){
+        ipc.send('open-matrix-editor', $('#test').val());
 
         $('aside').removeClass('toggled');
     });
