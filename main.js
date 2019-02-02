@@ -11,6 +11,7 @@ const ipc = electron.ipcMain
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+let build_nssc
 
 function createWindow() {
   // Create the browser window.
@@ -115,7 +116,7 @@ app.on('activate', function () {
 })
 
 ipc.on('open-matrix-editor', function(event, args){
-  let build_nssc = new BrowserWindow({ width: 700, height: 500, title: 'Plot NSSC model'});
+  build_nssc = new BrowserWindow({ width: 700, height: 500, title: 'Plot NSSC model'});
   build_nssc.webContents.openDevTools()
 
 
@@ -132,5 +133,6 @@ ipc.on('open-matrix-editor', function(event, args){
 
 ipc.on('nssc-json-result', function(event, args){
     mainWindow.webContents.send('nssc-json-result', args)
+    build_nssc.close();
 })
 

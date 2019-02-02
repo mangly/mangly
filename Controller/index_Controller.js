@@ -304,17 +304,16 @@ $(document).ready(function () {
         $('aside').removeClass('toggled');
     });
 
-    $('#test').on('click', function () {
-        application.logic_application.Get_NSSC_Vectors('', function () {
-            application.Visualize_NSSC();
-            console.log('done!!!!!!!')
-        });
-    });
+    // $('#test').on('click', function () {
+    //     application.logic_application.Get_NSSC_Vectors('', function () {
+    //         application.Visualize_NSSC();
+    //         console.log('done!!!!!!!')
+    //     });
+    // });
 
     ipc.on('nssc-json-result', function (event, arg) {
         application.logic_application.Get_NSSC_Vectors(arg, function () {
             application.Visualize_NSSC();
-            console.log('done!!!!!!!')
         });
     });
 })
