@@ -14,7 +14,7 @@ let mainWindow
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 1600, height: 800 })
+  mainWindow = new BrowserWindow({ width: 900, height: 800 })
 
   // and load the index.html of the app.
   //mainWindow.loadFile('index.html')
@@ -115,7 +115,7 @@ app.on('activate', function () {
 })
 
 ipc.on('open-matrix-editor', function(event, args){
-  let build_nssc = new BrowserWindow({ width: 1024, height: 768, title: 'Plot NSSC model'});
+  let build_nssc = new BrowserWindow({ width: 700, height: 500, title: 'Plot NSSC model'});
   build_nssc.webContents.openDevTools()
 
 
@@ -126,7 +126,7 @@ ipc.on('open-matrix-editor', function(event, args){
   }))
 
   build_nssc.webContents.on('did-finish-load', () => {
-    build_nssc.webContents.send('variable', args)
+    build_nssc.webContents.send('parametters-nssc', args)
   })
 })
 

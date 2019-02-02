@@ -15,6 +15,7 @@ $(document).ready(function () {
     $('#options-scale-axis *').attr('disabled', 'disabled');
     $('#option-mu *').attr('disabled', 'disabled');
     $('#option-s *').attr('disabled', 'disabled');
+    $('#order-m').attr('disabled', 'disabled');
 
 
     // Instance Visual Application
@@ -279,8 +280,19 @@ $(document).ready(function () {
         $('.custom-control-input').prop('checked', false);
     });
 
+    $('#order-n').on('keyup', function(){
+        $('#order-m').val($(this).val())
+    })
+
     $('#open-matrix-editor').on('click', function(){
-        ipc.send('open-matrix-editor', $('#test').val());
+        var values = {
+            count_matrix: parseInt($('#count-matrix').val()),
+            order_n: parseInt($('#order-n').val()),
+            number_of_loci: parseInt($('#number-of-loci').val()),
+            sampling_vector: $('#sampling-vector').val()
+        }
+
+        ipc.send('open-matrix-editor', values);
 
         $('aside').removeClass('toggled');
     });

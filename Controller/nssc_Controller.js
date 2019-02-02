@@ -1,55 +1,74 @@
 const electron = require('electron');
 const ipc = electron.ipcRenderer;
 
+var matrix_collection = [];
+var number_of_loci;
+var sampling_vector;
+
 $(document).ready(function () {
+  $(".loader").fadeOut("slow");
 
-  ipc.on('variable', function(event, arg){
-    console.log(arg)
+  ipc.on('parametters-nssc', function (event, arg) {
+    number_of_loci = arg.number_of_loci;
+    sampling_vector = arg.sampling_vector;
+
+    for (let index = 0; index < arg.count_matrix; index++) {
+      $('#matrix-collection').append('<input type="text" id="time' + index + '"><input type="text" id="deme' + index + '"></input>');
+      $('#matrix-collection').append('<div class="matrix" style="padding:20px 0 40px 0" id="matrix' + index + '"></div>')
+
+      var matrix = $('#matrix' + index);
+      // var time_of_change = $('#time' + index);
+      // var deme_sizes = $('#deme' + index);
+
+      var data = new Array([''])
+
+      matrix.jexcel(
+        {
+          data: data,
+          allowManualInsertColumn: false,
+        });
+
+
+      for (let index = 1; index < arg.order_n; index++) {
+        matrix.jexcel('insertColumn');
+        matrix.jexcel('insertRow');
+      }
+
+      matrix_collection.push(matrix);
+      // time_of_change_collection.push(time_of_change);
+      // deme_sizes_collection.push(deme_sizes);
+    }
   })
-  // var html = '<div class="row"><div class="col-sm-2"><div class="form-group"><label>Time of change</label><input type="text" class="form-control input-mask" data-mask="" placeholder=""><i class="form-group__bar"></i></div></div><div class="col-sm-8"><div class="form-group"><label>Deme sizes</label><input type="text" class="form-control input-mask" data-mask="" placeholder=""><i class="form-group__bar"></i></div></div></div>';
+
+  $('#ok').on('click', function () {
+   
+    var scenario = [];
+
+    for (let index = 0; index < matrix_collection.length; index++) {
+      var content_of_scenario = { 'time': 0, 'demeSizes': [], 'migMatrix': [] };
+      const matrix = matrix_collection[index];
+      // const time = time_of_change_collection[index];
+      // const deme = deme_sizes_collection[index];
+
+      var time_of_change = $('#time' + index).val();
+      var deme_sizes = $('#deme' + index).val();
 
 
-  //   var data = [];
-  //   for (let index = 0; index < 6; index++) {
+      content_of_scenario.migMatrix.push(matrix.jexcel('getData', false));
+      content_of_scenario.time = time_of_change;
+      content_of_scenario.demeSizes = deme_sizes.split(' ');
 
-  //     var cell = new Array();
-  //     for (let index = 0; index < 6; index++) {
-  //       cell.push('');
-  //     }
-
-  //     data.push(cell);
-
-  //     var container = document.getElementById('example');
-
-  //     var hot = new Handsontable(container, {
-  //       data: data,
-  //       rowHeaders: false,
-  //       colHeaders: false,
-  //       filters: true,
-  //       dropdownMenu: true,
-  //     })
-
-  //   }
+      scenario.push(content_of_scenario);
+    }
 
 
+    var json_result = { 'nbLoci': number_of_loci, 'samplingVector': sampling_vector, 'scenario': scenario };
 
 
-  // var matrix =  $('#my');
-  // for (let index = 0; index < 2; index++) {
-  //   var data = new Array([''])
+    console.log(json_result)
 
-  //   matrix.jexcel(
-  //     {
-  //       data: data,
-  //     });
+    //$('.matrix').forEach(element => {
 
-
-  //   for (let index = 0; index < 10; index++) {
-  //     matrix.jexcel('insertColumn');
-  //     matrix.jexcel('insertRow');
-  //   }
-
-  //   $('#matrix-collection').append('<div id="'+index+'"></div>')
-  //   matrix = $('#'+index);
-  // }
+    //});
+  });
 });
