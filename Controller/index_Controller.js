@@ -280,16 +280,23 @@ $(document).ready(function () {
         $('.custom-control-input').prop('checked', false);
     });
 
-    $('#order-n').on('keyup', function(){
+    $('#order-n').on('keyup', function () {
         $('#order-m').val($(this).val())
     })
 
-    $('#open-matrix-editor').on('click', function(){
+    $('#open-matrix-editor').on('click', function () {
+        var list = $('#sampling-vector').val().split(' ')
+        var sampling_vector = [];
+
+        for (const element of list) {
+            sampling_vector.push(parseFloat(element))
+        }
+
         var values = {
             count_matrix: parseInt($('#count-matrix').val()),
             order_n: parseInt($('#order-n').val()),
             number_of_loci: parseInt($('#number-of-loci').val()),
-            sampling_vector: $('#sampling-vector').val()
+            sampling_vector: sampling_vector
         }
 
         ipc.send('open-matrix-editor', values);
@@ -297,10 +304,17 @@ $(document).ready(function () {
         $('aside').removeClass('toggled');
     });
 
-/*     $('#test').on('click', function () {
-        application.logic_application.Get_NSSC_Vectors(function () {
+    $('#test').on('click', function () {
+        application.logic_application.Get_NSSC_Vectors('', function () {
             application.Visualize_NSSC();
             console.log('done!!!!!!!')
         });
-    }); */
+    });
+
+    ipc.on('nssc-json-result', function (event, arg) {
+        application.logic_application.Get_NSSC_Vectors(arg, function () {
+            application.Visualize_NSSC();
+            console.log('done!!!!!!!')
+        });
+    });
 })

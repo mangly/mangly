@@ -41,31 +41,40 @@ $(document).ready(function () {
   })
 
   $('#ok').on('click', function () {
-   
+
     var scenario = [];
 
     for (let index = 0; index < matrix_collection.length; index++) {
-      var content_of_scenario = { 'time': 0, 'demeSizes': [], 'migMatrix': [] };
+      var content_of_scenario = { "time": 0, "demeSizes": [], "migMatrix": [] };
       const matrix = matrix_collection[index];
       // const time = time_of_change_collection[index];
       // const deme = deme_sizes_collection[index];
 
-      var time_of_change = $('#time' + index).val();
-      var deme_sizes = $('#deme' + index).val();
+      var time_of_change = parseFloat($('#time' + index).val());
+      var deme_sizes_text = $('#deme' + index).val();
 
 
-      content_of_scenario.migMatrix.push(matrix.jexcel('getData', false));
+      content_of_scenario.migMatrix = matrix.jexcel('getData', false);
       content_of_scenario.time = time_of_change;
-      content_of_scenario.demeSizes = deme_sizes.split(' ');
+
+      var list = deme_sizes_text.split(' ')
+      var deme_sizes = [];
+
+      for (const element of list) {
+        deme_sizes.push(parseFloat(element))
+      }
+
+      content_of_scenario.demeSizes = deme_sizes;
 
       scenario.push(content_of_scenario);
     }
 
 
-    var json_result = { 'nbLoci': number_of_loci, 'samplingVector': sampling_vector, 'scenario': scenario };
+    var json_result = { "nbLoci": number_of_loci, "samplingVector": sampling_vector, "scenario": scenario };
 
 
-    console.log(json_result)
+    // console.log(json_result);
+    ipc.send('nssc-json-result', json_result);
 
     //$('.matrix').forEach(element => {
 

@@ -2551,7 +2551,9 @@ var methods = {
                     if (! dataset[py]) {
                         dataset[py] = [];
                     }
-                    dataset[py][px] = $(this).jexcel('getValue', $(cell));
+                    
+                    //My changes
+                    dataset[py][px] = parseFloat($(this).jexcel('getValue', $(cell)));
                     px++;
                 }
             }

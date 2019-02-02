@@ -1,6 +1,4 @@
-import sys
-import json
-import random
+import sys, json, random
 
 def get_PSMC_results(filename):
     """
