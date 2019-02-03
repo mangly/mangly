@@ -15,7 +15,8 @@ let build_nssc
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 900, height: 800 })
+  mainWindow = new BrowserWindow()
+  mainWindow.maximize()
 
   // and load the index.html of the app.
   //mainWindow.loadFile('index.html')
@@ -116,12 +117,12 @@ app.on('activate', function () {
 })
 
 ipc.on('open-matrix-editor', function(event, args){
-  build_nssc = new BrowserWindow({ width: 700, height: 500, title: 'Plot NSSC model'});
+  build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent:mainWindow, modal:true});
   build_nssc.webContents.openDevTools()
 
 
   build_nssc.loadURL(url.format({
-    pathname: path.join(__dirname, './View/form-components.html'),
+    pathname: path.join(__dirname, './View/empty.html'),
     protocol: 'file:',
     slashes: true
   }))
@@ -133,6 +134,6 @@ ipc.on('open-matrix-editor', function(event, args){
 
 ipc.on('nssc-json-result', function(event, args){
     mainWindow.webContents.send('nssc-json-result', args)
-    build_nssc.close();
+    // build_nssc.close();
 })
 
