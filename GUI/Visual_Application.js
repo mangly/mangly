@@ -294,6 +294,43 @@ class Visual_Application {
         model.text('-');
     }
 
+    static Build_Scenario(number_of_matrix, order, matrix_collection, i) {
+        for (let index = i; index < number_of_matrix; index++) {
+            $('#matrix-collection').append('<div class="row"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>Deme sizes:</span><input id="deme' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>')
+            $('#matrix-collection').append('<div class="matrix" style="padding:20px 0 40px 0" id="matrix' + index + '"></div>')
+
+            var matrix = $('#matrix' + index);
+
+            var data = new Array([''])
+
+            matrix.jexcel(
+                {
+                    data: data,
+                    allowManualInsertColumn: false,
+                });
+
+
+            for (let index = 1; index < order; index++) {
+                matrix.jexcel('insertColumn');
+                matrix.jexcel('insertRow');
+            }
+
+            for (let index = 0; index < order; index++) {
+                matrix.jexcel('setHeader', index, (index + 1).toString());
+            }
+
+            $('.matrix').bind('contextmenu', function (e) {
+                return false;
+            });
+
+            matrix_collection.push(matrix);
+        }
+    }
+
+    static Add_Matrix(order, matrix_collection) {
+        this.Build_Scenario(matrix_collection.length + 1, order, matrix_collection, matrix_collection.length);
+    }
+
 }
 
 module.exports = Visual_Application

@@ -1,42 +1,38 @@
 const electron = require('electron');
 const ipc = electron.ipcRenderer;
+var Visual_Application = require('../GUI/Visual_Application');
 
 var matrix_collection = [];
 var number_of_loci;
 var sampling_vector;
+var order;
 
 $(document).ready(function () {
   ipc.on('parametters-nssc', function (event, arg) {
     number_of_loci = arg.number_of_loci;
     sampling_vector = arg.sampling_vector;
+    order = arg.order;
 
-    for (let index = 0; index < arg.count_matrix; index++) {
-      $('#matrix-collection').append('<div class="row"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>Deme sizes:</span><input id="deme' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>')
-      $('#matrix-collection').append('<div class="matrix" style="padding:20px 0 40px 0" id="matrix' + index + '"></div>')
+    Visual_Application.Build_Scenario(arg.number_of_matrix, order, matrix_collection, 0);
+    $('tr .jexcel_label').eq(0).html('nxn');
+  })
 
-      var matrix = $('#matrix' + index);
+  $('#add-matrix').on('click', function () {
+    Visual_Application.Add_Matrix(order, matrix_collection);
+  })
 
-      var data = new Array([''])
+  $('#increment-order').on('click', function () {
+    for (const matrix of matrix_collection) {
+      matrix.jexcel('insertColumn');
+      matrix.jexcel('insertRow');
+    }
 
-      matrix.jexcel(
-        {
-          data: data,
-          allowManualInsertColumn: false,
-        });
+    order++;
 
-
-      for (let index = 1; index < arg.order_n; index++) {
-        matrix.jexcel('insertColumn');
-        matrix.jexcel('insertRow');
-      }
-
-      for (let index = 0; index < arg.order_n; index++) {
+    for (const matrix of matrix_collection) {
+      for (let index = 0; index < order; index++) {
         matrix.jexcel('setHeader', index, (index + 1).toString());
       }
-
-      $('tr .jexcel_label').eq(0).html('nxn');
-
-      matrix_collection.push(matrix);
     }
   })
 
@@ -72,9 +68,5 @@ $(document).ready(function () {
 
     // console.log(json_result);
     ipc.send('nssc-json-result', json_result);
-
-    //$('.matrix').forEach(element => {
-
-    //});
   });
 });

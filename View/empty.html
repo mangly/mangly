@@ -18,14 +18,16 @@
 
 
     <style>
-        .jexcel_label{
+        .jexcel_label {
             color: black
         }
+
         .editor {
             caret-color: white;
             color: white;
-}
-        .jexcel{
+        }
+
+        .jexcel {
             background-color: transparent;
         }
 
@@ -48,30 +50,30 @@
 
         <section class="content">
             <div class="content__inner">
-
-
-                <div class="card">
-                    <div class="card-header">Plot NSSC model</div>
-                    <div class="card-body">
-                        <div id="matrix-collection"></div>
-                    </div>
+                <div class="quick-stats__info card p-4">
+                    <h2><span id="graphic">Plot NSSC model</span></h2>
+                    <small>Enter all parametters and fill matrices</small>
                 </div>
+                <!-- <div class="card"> -->
+                <!-- <div class="card-header">Plot NSSC model</div> -->
+                <!-- <div class="card-body"> -->
                 <header class="content__title">
-                    <button id="ok" class="btn btn-light" type="submit">Accept</button>
                     <div class="actions">
-                        <a href="#" class="actions__item zmdi zmdi-trending-up"></a>
-                        <a href="#" class="actions__item zmdi zmdi-check-all"></a>
-
+                        <span style="line-height:35px">Options</span>
                         <div class="dropdown actions__item">
                             <i data-toggle="dropdown" class="zmdi zmdi-more-vert"></i>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a href="#" class="dropdown-item">Refresh</a>
-                                <a href="#" class="dropdown-item">Manage Widgets</a>
-                                <a href="#" class="dropdown-item">Settings</a>
+                                <a id="add-matrix" class="dropdown-item">Add matrix</a>
+                                <a id="increment-order" class="dropdown-item">Increment order</a>
+                                <a id="save-configuration" class="dropdown-item">Save configuration</a>
                             </div>
                         </div>
                     </div>
                 </header>
+                <div id="matrix-collection"></div>
+                <!-- </div> -->
+                <!-- </div> -->
+                <button id="ok" class="btn btn-light" type="submit">Accept</button>
             </div>
         </section>
     </main>

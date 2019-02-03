@@ -10,7 +10,6 @@ var Application_Utilities = require('../Utilities/Application_Utilities');
 var Visual_Application = require('../GUI/Visual_Application')
 
 $(document).ready(function () {
-
     $('#options-color-edit-remove *').attr('disabled', 'disabled');
     $('#options-scale-axis *').attr('disabled', 'disabled');
     $('#option-mu *').attr('disabled', 'disabled');
@@ -293,10 +292,10 @@ $(document).ready(function () {
         }
 
         var values = {
-            count_matrix: parseInt($('#count-matrix').val()),
-            order_n: parseInt($('#order-n').val()),
+            number_of_matrix: parseInt($('#count-matrix').val()),
+            order: parseInt($('#order-n').val()),
             number_of_loci: parseInt($('#number-of-loci').val()),
-            sampling_vector: sampling_vector
+            sampling_vector: sampling_vector,
         }
 
         ipc.send('open-matrix-editor', values);
