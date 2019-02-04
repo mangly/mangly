@@ -13,12 +13,14 @@ $(document).ready(function () {
     sampling_vector = arg.sampling_vector;
     order = arg.order;
 
-    Visual_Application.Build_Scenario(arg.number_of_matrix, order, matrix_collection, 0);
-    $('tr .jexcel_label').eq(0).html('nxn');
+    for (let index = 0; index < arg.number_of_matrix; index++) {
+      Visual_Application.Add_Matrix(order, matrix_collection)
+    }
+     
   })
 
   $('#add-matrix').on('click', function () {
-    Visual_Application.Add_Matrix(order, matrix_collection);
+      Visual_Application.Add_Matrix(order, matrix_collection);
   })
 
   $('#increment-order').on('click', function () {

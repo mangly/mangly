@@ -44,13 +44,10 @@ class Application {
         })
     }
 
-    Get_NSSC_Vectors(json, callback) {
+    Get_NSSC_Vectors(name, json, callback) {
         Python_Communicator.get_Model_NSSC(json, 'Python_Scripts/get_Model_NSSC.py', (results) => {
-            console.log(results)
-            var nssc = new NSSC(results.name, results.x_vector, results.IICR_specie);
+            var nssc = new NSSC(name, results.x_vector, results.IICR_specie);
             this.nssc_collection.push(nssc);
-            // console.log(this.nssc_collection);
-
             callback();
         })
     }

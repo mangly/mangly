@@ -362,7 +362,9 @@ var methods = {
         }*/
 
         // Create headers
-        tr = '<td width="30" class="jexcel_label"></td>';
+        //My change II
+
+        tr = '<td width="30" class="jexcel_label">nxn</td>';
         cg = '<col width="30">';
 
         // TODO: When the first or last column is hidden
@@ -2552,7 +2554,7 @@ var methods = {
                         dataset[py] = [];
                     }
                     
-                    //My changes
+                    //My changes 1
                     dataset[py][px] = parseFloat($(this).jexcel('getValue', $(cell)));
                     px++;
                 }

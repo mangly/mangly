@@ -311,7 +311,7 @@ $(document).ready(function () {
     // });
 
     ipc.on('nssc-json-result', function (event, arg) {
-        application.logic_application.Get_NSSC_Vectors(arg, function () {
+        application.logic_application.Get_NSSC_Vectors($('#nssc-name').val(), arg, function () {
             application.Visualize_NSSC();
         });
     });

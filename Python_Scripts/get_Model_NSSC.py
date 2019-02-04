@@ -17,7 +17,7 @@ def get_NSSC_vectors(scenario, start = 0, end = 500, n = 500):
     x_vector = [0.1*(np.exp(i * np.log(1+10*end)/n)-1) for i in range(n+1)]
     IICR_specie = [model_humans.evaluateIICR(i) for i in x_vector]
 
-    return {'name': '', 'x_vector': x_vector, 'IICR_specie': IICR_specie}
+    return {'x_vector': x_vector, 'IICR_specie': IICR_specie}
 
    
 # print(json.dumps(sys.argv[1]))
