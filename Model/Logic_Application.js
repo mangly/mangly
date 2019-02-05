@@ -7,15 +7,15 @@ const NSSC = require('./NSSC');
 
 class Application {
     constructor() {
-        this.psmc_msmc_collection = [];
-        this.nssc_collection = [];
+        this.functions_collection = [];
+        // this.nssc_collection = [];
         this.Mu = 1.25e-8;
         this.S = 100;
     }
 
-    Contain(element_name) {
-        for (let index = 0; index < this.psmc_msmc_collection.length; index++) {
-            const element = this.psmc_msmc_collection[index];
+    Get_Function(element_name) {
+        for (let index = 0; index < this.functions_collection.length; index++) {
+            const element = this.functions_collection[index];
 
             if (element.name == element_name) return element;
         }
@@ -27,15 +27,15 @@ class Application {
         Python_Communicator.get_File_Results(path_collection, 'Python_Scripts/get_File_Results.py', (results) => {
 
             for (const element of results.file_collection) {
-                if (this.Contain(element.name) == null) {
+                if (this.Get_Function(element.name) == null) {
                     if (element.model == 'psmc') {
                         var psmc = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
-                        this.psmc_msmc_collection.push(psmc);
+                        this.functions_collection.push(psmc);
                     }
 
                     else {
                         var msmc = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
-                        this.psmc_msmc_collection.push(msmc);
+                        this.functions_collection.push(msmc);
                     }
                 }
             }
@@ -47,7 +47,7 @@ class Application {
     Get_NSSC_Vectors(name, json, callback) {
         Python_Communicator.get_Model_NSSC(json, 'Python_Scripts/get_Model_NSSC.py', (results) => {
             var nssc = new NSSC(name, results.x_vector, results.IICR_specie);
-            this.nssc_collection.push(nssc);
+            this.functions_collection.push(nssc);
             callback();
         })
     }
@@ -61,7 +61,7 @@ class Application {
             funct.S = s;
         }
 
-        return funct;
+        // return funct;
     }
 
     Scale_Msmc_Function(funct, mu = this.Mu) {
@@ -71,7 +71,7 @@ class Application {
             funct.Mu = mu;
         }
 
-        return funct;
+        // return funct;
     }
 }
 

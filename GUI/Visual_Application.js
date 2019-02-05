@@ -92,7 +92,7 @@ class Visual_Application {
         });
     }
 
-    Contain(name_graphic) {
+    Get_Graphic(name_graphic) {
         for (const element of this.chart.data.datasets) {
             if (name_graphic == element.label) return element;
         }
@@ -110,21 +110,22 @@ class Visual_Application {
         return "#" + color;
     }
 
-    Visualize() {
+    Visualize_PSMC_MSMC() {
         var element_scale_by_default;
         var IICR;
-        for (const element of this.logic_application.psmc_msmc_collection) {
-            if (this.Contain(element.name) == null) {
-                var element_clone = element.Clone();
+        for (const element of this.logic_application.functions_collection) {
+            if (element.model != 'nssc' && this.Get_Graphic(element.name) == null) {
+                // var element_clone = element.Clone();
+                element_scale_by_default = element.Clone();
                 element.Mu = 1.25;
                 if (element.model == 'psmc') {
-                    element_scale_by_default = this.logic_application.Scale_Psmc_Function(element_clone);
+                    this.logic_application.Scale_Psmc_Function(element_scale_by_default);
                     IICR = element_scale_by_default.IICR_2;
                     element.S = 100;
                 }
 
                 else {
-                    element_scale_by_default = this.logic_application.Scale_Msmc_Function(element_clone);
+                    this.logic_application.Scale_Msmc_Function(element_scale_by_default);
                     IICR = element_scale_by_default.IICR_k;
                 }
 
@@ -132,7 +133,6 @@ class Visual_Application {
 
                 var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
 
-                // var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true', 'Mu': 1.25, 'S': 100, 'model': element.model };
                 this.chart.data.datasets.push(graphic);
 
                 this.Visualize_element_of_list(element.name, element.model, color);
@@ -174,42 +174,46 @@ class Visual_Application {
     }
 
     Update_Scale(name_graphic, mu, s) {
-        var funct;
         var IICR;
+        var original_function = this.logic_application.Get_Function(name_graphic);
+        var clone_function = original_function.Clone();
+        var graphic = this.Get_Graphic(name_graphic);
 
-        for (let index = 0; index < this.logic_application.psmc_msmc_collection.length; index++) {
-            const element = this.logic_application.psmc_msmc_collection[index];
+        if (original_function.model != 'nssc') {
+            if (original_function.model == 'psmc') {
+                this.logic_application.Scale_Psmc_Function(clone_function, mu, s);
 
-            if (element.name == name_graphic) {
-                if (element.model == 'psmc') {
-                    funct = this.logic_application.Scale_Psmc_Function(element.Clone(), mu, s);
-                    IICR = funct.IICR_2;
-                }
+                IICR = clone_function.IICR_2;
+                original_function.Mu = mu * Math.pow(10, 8);
+                original_function.S = s;
+            }
 
-                else {
-                    funct = this.logic_application.Scale_Msmc_Function(element.Clone(), mu);
-                    IICR = funct.IICR_k;
-                }
+            else {
+                this.logic_application.Scale_Msmc_Function(clone_function, mu);
 
-                break;
+                IICR = clone_function.IICR_k;
+                original_function.Mu = mu * Math.pow(10, 8);
             }
         }
 
-        for (let index = 0; index < this.chart.data.datasets.length; index++) {
-            const element = this.chart.data.datasets[index];
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.time, IICR);
 
-            if (element.label == funct.name) {
-                this.chart.data.datasets[index].data = Application_Utilities.Generate_Data_To_Chart(funct.time, IICR);
-                this.logic_application.psmc_msmc_collection[index].Mu = mu * Math.pow(10, 8);
-                this.logic_application.psmc_msmc_collection[index].S = s;
-            }
-        }
+        // for (let index = 0; index < this.chart.data.datasets.length; index++) {
+        //     const element = this.chart.data.datasets[index];
+
+        //     if (element.label == funct.name) {
+        //         this.chart.data.datasets[index].data = Application_Utilities.Generate_Data_To_Chart(funct.time, IICR);
+        //         this.logic_application.functions_collection[index].Mu = mu * Math.pow(10, 8);
+        //         this.logic_application.functions_collection[index].S = s;
+        //     }
+        // }
 
         this.chart.update();
+
     }
 
-    Reset_Scales(list_graphics) {
-        for (const element of list_graphics) {
+    Reset_Scales() {
+        for (const element of this.logic_application.functions_collection) {
             this.Update_Scale(element.name, this.logic_application.Mu, this.logic_application.S);
         }
 
@@ -217,12 +221,13 @@ class Visual_Application {
     }
 
     Get_Parametters(name) {
-        for (const element of this.logic_application.psmc_msmc_collection) {
+        for (const element of this.logic_application.functions_collection) {
             if (element.name == name) {
                 if (element.model == 'psmc') {
                     return [element.theta, element.rho, 'Pairwise Sequentially Markovian Coalescent'];
                 }
 
+                else if (element.model == 'nssc') return ['-', '-', 'The Non-Stationary Structured Coalescent']
                 else return ['-', '-', 'Multiple Sequentially Markovian Coalescent'];
             }
         }

@@ -39,7 +39,7 @@ $(document).ready(function () {
         dialog.showOpenDialog(options, function (arrPath) {
             application.logic_application.Add_File(arrPath, function () {
 
-                application.Visualize();
+                application.Visualize_PSMC_MSMC();
 
                 $('aside').removeClass('toggled');
 
@@ -137,7 +137,7 @@ $(document).ready(function () {
             else {
 
                 for (const element of items_selecteds) {
-                    var graphic = application.logic_application.Contain(element);
+                    var graphic = application.logic_application.Get_Function(element);
 
                     if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
                         $('#option-s *').removeAttr('disabled');
@@ -273,10 +273,11 @@ $(document).ready(function () {
     })
 
     $('#reset-scales').on('click', function () {
-        application.Reset_Scales(application.logic_application.psmc_msmc_collection);
+        application.Reset_Scales();
         slider_s.noUiSlider.set(100);
         slider_mu.noUiSlider.set(1.25);
         $('.custom-control-input').prop('checked', false);
+        items_selecteds = [];
     });
 
     $('#order-n').on('keyup', function () {
