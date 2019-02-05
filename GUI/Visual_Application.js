@@ -150,7 +150,7 @@ class Visual_Application {
     Visualize_NSSC() {
         $('#tab-graphics').trigger('click');
         var color = this.Get_Random_Color();
-        var nssc = this.logic_application.nssc_collection[this.logic_application.nssc_collection.length - 1]
+        var nssc = this.logic_application.Get_Last_NSSC_Function();
         var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc.x_vector, nssc.IICR_specie), 'label': nssc.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
 
         this.Visualize_element_of_list(nssc.name, nssc.model, color);

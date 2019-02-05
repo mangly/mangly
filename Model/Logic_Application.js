@@ -73,6 +73,17 @@ class Application {
 
         // return funct;
     }
+
+    Get_Last_NSSC_Function(){
+        var last_nssc;
+        for (const element of this.functions_collection) {
+            if(element.model == 'nssc'){
+                last_nssc = element;
+            }
+        }
+
+        return last_nssc;
+    }
 }
 
 module.exports = Application
