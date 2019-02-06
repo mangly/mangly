@@ -362,7 +362,7 @@ var methods = {
         }*/
 
         // Create headers
-        //My change II
+        //My change I
 
         tr = '<td width="30" class="jexcel_label">nxn</td>';
         cg = '<col width="30">';
@@ -1961,7 +1961,7 @@ var methods = {
             }
         }
 
-        return value;
+        return parseFloat(value);
     },
 
     /**
@@ -2554,8 +2554,7 @@ var methods = {
                         dataset[py] = [];
                     }
                     
-                    //My changes 1
-                    dataset[py][px] = parseFloat($(this).jexcel('getValue', $(cell)));
+                    dataset[py][px] = $(this).jexcel('getValue', $(cell));
                     px++;
                 }
             }

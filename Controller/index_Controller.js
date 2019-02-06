@@ -289,29 +289,24 @@ $(document).ready(function () {
     $('#order-n').on('keyup', function () {
         Visual_Application.Initialize_Matrix(sampling_vector);
 
-        $('thead.jexcel_label').remove();
-
-
         $('#order-m').val($(this).val());
 
         for (let index = 1; index < parseInt($('#order-n').val()); index++) {
             sampling_vector.jexcel('insertColumn');
         }
 
-        $('td.jexcel_label').text('Values:');
-        $('td.jexcel_label').css("width", "60px");
+        $('#sampling-vector').bind('contextmenu', function (e) {
+            return false;
+        });
+
+        Visual_Application.Configuration_Vector();
     })
 
     $('#open-matrix-editor').on('click', function () {
-        var collection = [];
-        for (const value of sampling_vector.jexcel('getRowData', 0)) {
-            collection.push(parseFloat(value));
-        }
-
         var values = {
             number_of_matrix: parseInt($('#count-matrix').val()),
             order: parseInt($('#order-n').val()),
-            sampling_vector: collection,
+            sampling_vector: sampling_vector.jexcel('getRowData', 0),
         }
 
         ipc.send('open-matrix-editor', values);
@@ -384,7 +379,7 @@ $(document).ready(function () {
 
     $(function () {
         Visual_Application.Initialize_Matrix(sampling_vector);
-        Visual_Application.Configuration_Sampling_Vector();
+        Visual_Application.Configuration_Vector();
     })
 
 })

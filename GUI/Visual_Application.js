@@ -350,69 +350,50 @@ class Visual_Application {
             });
     }
 
-    static Configuration_Sampling_Vector() {
-        $('thead.jexcel_label').remove();
-        $('td.jexcel_label').text('Values:');
-        $('td.jexcel_label').css("width", "60px");
+    static Configuration_Vector() {
+        $('.1xn thead.jexcel_label').remove();
+        $('.1xn td.jexcel_label').text('Values:');
+        $('.1xn td.jexcel_label').css("width", "60px");
     }
 
-    static Configuration_Matrix_Collection(matrix, order, matrix_collection) {
+    static Configuration_Matrix(matrix, order, matrix_collection, n_x_n) {
         for (let index = 1; index < order; index++) {
             matrix.jexcel('insertColumn');
-            matrix.jexcel('insertRow');
+            if (n_x_n) matrix.jexcel('insertRow');
         }
 
-        for (let index = 0; index < order; index++) {
-            matrix.jexcel('setHeader', index, (index + 1).toString());
-        }
+        if (n_x_n) {
+            for (let index = 0; index < order; index++) {
+                matrix.jexcel('setHeader', index, (index + 1).toString());
+            }
 
-        $('.matrix').bind('contextmenu', function (e) {
-            return false;
-        });
+            $('.matrix').bind('contextmenu', function (e) {
+                return false;
+            });
+        }
 
         matrix_collection.push(matrix);
     }
 
 
-    static Add_First_Show_Time_Deme_Sizes(){
-        $('#matrix-collection').append('<div class="form-group"><span>Deme sizes:</span><input id="deme0" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>');
+    // static Add_First_Show_Time_Deme_Sizes(html, order, matrix_collection) {
+    //     this.Add_Matrix(html, order, matrix_collection);
+    //     $('#matrix-collection').append('<div class="form-group"><span>Deme sizes:</span><input id="deme' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>');
+    // }
+
+    static Add_Show_Time_Deme_Sizes(html, order, matrix_collection, id, n_x_n) {
+        this.Add_Matrix(html, order, matrix_collection, id, n_x_n);
+        this.Configuration_Vector();
+        // $('#matrix-collection').append('<div class="row"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>Deme sizes:</span><input id="deme' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>');
     }
 
-    static Add_Show_Time_Deme_Sizes(id){
-        $('#matrix-collection').append('<div class="row"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>Deme sizes:</span><input id="deme' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>');
-    }
+    static Add_Matrix(html, order, matrix_collection, id, n_x_n) {
+        $('#matrix-collection').append(html);
 
-    static Add_Matrix(order, matrix_collection) {
-        var id = matrix_collection.length;
-        $('#matrix-collection').append('<div class="matrix" style="padding:20px 0 40px 0" id="matrix' + id + '"></div>');
-
-        var matrix = $('#matrix' + id);
+        var matrix = $(id + matrix_collection.length);
 
         this.Initialize_Matrix(matrix);
-        this.Configuration_Matrix_Collection(matrix, order, matrix_collection);
-        // var data = new Array([''])
-
-        // matrix.jexcel(
-        //     {
-        //         data: data,
-        //         allowManualInsertColumn: false,
-        //     });
-
-
-        // for (let index = 1; index < order; index++) {
-        //     matrix.jexcel('insertColumn');
-        //     matrix.jexcel('insertRow');
-        // }
-
-        // for (let index = 0; index < order; index++) {
-        //     matrix.jexcel('setHeader', index, (index + 1).toString());
-        // }
-
-        // $('.matrix').bind('contextmenu', function (e) {
-        //     return false;
-        // });
-
-        // matrix_collection.push(matrix);
+        this.Configuration_Matrix(matrix, order, matrix_collection, n_x_n);
     }
 }
 
