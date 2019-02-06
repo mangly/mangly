@@ -24,9 +24,9 @@ $(document).ready(function () {
 
 
     // Instance Visual Application
-
     var application = new Visual_Application($('#mycanvas'), new Application());
 
+    var sampling_vector = $('#sampling-vector');
     var items_selecteds = [];
     application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
 
@@ -287,22 +287,31 @@ $(document).ready(function () {
     });
 
     $('#order-n').on('keyup', function () {
-        $('#order-m').val($(this).val())
+        Visual_Application.Initialize_Matrix(sampling_vector);
+
+        $('thead.jexcel_label').remove();
+
+
+        $('#order-m').val($(this).val());
+
+        for (let index = 1; index < parseInt($('#order-n').val()); index++) {
+            sampling_vector.jexcel('insertColumn');
+        }
+
+        $('td.jexcel_label').text('Values:');
+        $('td.jexcel_label').css("width", "60px");
     })
 
     $('#open-matrix-editor').on('click', function () {
-        var list = $('#sampling-vector').val().split(' ')
-        var sampling_vector = [];
-
-        for (const element of list) {
-            sampling_vector.push(parseFloat(element))
+        var collection = [];
+        for (const value of sampling_vector.jexcel('getRowData', 0)) {
+            collection.push(parseFloat(value));
         }
 
         var values = {
             number_of_matrix: parseInt($('#count-matrix').val()),
             order: parseInt($('#order-n').val()),
-            number_of_loci: parseInt($('#number-of-loci').val()),
-            sampling_vector: sampling_vector,
+            sampling_vector: collection,
         }
 
         ipc.send('open-matrix-editor', values);
@@ -318,7 +327,7 @@ $(document).ready(function () {
     // });
 
     $('#test').on('click', function () {
-        
+
 
         // var options = {
         //     title: 'Save as...',
@@ -372,4 +381,10 @@ $(document).ready(function () {
             application.Visualize_NSSC();
         });
     });
+
+    $(function () {
+        Visual_Application.Initialize_Matrix(sampling_vector);
+        Visual_Application.Configuration_Sampling_Vector();
+    })
+
 })

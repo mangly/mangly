@@ -25,7 +25,6 @@ class Application {
 
     Add_File(path_collection, callback) {
         Python_Communicator.get_File_Results(path_collection, 'Python_Scripts/get_File_Results.py', (results) => {
-
             for (const element of results.file_collection) {
                 if (this.Get_Function(element.name) == null) {
                     if (element.model == 'psmc') {
@@ -74,10 +73,10 @@ class Application {
         // return funct;
     }
 
-    Get_Last_NSSC_Function(){
+    Get_Last_NSSC_Function() {
         var last_nssc;
         for (const element of this.functions_collection) {
-            if(element.model == 'nssc'){
+            if (element.model == 'nssc') {
                 last_nssc = element;
             }
         }

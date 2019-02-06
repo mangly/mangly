@@ -21,12 +21,30 @@
 
     <!-- App styles -->
     <link rel="stylesheet" href="css/app.min.css">
+    <link rel="stylesheet" href="../archivos_estaticos/jexcel-master/dist/css/jquery.jexcel.css">
 
     <!-- <link href="../archivos_estaticos/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet"> -->
     <!-- <link href="../archivos_estaticos/handsontable-pro-master/dist/handsontable.full.min.css" rel="stylesheet"> -->
 
     <!-- Styles inline -->
     <style>
+        /* About jexcel*/
+
+        .jexcel_label {
+            color: black
+        }
+
+        .editor {
+            caret-color: white;
+            color: white;
+        }
+
+        .jexcel {
+            background-color: transparent;
+        }
+
+        /* Finish jexcel */
+
         .content--full {
     padding: 70px 30px 0;
 }
@@ -66,7 +84,7 @@
                 <ul class="sub_menu">
                     <li><a id="open-file" href="#">Open File...</a></li>
                     <li class="divider dropdown-divider"></li>
-                    
+
                     <!-- <li>
                         <a href="#">Batting Cages</a>
                         <ul>
@@ -355,19 +373,15 @@
 
                                             <div class="card p-4">
                                                 <div class="row">
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <span>Number of loci:</span>
-                                                            <input id="number-of-loci" type="text" class="form-control input-mask">
-                                                            <i class="form-group__bar"></i>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-sm-8">
-                                                        <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <!-- <div class="form-group">
                                                             <span>Sampling Vector:</span>
                                                             <input id="sampling-vector" type="text" class="form-control input-mask">
                                                             <i class="form-group__bar"></i>
+                                                        </div> -->
+                                                        <div style="overflow-x: scroll">
+                                                            <span>Sampling Vector:</span>
+                                                            <div id="sampling-vector" class="matrix" style="padding:20px 0 40px 0"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -385,7 +399,7 @@
                 <div class="col-lg-8 col-md-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">Graph of models</div>
-                        <div class="card-body" style="height: 600px; max-height: 600px; overflow-y: scroll">
+                        <div class="card-body" style="height: 600px; overflow-y: scroll">
                             <canvas id="mycanvas"></canvas>
                         </div>
                     </div>
@@ -458,6 +472,7 @@
     <script src="../archivos_estaticos/ChartJS/Chart.js"></script>
     <!-- <script src="../archivos_estaticos/ChartJS/"></script> -->
     <script src="../archivos_estaticos/SimplejQueryDropdowns/js/jquery.dropdownPlain.js"></script>
+    <script src="../archivos_estaticos/jexcel-master/dist/js/jquery.jexcel.js"></script>
     <!-- <script src="../archivos_estaticos/Serializer.js"></script> -->
     <!-- <script src="../archivos_estaticos/handsontable-pro-master/dist/handsontable.full.min.js"></script> -->
 

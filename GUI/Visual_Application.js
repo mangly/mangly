@@ -4,6 +4,7 @@ const Application_Utilities = require('../Utilities/Application_Utilities');
 
 class Visual_Application {
     constructor(canvas, logic_application) {
+        this.canvas;
         this.logic_application = logic_application;
         this.chart = new Chart(canvas, {
             type: 'line',
@@ -27,7 +28,7 @@ class Visual_Application {
 
                         ticks: {
                             fontColor: "white",
-                            beginAtZero:true
+                            beginAtZero: true
                             // suggestedMin: 0,
                             // suggestedMax: 1000
                         },
@@ -49,7 +50,7 @@ class Visual_Application {
 
                         ticks: {
                             fontColor: "white",
-                            beginAtZero:true
+                            beginAtZero: true
                             // min: 20000,
                             // max: 5000
                         },
@@ -70,17 +71,17 @@ class Visual_Application {
                 pan: {
                     // Boolean to enable panning
                     enabled: true,
-        
+
                     // Panning directions. Remove the appropriate direction to disable 
                     // Eg. 'y' would only allow panning in the y direction
                     mode: 'xy'
                 },
-        
+
                 // Container for zoom options
                 zoom: {
                     // Boolean to enable zooming
                     enabled: true,
-        
+
                     // Zooming directions. Remove the appropriate direction to disable 
                     // Eg. 'y' would only allow zooming in the y direction
                     mode: 'xy',
@@ -338,13 +339,8 @@ class Visual_Application {
         model.text('-');
     }
 
-    static Add_Matrix(order, matrix_collection) {
-        var id = matrix_collection.length;
-        $('#matrix-collection').append('<div class="row"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>Deme sizes:</span><input id="deme' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>');
-        $('#matrix-collection').append('<div class="matrix" style="padding:20px 0 40px 0" id="matrix' + id + '"></div>');
 
-        var matrix = $('#matrix' + id);
-
+    static Initialize_Matrix(matrix) {
         var data = new Array([''])
 
         matrix.jexcel(
@@ -352,8 +348,15 @@ class Visual_Application {
                 data: data,
                 allowManualInsertColumn: false,
             });
+    }
 
+    static Configuration_Sampling_Vector() {
+        $('thead.jexcel_label').remove();
+        $('td.jexcel_label').text('Values:');
+        $('td.jexcel_label').css("width", "60px");
+    }
 
+    static Configuration_Matrix_Collection(matrix, order, matrix_collection) {
         for (let index = 1; index < order; index++) {
             matrix.jexcel('insertColumn');
             matrix.jexcel('insertRow');
@@ -368,6 +371,48 @@ class Visual_Application {
         });
 
         matrix_collection.push(matrix);
+    }
+
+
+    static Add_First_Show_Time_Deme_Sizes(){
+        $('#matrix-collection').append('<div class="form-group"><span>Deme sizes:</span><input id="deme0" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>');
+    }
+
+    static Add_Show_Time_Deme_Sizes(id){
+        $('#matrix-collection').append('<div class="row"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>Deme sizes:</span><input id="deme' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>');
+    }
+
+    static Add_Matrix(order, matrix_collection) {
+        var id = matrix_collection.length;
+        $('#matrix-collection').append('<div class="matrix" style="padding:20px 0 40px 0" id="matrix' + id + '"></div>');
+
+        var matrix = $('#matrix' + id);
+
+        this.Initialize_Matrix(matrix);
+        this.Configuration_Matrix_Collection(matrix, order, matrix_collection);
+        // var data = new Array([''])
+
+        // matrix.jexcel(
+        //     {
+        //         data: data,
+        //         allowManualInsertColumn: false,
+        //     });
+
+
+        // for (let index = 1; index < order; index++) {
+        //     matrix.jexcel('insertColumn');
+        //     matrix.jexcel('insertRow');
+        // }
+
+        // for (let index = 0; index < order; index++) {
+        //     matrix.jexcel('setHeader', index, (index + 1).toString());
+        // }
+
+        // $('.matrix').bind('contextmenu', function (e) {
+        //     return false;
+        // });
+
+        // matrix_collection.push(matrix);
     }
 }
 

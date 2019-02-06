@@ -4,24 +4,24 @@ const ipc = electron.ipcRenderer;
 var Visual_Application = require('../GUI/Visual_Application');
 
 var matrix_collection = [];
-var number_of_loci;
 var sampling_vector;
 var order;
 
 $(document).ready(function () {
   ipc.on('parametters-nssc', function (event, arg) {
-    number_of_loci = arg.number_of_loci;
     sampling_vector = arg.sampling_vector;
     order = arg.order;
 
     for (let index = 0; index < arg.number_of_matrix; index++) {
+      if (index == 0) Visual_Application.Add_First_Show_Time_Deme_Sizes();
+      else Visual_Application.Add_Show_Time_Deme_Sizes(index);
+
       Visual_Application.Add_Matrix(order, matrix_collection)
     }
-     
   })
 
   $('#add-matrix').on('click', function () {
-      Visual_Application.Add_Matrix(order, matrix_collection);
+    Visual_Application.Add_Matrix(order, matrix_collection);
   })
 
   $('#increment-order').on('click', function () {
@@ -41,14 +41,15 @@ $(document).ready(function () {
 
   $('#ok').on('click', function () {
     var scenario = [];
+    var time_of_change = 0;
 
     for (let index = 0; index < matrix_collection.length; index++) {
       var content_of_scenario = { "time": 0, "demeSizes": [], "migMatrix": [] };
       const matrix = matrix_collection[index];
 
-      var time_of_change = parseFloat($('#time' + index).val());
-      var deme_sizes_text = $('#deme' + index).val();
+      if (index != 0) time_of_change = parseFloat($('#time' + index).val());
 
+      var deme_sizes_text = $('#deme' + index).val();
 
       content_of_scenario.migMatrix = matrix.jexcel('getData', false);
       content_of_scenario.time = time_of_change;
@@ -65,7 +66,7 @@ $(document).ready(function () {
       scenario.push(content_of_scenario);
     }
 
-    var json_result = { "nbLoci": number_of_loci, "samplingVector": sampling_vector, "scenario": scenario };
+    var json_result = { "samplingVector": sampling_vector, "scenario": scenario };
 
     // console.log(json_result);
     ipc.send('nssc-json-result', json_result);
