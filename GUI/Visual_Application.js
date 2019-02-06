@@ -26,7 +26,10 @@ class Visual_Application {
                         type: 'logarithmic',
 
                         ticks: {
-                            fontColor: "white"
+                            fontColor: "white",
+                            beginAtZero:true
+                            // suggestedMin: 0,
+                            // suggestedMax: 1000
                         },
 
                         gridLines: {
@@ -45,7 +48,10 @@ class Visual_Application {
                         type: 'linear',
 
                         ticks: {
-                            fontColor: "white"
+                            fontColor: "white",
+                            beginAtZero:true
+                            // min: 20000,
+                            // max: 5000
                         },
 
                         gridLines: {
@@ -59,6 +65,36 @@ class Visual_Application {
                             fontColor: 'white'
                         }
                     }],
+                },
+
+                pan: {
+                    // Boolean to enable panning
+                    enabled: true,
+        
+                    // Panning directions. Remove the appropriate direction to disable 
+                    // Eg. 'y' would only allow panning in the y direction
+                    mode: 'xy'
+                },
+        
+                // Container for zoom options
+                zoom: {
+                    // Boolean to enable zooming
+                    enabled: true,
+        
+                    // Zooming directions. Remove the appropriate direction to disable 
+                    // Eg. 'y' would only allow zooming in the y direction
+                    mode: 'xy',
+
+                    rangeMin: {
+                        // Format of min zoom range depends on scale type
+                        x: 0,
+                        y: 0
+                    },
+                    rangeMax: {
+                        // Format of max zoom range depends on scale type
+                        x: null,
+                        y: null
+                    },
                 },
 
                 elements: {

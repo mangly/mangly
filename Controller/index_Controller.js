@@ -5,6 +5,12 @@ const { dialog } = require('electron').remote;
 
 const remote = require('electron').remote;
 
+require('../archivos_estaticos/chartjs-plugin-zoom');
+
+var fs = require('fs');
+var PSMC = require('../Model/PSMC')
+// var serialize = require('node-serialize');
+
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
 var Visual_Application = require('../GUI/Visual_Application')
@@ -24,7 +30,7 @@ $(document).ready(function () {
     var items_selecteds = [];
     application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
 
-    $('#open_file').on('click', function () {
+    $('#open-file').on('click', function () {
 
         var options = {
             filters: [
@@ -310,6 +316,56 @@ $(document).ready(function () {
     //         console.log('done!!!!!!!')
     //     });
     // });
+
+    $('#test').on('click', function () {
+        
+
+        // var options = {
+        //     title: 'Save as...',
+
+        //     filters: [
+        //         { name: 'PSMC', extensions: ['psmc'] }
+        //     ],
+        // }
+
+        // dialog.showSaveDialog(options, function (filename) {
+        //     let psmc = new PSMC('mandy', 1, [1, 2, 3], [2, 3, 4], 1, 2, 100, 100);
+
+        //     var objS = serialize.serialize(psmc);
+
+        //     var objUS = serialize.unserialize(objS)
+
+        //     fs.writeFile(filename, objS, function (err) {
+        //         if (err) {
+        //             console.log(err);
+        //         }
+
+        //         console.log('done!!!')
+        //     });
+        // })
+
+
+        // var data = {
+        //     name: "cliff",
+        //     age: "34",
+        //     othername: "ted",
+        //     otherage: "42",
+        //     othername: "bob",
+        //     otherage: "12"
+        // }
+
+        // var jsonData = JSON.stringify(data);
+
+        // fs.writeFile("test.mangly", jsonData, function (err) {
+        //     if (err) {
+        //         console.log(err);
+        //     }
+
+        //     else console.log('save done!!!!!');
+        // });
+
+
+    });
 
     ipc.on('nssc-json-result', function (event, arg) {
         application.logic_application.Get_NSSC_Vectors($('#nssc-name').val(), arg, function () {

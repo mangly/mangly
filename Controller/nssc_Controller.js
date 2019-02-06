@@ -1,5 +1,6 @@
 const electron = require('electron');
 const ipc = electron.ipcRenderer;
+// var fs = require('fs');
 var Visual_Application = require('../GUI/Visual_Application');
 
 var matrix_collection = [];
@@ -64,9 +65,7 @@ $(document).ready(function () {
       scenario.push(content_of_scenario);
     }
 
-
     var json_result = { "nbLoci": number_of_loci, "samplingVector": sampling_vector, "scenario": scenario };
-
 
     // console.log(json_result);
     ipc.send('nssc-json-result', json_result);
