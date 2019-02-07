@@ -339,10 +339,35 @@ class Visual_Application {
         model.text('-');
     }
 
+    static Fill_Initial_Data_Vector(value, type, order = 0) {
+        var data = new Array([[value]]);
+        var i = 0;
 
-    static Initialize_Matrix(matrix) {
-        var data = new Array([''])
+        if (type == 'deme_sizes') i = 1;
 
+        for (let index = i; index < order; index++) {
+            data[0].push(value);
+        }
+
+        return data;
+    }
+
+    static Fill_Initial_Data_Matrix(value, order) {
+        var data = new Array();
+        
+        for (let index_i = 0; index_i < order; index_i++) {
+            var row = new Array();
+            for (let index_j = 0; index_j < order; index_j++) {
+                row.push(value);
+            }
+
+            data.push(row);
+        }
+
+        return data;
+    }
+
+    static Initialize_Matrix(matrix, data) {
         matrix.jexcel(
             {
                 data: data,
@@ -354,46 +379,42 @@ class Visual_Application {
         $('.1xn thead.jexcel_label').remove();
         $('.1xn td.jexcel_label').text('Values:');
         $('.1xn td.jexcel_label').css("width", "60px");
+
+        $('.1xn').bind('contextmenu', function (e) {
+            return false;
+        });
     }
 
-    static Configuration_Matrix(matrix, order, matrix_collection, n_x_n) {
-        for (let index = 1; index < order; index++) {
-            matrix.jexcel('insertColumn');
-            if (n_x_n) matrix.jexcel('insertRow');
+    static Configuration_Matrix(matrix, order) {
+
+        for (let index = 0; index < order; index++) {
+            matrix.jexcel('setHeader', index, (index + 1).toString());
         }
 
-        if (n_x_n) {
-            for (let index = 0; index < order; index++) {
-                matrix.jexcel('setHeader', index, (index + 1).toString());
-            }
 
-            $('.matrix').bind('contextmenu', function (e) {
-                return false;
-            });
-        }
-
-        matrix_collection.push(matrix);
+        $('.matrix').bind('contextmenu', function (e) {
+            return false;
+        });
     }
 
-
-    // static Add_First_Show_Time_Deme_Sizes(html, order, matrix_collection) {
-    //     this.Add_Matrix(html, order, matrix_collection);
-    //     $('#matrix-collection').append('<div class="form-group"><span>Deme sizes:</span><input id="deme' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>');
-    // }
-
-    static Add_Show_Time_Deme_Sizes(html, order, matrix_collection, id, n_x_n) {
-        this.Add_Matrix(html, order, matrix_collection, id, n_x_n);
+    static Add_Show_Time_Deme_Sizes(html, order, matrix_collection, id) {
+        this.Add_Matrix(html, order, matrix_collection, id, true);
         this.Configuration_Vector();
-        // $('#matrix-collection').append('<div class="row"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>Deme sizes:</span><input id="deme' + id + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div>');
     }
 
-    static Add_Matrix(html, order, matrix_collection, id, n_x_n) {
+    static Add_Matrix(html, order, matrix_collection, id, vector) {
         $('#matrix-collection').append(html);
 
         var matrix = $(id + matrix_collection.length);
 
-        this.Initialize_Matrix(matrix);
-        this.Configuration_Matrix(matrix, order, matrix_collection, n_x_n);
+        // console.log(this.Fill_Initial_Data_Matrix('', order));
+
+        if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector('1', 'deme_sizes', order));
+
+        else this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Matrix('', order));
+
+        matrix_collection.push(matrix);
+        this.Configuration_Matrix(matrix, order);
     }
 }
 
