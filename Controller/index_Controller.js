@@ -7,8 +7,8 @@ const remote = require('electron').remote;
 
 require('../archivos_estaticos/chartjs-plugin-zoom');
 
-var fs = require('fs');
-var PSMC = require('../Model/PSMC')
+// var fs = require('fs');
+// var PSMC = require('../Model/PSMC')
 // var serialize = require('node-serialize');
 
 var Application = require('../Model/Logic_Application');
@@ -361,6 +361,10 @@ $(document).ready(function () {
         // });
 
 
+        //............
+
+        
+
     });
 
     ipc.on('nssc-json-result', function (event, arg) {
@@ -374,4 +378,5 @@ $(document).ready(function () {
         Visual_Application.Configuration_Vector();
     })
 
+    console.log(Math.round(4.2678 * 100)/100)
 })

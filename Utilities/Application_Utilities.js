@@ -33,6 +33,24 @@ class Application_Utilities {
 
         return parseFloat(result + 'e-' + (decimal_number.length - result.length).toString());
     }
+
+    static Remove_Character(str, char_pos) {
+        var part1 = str.substring(0, char_pos);
+        var part2 = str.substring(char_pos + 1, str.length);
+        return (part1 + part2);
+    }
+
+    static Convert_Positive_Number_Scientific_Notation(number) {
+        if (!number.includes('.')) number += '.00';
+
+        var count = number.indexOf('.');
+
+        var number = this.Remove_Character(number, count);
+
+        var result = parseFloat([number.slice(0, 1), '.', number.slice(1)].join(''));
+
+        return (Math.round(result*100)/100).toString() + 'e+' + (count - 1).toString();
+    }
 }
 
 module.exports = Application_Utilities

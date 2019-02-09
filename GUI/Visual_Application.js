@@ -28,9 +28,15 @@ class Visual_Application {
 
                         ticks: {
                             fontColor: "white",
-                            beginAtZero: true
+                            beginAtZero: true,
+                            
+                            callback: function (value) {
+                                return Application_Utilities.Convert_Positive_Number_Scientific_Notation(value.toString());
+                            },
                             // suggestedMin: 0,
                             // suggestedMax: 1000
+                            // min = 0,
+                            // max = 5e+2
                         },
 
                         gridLines: {
@@ -50,8 +56,13 @@ class Visual_Application {
 
                         ticks: {
                             fontColor: "white",
-                            beginAtZero: true
-                            // min: 20000,
+                            beginAtZero: true,
+
+                            callback: function (value) {
+                                return (Math.round(value*100)/100).toString();
+                            },
+                            
+                            // min: 0,
                             // max: 5000
                         },
 
