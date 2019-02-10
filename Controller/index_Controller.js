@@ -7,7 +7,7 @@ const remote = require('electron').remote;
 
 require('../archivos_estaticos/chartjs-plugin-zoom');
 
-// var fs = require('fs');
+var fs = require('fs');
 // var PSMC = require('../Model/PSMC')
 // var serialize = require('node-serialize');
 
@@ -53,7 +53,7 @@ $(document).ready(function () {
                 $('#reset-scales').removeAttr('hidden');
                 $('#switch-selection').removeAttr('disabled');
             })
-        })
+        });
     })
 
 
@@ -290,7 +290,7 @@ $(document).ready(function () {
         var order = $(this).val();
         $('#order-m').val(order);
 
-        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector('0', 'sampling_vector', order - 1));
+        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
         Visual_Application.Configuration_Vector();
     })
 
@@ -299,11 +299,12 @@ $(document).ready(function () {
             number_of_matrix: parseInt($('#count-matrix').val()),
             order: parseInt($('#order-n').val()),
             sampling_vector: sampling_vector.jexcel('getRowData', 0),
+            name: $('#nssc-name').val(),
         }
 
         ipc.send('open-matrix-editor', values);
 
-        $('aside').removeClass('toggled');
+        // $('aside').removeClass('toggled');
     });
 
     // $('#test').on('click', function () {
@@ -363,20 +364,52 @@ $(document).ready(function () {
 
         //............
 
-        
+
 
     });
 
     ipc.on('nssc-json-result', function (event, arg) {
-        application.logic_application.Get_NSSC_Vectors($('#nssc-name').val(), arg, function () {
+        application.logic_application.Get_NSSC_Vectors(arg, function () {
             application.Visualize_NSSC();
         });
     });
 
     $(function () {
-        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector('0', 'sampling_vector'));
+        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector'));
         Visual_Application.Configuration_Vector();
     })
 
-    console.log(Math.round(4.2678 * 100)/100)
-})
+    $('#load-nssc-state').on('click', function () {
+        var options = {
+            filters: [
+                { name: 'SNSSC', extensions: ['snssc'] }
+            ],
+
+            // properties: ['multiSelections'],
+        }
+
+        dialog.showOpenDialog(options, function (arrPath) {
+            if (arrPath) {
+                fs.readFile(arrPath[0], function read(err, data) {
+                    if (err) {
+                        throw err;
+                    }
+
+                    var nssc_scenario = JSON.parse(data);
+
+                    $('#order-n').val(nssc_scenario.scenario[0].migMatrix.length)
+                    $('#order-m').val(nssc_scenario.scenario[0].migMatrix.length)
+                    $('#count-matrix').val(nssc_scenario.scenario.length)
+                    $('#nssc-name').val(nssc_scenario.name)
+
+                
+
+                    // sampling_vector.jexcel('setData', data_json, false)
+                    console.log(data[0])
+
+                    $('#open-matrix-editor').trigger('click');
+                });
+            }
+        });
+    });
+});

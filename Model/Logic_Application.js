@@ -43,9 +43,9 @@ class Application {
         })
     }
 
-    Get_NSSC_Vectors(name, json, callback) {
+    Get_NSSC_Vectors(json, callback) {
         Python_Communicator.get_Model_NSSC(json, 'Python_Scripts/get_Model_NSSC.py', (results) => {
-            var nssc = new NSSC(name, results.x_vector, results.IICR_specie);
+            var nssc = new NSSC(json.name, results.x_vector, results.IICR_specie, json);
             this.functions_collection.push(nssc);
             callback();
         })
@@ -82,6 +82,28 @@ class Application {
         }
 
         return last_nssc;
+    }
+
+    static Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector) { 
+        var scenario = [];
+        var time_of_change = 0;
+    
+        for (let index = 0; index < matrix_collection.length; index++) {
+          var content_of_scenario = { "time": 0, "demeSizes": [], "migMatrix": [] };
+          const matrix = matrix_collection[index];
+          const deme_sizes = deme_vector_collection[index];
+    
+          if (index != 0) time_of_change = parseFloat($('#time' + index).val());
+    
+          content_of_scenario.migMatrix = matrix.jexcel('getData', false);
+          content_of_scenario.time = time_of_change;
+    
+          content_of_scenario.demeSizes = deme_sizes.jexcel('getRowData', 0);
+    
+          scenario.push(content_of_scenario);
+        }
+    
+        return { "name": name, "samplingVector": sampling_vector, "scenario": scenario };
     }
 }
 

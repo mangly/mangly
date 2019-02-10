@@ -1,10 +1,11 @@
 'use strict'
 
 class NSSC {
-    constructor(name, x_vector, IICR_specie) {
+    constructor(name, x_vector, IICR_specie, scenario) {
         this.name = name;
         this.x_vector = x_vector;
         this.IICR_specie = IICR_specie;
+        this.scenario = scenario
         this.model = 'nssc';
     }
 
