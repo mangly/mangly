@@ -37,7 +37,10 @@ $(document).ready(function () {
       Visual_Application.Add_Matrix(html_matrix, order, matrix_collection, '#matrix', false);
     }
 
-    if(nssc_scenario) Application.Load_Scenario(nssc_scenario, matrix_collection, deme_vector_collection);
+    if (nssc_scenario) {
+      Application.Load_Scenario(nssc_scenario, matrix_collection, deme_vector_collection);
+      Visual_Application.Configuration_Vector();
+    };
   });
 
   $('#add-matrix').on('click', function () {

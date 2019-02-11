@@ -1,6 +1,6 @@
 // Modules to control application life and create native browser window
 const electron = require('electron');
-const { app, BrowserWindow, Menu} = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 const url = require('url');
 
@@ -15,7 +15,7 @@ let build_nssc
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow()
+  mainWindow = new BrowserWindow({ darkTheme: true })
   mainWindow.maximize()
 
   // and load the index.html of the app.
@@ -46,56 +46,56 @@ function createWindow() {
 app.on('ready', function () {
   createWindow()
 
-/*   const template = [
-    {
-      label: 'Edit',
-      submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
-        { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'pasteandmatchstyle' },
-        { role: 'delete' },
-        { role: 'selectall' }
-      ]
-    },
-    {
-      label: 'View',
-      submenu: [
-        { role: 'reload' },
-        //{ role: 'forcereload' },
-        { role: 'toggledevtools' },
-        { type: 'separator' },
-        { role: 'resetzoom' },
-        { role: 'zoomin' },
-        { role: 'zoomout' },
-        { type: 'separator' },
-        { role: 'togglefullscreen' }
-      ]
-    },
-    {
-      role: 'window',
-      submenu: [
-        { role: 'minimize' },
-        { role: 'close' }
-      ]
-    },
-    {
-      role: 'help',
-      submenu: [
-        {
-          label: 'Learn More',
-          click () { require('electron').shell.openExternal('https://electronjs.org') }
-        }
-      ]
-    }
-  ]
-
-  const menu = Menu.buildFromTemplate(template) */
-  Menu.setApplicationMenu(null);
+  /*   const template = [
+      {
+        label: 'Edit',
+        submenu: [
+          { role: 'undo' },
+          { role: 'redo' },
+          { type: 'separator' },
+          { role: 'cut' },
+          { role: 'copy' },
+          { role: 'paste' },
+          { role: 'pasteandmatchstyle' },
+          { role: 'delete' },
+          { role: 'selectall' }
+        ]
+      },
+      {
+        label: 'View',
+        submenu: [
+          { role: 'reload' },
+          //{ role: 'forcereload' },
+          { role: 'toggledevtools' },
+          { type: 'separator' },
+          { role: 'resetzoom' },
+          { role: 'zoomin' },
+          { role: 'zoomout' },
+          { type: 'separator' },
+          { role: 'togglefullscreen' }
+        ]
+      },
+      {
+        role: 'window',
+        submenu: [
+          { role: 'minimize' },
+          { role: 'close' }
+        ]
+      },
+      {
+        role: 'help',
+        submenu: [
+          {
+            label: 'Learn More',
+            click () { require('electron').shell.openExternal('https://electronjs.org') }
+          }
+        ]
+      }
+    ]
   
+    const menu = Menu.buildFromTemplate(template) */
+  Menu.setApplicationMenu(null);
+
 })
 
 
@@ -116,8 +116,8 @@ app.on('activate', function () {
   }
 })
 
-ipc.on('open-matrix-editor', function(event, args){
-  build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent:mainWindow, modal:true});
+ipc.on('open-matrix-editor', function (event, args) {
+  build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent: mainWindow, modal: true, darkTheme: true });
   build_nssc.webContents.openDevTools()
 
 
@@ -132,8 +132,8 @@ ipc.on('open-matrix-editor', function(event, args){
   })
 })
 
-ipc.on('nssc-json-result', function(event, args){
-    mainWindow.webContents.send('nssc-json-result', args)
-    // build_nssc.close();
+ipc.on('nssc-json-result', function (event, args) {
+  mainWindow.webContents.send('nssc-json-result', args)
+  // build_nssc.close();
 })
 
