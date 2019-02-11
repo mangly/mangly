@@ -294,8 +294,10 @@ $(document).ready(function () {
         Visual_Application.Configuration_Vector();
     })
 
+    var nssc_scenario;
     $('#open-matrix-editor').on('click', function () {
         var values = {
+            nssc_scenario: nssc_scenario,
             number_of_matrix: parseInt($('#count-matrix').val()),
             order: parseInt($('#order-n').val()),
             sampling_vector: sampling_vector.jexcel('getRowData', 0),
@@ -395,17 +397,19 @@ $(document).ready(function () {
                         throw err;
                     }
 
-                    var nssc_scenario = JSON.parse(data);
+                    nssc_scenario = JSON.parse(data);
 
-                    $('#order-n').val(nssc_scenario.scenario[0].migMatrix.length)
-                    $('#order-m').val(nssc_scenario.scenario[0].migMatrix.length)
-                    $('#count-matrix').val(nssc_scenario.scenario.length)
                     $('#nssc-name').val(nssc_scenario.name)
 
-                
+                    var order = nssc_scenario.scenario[0].migMatrix.length;
+                    $('#order-n').val(order);
+                    $('#order-m').val(order);
 
-                    // sampling_vector.jexcel('setData', data_json, false)
-                    console.log(data[0])
+                    $('#count-matrix').val(nssc_scenario.scenario.length)
+
+                    Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
+                    sampling_vector.jexcel('setData', [nssc_scenario.samplingVector], false);
+                    Visual_Application.Configuration_Vector();
 
                     $('#open-matrix-editor').trigger('click');
                 });

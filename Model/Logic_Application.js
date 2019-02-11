@@ -84,26 +84,37 @@ class Application {
         return last_nssc;
     }
 
-    static Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector) { 
+    static Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector) {
         var scenario = [];
         var time_of_change = 0;
-    
+
         for (let index = 0; index < matrix_collection.length; index++) {
-          var content_of_scenario = { "time": 0, "demeSizes": [], "migMatrix": [] };
-          const matrix = matrix_collection[index];
-          const deme_sizes = deme_vector_collection[index];
-    
-          if (index != 0) time_of_change = parseFloat($('#time' + index).val());
-    
-          content_of_scenario.migMatrix = matrix.jexcel('getData', false);
-          content_of_scenario.time = time_of_change;
-    
-          content_of_scenario.demeSizes = deme_sizes.jexcel('getRowData', 0);
-    
-          scenario.push(content_of_scenario);
+            var content_of_scenario = { "time": 0, "demeSizes": [], "migMatrix": [] };
+            const matrix = matrix_collection[index];
+            const deme_sizes = deme_vector_collection[index];
+
+            if (index != 0) time_of_change = parseFloat($('#time' + index).val());
+
+            content_of_scenario.migMatrix = matrix.jexcel('getData', false);
+            content_of_scenario.time = time_of_change;
+
+            content_of_scenario.demeSizes = deme_sizes.jexcel('getRowData', 0);
+
+            scenario.push(content_of_scenario);
         }
-    
+
         return { "name": name, "samplingVector": sampling_vector, "scenario": scenario };
+    }
+
+    static Load_Scenario(scenario, matrix_collection, deme_vector_collection) {
+        for (let index = 0; index < matrix_collection.length; index++) {
+            const matrix = matrix_collection[index];
+            const deme_sizes = deme_vector_collection[index];
+
+            matrix.jexcel('setData', scenario.scenario[index].migMatrix, false);
+            deme_sizes.jexcel('setData', [scenario.scenario[index].demeSizes], false);
+            if (index != 0) $('#time' + index).val(scenario.scenario[index].time);
+        }
     }
 }
 

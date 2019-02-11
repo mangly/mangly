@@ -390,6 +390,7 @@ class Visual_Application {
         $('.1xn thead.jexcel_label').remove();
         $('.1xn td.jexcel_label').text('Values:');
         $('.1xn td.jexcel_label').css("width", "60px");
+        // $('.1xn .jexcel_label').hide()
 
         $('.1xn').bind('contextmenu', function (e) {
             return false;

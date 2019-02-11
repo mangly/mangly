@@ -8,6 +8,7 @@ var serialize = require('node-serialize');
 var Visual_Application = require('../GUI/Visual_Application');
 var Application = require('../Model/Logic_Application');
 
+var nssc_scenario;
 var matrix_collection = [];
 var deme_vector_collection = [];
 var sampling_vector;
@@ -16,6 +17,7 @@ var name;
 
 $(document).ready(function () {
   ipc.on('parametters-nssc', function (event, arg) {
+    nssc_scenario = arg.nssc_scenario;
     name = arg.name;
     sampling_vector = arg.sampling_vector;
     order = arg.order;
@@ -34,7 +36,9 @@ $(document).ready(function () {
       var html_matrix = '<div class="matrix" style="padding:20px 0 40px 0" id="matrix' + index + '"></div>';
       Visual_Application.Add_Matrix(html_matrix, order, matrix_collection, '#matrix', false);
     }
-  })
+
+    if(nssc_scenario) Application.Load_Scenario(nssc_scenario, matrix_collection, deme_vector_collection);
+  });
 
   $('#add-matrix').on('click', function () {
     var html_time_dime_sizes = '<div class="row"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + matrix_collection.length + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>Deme Sizes:</span><div class="matrix 1xn" style="padding:20px 0 40px 0 0" id="deme' + matrix_collection.length + '"></div>';
@@ -42,27 +46,7 @@ $(document).ready(function () {
 
     var html = '<div class="matrix" style="padding:20px 0 40px 0" id="matrix' + matrix_collection.length + '"></div>';
     Visual_Application.Add_Matrix(html, order, matrix_collection, '#matrix', false);
-  })
-
-  // $('#increment-order').on('click', function () {
-  //   for (const deme of deme_vector_collection) {
-  //     deme.jexcel('insertColumn');
-  //   }
-
-  //   for (const matrix of matrix_collection) {
-  //     matrix.jexcel('insertColumn');
-  //     matrix.jexcel('insertRow');
-
-  //     for (let index = 0; index < order + 1; index++) {
-  //       matrix.jexcel('setHeader', index, (index + 1).toString());
-  //     }
-  //   }
-
-  //   $('.1xn td.jexcel_label').text('Values:');
-
-  //   order++;
-
-  // })
+  });
 
   $('#ok').on('click', function () {
     // var scenario = [];
@@ -86,11 +70,12 @@ $(document).ready(function () {
     // json_result = { "name": name, "samplingVector": sampling_vector, "scenario": scenario };
 
     ipc.send('nssc-json-result', Application.Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector));
+    // else Application.Load_Scenario(nssc_scenario, matrix_collection);
   });
 
   $('#save-configuration').on('click', function () {
     var options = {
-      title: 'Save as...',
+      title: 'Save...',
 
       filters: [
         { name: '', extensions: ['snssc'] }
