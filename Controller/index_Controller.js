@@ -12,6 +12,7 @@ var fs = require('fs');
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
 var Visual_Application = require('../GUI/Visual_Application')
+var NSSC = require('../Model/NSSC');
 
 $(document).ready(function () {
     $('#options-color-edit-remove *').attr('disabled', 'disabled');
@@ -71,9 +72,9 @@ $(document).ready(function () {
                             var nssc_file = JSON.parse(data);
                             var path_split = path.split('/');
                             var new_name = path_split[path_split.length - 1].slice(0, -5);
-                            nssc_file.name = new_name;
-                            application.logic_application.functions_collection.push(nssc_file);
-                            application.Visualize_NSSC_Saved(nssc_file);
+                            var nssc_function = new NSSC(new_name, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
+                            application.logic_application.functions_collection.push(nssc_function);
+                            application.Visualize_NSSC_Saved(nssc_function);
                         });
                     }
                 }
@@ -152,7 +153,7 @@ $(document).ready(function () {
 
                 if (items_selecteds.length == 0) $('#option-mu *').attr('disabled', 'disabled');
 
-                if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
+                if ($('#model').html() == 'Pairwise Sequentially Markovian Coalescent') {
                     $('#option-s *').removeAttr('disabled');
                     $('#option-mu *').removeAttr('disabled');
                     slider_s.noUiSlider.set(100);
@@ -170,7 +171,7 @@ $(document).ready(function () {
                 for (const element of items_selecteds) {
                     var graphic = application.logic_application.Get_Function(element);
 
-                    if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
+                    if ($('#model').html() == 'Pairwise Sequentially Markovian Coalescent') {
                         $('#option-s *').removeAttr('disabled');
                         $('#option-mu *').removeAttr('disabled');
                         slider_s.noUiSlider.set(graphic.S);
@@ -399,35 +400,49 @@ $(document).ready(function () {
     });
 
     $('#load-nssc-state').on('click', function () {
-        var options = {
-            filters: [
-                { name: 'SNSSC', extensions: ['snssc'] }
-            ],
+        if ($('#model').html() != 'The Non-Stationary Structured Coalescent') {
+            var options = {
+                filters: [
+                    { name: 'SNSSC', extensions: ['snssc'] }
+                ],
+            }
 
-            // properties: ['multiSelections'],
+            dialog.showOpenDialog(options, function (arrPath) {
+                if (arrPath) {
+                    fs.readFile(arrPath[0], function read(err, data) {
+                        if (err) {
+                            throw err;
+                        }
+
+                        nssc_scenario = JSON.parse(data);
+
+                        $('#nssc-name').val(nssc_scenario.name)
+
+                        var order = nssc_scenario.scenario[0].migMatrix.length;
+                        $('#order-n').val(order);
+                        $('#order-m').val(order);
+
+                        $('#count-matrix').val(nssc_scenario.scenario.length);
+
+                        $('#open-matrix-editor').trigger('click');
+                    });
+                }
+            });
         }
 
-        dialog.showOpenDialog(options, function (arrPath) {
-            if (arrPath) {
-                fs.readFile(arrPath[0], function read(err, data) {
-                    if (err) {
-                        throw err;
-                    }
+        else{
+            nssc_scenario = application.logic_application.Get_NSSC_Function(name_item_clicked).scenario;
+            
+            $('#nssc-name').val(nssc_scenario.name)
 
-                    nssc_scenario = JSON.parse(data);
+            var order = nssc_scenario.scenario[0].migMatrix.length;
+            $('#order-n').val(order);
+            $('#order-m').val(order);
 
-                    $('#nssc-name').val(nssc_scenario.name)
+            $('#count-matrix').val(nssc_scenario.scenario.length);
 
-                    var order = nssc_scenario.scenario[0].migMatrix.length;
-                    $('#order-n').val(order);
-                    $('#order-m').val(order);
-
-                    $('#count-matrix').val(nssc_scenario.scenario.length);
-
-                    $('#open-matrix-editor').trigger('click');
-                });
-            }
-        });
+            $('#open-matrix-editor').trigger('click');
+        }
     });
 
     $('#save-nssc').on('click', function () {
