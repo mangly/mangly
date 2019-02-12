@@ -8,7 +8,6 @@ const NSSC = require('./NSSC');
 class Application {
     constructor() {
         this.functions_collection = [];
-        // this.nssc_collection = [];
         this.Mu = 1.25e-8;
         this.S = 100;
     }
@@ -40,7 +39,7 @@ class Application {
             }
 
             callback();
-        })
+        });
     }
 
     Get_NSSC_Vectors(json, callback) {
@@ -71,6 +70,16 @@ class Application {
         }
 
         // return funct;
+    }
+
+    Get_NSSC_Function(name) {
+        for (const element of this.functions_collection) {
+            if (element.model == 'nssc' && element.name == name) {
+                return element;
+            }
+        }
+
+        return null;
     }
 
     Get_Last_NSSC_Function() {

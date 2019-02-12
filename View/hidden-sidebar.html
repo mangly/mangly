@@ -89,7 +89,7 @@ main{
             </span>
             <li><a href="#">File</a>
                 <ul class="sub_menu">
-                    <li><a id="open-file" href="#">Open File...</a></li>
+                    <li><a id="open-file" href="#">Open File...</a><small class="pl-4">open all files selected</small></li>
                     <li class="divider dropdown-divider"></li>
 
                     <!-- <li>
@@ -99,7 +99,7 @@ main{
                             <li><a href="#">Outdoor</a></li>
                         </ul>
                     </li> -->
-                    <li><a href="#">Save File...</a></li>
+                    <li><a id="save-nssc" href="#">Save NSSC model...</a><small class="pl-4">select nssc model to save</small></li>
                 </ul>
             </li>
             <li><a href="#">Configuration</a>
@@ -376,17 +376,6 @@ main{
                                                 </div>
                                             </div>
 
-                                            <!-- <div class="card p-4">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div style="overflow-x: scroll">
-                                                            <span>Sampling Vector:</span>
-                                                            <div id="sampling-vector" class="matrix 1xn" style="padding:20px 0 40px 0"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
-
                                             <div class="card p-4">
                                                 <div class="row">
                                                     <div class="col-sm-6">
@@ -415,9 +404,8 @@ main{
                                                         matrix editor</button>
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <div class="col-sm-6" style="padding-left:19%"><button id="load-nssc-state"
-                                                            class="btn btn-light" type="submit">Load incomplete model
-                                                            saved</button>
+                                                    <div class="col-sm-6" style="padding-left:50%"><button id="load-nssc-state"
+                                                            class="btn btn-light" type="submit">Load scenario</button>
                                                     </div>
                                                 </div>
                                             </div>

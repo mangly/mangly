@@ -29,7 +29,7 @@ class Visual_Application {
                         ticks: {
                             fontColor: "white",
                             beginAtZero: true,
-                            
+
                             callback: function (value) {
                                 return Application_Utilities.Convert_Positive_Number_Scientific_Notation(value.toString());
                             },
@@ -59,9 +59,9 @@ class Visual_Application {
                             beginAtZero: true,
 
                             callback: function (value) {
-                                return (Math.round(value*100)/100).toString();
+                                return (Math.round(value * 100) / 100).toString();
                             },
-                            
+
                             // min: 0,
                             // max: 5000
                         },
@@ -190,6 +190,18 @@ class Visual_Application {
         this.chart.update();
     }
 
+    Visualize_NSSC_Saved(nssc_function) {
+        var color = this.Get_Random_Color();
+
+        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_function.x_vector, nssc_function.IICR_specie), 'label': nssc_function.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+
+        this.chart.data.datasets.push(graphic);
+
+        this.Visualize_element_of_list(nssc_function.name, nssc_function.model, color);
+
+        this.chart.update();
+    }
+
     Visualize_element_of_list(name, model, color) {
         var html = '<div class="pb-4 listview__item"><label class="pl-0 pr-4 custom-control custom-control--char"><input class="custom-control-input" type="checkbox"><span class="custom-control--char__helper" style="background-color:' + color + '"><i></i></span></label><div class="listview__content"><div class="listview__heading">' + name + '</div><p>' + model + ' model</p></div><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-edit zmdi-hc-2x"></i></span></label><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></span></label></div>';
         $('#list-graphics').append(html);
@@ -203,7 +215,6 @@ class Visual_Application {
 
         this.Visualize_element_of_list(nssc.name, nssc.model, color);
         this.chart.data.datasets.push(graphic);
-
 
         this.chart.update();
     }
@@ -365,7 +376,7 @@ class Visual_Application {
 
     static Fill_Initial_Data_Matrix(value, order) {
         var data = new Array();
-        
+
         for (let index_i = 0; index_i < order; index_i++) {
             var row = new Array();
             for (let index_j = 0; index_j < order; index_j++) {
@@ -418,8 +429,6 @@ class Visual_Application {
         $('#matrix-collection').append(html);
 
         var matrix = $(id + matrix_collection.length);
-
-        // console.log(this.Fill_Initial_Data_Matrix('', order));
 
         if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector('1', 'deme_sizes', order));
 

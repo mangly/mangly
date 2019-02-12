@@ -8,8 +8,8 @@ const remote = require('electron').remote;
 require('../archivos_estaticos/chartjs-plugin-zoom');
 
 var fs = require('fs');
-// var PSMC = require('../Model/PSMC')
-// var serialize = require('node-serialize');
+ var NSSC = require('../Model/NSSC')
+var serialize = require('node-serialize');
 
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
@@ -43,16 +43,36 @@ $(document).ready(function () {
 
         // Open a File or Files selected for user
         dialog.showOpenDialog(options, function (arrPath) {
-            application.logic_application.Add_File(arrPath, function () {
 
-                application.Visualize_PSMC_MSMC();
+            var array_extensions = arrPath[0].split('.');
+            var model_type = array_extensions[array_extensions.length - 1];
 
-                $('aside').removeClass('toggled');
+            if (model_type == 'psmc' || model_type == 'msmc') {
+                application.logic_application.Add_File(arrPath, function () {
 
-                $('#options-scale-axis *').removeAttr('disabled');
-                $('#reset-scales').removeAttr('hidden');
-                $('#switch-selection').removeAttr('disabled');
-            })
+                    application.Visualize_PSMC_MSMC();
+
+                    $('aside').removeClass('toggled');
+
+                    $('#options-scale-axis *').removeAttr('disabled');
+                    $('#reset-scales').removeAttr('hidden');
+                    $('#switch-selection').removeAttr('disabled');
+                })
+            }
+
+            else {
+                if (arrPath) {
+                    fs.readFile(arrPath[0], function read(err, data) {
+                        if (err) {
+                            throw err;
+                        }
+
+                        var nssc_file = JSON.parse(data);
+                        application.logic_application.functions_collection.push(nssc_file);
+                        application.Visualize_NSSC_Saved(nssc_file);
+                    });
+                }
+            }
         });
     })
 
@@ -403,5 +423,25 @@ $(document).ready(function () {
                 });
             }
         });
+    });
+
+    $('#save-nssc').on('click', function () {
+        var nssc_save = JSON.stringify(application.logic_application.Get_NSSC_Function(name_item_clicked));
+
+        var options = {
+            title: 'Save...',
+
+            filters: [
+                { name: '', extensions: ['nssc'] }
+            ],
+        }
+
+        dialog.showSaveDialog(options, function (filename) {
+            fs.writeFile(filename, nssc_save, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        })
     });
 });
