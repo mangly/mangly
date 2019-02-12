@@ -47,30 +47,66 @@
                 </svg>
             </div>
         </div>
-
-        <section class="content">
-            <div class="content__inner">
-                <div class="quick-stats__info card p-4">
-                    <h2><span id="graphic">Plot NSSC model</span></h2>
-                    <small>Enter all parametters and fill matrices</small>
-                </div>
-                <!-- <div class="card"> -->
-                <!-- <div class="card-header">Plot NSSC model</div> -->
-                <!-- <div class="card-body"> -->
+        <ul class="nav justify-content-end pb-1" style="position:fixed; width:100%; z-index: 99; background-color: black">
+            <li class="nav-item">
                 <header class="content__title">
                     <div class="actions">
-                        <span style="line-height:35px">Options</span>
-                        <div class="dropdown actions__item">
-                            <i data-toggle="dropdown" class="zmdi zmdi-more-vert"></i>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a id="add-matrix" class="dropdown-item">Add matrix</a>
-                                <!-- <a id="increment-order" class="dropdown-item">Increment order</a> -->
-                                <a id="save-configuration" class="dropdown-item">Save configuration</a>
+                        <div class="row pr-4">
+                            <div class="col-sm-6"><span class="pr-5" style="line-height:35px">Options</span></div>
+                            <div class="col-sm-6">
+                                <div class="dropdown actions__item">
+                                    <i data-toggle="dropdown" class="zmdi zmdi-more-vert"></i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a id="add-matrix" class="dropdown-item">Add matrix</a>
+                                        <a id="increment-order" class="dropdown-item">Increment order</a>
+                                        <a id="save-configuration" class="dropdown-item">Save configuration</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </header>
-                <div id="matrix-collection"></div>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li> -->
+        </ul>
+
+        <section class="content" style="padding-top:75px">
+            <div class="content__inner">
+                <!-- <div class="quick-stats__info card p-4">
+                    <h2><span id="graphic">Plot NSSC model</span></h2>
+                    <small>Enter all parametters and fill matrices</small>
+                </div> -->
+                <div class="card p-4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div style="overflow-x: scroll">
+                                <span>Sampling Vector:</span>
+                                <div id="sampling-vector" class="matrix 1xn" style="padding:20px 0 20px 0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="card"> -->
+                <!-- <div class="card-header">Plot NSSC model</div> -->
+                <!-- <div class="card-body"> -->
+                <div class="card p-4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div>
+                                <span>Matrices and Deme sizes:</span>
+                                <div id="matrix-collection" style="overflow-x: scroll; padding: 0 0 20px 0"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- </div> -->
                 <!-- </div> -->
                 <button id="ok" class="btn btn-light" type="submit">Accept</button>

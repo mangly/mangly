@@ -26,7 +26,7 @@ $(document).ready(function () {
     // Instance Visual Application
     var application = new Visual_Application($('#mycanvas'), new Application());
 
-    var sampling_vector = $('#sampling-vector');
+    // var sampling_vector = [];
     var items_selecteds = [];
     application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
 
@@ -289,9 +289,6 @@ $(document).ready(function () {
     $('#order-n').on('keyup', function () {
         var order = $(this).val();
         $('#order-m').val(order);
-
-        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
-        Visual_Application.Configuration_Vector();
     })
 
     var nssc_scenario;
@@ -300,7 +297,7 @@ $(document).ready(function () {
             nssc_scenario: nssc_scenario,
             number_of_matrix: parseInt($('#count-matrix').val()),
             order: parseInt($('#order-n').val()),
-            sampling_vector: sampling_vector.jexcel('getRowData', 0),
+            // sampling_vector: sampling_vector.jexcel('getRowData', 0),
             name: $('#nssc-name').val(),
         }
 
@@ -376,11 +373,6 @@ $(document).ready(function () {
         });
     });
 
-    $(function () {
-        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector'));
-        Visual_Application.Configuration_Vector();
-    })
-
     $('#load-nssc-state').on('click', function () {
         var options = {
             filters: [
@@ -405,11 +397,7 @@ $(document).ready(function () {
                     $('#order-n').val(order);
                     $('#order-m').val(order);
 
-                    $('#count-matrix').val(nssc_scenario.scenario.length)
-
-                    Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
-                    sampling_vector.jexcel('setData', [nssc_scenario.samplingVector], false);
-                    Visual_Application.Configuration_Vector();
+                    $('#count-matrix').val(nssc_scenario.scenario.length);
 
                     $('#open-matrix-editor').trigger('click');
                 });
