@@ -8,8 +8,6 @@ const remote = require('electron').remote;
 require('../archivos_estaticos/chartjs-plugin-zoom');
 
 var fs = require('fs');
- var NSSC = require('../Model/NSSC')
-var serialize = require('node-serialize');
 
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
@@ -43,38 +41,45 @@ $(document).ready(function () {
 
         // Open a File or Files selected for user
         dialog.showOpenDialog(options, function (arrPath) {
+            if (arrPath) {
+                var paths = Application_Utilities.Divide_Paths(arrPath);
+                var psmc_msmc_paths = paths[0];
+                var nssc_paths = paths[1];
 
-            var array_extensions = arrPath[0].split('.');
-            var model_type = array_extensions[array_extensions.length - 1];
+                // var array_extensions = arrPath[0].split('.');
+                // var model_type = array_extensions[array_extensions.length - 1];
 
-            if (model_type == 'psmc' || model_type == 'msmc') {
-                application.logic_application.Add_File(arrPath, function () {
+                // if (model_type == 'psmc' || model_type == 'msmc') {
+                if (psmc_msmc_paths.length != 0) {
+                    application.logic_application.Add_File(psmc_msmc_paths, function () {
 
-                    application.Visualize_PSMC_MSMC();
+                        application.Visualize_PSMC_MSMC();
 
-                    $('aside').removeClass('toggled');
+                        $('#options-scale-axis *').removeAttr('disabled');
+                        $('#reset-scales').removeAttr('hidden');
+                        $('#switch-selection').removeAttr('disabled');
+                    })
+                }
 
-                    $('#options-scale-axis *').removeAttr('disabled');
-                    $('#reset-scales').removeAttr('hidden');
-                    $('#switch-selection').removeAttr('disabled');
-                })
-            }
+                if (nssc_paths.length != 0) {
+                    for (const path of nssc_paths) {
+                        fs.readFile(path, function read(err, data) {
+                            if (err) {
+                                throw err;
+                            }
 
-            else {
-                if (arrPath) {
-                    fs.readFile(arrPath[0], function read(err, data) {
-                        if (err) {
-                            throw err;
-                        }
-
-                        var nssc_file = JSON.parse(data);
-                        application.logic_application.functions_collection.push(nssc_file);
-                        application.Visualize_NSSC_Saved(nssc_file);
-                    });
+                            var nssc_file = JSON.parse(data);
+                            var path_split = path.split('/');
+                            var new_name = path_split[path_split.length - 1].slice(0, -5);
+                            nssc_file.name = new_name;
+                            application.logic_application.functions_collection.push(nssc_file);
+                            application.Visualize_NSSC_Saved(nssc_file);
+                        });
+                    }
                 }
             }
         });
-    })
+    });
 
 
     var name_item_clicked;
@@ -426,22 +431,18 @@ $(document).ready(function () {
     });
 
     $('#save-nssc').on('click', function () {
-        var nssc_save = JSON.stringify(application.logic_application.Get_NSSC_Function(name_item_clicked));
+        var nssc_model = application.logic_application.Get_NSSC_Function(name_item_clicked)
+        var nssc_save = JSON.stringify(nssc_model);
 
         var options = {
             title: 'Save...',
+            defaultPath: nssc_model.name,
 
             filters: [
-                { name: '', extensions: ['nssc'] }
+                { name: 'NSSC', extensions: ['nssc'] }
             ],
         }
 
-        dialog.showSaveDialog(options, function (filename) {
-            fs.writeFile(filename, nssc_save, function (err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
-        })
+        Application_Utilities.Save_File(nssc_save, options);
     });
 });

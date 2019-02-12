@@ -1,5 +1,8 @@
 'use strict'
 
+const { dialog } = require('electron').remote;
+var fs = require('fs');
+
 class Application_Utilities {
 
     static Generate_Data_To_Chart(vector_X, vector_Y) {
@@ -49,7 +52,68 @@ class Application_Utilities {
 
         var result = parseFloat([number.slice(0, 1), '.', number.slice(1)].join(''));
 
-        return (Math.round(result*100)/100).toString() + 'e+' + (count - 1).toString();
+        return (Math.round(result * 100) / 100).toString() + 'e+' + (count - 1).toString();
+    }
+
+    static Save_File(file, options) {
+        dialog.showSaveDialog(options, function (filename) {
+            fs.writeFile(filename, file, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        });
+    }
+
+    // static Load_PSMC_MSMC_Files(application, options) {
+    //     dialog.showOpenDialog(options, function (arrPath) {
+    //         if (arrPath) {
+    //             arrPath = this.Divide_Paths[0];
+    //             if (arrPath.length != 0) {
+    //                 application.logic_application.Add_File(arrPath, function () {
+    //                     application.Visualize_PSMC_MSMC();
+    //                 });
+    //             }
+    //         }
+    //     });
+    // }
+
+    // static Load_NSSC_Files(application, options) {
+    //     dialog.showOpenDialog(options, function (arrPath) {
+    //         if (arrPath) {
+    //             arrPath = this.Divide_Paths[1];
+    //             if (arrPath.length != 0) {
+    //                 for (const path of arrPath) {
+    //                     fs.readFile(path, function read(err, data) {
+    //                         if (err) {
+    //                             throw err;
+    //                         }
+
+    //                         var nssc_file = JSON.parse(data);
+    //                         application.logic_application.functions_collection.push(nssc_file);
+    //                         application.Visualize_NSSC_Saved(nssc_file);
+    //                     });
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
+
+    static Get_Model_Selected(path) {
+        var array_extensions = path.split('.');
+        return array_extensions[array_extensions.length - 1];
+    }
+
+    static Divide_Paths(arrPath) {
+        var psmc_msmc_paths = [];
+        var nssc_paths = [];
+
+        for (const path of arrPath) {
+            if (this.Get_Model_Selected(path) != 'nssc') psmc_msmc_paths.push(path);
+            else nssc_paths.push(path);
+        }
+
+        return [psmc_msmc_paths, nssc_paths];
     }
 }
 

@@ -7,6 +7,7 @@ var serialize = require('node-serialize');
 
 var Visual_Application = require('../GUI/Visual_Application');
 var Application = require('../Model/Logic_Application');
+var Application_Utilities = require('../Utilities/Application_Utilities');
 
 var nssc_scenario;
 var matrix_collection = [];
@@ -58,23 +59,18 @@ $(document).ready(function () {
   });
 
   $('#save-configuration').on('click', function () {
+    var json_result = Application.Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
+    var json_save = JSON.stringify(json_result);
+
     var options = {
       title: 'Save...',
+      defaultPath: json_result.name,
 
       filters: [
-        { name: '', extensions: ['snssc'] }
+        { name: 'SNSSC', extensions: ['snssc'] }
       ],
     }
 
-    dialog.showSaveDialog(options, function (filename) {
-
-      var json_result = JSON.stringify(Application.Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)));
-
-      fs.writeFile(filename, json_result, function (err) {
-        if (err) {
-          console.log(err);
-        }
-      });
-    })
+    Application_Utilities.Save_File(json_save, options);
   });
 });
