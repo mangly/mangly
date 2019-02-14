@@ -6,6 +6,7 @@ const { dialog } = require('electron').remote;
 const remote = require('electron').remote;
 
 require('../archivos_estaticos/chartjs-plugin-zoom');
+// require('chart.js')
 
 var fs = require('fs');
 
@@ -46,6 +47,7 @@ $(document).ready(function () {
                 var paths = Application_Utilities.Divide_Paths(arrPath);
                 var psmc_msmc_paths = paths[0];
                 var nssc_paths = paths[1];
+                $('#canvas-container').removeClass('disabled');
 
                 // var array_extensions = arrPath[0].split('.');
                 // var model_type = array_extensions[array_extensions.length - 1];
@@ -459,5 +461,22 @@ $(document).ready(function () {
         }
 
         Application_Utilities.Save_File(nssc_save, options);
+    });
+    
+    $('#mycanvas').bind('mousewheel', function(e){
+        if(e.originalEvent.wheelDelta /120 > 0) {
+            $('#zoom').removeClass('zmdi-zoom-out');
+            $('#zoom').addClass('zmdi-zoom-in');
+            // console.log('scrolling up !');
+        }
+        else{
+            $('#zoom').removeClass('zmdi-zoom-in');
+            $('#zoom').addClass('zmdi-zoom-out');
+            // console.log('scrolling down !');
+        }
+    });
+
+    $('#reset-zoom').on('click', function () {
+        application.Reset_Zoom();
     });
 });

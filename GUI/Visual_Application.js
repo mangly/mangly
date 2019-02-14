@@ -4,9 +4,9 @@ const Application_Utilities = require('../Utilities/Application_Utilities');
 
 class Visual_Application {
     constructor(canvas, logic_application) {
-        this.canvas;
+        this.canvas = canvas;
         this.logic_application = logic_application;
-        this.chart = new Chart(canvas, {
+        this.chart = new Chart(this.canvas, {
             type: 'line',
             data: {
                 datasets: [],
@@ -335,6 +335,10 @@ class Visual_Application {
         }
 
         this.chart.update();
+    }
+
+    Reset_Zoom() {
+        this.chart.resetZoom();
     }
 
     Visualize_Information_Of_Functions(items_selecteds, name, theta, rho, model) {

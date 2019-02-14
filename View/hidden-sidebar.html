@@ -68,6 +68,14 @@ main{
         {
             padding: 0;
         }
+
+        div.disabled
+        {
+            pointer-events: none;
+            /* for "disabled" effect */
+            /* opacity: 0.5;
+            background: #CCC; */
+        }
     </style>
 
 </head>
@@ -418,8 +426,19 @@ main{
                 </div>
                 <div class="col-lg-8 col-md-12 col-sm-12">
                     <div class="card" style="height: 100%">
-                        <div class="card-header">Graph of models</div>
-                        <div class="card-body" style="height: 100%;">
+                        <div class="card-header" style="padding-bottom:10.5px">
+                            <div class="row">
+                                <div class="col-sm-10">Graph of models</div>
+                                <div class="col-sm-1"><i style="line-height: 22px" id="zoom" class="zmdi zmdi-zoom-in zmdi-hc-3x float-right"></i></div>
+                                <div class="col-sm-1"></span> <button id="reset-zoom" style="height:24px; width: 60px; line-height: 7px"
+                                        class="btn btn-dark btn--icon-text float-right">
+                                        Reset</button></div>
+
+                            </div>
+
+
+                        </div>
+                        <div id="canvas-container" class="card-body disabled" style="height: 100%">
                             <canvas style="height:100%; width: 100%;" id="mycanvas"></canvas>
                         </div>
                     </div>
