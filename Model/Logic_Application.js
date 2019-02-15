@@ -1,5 +1,6 @@
 'use strict'
 
+var fs = require('fs');
 const Python_Communicator = require('../Utilities/Python_Communicator');
 const PSMC = require('./PSMC');
 const MSMC = require('./MSMC');
@@ -22,7 +23,7 @@ class Application {
         return null;
     }
 
-    Add_File(path_collection, callback) {
+    Add_File_PSMC_MSMC(path_collection, callback) {
         Python_Communicator.get_File_Results(path_collection, 'Python_Scripts/get_File_Results.py', (results) => {
             for (const element of results.file_collection) {
                 if (this.Get_Function(element.name) == null) {
@@ -42,10 +43,26 @@ class Application {
         });
     }
 
+    Add_File_NSSC(path, callback) {
+        Application.Load_File(path, (nssc_file) => {
+            var path_split = path.split('/');
+            var new_name = path_split[path_split.length - 1].slice(0, -5);
+
+            if (this.Get_Function(new_name) == null) {
+                var nssc_function = new NSSC(new_name, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
+                this.functions_collection.push(nssc_function);
+                callback(nssc_function);
+            }
+        });
+    }
+
     Get_NSSC_Vectors(json, callback) {
         Python_Communicator.get_Model_NSSC(json, 'Python_Scripts/get_Model_NSSC.py', (results) => {
-            var nssc = new NSSC(json.name, results.x_vector, results.IICR_specie, json);
-            this.functions_collection.push(nssc);
+            if (this.Get_Function(json.name) == null) {
+                var nssc = new NSSC(json.name, results.x_vector, results.IICR_specie, json);
+                this.functions_collection.push(nssc);
+            }
+
             callback();
         })
     }
@@ -125,6 +142,24 @@ class Application {
             sampling_vector.jexcel('setData', [scenario.samplingVector], false);
             if (index != 0) $('#time' + index).val(scenario.scenario[index].time);
         }
+    }
+
+    static Load_File(path, callback) {
+        fs.readFile(path, function read(err, data) {
+            if (err) {
+                throw err;
+            }
+
+            callback(JSON.parse(data));
+        });
+    }
+
+    static Save_File(filename, file) {
+        fs.writeFile(filename, file, function (err) {
+            if (err) {
+                console.log(err);
+            }
+        });
     }
 }
 

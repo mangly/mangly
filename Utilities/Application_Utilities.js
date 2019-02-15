@@ -1,8 +1,5 @@
 'use strict'
 
-const { dialog } = require('electron').remote;
-var fs = require('fs');
-
 class Application_Utilities {
 
     static Generate_Data_To_Chart(vector_X, vector_Y) {
@@ -55,14 +52,17 @@ class Application_Utilities {
         return (Math.round(result * 100) / 100).toString() + 'e+' + (count - 1).toString();
     }
 
-    static Save_File(file, options) {
-        dialog.showSaveDialog(options, function (filename) {
-            fs.writeFile(filename, file, function (err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
-        });
+    static Load_Principal_Window_Data(scenario, callback){
+      
+        $('#nssc-name').val(scenario.name)
+
+        var order = scenario.scenario[0].migMatrix.length;
+        $('#order-n').val(order);
+        $('#order-m').val(order);
+
+        $('#count-matrix').val(scenario.scenario.length);
+
+        callback();
     }
 
     // static Load_PSMC_MSMC_Files(application, options) {

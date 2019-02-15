@@ -2,12 +2,8 @@ const electron = require('electron');
 const { dialog } = require('electron').remote;
 const ipc = electron.ipcRenderer;
 
-var fs = require('fs');
-var serialize = require('node-serialize');
-
 var Visual_Application = require('../GUI/Visual_Application');
 var Application = require('../Model/Logic_Application');
-var Application_Utilities = require('../Utilities/Application_Utilities');
 
 var nssc_scenario;
 var matrix_collection = [];
@@ -71,6 +67,8 @@ $(document).ready(function () {
       ],
     }
 
-    Application_Utilities.Save_File(json_save, options);
+    dialog.showSaveDialog(options, function (filename) {
+      Application.Save_File(filename, json_save);
+    });
   });
 });

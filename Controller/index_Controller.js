@@ -49,12 +49,8 @@ $(document).ready(function () {
                 var nssc_paths = paths[1];
                 $('#canvas-container').removeClass('disabled');
 
-                // var array_extensions = arrPath[0].split('.');
-                // var model_type = array_extensions[array_extensions.length - 1];
-
-                // if (model_type == 'psmc' || model_type == 'msmc') {
                 if (psmc_msmc_paths.length != 0) {
-                    application.logic_application.Add_File(psmc_msmc_paths, function () {
+                    application.logic_application.Add_File_PSMC_MSMC(psmc_msmc_paths, function () {
 
                         application.Visualize_PSMC_MSMC();
 
@@ -66,16 +62,7 @@ $(document).ready(function () {
 
                 if (nssc_paths.length != 0) {
                     for (const path of nssc_paths) {
-                        fs.readFile(path, function read(err, data) {
-                            if (err) {
-                                throw err;
-                            }
-
-                            var nssc_file = JSON.parse(data);
-                            var path_split = path.split('/');
-                            var new_name = path_split[path_split.length - 1].slice(0, -5);
-                            var nssc_function = new NSSC(new_name, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
-                            application.logic_application.functions_collection.push(nssc_function);
+                        application.logic_application.Add_File_NSSC(path, function(nssc_function){
                             application.Visualize_NSSC_Saved(nssc_function);
                         });
                     }
@@ -411,30 +398,19 @@ $(document).ready(function () {
 
             dialog.showOpenDialog(options, function (arrPath) {
                 if (arrPath) {
-                    fs.readFile(arrPath[0], function read(err, data) {
-                        if (err) {
-                            throw err;
-                        }
-
-                        nssc_scenario = JSON.parse(data);
-
-                        $('#nssc-name').val(nssc_scenario.name)
-
-                        var order = nssc_scenario.scenario[0].migMatrix.length;
-                        $('#order-n').val(order);
-                        $('#order-m').val(order);
-
-                        $('#count-matrix').val(nssc_scenario.scenario.length);
-
-                        $('#open-matrix-editor').trigger('click');
+                    Application.Load_File(arrPath[0], function (scenario) {
+                        nssc_scenario = scenario;
+                        Application_Utilities.Load_Principal_Window_Data(scenario, function () {
+                            $('#open-matrix-editor').trigger('click');
+                        });
                     });
                 }
             });
         }
 
-        else{
+        else {
             nssc_scenario = application.logic_application.Get_NSSC_Function(name_item_clicked).scenario;
-            
+
             $('#nssc-name').val(nssc_scenario.name)
 
             var order = nssc_scenario.scenario[0].migMatrix.length;
@@ -460,16 +436,19 @@ $(document).ready(function () {
             ],
         }
 
-        Application_Utilities.Save_File(nssc_save, options);
+        // Application_Utilities.Save_File(nssc_save, options);
+        dialog.showSaveDialog(options, function (filename) {
+            Application_Utilities.Save_File(filename, nssc_save);
+        });
     });
-    
-    $('#mycanvas').bind('mousewheel', function(e){
-        if(e.originalEvent.wheelDelta /120 > 0) {
+
+    $('#mycanvas').bind('mousewheel', function (e) {
+        if (e.originalEvent.wheelDelta / 120 > 0) {
             $('#zoom').removeClass('zmdi-zoom-out');
             $('#zoom').addClass('zmdi-zoom-in');
             // console.log('scrolling up !');
         }
-        else{
+        else {
             $('#zoom').removeClass('zmdi-zoom-in');
             $('#zoom').addClass('zmdi-zoom-out');
             // console.log('scrolling down !');
