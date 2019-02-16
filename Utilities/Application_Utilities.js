@@ -52,8 +52,8 @@ class Application_Utilities {
         return (Math.round(result * 100) / 100).toString() + 'e+' + (count - 1).toString();
     }
 
-    static Load_Principal_Window_Data(scenario, callback){
-      
+    static Load_Principal_Window_Data(scenario, callback) {
+
         $('#nssc-name').val(scenario.name)
 
         var order = scenario.scenario[0].migMatrix.length;
@@ -64,40 +64,6 @@ class Application_Utilities {
 
         callback();
     }
-
-    // static Load_PSMC_MSMC_Files(application, options) {
-    //     dialog.showOpenDialog(options, function (arrPath) {
-    //         if (arrPath) {
-    //             arrPath = this.Divide_Paths[0];
-    //             if (arrPath.length != 0) {
-    //                 application.logic_application.Add_File(arrPath, function () {
-    //                     application.Visualize_PSMC_MSMC();
-    //                 });
-    //             }
-    //         }
-    //     });
-    // }
-
-    // static Load_NSSC_Files(application, options) {
-    //     dialog.showOpenDialog(options, function (arrPath) {
-    //         if (arrPath) {
-    //             arrPath = this.Divide_Paths[1];
-    //             if (arrPath.length != 0) {
-    //                 for (const path of arrPath) {
-    //                     fs.readFile(path, function read(err, data) {
-    //                         if (err) {
-    //                             throw err;
-    //                         }
-
-    //                         var nssc_file = JSON.parse(data);
-    //                         application.logic_application.functions_collection.push(nssc_file);
-    //                         application.Visualize_NSSC_Saved(nssc_file);
-    //                     });
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
 
     static Get_Model_Selected(path) {
         var array_extensions = path.split('.');
@@ -114,6 +80,18 @@ class Application_Utilities {
         }
 
         return [psmc_msmc_paths, nssc_paths];
+    }
+
+    static Equals(a_collection, b_collection) {
+        if (a_collection.length == b_collection.length) {
+            for (let index = 0; index < a_collection.length; index++) {
+                if (a_collection[index] != b_collection[index]) return false;
+            }
+            
+            return true;
+        }
+
+        else return false;
     }
 }
 

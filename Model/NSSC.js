@@ -1,5 +1,7 @@
 'use strict'
 
+var Application_Utilities = require('../Utilities/Application_Utilities');
+
 class NSSC {
     constructor(name, x_vector, IICR_specie, scenario) {
         this.name = name;
@@ -16,6 +18,10 @@ class NSSC {
 
     //     return clone;
     // }
+
+    Equals(nssc) {
+        return (this.name == nssc.name || (Application_Utilities.Equals(this.x_vector, nssc.x_vector) && Application_Utilities.Equals(this.IICR_specie, nssc.IICR_specie)));
+    }
 }
 
 module.exports = NSSC

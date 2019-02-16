@@ -1,5 +1,7 @@
 'use strict'
 
+var Application_Utilities = require('../Utilities/Application_Utilities');
+
 class MSMC {
     constructor(name, time, IICR_k, Mu){
         this.name = name;
@@ -15,6 +17,10 @@ class MSMC {
         clone.IICR_k = this.IICR_k.slice();
 
         return clone;
+    }
+
+    Equals(msmc) {
+        return (this.name == msmc.name || (Application_Utilities.Equals(this.time, msmc.time) && Application_Utilities.Equals(this.IICR_k, msmc.IICR_k)));
     }
 }
 

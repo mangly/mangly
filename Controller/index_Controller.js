@@ -3,17 +3,17 @@ const ipc = electron.ipcRenderer;
 
 const { dialog } = require('electron').remote;
 
-const remote = require('electron').remote;
-
 require('../archivos_estaticos/chartjs-plugin-zoom');
 // require('chart.js')
 
-var fs = require('fs');
+// var fs = require('fs');
+var remote = require('electron').remote;
 
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
-var Visual_Application = require('../GUI/Visual_Application')
-var NSSC = require('../Model/NSSC');
+var Visual_Application = require('../GUI/Visual_Application');
+var ArgumentException = require('../Utilities/Exception');
+const main_Window = remote.getCurrentWindow()
 
 $(document).ready(function () {
     $('#options-color-edit-remove *').attr('disabled', 'disabled');
@@ -45,27 +45,45 @@ $(document).ready(function () {
         dialog.showOpenDialog(options, function (arrPath) {
             if (arrPath) {
                 var paths = Application_Utilities.Divide_Paths(arrPath);
-                var psmc_msmc_paths = paths[0];
-                var nssc_paths = paths[1];
+                // var psmc_msmc_paths = paths[0];
+                // var nssc_paths = paths[1];
                 $('#canvas-container').removeClass('disabled');
 
-                if (psmc_msmc_paths.length != 0) {
-                    application.logic_application.Add_File_PSMC_MSMC(psmc_msmc_paths, function () {
+                if (paths[0].length != 0) {
+                    application.logic_application.Add_File_PSMC_MSMC(paths, function (err) {
+                        try {
+                            if (err) {
+                                throw new ArgumentException(err);
+                            }
 
-                        application.Visualize_PSMC_MSMC();
+                            application.Visualize_PSMC_MSMC();
 
-                        $('#options-scale-axis *').removeAttr('disabled');
-                        $('#reset-scales').removeAttr('hidden');
-                        $('#switch-selection').removeAttr('disabled');
-                    })
+                            $('#options-scale-axis *').removeAttr('disabled');
+                            $('#reset-scales').removeAttr('hidden');
+                            $('#switch-selection').removeAttr('disabled');
+                        }
+
+                        catch (exception) {
+                            dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
+                        }
+
+                    });
                 }
 
-                if (nssc_paths.length != 0) {
-                    for (const path of nssc_paths) {
-                        application.logic_application.Add_File_NSSC(path, function(nssc_function){
-                            application.Visualize_NSSC_Saved(nssc_function);
-                        });
-                    }
+                if (paths[1].length != 0) {
+                    application.logic_application.Add_File_NSSC(paths, function (err) {
+                        try {
+                            if (err) {
+                                throw new ArgumentException(err);
+                            }
+
+                            application.Visualize_NSSC_Saved();
+                        }
+
+                        catch (exception) {
+                            dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
+                        }
+                    });
                 }
             }
         });
@@ -458,4 +476,8 @@ $(document).ready(function () {
     $('#reset-zoom').on('click', function () {
         application.Reset_Zoom();
     });
+
+    // a= [1,2,3,4]
+    // b= [1,2,3,4,5]
+    // console.log(Application_Utilities.Equals(a,b))
 });

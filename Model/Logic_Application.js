@@ -13,6 +13,14 @@ class Application {
         this.S = 100;
     }
 
+    Contains(funct) {
+        for (const element of this.functions_collection) {
+            if (funct.model == element.model && funct.Equals(element)) return true;
+        }
+
+        return false;
+    }
+
     Get_Function(element_name) {
         for (let index = 0; index < this.functions_collection.length; index++) {
             const element = this.functions_collection[index];
@@ -24,37 +32,42 @@ class Application {
     }
 
     Add_File_PSMC_MSMC(path_collection, callback) {
-        Python_Communicator.get_File_Results(path_collection, 'Python_Scripts/get_File_Results.py', (results) => {
+        var err;
+        Python_Communicator.get_File_Results(path_collection[0], 'Python_Scripts/get_File_Results.py', (results) => {
             for (const element of results.file_collection) {
-                if (this.Get_Function(element.name) == null) {
-                    if (element.model == 'psmc') {
-                        var psmc = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
-                        this.functions_collection.push(psmc);
-                    }
+                var funct;
 
-                    else {
-                        var msmc = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
-                        this.functions_collection.push(msmc);
-                    }
-                }
+                if (element.model == 'psmc') funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
+                else funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
+
+                if (!this.Contains(funct)) this.functions_collection.push(funct);
+
+                else if (path_collection[0].length + path_collection[1].length == 1) err = 'The selected function already exists (has the same name or the same behavior)';
             }
 
-            callback();
+            callback(err);
         });
     }
 
-    Add_File_NSSC(path, callback) {
-        Application.Load_File(path, (nssc_file) => {
-            var path_split = path.split('/');
-            var new_name = path_split[path_split.length - 1].slice(0, -5);
+    Add_File_NSSC(path_collection, callback) {
+        var err;
+        for (const path of path_collection[1]) {
+            Application.Load_File(path, (nssc_file) => {
+                var path_split = path.split('/');
+                var new_name = path_split[path_split.length - 1].slice(0, -5);
 
-            if (this.Get_Function(new_name) == null) {
                 var nssc_function = new NSSC(new_name, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
-                this.functions_collection.push(nssc_function);
-                callback(nssc_function);
-            }
-        });
+
+                if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
+
+                else if (path_collection[0].length + path_collection[1].length == 1) err = 'The selected function already exists (has the same name or the same behavior)';
+            });
+        }
+
+        setTimeout(function () { callback(err); }, 0 | Math.random() * 100);
     }
+
+    // Add_File()
 
     Get_NSSC_Vectors(json, callback) {
         Python_Communicator.get_Model_NSSC(json, 'Python_Scripts/get_Model_NSSC.py', (results) => {
@@ -157,7 +170,7 @@ class Application {
     static Save_File(filename, file) {
         fs.writeFile(filename, file, function (err) {
             if (err) {
-                console.log(err);
+                throw err;
             }
         });
     }

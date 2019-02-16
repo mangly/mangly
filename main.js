@@ -135,5 +135,4 @@ ipc.on('open-matrix-editor', function (event, args) {
 ipc.on('nssc-json-result', function (event, args) {
   mainWindow.webContents.send('nssc-json-result', args)
   // build_nssc.close();
-})
-
+});

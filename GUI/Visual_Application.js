@@ -190,14 +190,19 @@ class Visual_Application {
         this.chart.update();
     }
 
-    Visualize_NSSC_Saved(nssc_function) {
-        var color = this.Get_Random_Color();
+    Visualize_NSSC_Saved() {
+        for (const element of this.logic_application.functions_collection) {
+            if (element.model == 'nssc' && this.Get_Graphic(element.name) == null) {
 
-        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_function.x_vector, nssc_function.IICR_specie), 'label': nssc_function.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+                var color = this.Get_Random_Color();
 
-        this.chart.data.datasets.push(graphic);
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element.x_vector, element.IICR_specie), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
 
-        this.Visualize_element_of_list(nssc_function.name, nssc_function.model, color);
+                this.chart.data.datasets.push(graphic);
+
+                this.Visualize_element_of_list(element.name, element.model, color);
+            }
+        }
 
         this.chart.update();
     }
