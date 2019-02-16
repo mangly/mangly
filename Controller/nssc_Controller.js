@@ -54,7 +54,7 @@ $(document).ready(function () {
     ipc.send('nssc-json-result', Application.Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)));
   });
 
-  $('#save-configuration').on('click', function () {
+  $('#save-scenario').on('click', function () {
     var json_result = Application.Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
     var json_save = JSON.stringify(json_result);
 

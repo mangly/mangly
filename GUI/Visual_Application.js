@@ -370,6 +370,19 @@ class Visual_Application {
         model.text('-');
     }
 
+    Load_Principal_Window_Data(scenario, callback) {
+
+        $('#nssc-name').val(scenario.name)
+
+        var order = scenario.scenario[0].migMatrix.length;
+        $('#order-n').val(order);
+        $('#order-m').val(order);
+
+        $('#count-matrix').val(scenario.scenario.length);
+
+        setTimeout(function () { callback(); }, 0 | Math.random() * 100);
+    }
+
     static Fill_Initial_Data_Vector(value, type, order = 0) {
         var data = new Array([[value]]);
         var i = 0;

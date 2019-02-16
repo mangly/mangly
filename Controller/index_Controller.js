@@ -211,6 +211,9 @@ $(document).ready(function () {
             //     }
 
             // }
+
+            // var ischecked= $(this).is(':checked');
+
             application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
     })
@@ -243,16 +246,16 @@ $(document).ready(function () {
     //     // if (!$(event.target).is('#options-scale-axis *') && $('#options #option-mu *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
     // });
 
-    var expand_file = false;
+    // var expand_file = false;
 
-    $('#modal-default').on('hidden.bs.modal', function () {
-        $('#open-menu').trigger('click');
+    // $('#modal-default').on('hidden.bs.modal', function () {
+    //     $('#open-menu').trigger('click');
 
-        if (!expand_file) {
-            $('#expand-file').trigger('click');
-            expand_file = true;
-        }
-    });
+    //     if (!expand_file) {
+    //         $('#expand-file').trigger('click');
+    //         expand_file = true;
+    //     }
+    // });
 
 
     // Sliders configurations
@@ -322,7 +325,15 @@ $(document).ready(function () {
     $('#order-n').on('keyup', function () {
         var order = $(this).val();
         $('#order-m').val(order);
-    })
+    });
+
+    ipc.on('restart-options-nssc', function () {
+        nssc_scenario = null;
+        $('#count-matrix').val(1);
+        $('#order-n').val(1);
+        $('#order-m').val(1);
+        $('#nssc-name').val('');
+    });
 
     var nssc_scenario;
     $('#open-matrix-editor').on('click', function () {
@@ -330,73 +341,13 @@ $(document).ready(function () {
             nssc_scenario: nssc_scenario,
             number_of_matrix: parseInt($('#count-matrix').val()),
             order: parseInt($('#order-n').val()),
-            // sampling_vector: sampling_vector.jexcel('getRowData', 0),
             name: $('#nssc-name').val(),
         }
 
         ipc.send('open-matrix-editor', values);
-
-        // $('aside').removeClass('toggled');
     });
 
-    // $('#test').on('click', function () {
-    //     application.logic_application.Get_NSSC_Vectors('', function () {
-    //         application.Visualize_NSSC();
-    //         console.log('done!!!!!!!')
-    //     });
-    // });
-
     $('#test').on('click', function () {
-
-
-        // var options = {
-        //     title: 'Save as...',
-
-        //     filters: [
-        //         { name: 'PSMC', extensions: ['psmc'] }
-        //     ],
-        // }
-
-        // dialog.showSaveDialog(options, function (filename) {
-        //     let psmc = new PSMC('mandy', 1, [1, 2, 3], [2, 3, 4], 1, 2, 100, 100);
-
-        //     var objS = serialize.serialize(psmc);
-
-        //     var objUS = serialize.unserialize(objS)
-
-        //     fs.writeFile(filename, objS, function (err) {
-        //         if (err) {
-        //             console.log(err);
-        //         }
-
-        //         console.log('done!!!')
-        //     });
-        // })
-
-
-        // var data = {
-        //     name: "cliff",
-        //     age: "34",
-        //     othername: "ted",
-        //     otherage: "42",
-        //     othername: "bob",
-        //     otherage: "12"
-        // }
-
-        // var jsonData = JSON.stringify(data);
-
-        // fs.writeFile("test.mangly", jsonData, function (err) {
-        //     if (err) {
-        //         console.log(err);
-        //     }
-
-        //     else console.log('save done!!!!!');
-        // });
-
-
-        //............
-
-
 
     });
 
@@ -418,7 +369,7 @@ $(document).ready(function () {
                 if (arrPath) {
                     Application.Load_File(arrPath[0], function (scenario) {
                         nssc_scenario = scenario;
-                        Application_Utilities.Load_Principal_Window_Data(scenario, function () {
+                        application.Load_Principal_Window_Data(scenario, function () {
                             $('#open-matrix-editor').trigger('click');
                         });
                     });

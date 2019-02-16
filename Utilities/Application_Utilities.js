@@ -52,19 +52,6 @@ class Application_Utilities {
         return (Math.round(result * 100) / 100).toString() + 'e+' + (count - 1).toString();
     }
 
-    static Load_Principal_Window_Data(scenario, callback) {
-
-        $('#nssc-name').val(scenario.name)
-
-        var order = scenario.scenario[0].migMatrix.length;
-        $('#order-n').val(order);
-        $('#order-m').val(order);
-
-        $('#count-matrix').val(scenario.scenario.length);
-
-        callback();
-    }
-
     static Get_Model_Selected(path) {
         var array_extensions = path.split('.');
         return array_extensions[array_extensions.length - 1];
@@ -87,7 +74,7 @@ class Application_Utilities {
             for (let index = 0; index < a_collection.length; index++) {
                 if (a_collection[index] != b_collection[index]) return false;
             }
-            
+
             return true;
         }
 

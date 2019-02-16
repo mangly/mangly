@@ -35,10 +35,11 @@ function createWindow() {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null
-  })
+  });
 
   //mainWindow.maximize()
 }
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -130,6 +131,10 @@ ipc.on('open-matrix-editor', function (event, args) {
   build_nssc.webContents.on('did-finish-load', () => {
     build_nssc.webContents.send('parametters-nssc', args)
   })
+
+  build_nssc.on('closed', function () {
+    mainWindow.webContents.send('restart-options-nssc');
+  });
 })
 
 ipc.on('nssc-json-result', function (event, args) {

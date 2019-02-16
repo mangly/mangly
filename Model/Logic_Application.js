@@ -67,8 +67,6 @@ class Application {
         setTimeout(function () { callback(err); }, 0 | Math.random() * 100);
     }
 
-    // Add_File()
-
     Get_NSSC_Vectors(json, callback) {
         Python_Communicator.get_Model_NSSC(json, 'Python_Scripts/get_Model_NSSC.py', (results) => {
             if (this.Get_Function(json.name) == null) {
