@@ -443,12 +443,12 @@ class Visual_Application {
     }
 
     static Add_Show_Time_Deme_Sizes(html, order, matrix_collection, id) {
-        this.Add_Matrix(html, order, matrix_collection, id, true);
+        this.Add_Matrix(html, $('#matrix-collection>#example'), order, matrix_collection, id, true);
         this.Configuration_Vector();
     }
 
-    static Add_Matrix(html, order, matrix_collection, id, vector) {
-        $('#matrix-collection').append(html);
+    static Add_Matrix(html, html_append, order, matrix_collection, id, vector) {
+        html_append.append(html);
 
         var matrix = $(id + matrix_collection.length);
 
