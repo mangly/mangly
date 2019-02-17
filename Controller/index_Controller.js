@@ -4,6 +4,7 @@ const ipc = electron.ipcRenderer;
 const { dialog } = require('electron').remote;
 
 require('../archivos_estaticos/chartjs-plugin-zoom');
+
 // require('chart.js')
 
 // var fs = require('fs');
@@ -113,10 +114,17 @@ $(document).ready(function () {
                     }
                 });
 
-                legend_color = [];
-                items_selecteds = [];
-                items_selecteds.push(name_item_clicked);
-                legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+                if (name_item_clicked != items_selecteds[0]) {
+                    legend_color = [];
+                    items_selecteds = [];
+                    items_selecteds.push(name_item_clicked);
+                    legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+                }
+
+                else {
+                    legend_color = [];
+                    items_selecteds = [];
+                }
             }
 
             else {
@@ -427,8 +435,4 @@ $(document).ready(function () {
     $('#reset-zoom').on('click', function () {
         application.Reset_Zoom();
     });
-
-    // a= [1,2,3,4]
-    // b= [1,2,3,4,5]
-    // console.log(Application_Utilities.Equals(a,b))
 });
