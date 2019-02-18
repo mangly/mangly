@@ -1,21 +1,30 @@
 {
-  "name": "paginate",
-  "version" : "0.3.0",
-  "homepage": "https://github.com/neighbordog/jquery-paginate",
-  "authors": [
-    "Kevin Eichhorn <kevineichhorn@me.com>"
-  ],
-  "description": "A library for easy pagination",
-  "main": "src/jquery.paginate.js",
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "jquery": "^1.11"
-  }
+    "name": "twbs-pagination",
+    "version": "1.4.2",
+    "homepage": "https://github.com/josecebe/twbs-pagination",
+    "authors": [
+        "Jose Cebellán <josecebe@gmail.com>",
+        "Eugene Simakin <eugenesimakin@mail.ru>"
+    ],
+    "description": "jQuery simple pagination plugin for bootstrap-style webpages",
+    "main": "jquery.twbsPagination.js",
+    "moduleType": [
+        "globals"
+    ],
+    "dependencies": {
+        "jquery": ">=1.7"
+    },
+    "keywords": [
+        "pagination",
+        "jQuery",
+        "jQuery-plugin",
+        "bootstrap"
+    ],
+    "license": "Apache-2.0",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "tests"
+    ]
 }

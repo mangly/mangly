@@ -32,28 +32,42 @@ $(document).ready(function () {
       }
 
       var html_matrix = '<div class="matrix" id="matrix' + index + '"></div>';
-      Visual_Application.Add_Matrix(html_matrix, $('#scen'+index), order, matrix_collection, '#matrix', false);
+      Visual_Application.Add_Matrix(html_matrix, $('#scen' + index), order, matrix_collection, '#matrix', false);
     }
 
     if (nssc_scenario) {
       Application.Load_Scenario(nssc_scenario, sampling_vector, matrix_collection, deme_vector_collection);
       Visual_Application.Configuration_Vector();
     };
-
-    $('#example').paginate({
-
-      scope: $('#scen'),
-      perPage: 1, // targets all div elements
-
-    });
   });
 
   $('#add-matrix').on('click', function () {
-    var html_time_dime_sizes = '<div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + matrix_collection.length + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" style="padding:20px 0 40px 0 0" id="deme' + matrix_collection.length + '"></div>';
+    var index = matrix_collection.length;
+    var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + matrix_collection.length + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" style="padding:20px 0 40px 0 0" id="deme' + matrix_collection.length + '"></div>';
     Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
 
-    var html = '<div class="matrix" id="matrix' + matrix_collection.length + '"></div>';
-    Visual_Application.Add_Matrix(html, order, matrix_collection, '#matrix', false);
+    var html = '<div class="matrix" id="matrix' + index + '"></div>';
+    Visual_Application.Add_Matrix(html, $('#scen' + index), order, matrix_collection, '#matrix', false);
+
+    if ($('#switch-selection-pagination').prop('checked')) {
+      $("div.holder").jPages("destroy");
+      $("div.holder").jPages({
+        containerID: "example",
+        perPage: 1
+      });
+    }
+  });
+
+  $('#switch-selection-pagination').on('change', function () {
+    /* initiate plugin */
+    if ($(this).prop('checked')) {
+      $("div.holder").jPages({
+        containerID: "example",
+        perPage: 1
+      });
+    }
+
+    else $("div.holder").jPages("destroy");
   });
 
   $('#ok').on('click', function () {
@@ -78,63 +92,7 @@ $(document).ready(function () {
     });
   });
 
-  // $('#example').paginate({
-  //   perPage: 1,
-  // });
+  $('#increment-order').on('click', function () {
 
-
-
-  // $('#example').paginate({
-
-
-
-  //   // how many items per page
-
-  //   perPage: 5,
-
-
-
-  //   // boolean: scroll to top of the container if a user clicks on a pagination link       
-
-  //   autoScroll: true,
-
-
-
-  //   // which elements to target
-
-  //   scope: '',
-
-
-
-  //   // defines where the pagination will be displayed   
-
-  //   paginatePosition: ['bottom'],
-
-
-
-  //   // Pagination selectors
-
-  //   containerTag: 'nav',
-
-  //   paginationTag: 'ul',
-
-  //   itemTag: 'li',
-
-  //   linkTag: 'a',
-
-
-
-  //   // Determines whether or not the plugin makes use of hash locations
-
-  //   useHashLocation: true,
-
-
-
-  //   // Triggered when a pagination link is clicked
-
-  //   onPageClick: function () { }
-
-
-
-  // });
+  })
 });
