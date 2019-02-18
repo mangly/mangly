@@ -224,6 +224,14 @@ class Visual_Application {
         this.chart.update();
     }
 
+    Update_NSSC(nssc_function){
+        var graphic = this.Get_Graphic(nssc_function.name);
+
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(nssc_function.x_vector, nssc_function.IICR_specie);
+
+        this.chart.update();
+    }
+
     Update_Colors(function_name, color, legend_color) {
         this.chart.data.datasets.forEach(function (element) {
             if (element.label == function_name) {

@@ -360,12 +360,17 @@ $(document).ready(function () {
     });
 
     ipc.on('nssc-json-result', function (event, arg) {
-        application.logic_application.Get_NSSC_Vectors(arg, function () {
-            application.Visualize_NSSC();
+        application.logic_application.Get_NSSC_Vectors(arg, function (nssc_function) {
+            if(nssc_function){
+                application.Update_NSSC(nssc_function);
+            }
+
+            else application.Visualize_NSSC();
         });
     });
 
     $('#load-nssc-state').on('click', function () {
+        edit = true;
         if ($('#model').html() != 'The Non-Stationary Structured Coalescent') {
             var options = {
                 filters: [

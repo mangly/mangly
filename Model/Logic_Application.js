@@ -69,12 +69,18 @@ class Application {
 
     Get_NSSC_Vectors(json, callback) {
         Python_Communicator.get_Model_NSSC(json, 'Python_Scripts/get_Model_NSSC.py', (results) => {
-            if (this.Get_Function(json.name) == null) {
+            var nssc_function = this.Get_Function(json.name);
+            if (nssc_function == null) {
                 var nssc = new NSSC(json.name, results.x_vector, results.IICR_specie, json);
                 this.functions_collection.push(nssc);
             }
+            else {
+                nssc_function.x_vector = results.x_vector;
+                nssc_function.IICR_specie = results.IICR_specie;
+                nssc_function.json = json;
+            }
 
-            callback();
+            callback(nssc_function);
         })
     }
 
