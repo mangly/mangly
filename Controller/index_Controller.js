@@ -391,7 +391,7 @@ $(document).ready(function () {
         }
 
         else {
-            nssc_scenario = application.logic_application.Get_NSSC_Function(name_item_clicked).scenario;
+            nssc_scenario = application.logic_application.Get_Function(name_item_clicked).scenario;
 
             $('#nssc-name').val(nssc_scenario.name)
 

@@ -55,13 +55,28 @@ class Application {
             Application.Load_File(path, (nssc_file) => {
                 var path_split = path.split('/');
                 var new_name = path_split[path_split.length - 1].slice(0, -5);
+                if (!this.Is_NSSC_Corrupted_File(new_name, nssc_file.name)) {
 
-                var nssc_function = new NSSC(new_name, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
+                    var nssc_function = new NSSC(new_name, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
 
-                if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
+                    if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
 
-                else if (path_collection[0].length + path_collection[1].length == 1) err = 'The selected function already exists (has the same name or the same behavior)';
+                    else {
+                        if (this.All_Files_Exist(path_collection[1])){
+                           err = 'All selected files exist (The functions has the same name or the same behavior)'; 
+                           return;
+                        } 
+                        
+                    }
+                }
+
+                else {
+                    err = 'File selected is corrupted';
+                    return;
+                }
             });
+
+            if (err == 'File selected is corrupted') break;
         }
 
         setTimeout(function () { callback(err); }, 0 | Math.random() * 100);
@@ -177,6 +192,24 @@ class Application {
                 throw err;
             }
         });
+    }
+
+    Is_NSSC_Corrupted_File(name_file, nssc_scenario_name) {
+        return name_file != nssc_scenario_name;
+    }
+
+    All_Files_Exist(file_collection) {
+        for (const element of file_collection) {
+            var path_split = element.split('/');
+            var new_name = path_split[path_split.length - 1].slice(0, -5);
+
+            var funct = new NSSC(new_name, );
+            console.log(funct)
+            console.log(this.Contains(funct))
+            // if (!this.Contains(new_name)) return false;
+        }
+
+        return true;
     }
 }
 
