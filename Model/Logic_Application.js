@@ -77,7 +77,7 @@ class Application {
             else {
                 nssc_function.x_vector = results.x_vector;
                 nssc_function.IICR_specie = results.IICR_specie;
-                nssc_function.json = json;
+                nssc_function.scenario = json;
             }
 
             callback(nssc_function);
