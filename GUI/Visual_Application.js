@@ -378,9 +378,9 @@ class Visual_Application {
         model.text('-');
     }
 
-    Load_Principal_Window_Data(scenario, callback) {
+    Load_Principal_Window_Data(name, scenario, callback) {
 
-        $('#nssc-name').val(scenario.name)
+        $('#nssc-name').val(name)
 
         var order = scenario.scenario[0].migMatrix.length;
         $('#order-n').val(order);

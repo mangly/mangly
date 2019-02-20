@@ -46,44 +46,44 @@ $(document).ready(function () {
         dialog.showOpenDialog(options, function (arrPath) {
             if (arrPath) {
                 var paths = Application_Utilities.Divide_Paths(arrPath);
-                // var psmc_msmc_paths = paths[0];
-                // var nssc_paths = paths[1];
+                var psmc_msmc_paths = paths[0];
+                var nssc_paths = paths[1];
                 $('#canvas-container').removeClass('disabled');
 
-                if (paths[0].length != 0) {
-                    application.logic_application.Add_File_PSMC_MSMC(paths, function (err) {
-                        try {
-                            if (err) {
-                                throw new ArgumentException(err);
-                            }
-
-                            application.Visualize_PSMC_MSMC();
-
-                            $('#options-scale-axis *').removeAttr('disabled');
-                            $('#reset-scales').removeAttr('hidden');
-                            $('#switch-selection').removeAttr('disabled');
+                if (psmc_msmc_paths.length != 0) {
+                    application.logic_application.Add_File_PSMC_MSMC(psmc_msmc_paths, function (err) {
+                        // try {
+                        if (err) {
+                            throw new ArgumentException(err);
                         }
 
-                        catch (exception) {
-                            dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
-                        }
+                        application.Visualize_PSMC_MSMC();
+
+                        $('#options-scale-axis *').removeAttr('disabled');
+                        $('#reset-scales').removeAttr('hidden');
+                        $('#switch-selection').removeAttr('disabled');
+                        // }
+
+                        // catch (exception) {
+                        //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
+                        // }
 
                     });
                 }
 
-                if (paths[1].length != 0) {
-                    application.logic_application.Add_File_NSSC(paths, function (err) {
-                        try {
-                            if (err) {
-                                throw new ArgumentException(err);
-                            }
+                if (nssc_paths.length != 0) {
+                    application.logic_application.Add_File_NSSC(nssc_paths, function (err) {
+                        // try {
+                        // if (err) {
+                        //     throw new ArgumentException(err);
+                        // }
 
-                            application.Visualize_NSSC_Saved();
-                        }
+                        application.Visualize_NSSC_Saved();
+                        // }
 
-                        catch (exception) {
-                            dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
-                        }
+                        // catch (exception) {
+                        //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
+                        // }
                     });
                 }
             }
@@ -359,9 +359,9 @@ $(document).ready(function () {
 
     });
 
-    ipc.on('nssc-json-result', function (event, arg) {
-        application.logic_application.Get_NSSC_Vectors(arg, function (nssc_function) {
-            if(nssc_function){
+    ipc.on('nssc-json-result', function (event, scenario) {
+        application.logic_application.Get_NSSC_Vectors($('#nssc-name').val(), scenario, function (nssc_function) {
+            if (nssc_function) {
                 application.Update_NSSC(nssc_function);
             }
 
@@ -382,7 +382,11 @@ $(document).ready(function () {
                 if (arrPath) {
                     Application.Load_File(arrPath[0], function (scenario) {
                         nssc_scenario = scenario;
-                        application.Load_Principal_Window_Data(scenario, function () {
+
+                        var path_split = arrPath[0].split('/');
+                        var file_name = path_split[path_split.length - 1].slice(0, -6);
+
+                        application.Load_Principal_Window_Data(file_name, scenario, function () {
                             $('#open-matrix-editor').trigger('click');
                         });
                     });
@@ -393,7 +397,7 @@ $(document).ready(function () {
         else {
             nssc_scenario = application.logic_application.Get_Function(name_item_clicked).scenario;
 
-            $('#nssc-name').val(nssc_scenario.name)
+            $('#nssc-name').val(name_item_clicked)
 
             var order = nssc_scenario.scenario[0].migMatrix.length;
             $('#order-n').val(order);

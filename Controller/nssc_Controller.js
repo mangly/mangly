@@ -71,16 +71,16 @@ $(document).ready(function () {
   });
 
   $('#ok').on('click', function () {
-    ipc.send('nssc-json-result', Application.Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)));
+    ipc.send('nssc-json-result', Application.Build_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)));
   });
 
   $('#save-scenario').on('click', function () {
-    var json_result = Application.Build_Scenario_NSSC(name, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
+    var json_result = Application.Build_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
     var json_save = JSON.stringify(json_result);
 
     var options = {
       title: 'Save...',
-      defaultPath: json_result.name,
+      defaultPath: name,
 
       filters: [
         { name: 'SNSSC', extensions: ['snssc'] }
