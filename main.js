@@ -117,7 +117,7 @@ app.on('activate', function () {
   }
 })
 
-ipc.on('open-matrix-editor', function (event, args) {
+ipc.on('open-scenario-editor', function (event, args) {
   build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent: mainWindow, modal: true, darkTheme: true });
   build_nssc.webContents.openDevTools()
 

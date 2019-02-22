@@ -193,7 +193,6 @@ class Visual_Application {
     Visualize_NSSC_Saved() {
         for (const element of this.logic_application.functions_collection) {
             if (element.model == 'nssc' && this.Get_Graphic(element.name) == null) {
-
                 var color = this.Get_Random_Color();
 
                 var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element.x_vector, element.IICR_specie), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };

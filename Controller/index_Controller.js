@@ -340,7 +340,7 @@ $(document).ready(function () {
         nssc_scenario = null;
         $('#count-events').val(1);
         $('#order-n').val(1);
-        $('#nssc-name').val('');
+        $('#nssc-name').val('NSSC new model');
     });
 
     var nssc_scenario;
@@ -404,6 +404,8 @@ $(document).ready(function () {
             $('#count-events').val(nssc_scenario.scenario.length);
             $('#open-scenario-editor').trigger('click');
         }
+
+        Visual_Application.Configuration_Vector();
     });
 
     $('#save-nssc').on('click', function () {
