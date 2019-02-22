@@ -17,7 +17,7 @@ var ArgumentException = require('../Utilities/Exception');
 const main_Window = remote.getCurrentWindow()
 
 $(document).ready(function () {
-    $('#options-color-edit-remove *').attr('disabled', 'disabled');
+    $('#change-color').attr('disabled', 'disabled');
     $('#options-scale-axis *').attr('disabled', 'disabled');
     $('#option-mu *').attr('disabled', 'disabled');
     $('#option-s *').attr('disabled', 'disabled');
@@ -60,14 +60,7 @@ $(document).ready(function () {
                         application.Visualize_PSMC_MSMC();
 
                         $('#options-scale-axis *').removeAttr('disabled');
-                        $('#reset-scales').removeAttr('hidden');
                         $('#switch-selection').removeAttr('disabled');
-                        // }
-
-                        // catch (exception) {
-                        //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
-                        // }
-
                     });
                 }
 
@@ -114,7 +107,12 @@ $(document).ready(function () {
                     }
                 });
 
-                if (name_item_clicked != items_selecteds[0]) {
+                if ($(event.target).prop('checked')) {
+                    $('#reset-scales').removeAttr('disabled');
+                    $('#reset-all-scales').removeAttr('disabled');
+                    $('#change-color').removeAttr('disabled');
+                    $('#option-s *').removeAttr('disabled');
+                    $('#option-mu *').removeAttr('disabled');
                     legend_color = [];
                     items_selecteds = [];
                     items_selecteds.push(name_item_clicked);
@@ -122,6 +120,11 @@ $(document).ready(function () {
                 }
 
                 else {
+                    $('#reset-scales').attr('disabled', 'disabled');
+                    $('#reset-all-scales').attr('disabled', 'disabled');
+                    $('#change-color').attr('disabled', 'disabled');
+                    $('#option-s *').attr('disabled', 'disabled');
+                    $('#option-mu *').attr('disabled', 'disabled');
                     legend_color = [];
                     items_selecteds = [];
                 }
@@ -129,12 +132,22 @@ $(document).ready(function () {
 
             else {
                 if ($(event.target).prop('checked')) {
+                    $('#reset-scales').removeAttr('disabled');
+                    $('#reset-all-scales').removeAttr('disabled');
+                    $('#change-color').removeAttr('disabled');
+                    $('#option-s *').removeAttr('disabled');
+                    $('#option-mu *').removeAttr('disabled');
                     if (!items_selecteds.includes(name_item_clicked)) {
                         items_selecteds.push(name_item_clicked);
                         legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
                     }
                 }
                 else {
+                    $('#reset-scales').attr('disabled', 'disabled');
+                    $('#reset-all-scales').attr('disabled', 'disabled');
+                    $('#change-color').attr('disabled', 'disabled');
+                    $('#option-s *').attr('disabled', 'disabled');
+                    $('#option-mu *').attr('disabled', 'disabled');
                     var index = items_selecteds.indexOf(name_item_clicked);
                     items_selecteds.splice(index, 1)
                     legend_color.splice(index, 1)
@@ -145,9 +158,6 @@ $(document).ready(function () {
 
 
             // if (items_selecteds.length != 0) {
-            $('#options-color-edit-remove *').removeAttr('disabled');
-            $('#option-s *').removeAttr('disabled');
-            $('#option-mu *').removeAttr('disabled');
 
             // }
 
@@ -164,29 +174,30 @@ $(document).ready(function () {
             // $('#option-s *').removeAttr('disabled');
             // $('#option-mu *').removeAttr('disabled');
 
-            if (items_selecteds.length == 0 || items_selecteds.length > 1) {
+            if (items_selecteds.length == 1) {
+                // if (items_selecteds.length == 0) $('#option-mu *').attr('disabled', 'disabled');
+                var graphic = application.logic_application.Get_Function(name_item_clicked);
 
-                if (items_selecteds.length == 0) $('#option-mu *').attr('disabled', 'disabled');
-
-                if ($('#model').html() == 'Pairwise Sequentially Markovian Coalescent') {
+                if (graphic.model == 'psmc') {
                     $('#option-s *').removeAttr('disabled');
                     $('#option-mu *').removeAttr('disabled');
-                    slider_s.noUiSlider.set(100);
-                    slider_mu.noUiSlider.set(1.25);
+                    slider_s.noUiSlider.set(graphic.S);
+                    slider_mu.noUiSlider.set(graphic.Mu);
                 }
 
                 else {
+                    slider_s.noUiSlider.set(100);
+                    slider_mu.noUiSlider.set(graphic.Mu);
                     $('#option-mu *').removeAttr('disabled');
-                    slider_mu.noUiSlider.set(1.25);
+                    $('#option-s *').attr('disabled', 'disabled');
                 }
             }
 
             else {
-
                 for (const element of items_selecteds) {
                     var graphic = application.logic_application.Get_Function(element);
 
-                    if ($('#model').html() == 'Pairwise Sequentially Markovian Coalescent') {
+                    if (graphic.model == 'psmc') {
                         $('#option-s *').removeAttr('disabled');
                         $('#option-mu *').removeAttr('disabled');
                         slider_s.noUiSlider.set(graphic.S);
@@ -194,7 +205,6 @@ $(document).ready(function () {
                     }
 
                     else {
-
                         slider_s.noUiSlider.set(100);
                         slider_mu.noUiSlider.set(graphic.Mu);
                         $('#option-s *').attr('disabled', 'disabled');
@@ -202,25 +212,6 @@ $(document).ready(function () {
 
                 }
             }
-            // }
-            // for (const element of items_selecteds) {
-            //     var graphic = application.logic_application.Contain(element);
-            //     var found = false;
-
-            //     if (graphic.model == 'msmc') {
-            //         $('#option-s *').attr('disabled', 'disabled');
-            //         found = true;
-            //         break;
-            //     }
-
-            //     if (found) {
-            //         slider_s.noUiSlider.set(100);
-            //         // $('#option-s *').removeAttr('disabled');
-            //     }
-
-            // }
-
-            // var ischecked= $(this).is(':checked');
 
             application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
@@ -323,11 +314,15 @@ $(document).ready(function () {
     })
 
     $('#reset-scales').on('click', function () {
-        application.Reset_Scales();
+        application.Reset_Scales(application.logic_application.Get_Function(name_item_clicked));
         slider_s.noUiSlider.set(100);
         slider_mu.noUiSlider.set(1.25);
-        $('.custom-control-input').prop('checked', false);
-        items_selecteds = [];
+    });
+
+    $('#reset-all-scales').on('click', function () {
+        application.Reset_All_Scales();
+        slider_s.noUiSlider.set(100);
+        slider_mu.noUiSlider.set(1.25);
     });
 
     $('#order-n').on('keyup', function () {
@@ -346,6 +341,7 @@ $(document).ready(function () {
     var nssc_scenario;
     $('#open-matrix-editor').on('click', function () {
         var values = {
+            type: $('#type-nssc-model').val(),
             nssc_scenario: nssc_scenario,
             number_of_matrix: parseInt($('#count-matrix').val()),
             order: parseInt($('#order-n').val()),
@@ -360,7 +356,7 @@ $(document).ready(function () {
     });
 
     ipc.on('nssc-json-result', function (event, scenario) {
-        application.logic_application.Get_NSSC_Vectors($('#nssc-name').val(), scenario, function (nssc_function) {
+        application.logic_application.Get_NSSC_Vectors('general', $('#nssc-name').val(), scenario, function (nssc_function) {
             if (nssc_function) {
                 application.Update_NSSC(nssc_function);
             }

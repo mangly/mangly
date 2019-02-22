@@ -284,7 +284,15 @@ class Visual_Application {
 
     }
 
-    Reset_Scales() {
+    Reset_Scales(funct) {
+        // for (const element of this.logic_application.functions_collection) {
+            this.Update_Scale(funct.name, this.logic_application.Mu, this.logic_application.S);
+        // }
+
+        this.chart.update();
+    }
+
+    Reset_All_Scales() {
         for (const element of this.logic_application.functions_collection) {
             this.Update_Scale(element.name, this.logic_application.Mu, this.logic_application.S);
         }

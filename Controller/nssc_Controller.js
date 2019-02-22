@@ -11,6 +11,7 @@ var deme_vector_collection = [];
 var sampling_vector;
 var order;
 var name;
+var type;
 
 $(document).ready(function () {
   ipc.on('parametters-nssc', function (event, arg) {

@@ -3,12 +3,13 @@
 var Application_Utilities = require('../Utilities/Application_Utilities');
 
 class NSSC {
-    constructor(name, x_vector, IICR_specie, scenario) {
+    constructor(name, type, x_vector, IICR_specie, scenario) {
         this.name = name;
         this.x_vector = x_vector;
         this.IICR_specie = IICR_specie;
         this.scenario = scenario
         this.model = 'nssc';
+        this.type = type;
     }
 
     // Clone() {

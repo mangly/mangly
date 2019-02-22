@@ -15,10 +15,10 @@ class Python_Communicator {
         });
     }
 
-    static get_Model_NSSC(json, python_script, callback) {
+    static get_Model_NSSC(type, json, python_script, callback) {
         let options = {
             mode: 'text',
-            args: JSON.stringify(json),
+            args: [JSON.stringify(json), type]
         };
 
         ps.PythonShell.run(python_script, options, function (err, results) {

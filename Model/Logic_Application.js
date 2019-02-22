@@ -61,11 +61,11 @@ class Application {
         setTimeout(function () { callback(); }, 0 | Math.random() * 100);
     }
 
-    Get_NSSC_Vectors(name, scenario, callback) {
-        Python_Communicator.get_Model_NSSC(scenario, 'Python_Scripts/get_Model_NSSC.py', (results) => {
+    Get_NSSC_Vectors(type, name, scenario, callback) {
+        Python_Communicator.get_Model_NSSC(type, scenario, 'Python_Scripts/get_Model_NSSC.py', (results) => {
             var nssc_function = this.Get_Function(name);
             if (nssc_function == null) {
-                var nssc = new NSSC(name, results.x_vector, results.IICR_specie, scenario);
+                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario);
                 this.functions_collection.push(nssc);
             }
             else {

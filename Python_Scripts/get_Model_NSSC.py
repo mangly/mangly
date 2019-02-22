@@ -15,5 +15,5 @@ def get_NSSC_vectors(scenario, start = 0, end = 500, n = 500):
 
     return {'x_vector': x_vector, 'IICR_specie': IICR_specie}
 
-
-print(json.dumps(get_NSSC_vectors(human_scenario_file)))
+if(sys.argv[2] == 'general'):
+    print(json.dumps(get_NSSC_vectors(human_scenario_file)))
