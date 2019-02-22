@@ -392,7 +392,6 @@ class Visual_Application {
 
         var order = scenario.scenario[0].migMatrix.length;
         $('#order-n').val(order);
-        $('#order-m').val(order);
 
         $('#count-matrix').val(scenario.scenario.length);
 
@@ -459,8 +458,7 @@ class Visual_Application {
     }
 
     static Add_Show_Time_Deme_Sizes(html, order, matrix_collection, id) {
-        this.Add_Matrix(html, $('#matrix-collection>#example'), order, matrix_collection, id, true);
-        this.Configuration_Vector();
+        this.Add_Matrix(html, $('#list-scenario'), order, matrix_collection, id, true);
     }
 
     static Add_Matrix(html, html_append, order, matrix_collection, id, vector) {

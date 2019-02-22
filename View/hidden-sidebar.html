@@ -338,9 +338,8 @@ main{
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-lg-4"></div>
-                                                <div class="col-lg-4"><button id="reset-scales" class="btn btn-light float-right"
-                                                    type="submit" disabled>Reset scales of the selected function</button></div>
+                                                <div class="col-lg-8"><button id="reset-scales" class="btn btn-light"
+                                                        type="submit" disabled>Reset scales of the selected function</button></div>
                                                 <div class="col-lg-4"> <button id="reset-all-scales" class="btn btn-light float-right"
                                                         type="submit" disabled>Reset all scales</button></div>
                                             </div>
@@ -348,45 +347,13 @@ main{
                                         <div class="tab-pane fade" id="nssc" role="tabpanel">
                                             <div class="card p-4">
                                                 <div class="row">
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <span>Name:</span>
-                                                            <input id="nssc-name" type="text" class="form-control input-mask">
+                                                            <input id="nssc-name" type="text" value="NSSC new model" class="form-control input-mask">
                                                             <i class="form-group__bar"></i>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <span>Number of matrices:</span>
-                                                            <input id="count-matrix" type="text" value="1" class="form-control input-mask">
-                                                            <i class="form-group__bar"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <span>Number of demes:</span>
-                                                        <div class="row">
-                                                            <div class="col-sm-4">
-                                                                <div class="form-group">
-                                                                    <input id="order-n" type="text" value="1" class="form-control input-mask"
-                                                                        placeholder="n">
-                                                                    <i class="form-group__bar"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-1 pl-0 pr-0 pt-2"><span>x</span></div>
-                                                            <div class="col-sm-4">
-                                                                <div class="form-group">
-                                                                    <input id="order-m" type="text" value="1" class="form-control input-mask"
-                                                                        placeholder="m">
-                                                                    <i class="form-group__bar"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="card p-4">
-                                                <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <span>Type:</span>
@@ -397,10 +364,21 @@ main{
                                                             </select>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="card p-4">
+                                                <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <span>Migration rate:</span>
-                                                            <input id="migration-rate" type="text" class="form-control input-mask">
+                                                            <span>Number of events:</span>
+                                                            <input id="count-events" type="text" value="1" class="form-control input-mask">
+                                                            <i class="form-group__bar"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <span>Number of demes:</span>
+                                                        <div class="form-group">
+                                                            <input id="order-n" type="text" value="1" class="form-control input-mask">
                                                             <i class="form-group__bar"></i>
                                                         </div>
                                                     </div>
@@ -408,9 +386,8 @@ main{
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-sm-6"><button id="open-matrix-editor" class="btn btn-light"
-                                                        type="submit">Open
-                                                        matrix editor</button>
+                                                <div class="col-sm-6"><button id="open-scenario-editor" class="btn btn-light"
+                                                        type="submit">Open scenario editor</button>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="col-sm-6" style="padding-left:56%"><button id="load-nssc-state"

@@ -21,8 +21,6 @@ $(document).ready(function () {
     $('#options-scale-axis *').attr('disabled', 'disabled');
     $('#option-mu *').attr('disabled', 'disabled');
     $('#option-s *').attr('disabled', 'disabled');
-    $('#order-m').attr('disabled', 'disabled');
-
 
     // Instance Visual Application
     var application = new Visual_Application($('#mycanvas'), new Application());
@@ -91,7 +89,7 @@ $(document).ready(function () {
         $('.custom-control-input').prop('checked', false);
         legend_color = [];
         items_selecteds = [];
-        
+
         $('#reset-all-scales').trigger('click');
     });
 
@@ -333,30 +331,29 @@ $(document).ready(function () {
         slider_mu.noUiSlider.set(1.25);
     });
 
-    $('#order-n').on('keyup', function () {
-        var order = $(this).val();
-        $('#order-m').val(order);
-    });
+    // $('#order-n').on('keyup', function () {
+    //     var order = $(this).val();
+    //     $('#order-m').val(order);
+    // });
 
     ipc.on('restart-options-nssc', function () {
         nssc_scenario = null;
-        $('#count-matrix').val(1);
+        $('#count-events').val(1);
         $('#order-n').val(1);
-        $('#order-m').val(1);
         $('#nssc-name').val('');
     });
 
     var nssc_scenario;
-    $('#open-matrix-editor').on('click', function () {
+    $('#open-scenario-editor').on('click', function () {
         var values = {
             type: $('#type-nssc-model').val(),
             nssc_scenario: nssc_scenario,
-            number_of_matrix: parseInt($('#count-matrix').val()),
+            number_of_events: parseInt($('#count-events').val()),
             order: parseInt($('#order-n').val()),
             name: $('#nssc-name').val(),
         }
 
-        ipc.send('open-matrix-editor', values);
+        ipc.send('open-scenario-editor', values);
     });
 
     $('#test').on('click', function () {
@@ -391,7 +388,7 @@ $(document).ready(function () {
                         var file_name = path_split[path_split.length - 1].slice(0, -6);
 
                         application.Load_Principal_Window_Data(file_name, scenario, function () {
-                            $('#open-matrix-editor').trigger('click');
+                            $('#open-scenario-editor').trigger('click');
                         });
                     });
                 }
@@ -402,14 +399,10 @@ $(document).ready(function () {
             nssc_scenario = application.logic_application.Get_Function(name_item_clicked).scenario;
 
             $('#nssc-name').val(name_item_clicked)
-
             var order = nssc_scenario.scenario[0].migMatrix.length;
             $('#order-n').val(order);
-            $('#order-m').val(order);
-
-            $('#count-matrix').val(nssc_scenario.scenario.length);
-
-            $('#open-matrix-editor').trigger('click');
+            $('#count-events').val(nssc_scenario.scenario.length);
+            $('#open-scenario-editor').trigger('click');
         }
     });
 

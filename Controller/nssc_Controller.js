@@ -19,27 +19,39 @@ $(document).ready(function () {
     name = arg.name;
     sampling_vector = $('#sampling-vector');
     order = arg.order;
+    type = arg.type;
 
     Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
-    for (let index = 0; index < arg.number_of_matrix; index++) {
-      if (index == 0) {
-        var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div>';
-        Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+
+    for (let index = 0; index < arg.number_of_events + 1; index++) {
+      if (type == 'General') {
+        if (index == 0) {
+          var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme0"></div>';
+          Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+        }
+
+        else {
+          var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div>';
+          Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+        }
+
+        var html_matrix = '<div class="matrix" id="matrix' + index + '"></div>';
+        Visual_Application.Add_Matrix(html_matrix, $('#scen' + index), order, matrix_collection, '#matrix', false);
       }
 
-      else {
-        var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div>';
-        Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
-      }
+      else if (type == 'Symmetrical') {
+        $('#matrix-collection').attr("style", "overflow-x: none");
 
-      var html_matrix = '<div class="matrix" id="matrix' + index + '"></div>';
-      Visual_Application.Add_Matrix(html_matrix, $('#scen' + index), order, matrix_collection, '#matrix', false);
+        var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="time0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="time0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+        $('#matrix-collection>ul').append(html)
+      }
     }
 
     if (nssc_scenario) {
       Application.Load_Scenario(nssc_scenario, sampling_vector, matrix_collection, deme_vector_collection);
-      Visual_Application.Configuration_Vector();
-    };
+    }
+
+    Visual_Application.Configuration_Vector();
   });
 
   $('#add-matrix').on('click', function () {
@@ -53,7 +65,7 @@ $(document).ready(function () {
     if ($('#switch-selection-pagination').prop('checked')) {
       $("div.holder").jPages("destroy");
       $("div.holder").jPages({
-        containerID: "example",
+        containerID: "list-scenario",
         perPage: 1
       });
     }
@@ -63,7 +75,7 @@ $(document).ready(function () {
     /* initiate plugin */
     if ($(this).prop('checked')) {
       $("div.holder").jPages({
-        containerID: "example",
+        containerID: "list-scenario",
         perPage: 1
       });
     }
