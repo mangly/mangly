@@ -91,8 +91,8 @@ $(document).ready(function () {
         $('.custom-control-input').prop('checked', false);
         legend_color = [];
         items_selecteds = [];
-        slider_s.noUiSlider.set(100);
-        slider_mu.noUiSlider.set(1.25);
+        
+        $('#reset-all-scales').trigger('click');
     });
 
     $('#list-graphics').on('click', function () {
@@ -125,6 +125,9 @@ $(document).ready(function () {
                     $('#change-color').attr('disabled', 'disabled');
                     $('#option-s *').attr('disabled', 'disabled');
                     $('#option-mu *').attr('disabled', 'disabled');
+                    slider_s.noUiSlider.set(100);
+                    slider_mu.noUiSlider.set(1.25);
+
                     legend_color = [];
                     items_selecteds = [];
                 }
@@ -132,25 +135,30 @@ $(document).ready(function () {
 
             else {
                 if ($(event.target).prop('checked')) {
-                    $('#reset-scales').removeAttr('disabled');
-                    $('#reset-all-scales').removeAttr('disabled');
-                    $('#change-color').removeAttr('disabled');
-                    $('#option-s *').removeAttr('disabled');
-                    $('#option-mu *').removeAttr('disabled');
                     if (!items_selecteds.includes(name_item_clicked)) {
+                        $('#reset-scales').removeAttr('disabled');
+                        $('#reset-all-scales').removeAttr('disabled');
+                        $('#change-color').removeAttr('disabled');
+                        $('#option-s *').removeAttr('disabled');
+                        $('#option-mu *').removeAttr('disabled');
                         items_selecteds.push(name_item_clicked);
                         legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
                     }
                 }
                 else {
-                    $('#reset-scales').attr('disabled', 'disabled');
-                    $('#reset-all-scales').attr('disabled', 'disabled');
-                    $('#change-color').attr('disabled', 'disabled');
-                    $('#option-s *').attr('disabled', 'disabled');
-                    $('#option-mu *').attr('disabled', 'disabled');
                     var index = items_selecteds.indexOf(name_item_clicked);
                     items_selecteds.splice(index, 1)
                     legend_color.splice(index, 1)
+
+                    if (items_selecteds.length == 0) {
+                        $('#reset-scales').attr('disabled', 'disabled');
+                        $('#reset-all-scales').attr('disabled', 'disabled');
+                        $('#change-color').attr('disabled', 'disabled');
+                        $('#option-s *').attr('disabled', 'disabled');
+                        $('#option-mu *').attr('disabled', 'disabled');
+                        slider_s.noUiSlider.set(100);
+                        slider_mu.noUiSlider.set(1.25);
+                    }
                 }
             }
 
