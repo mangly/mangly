@@ -2,18 +2,24 @@ import sys, json
 import numpy as np
 from functions import readScenario
 from model import NSSC
+from model import Pnisland
 
-human_scenario_file = "./scenarios/HumansNeandScenario_samplingHumansTest.txt"
+# human_scenario_file = "./scenarios/HumansNeandScenario_samplingHumansTest.txt"
 
-def get_NSSC_vectors(scenario, start = 0, end = 500, n = 500):
+def get_NSSC_vectors(type, scenario, start = 0, end = 500, n = 500):
+    model = 'initializing'
 
-    scenario = sys.argv[1]
-    model_humans = NSSC(json.loads(scenario))
+    if(type == "General"):
+        model = NSSC(json.loads(scenario))
+
+    elif(type == 'Symmetrical'):
+        model = Pnisland(json.loads(scenario))
 
     x_vector = [0.1*(np.exp(i * np.log(1+10*end)/n)-1) for i in range(n+1)]
-    IICR_specie = [model_humans.evaluateIICR(i) for i in x_vector]
+    IICR_specie = [model.evaluateIICR(i) for i in x_vector]
 
     return {'x_vector': x_vector, 'IICR_specie': IICR_specie}
 
-if(sys.argv[2] == 'General'):
-    print(json.dumps(get_NSSC_vectors(human_scenario_file)))
+print(json.dumps(get_NSSC_vectors(sys.argv[2], sys.argv[1])))
+
+

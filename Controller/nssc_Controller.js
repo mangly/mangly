@@ -96,8 +96,8 @@ $(document).ready(function () {
     if (type == 'General') {
       ipc.send('nssc-json-result', Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)));
     }
-    else if(type == 'Symmetrical'){
-      console.log(Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector.jexcel('getRowData', 0), number_of_events + 1));
+    else if (type == 'Symmetrical') {
+      ipc.send('nssc-json-result', Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector.jexcel('getRowData', 0), number_of_events + 1));
     }
   });
 
