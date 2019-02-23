@@ -212,6 +212,8 @@ class Visual_Application {
     }
 
     Visualize_NSSC() {
+        $('#canvas-container').removeClass('disabled');
+
         $('#tab-graphics').trigger('click');
         var color = this.Get_Random_Color();
         var nssc = this.logic_application.Get_Last_NSSC_Function();

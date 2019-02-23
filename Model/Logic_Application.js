@@ -52,7 +52,7 @@ class Application {
                 var path_split = path.split('/');
                 var new_name = path_split[path_split.length - 1].slice(0, -5);
 
-                var nssc_function = new NSSC(new_name, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
+                var nssc_function = new NSSC(new_name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
 
                 if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
             });

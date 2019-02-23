@@ -8,13 +8,13 @@ require('../archivos_estaticos/chartjs-plugin-zoom');
 // require('chart.js')
 
 // var fs = require('fs');
-var remote = require('electron').remote;
+// var remote = require('electron').remote;
 
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
 var Visual_Application = require('../GUI/Visual_Application');
 var ArgumentException = require('../Utilities/Exception');
-const main_Window = remote.getCurrentWindow()
+// const main_Window = remote.getCurrentWindow();
 
 $(document).ready(function () {
     $('#change-color').attr('disabled', 'disabled');
@@ -68,7 +68,6 @@ $(document).ready(function () {
                         // if (err) {
                         //     throw new ArgumentException(err);
                         // }
-
                         application.Visualize_NSSC_Saved();
                         // }
 
@@ -361,7 +360,7 @@ $(document).ready(function () {
     });
 
     ipc.on('nssc-json-result', function (event, scenario) {
-        application.logic_application.Get_NSSC_Vectors('general', $('#nssc-name').val(), scenario, function (nssc_function) {
+        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
             if (nssc_function) {
                 application.Update_NSSC(nssc_function);
             }
@@ -401,11 +400,9 @@ $(document).ready(function () {
             $('#nssc-name').val(name_item_clicked)
             var order = nssc_scenario.scenario[0].migMatrix.length;
             $('#order-n').val(order);
-            $('#count-events').val(nssc_scenario.scenario.length);
+            $('#count-events').val(nssc_scenario.scenario.length - 1);
             $('#open-scenario-editor').trigger('click');
         }
-
-        Visual_Application.Configuration_Vector();
     });
 
     $('#save-nssc').on('click', function () {
@@ -414,7 +411,7 @@ $(document).ready(function () {
 
         var options = {
             title: 'Save...',
-            defaultPath: nssc_model.name,
+            defaultPath: name_item_clicked,
 
             filters: [
                 { name: 'NSSC', extensions: ['nssc'] }
@@ -423,7 +420,7 @@ $(document).ready(function () {
 
         // Application_Utilities.Save_File(nssc_save, options);
         dialog.showSaveDialog(options, function (filename) {
-            Application_Utilities.Save_File(filename, nssc_save);
+            Application.Save_File(filename, nssc_save);
         });
     });
 
@@ -431,12 +428,10 @@ $(document).ready(function () {
         if (e.originalEvent.wheelDelta / 120 > 0) {
             $('#zoom').removeClass('zmdi-zoom-out');
             $('#zoom').addClass('zmdi-zoom-in');
-            // console.log('scrolling up !');
         }
         else {
             $('#zoom').removeClass('zmdi-zoom-in');
             $('#zoom').addClass('zmdi-zoom-out');
-            // console.log('scrolling down !');
         }
     });
 
