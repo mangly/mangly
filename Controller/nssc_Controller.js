@@ -12,6 +12,7 @@ var sampling_vector;
 var order;
 var name;
 var type;
+var number_of_events;
 
 $(document).ready(function () {
   ipc.on('parametters-nssc', function (event, arg) {
@@ -20,10 +21,11 @@ $(document).ready(function () {
     sampling_vector = $('#sampling-vector');
     order = arg.order;
     type = arg.type;
+    number_of_events = arg.number_of_events;
 
     Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
 
-    for (let index = 0; index < arg.number_of_events + 1; index++) {
+    for (let index = 0; index < number_of_events + 1; index++) {
       if (type == 'General') {
         if (index == 0) {
           var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme0"></div>';
@@ -41,9 +43,16 @@ $(document).ready(function () {
 
       else if (type == 'Symmetrical') {
         $('#matrix-collection').attr("style", "overflow-x: none");
+        var html;
+        if (index == 0) {
+          html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+          $('#matrix-collection>ul').append(html);
+        }
 
-        var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="time0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="time0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
-        $('#matrix-collection>ul').append(html)
+        else {
+          html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+          $('#matrix-collection>ul').append(html);
+        }
       }
     }
 
@@ -84,11 +93,16 @@ $(document).ready(function () {
   });
 
   $('#ok').on('click', function () {
-    ipc.send('nssc-json-result', Application.Build_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)));
+    if (type == 'General') {
+      ipc.send('nssc-json-result', Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)));
+    }
+    else if(type == 'Symmetrical'){
+      console.log(Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector.jexcel('getRowData', 0), number_of_events + 1));
+    }
   });
 
   $('#save-scenario').on('click', function () {
-    var json_result = Application.Build_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
+    var json_result = Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
     var json_save = JSON.stringify(json_result);
 
     var options = {

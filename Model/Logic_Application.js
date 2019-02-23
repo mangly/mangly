@@ -121,7 +121,7 @@ class Application {
         return last_nssc;
     }
 
-    static Build_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector) {
+    static Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector) {
         var scenario = [];
         var time_of_change = 0;
 
@@ -142,6 +142,29 @@ class Application {
 
         return { "samplingVector": sampling_vector, "scenario": scenario };
     }
+
+    static Build_Symmetrical_Scenario_NSSC(n, sampling_vector, count) {
+        var scenario = [];
+        var time_of_change = 0;
+        var M = 0;
+        var c = 0;
+        for (let index = 0; index < count; index++) {
+            var content_of_scenario = { "time": 0, "n": n, "M": 0, "c": 0 };
+
+            time_of_change = parseFloat($('#time' + index).val());
+            M = parseFloat($('#M' + index).val());
+            c = parseFloat($('#c' + index).val());
+
+            content_of_scenario.time = time_of_change;
+            content_of_scenario.M = M;
+            content_of_scenario.c = c;
+
+            scenario.push(content_of_scenario);
+        }
+
+        return { "samplingVector": sampling_vector, "scenario": scenario };
+    }
+
 
     static Load_Scenario(scenario, sampling_vector, matrix_collection, deme_vector_collection) {
         for (let index = 0; index < matrix_collection.length; index++) {
