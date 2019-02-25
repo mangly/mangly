@@ -11,6 +11,7 @@ class Application {
         this.functions_collection = [];
         this.Mu = 1.25e-8;
         this.S = 100;
+        this.N_ref = 500;
     }
 
     Contains(funct) {
@@ -52,7 +53,7 @@ class Application {
                 var path_split = path.split('/');
                 var new_name = path_split[path_split.length - 1].slice(0, -5);
 
-                var nssc_function = new NSSC(new_name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
+                var nssc_function = new NSSC(new_name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario, this.N_ref);
 
                 if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
             });
@@ -83,8 +84,8 @@ class Application {
             var N = funct.theta / (4 * mu * s);
             funct.time[index] = 2 * N * funct.time[index];
             funct.IICR_2[index] = N * funct.IICR_2[index];
-            funct.Mu = mu;
-            funct.S = s;
+            // funct.Mu = mu;
+            // funct.S = s;
         }
 
         // return funct;
@@ -94,10 +95,17 @@ class Application {
         for (let index = 0; index < funct.time.length; index++) {
             funct.time[index] = funct.time[index] / mu;
             funct.IICR_k[index] = 1 / funct.IICR_k[index] / (2 * mu);
-            funct.Mu = mu;
+            // funct.Mu = mu;
         }
 
         // return funct;
+    }
+
+    Scale_NSSC_Function(funct, N_ref = this.N_ref){
+        for (let index = 0; index < funct.x_vector.length; index++) {
+            funct.x_vector[index] = funct.x_vector[index] * 2 * N_ref;
+            funct.IICR_specie[index] = funct.IICR_specie[index] * N_ref;          
+        }
     }
 
     Get_NSSC_Function(name) {

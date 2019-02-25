@@ -161,11 +161,13 @@ class Visual_Application {
     Visualize_PSMC_MSMC() {
         var element_scale_by_default;
         var IICR;
+
         for (const element of this.logic_application.functions_collection) {
             if (element.model != 'nssc' && this.Get_Graphic(element.name) == null) {
-                // var element_clone = element.Clone();
+
                 element_scale_by_default = element.Clone();
                 element.Mu = 1.25;
+
                 if (element.model == 'psmc') {
                     this.logic_application.Scale_Psmc_Function(element_scale_by_default);
                     IICR = element_scale_by_default.IICR_2;
@@ -193,9 +195,14 @@ class Visual_Application {
     Visualize_NSSC_Saved() {
         for (const element of this.logic_application.functions_collection) {
             if (element.model == 'nssc' && this.Get_Graphic(element.name) == null) {
+
+                var element_scale_by_default = element.Clone();
+
+                this.logic_application.Scale_NSSC_Function(element_scale_by_default);
+
                 var color = this.Get_Random_Color();
 
-                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element.x_vector, element.IICR_specie), 'label': element.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.x_vector, element_scale_by_default.IICR_specie), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
 
                 this.chart.data.datasets.push(graphic);
 
@@ -217,15 +224,20 @@ class Visual_Application {
         $('#tab-graphics').trigger('click');
         var color = this.Get_Random_Color();
         var nssc = this.logic_application.Get_Last_NSSC_Function();
-        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc.x_vector, nssc.IICR_specie), 'label': nssc.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
 
-        this.Visualize_element_of_list(nssc.name, nssc.model, color);
+        var nssc_scale_by_default = nssc.Clone();
+        this.logic_application.Scale_NSSC_Function(nssc_scale_by_default);
+
+        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_scale_by_default.x_vector, nssc_scale_by_default.IICR_specie), 'label': nssc_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+
         this.chart.data.datasets.push(graphic);
 
+        this.Visualize_element_of_list(nssc.name, nssc.model, color);
+        
         this.chart.update();
     }
 
-    Update_NSSC(nssc_function){
+    Update_NSSC(nssc_function) {
         var graphic = this.Get_Graphic(nssc_function.name);
 
         graphic.data = Application_Utilities.Generate_Data_To_Chart(nssc_function.x_vector, nssc_function.IICR_specie);
@@ -287,7 +299,7 @@ class Visual_Application {
 
     Reset_Scales(funct) {
         // for (const element of this.logic_application.functions_collection) {
-            this.Update_Scale(funct.name, this.logic_application.Mu, this.logic_application.S);
+        this.Update_Scale(funct.name, this.logic_application.Mu, this.logic_application.S);
         // }
 
         this.chart.update();
