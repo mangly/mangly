@@ -258,7 +258,7 @@ class Visual_Application {
         this.chart.update();
     }
 
-    Update_Scale(name_graphic, mu, s) {
+    Update_Scale_PSMC_MSMC(name_graphic, mu, s) {
         var IICR;
         var original_function = this.logic_application.Get_Function(name_graphic);
         var clone_function = original_function.Clone();
@@ -295,6 +295,18 @@ class Visual_Application {
 
         this.chart.update();
 
+    }
+
+    Update_Scale_NSSC(name_graphic, n_ref){
+        var original_function = this.logic_application.Get_Function(name_graphic);
+        var clone_function = original_function.Clone();
+        var graphic = this.Get_Graphic(name_graphic);
+
+        this.logic_application.Scale_NSSC_Function(clone_function, n_ref);
+
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.IICR_specie);
+        
+        this.chart.update();
     }
 
     Reset_Scales(funct) {

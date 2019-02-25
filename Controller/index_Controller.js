@@ -288,7 +288,7 @@ $(document).ready(function () {
     slider_mu.noUiSlider.on('slide', function (a, b) {
 
         for (const element of items_selecteds) {
-            application.Update_Scale(element, a[b], $('#input-slider-value-s').val());
+            application.Update_Scale_PSMC_MSMC(element, a[b], $('#input-slider-value-s').val());
         }
 
         $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
@@ -314,9 +314,34 @@ $(document).ready(function () {
 
     slider_s.noUiSlider.on('slide', function (a, b) {
         for (const element of items_selecteds) {
-            application.Update_Scale(element, $('#input-slider-value-mu').val(), a[b]);
+            application.Update_Scale_PSMC_MSMC(element, $('#input-slider-value-mu').val(), a[b]);
         }
+    });
+
+    //--------------
+    var slider_nref = document.getElementById("slider-nref");
+
+    noUiSlider.create(slider_nref, {
+        start: [500],
+        connect: "lower",
+        range: { min: 1, max: 10000 },
+
+        format: wNumb({
+            decimals: 0,
+        })
     })
+
+    // if ($('#options #option-nref *').attr('disabled') == 'disabled') {
+        slider_nref.noUiSlider.on("update", function (a, b) {
+            document.getElementById("input-slider-value-nref").value = a[b];
+        });
+    // }
+
+    slider_nref.noUiSlider.on('slide', function (a, b) {
+        for (const element of items_selecteds) {
+            application.Update_Scale_NSSC(element, a[b]);
+        }
+    });
 
     $('#reset-scales').on('click', function () {
         application.Reset_Scales(application.logic_application.Get_Function(name_item_clicked));

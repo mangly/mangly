@@ -179,12 +179,11 @@ main{
                                             <a id="tab-graphics" class="nav-link active" data-toggle="tab" href="#graphics"
                                                 role="tab">Graphics</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <!-- <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#axes" role="tab">Axes</a>
-                                        </li>
+                                        </li> -->
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#psmc-msmc" role="tab">Psmc /
-                                                Msmc</a>
+                                            <a class="nav-link" data-toggle="tab" href="#scales" role="tab">Scales</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#nssc" role="tab">Nssc</a>
@@ -240,12 +239,15 @@ main{
                                             </div>
                                         </div>
 
-                                        <div class="tab-pane fade" id="axes" role="tabpanel">
+                                        <!-- <div class="tab-pane fade" id="axes" role="tabpanel">
+
+                                        </div> -->
+                                        <div class="tab-pane fade" id="scales" role="tabpanel">
                                             <div class="card p-4">
                                                 <div id="options-scale-axis">
                                                     <div class="row">
                                                         <div class="col-lg-12">
-                                                            <p>Scale:</p>
+                                                            <p>AXES</p>
                                                         </div>
                                                     </div>
 
@@ -283,12 +285,10 @@ main{
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="psmc-msmc" role="tabpanel">
                                             <div class="card p-4">
                                                 <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <p>Scale parametters:</p>
+                                                    <div class="col-sm-12">
+                                                        <p>PSMC / MSMC</p>
                                                     </div>
                                                 </div>
 
@@ -336,7 +336,36 @@ main{
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <div class="card p-4">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <p>NSSC</p>
+                                                        </div>
+                                                    </div>
+    
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="row">
+                                                                <div id="option-nref">
+                                                                    <div class="col-sm-12">
+                                                                        <span class="font-italic">N_ref</span>
+                                                                        <div id="slider-nref"></div>
+    
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <input type="text" class="form-control"
+                                                                                        id="input-slider-value-nref" readonly />
+                                                                                    <i class="form-group__bar"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             <div class="row">
                                                 <div class="col-lg-8"><button id="reset-scales" class="btn btn-light"
                                                         type="submit" disabled>Reset scales of the selected function</button></div>
@@ -350,7 +379,8 @@ main{
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <span>Name:</span>
-                                                            <input id="nssc-name" type="text" value="NSSC new model" class="form-control input-mask">
+                                                            <input id="nssc-name" type="text" value="NSSC new model"
+                                                                class="form-control input-mask">
                                                             <i class="form-group__bar"></i>
                                                         </div>
                                                     </div>
