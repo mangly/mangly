@@ -332,6 +332,16 @@ class Visual_Application {
         this.chart.update();
     }
 
+    Restart_NSSC_Options(scenario){
+        scenario = null;
+        $('#count-events').val(1);
+        $('#order-n').val(1);
+        $('#nssc-name').val('NSSC new model');
+
+        $('#type-nssc-model').val('General');
+        $('#type-nssc-model').change();
+    }
+
     Get_Parametters(name) {
         for (const element of this.logic_application.functions_collection) {
             if (element.name == name) {
@@ -419,13 +429,22 @@ class Visual_Application {
     }
 
     Load_Principal_Window_Data(name, scenario, callback) {
-
         $('#nssc-name').val(name)
+        
+        if(Object.keys(scenario.scenario[0]).length == 4){
+            $('#type-nssc-model').val('Symmetrical');
+            $('#type-nssc-model').change();
 
-        var order = scenario.scenario[0].migMatrix.length;
-        $('#order-n').val(order);
+            $('#order-n').val(scenario.scenario[0].n);
+        } 
+        else {
+            $('#type-nssc-model').val('General');
+            $('#type-nssc-model').change();
 
-        $('#count-matrix').val(scenario.scenario.length);
+            $('#order-n').val(scenario.scenario[0].migMatrix.length);
+        }
+
+        $('#count-events').val(scenario.scenario.length - 1);
 
         setTimeout(function () { callback(); }, 0 | Math.random() * 100);
     }

@@ -356,10 +356,7 @@ $(document).ready(function () {
     // });
 
     ipc.on('restart-options-nssc', function () {
-        nssc_scenario = null;
-        $('#count-events').val(1);
-        $('#order-n').val(1);
-        $('#nssc-name').val('NSSC new model');
+        application.Restart_NSSC_Options(nssc_scenario);
     });
 
     var nssc_scenario;
@@ -387,7 +384,6 @@ $(document).ready(function () {
     });
 
     $('#load-nssc-state').on('click', function () {
-        edit = true;
         if ($('#model').html() != 'The Non-Stationary Structured Coalescent') {
             var options = {
                 filters: [
@@ -403,7 +399,7 @@ $(document).ready(function () {
                         var path_split = arrPath[0].split('/');
                         var file_name = path_split[path_split.length - 1].slice(0, -6);
 
-                        application.Load_Principal_Window_Data(file_name, scenario, function () {
+                        application.Load_Principal_Window_Data(file_name, nssc_scenario, function () {
                             $('#open-scenario-editor').trigger('click');
                         });
                     });
@@ -415,11 +411,14 @@ $(document).ready(function () {
             var nssc_model = application.logic_application.Get_Function(name_item_clicked);
             nssc_scenario = nssc_model.scenario;
 
-            $('#nssc-name').val(name_item_clicked)
-            if(nssc_model.type == 'General') var order = nssc_scenario.scenario[0].migMatrix.length;
-            $('#order-n').val(order);
-            $('#count-events').val(nssc_scenario.scenario.length - 1);
-            $('#open-scenario-editor').trigger('click');
+            application.Load_Principal_Window_Data(nssc_model.name, nssc_scenario, function () {
+                $('#open-scenario-editor').trigger('click');
+            });
+            // $('#nssc-name').val(name_item_clicked)
+            // if(nssc_model.type == 'General') var order = nssc_scenario.scenario[0].migMatrix.length;
+            // $('#order-n').val(order);
+            // $('#count-events').val(nssc_scenario.scenario.length - 1);
+            // $('#open-scenario-editor').trigger('click');
         }
     });
 

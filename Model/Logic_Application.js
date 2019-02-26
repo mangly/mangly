@@ -180,7 +180,7 @@ class Application {
     }
 
 
-    static Load_Scenario(scenario, sampling_vector, matrix_collection, deme_vector_collection) {
+    static Load_General_Scenario(scenario, sampling_vector, matrix_collection, deme_vector_collection) {
         for (let index = 0; index < matrix_collection.length; index++) {
             const matrix = matrix_collection[index];
             const deme_sizes = deme_vector_collection[index];
@@ -189,6 +189,17 @@ class Application {
             deme_sizes.jexcel('setData', [scenario.scenario[index].demeSizes], false);
             sampling_vector.jexcel('setData', [scenario.samplingVector], false);
             if (index != 0) $('#time' + index).val(scenario.scenario[index].time);
+        }
+    }
+
+    static Load_Symmetrical_Scenario(scenario, sampling_vector) {
+        for (let index = 0; index < scenario.scenario.length; index++) {
+            sampling_vector.jexcel('setData', [scenario.samplingVector], false);
+
+            if (index != 0) $('#time' + index).val(scenario.scenario[index].time);
+            $('#n' + index).val(scenario.scenario[index].n);
+            $('#M' + index).val(scenario.scenario[index].M);
+            $('#c' + index).val(scenario.scenario[index].c);
         }
     }
 
