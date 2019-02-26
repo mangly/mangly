@@ -311,7 +311,7 @@ class Visual_Application {
 
     Reset_Scales(funct) {
         // for (const element of this.logic_application.functions_collection) {
-        this.Update_Scale(funct.name, this.logic_application.Mu, this.logic_application.S);
+        this.Update_Scale_PSMC_MSMC(funct.name, this.logic_application.Mu, this.logic_application.S);
         // }
 
         this.chart.update();
@@ -319,7 +319,7 @@ class Visual_Application {
 
     Reset_All_Scales() {
         for (const element of this.logic_application.functions_collection) {
-            this.Update_Scale(element.name, this.logic_application.Mu, this.logic_application.S);
+            this.Update_Scale_PSMC_MSMC(element.name, this.logic_application.Mu, this.logic_application.S);
         }
 
         this.chart.update();

@@ -286,7 +286,6 @@ $(document).ready(function () {
     }
 
     slider_mu.noUiSlider.on('slide', function (a, b) {
-
         for (const element of items_selecteds) {
             application.Update_Scale_PSMC_MSMC(element, a[b], $('#input-slider-value-s').val());
         }
