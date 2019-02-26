@@ -249,7 +249,7 @@ main{
                                             <div class="card p-4">
                                                 <div id="options-scale-axis">
                                                     <div class="row">
-                                                        <div class="col-lg-12">
+                                                        <div class="col-sm-12">
                                                             <p>AXES</p>
                                                         </div>
                                                     </div>
@@ -340,27 +340,27 @@ main{
                                                 </div>
                                             </div>
                                             <div class="card p-4">
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <p>NSSC</p>
-                                                        </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p>NSSC</p>
                                                     </div>
-    
-                                                    <div class="row">
-                                                        <div class="col-sm-6">
-                                                            <div class="row">
-                                                                <div id="option-nref">
-                                                                    <div class="col-sm-12">
-                                                                        <span class="font-italic">N_ref</span>
-                                                                        <div id="slider-nref"></div>
-    
-                                                                        <div class="row">
-                                                                            <div class="col-6">
-                                                                                <div class="form-group">
-                                                                                    <input type="text" class="form-control"
-                                                                                        id="input-slider-value-nref" readonly />
-                                                                                    <i class="form-group__bar"></i>
-                                                                                </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="row">
+                                                            <div id="option-nref">
+                                                                <div class="col-sm-12">
+                                                                    <span class="font-italic">N_ref</span>
+                                                                    <div id="slider-nref"></div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="form-group">
+                                                                                <input type="text" class="form-control"
+                                                                                    id="input-slider-value-nref"
+                                                                                    readonly />
+                                                                                <i class="form-group__bar"></i>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -369,6 +369,7 @@ main{
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-lg-8"><button id="reset-scales" class="btn btn-light"
                                                         type="submit" disabled>Reset scales of the selected function</button></div>
@@ -430,7 +431,47 @@ main{
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="general" role="tabpanel">
-
+                                            <div class="card p-4">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p>Compute distance:</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <!-- <span>PSMC / MSMC</span> -->
+                                                            <select id="psmc-msmc-model" class="select2"
+                                                                data-minimum-results-for-search="Infinity">
+                                                                <option>Select PSMC / MSMC function</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <!-- <span>NSSC</span> -->
+                                                            <select id="nssc-model" class="select2"
+                                                                data-minimum-results-for-search="Infinity">
+                                                                <option>Select NSSC function</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card p-4">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <button id="get-distance" class="btn btn-light" type="submit">Get
+                                                            result:</button>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <input id="distance-result" type="text" readonly class="form-control input-mask">
+                                                            <i class="form-group__bar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

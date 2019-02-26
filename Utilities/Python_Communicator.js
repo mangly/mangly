@@ -26,6 +26,18 @@ class Python_Communicator {
             else callback(JSON.parse(results))
         });
     }
+
+    static compute_Distance(vectors, scenario_NSSC, n_ref, python_script, callback) {
+        let options = {
+            mode: 'text',
+            args: [JSON.stringify(vectors), JSON.stringify(scenario_NSSC), n_ref]
+        };
+
+        ps.PythonShell.run(python_script, options, function (err, results) {
+            if (err) throw err;
+            else callback(results);
+        });
+    }
 }
 
 module.exports = Python_Communicator

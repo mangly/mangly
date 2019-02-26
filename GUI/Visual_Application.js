@@ -186,10 +186,15 @@ class Visual_Application {
                 this.chart.data.datasets.push(graphic);
 
                 this.Visualize_element_of_list(element.name, element.model, color);
+                this.Add_model_compute_distance($('#psmc-msmc-model'), element.name);
             }
         }
 
         this.chart.update();
+    }
+
+    Add_model_compute_distance(control, name) {
+        control.append('<option>' + name + '</option>')
     }
 
     Visualize_NSSC_Saved() {
@@ -207,6 +212,7 @@ class Visual_Application {
                 this.chart.data.datasets.push(graphic);
 
                 this.Visualize_element_of_list(element.name, element.model, color);
+                this.Add_model_compute_distance($('#nssc-model'), element.name);
             }
         }
 
@@ -233,7 +239,8 @@ class Visual_Application {
         this.chart.data.datasets.push(graphic);
 
         this.Visualize_element_of_list(nssc.name, nssc.model, color);
-        
+        this.Add_model_compute_distance($('#nssc-model'), nssc.name);
+
         this.chart.update();
     }
 
@@ -297,7 +304,7 @@ class Visual_Application {
 
     }
 
-    Update_Scale_NSSC(name_graphic, n_ref){
+    Update_Scale_NSSC(name_graphic, n_ref) {
         var original_function = this.logic_application.Get_Function(name_graphic);
         var clone_function = original_function.Clone();
         var graphic = this.Get_Graphic(name_graphic);
@@ -305,7 +312,7 @@ class Visual_Application {
         this.logic_application.Scale_NSSC_Function(clone_function, n_ref);
 
         graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.IICR_specie);
-        
+
         this.chart.update();
     }
 

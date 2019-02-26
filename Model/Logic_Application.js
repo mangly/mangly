@@ -76,7 +76,13 @@ class Application {
             }
 
             callback(nssc_function);
-        })
+        });
+    }
+
+    Compute_Distance(vectors, scenario_NSSC, n_ref, callback) {
+        Python_Communicator.compute_Distance(vectors, scenario_NSSC, n_ref, 'Python_Scripts/compute_Distance.py', (results) => {
+            callback(results)
+        });
     }
 
     Scale_Psmc_Function(funct, mu = this.Mu, s = this.S) {
@@ -101,10 +107,10 @@ class Application {
         // return funct;
     }
 
-    Scale_NSSC_Function(funct, N_ref = this.N_ref){
+    Scale_NSSC_Function(funct, N_ref = this.N_ref) {
         for (let index = 0; index < funct.x_vector.length; index++) {
             funct.x_vector[index] = funct.x_vector[index] * 2 * N_ref;
-            funct.IICR_specie[index] = funct.IICR_specie[index] * N_ref;          
+            funct.IICR_specie[index] = funct.IICR_specie[index] * N_ref;
         }
     }
 

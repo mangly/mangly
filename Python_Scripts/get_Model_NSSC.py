@@ -1,8 +1,7 @@
 import sys, json
 import numpy as np
 from functions import readScenario
-from model import NSSC
-from model import Pnisland
+from model import NSSC, Pnisland
 
 # human_scenario_file = "./scenarios/HumansNeandScenario_samplingHumansTest.txt"
 

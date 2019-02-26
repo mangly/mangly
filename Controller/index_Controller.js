@@ -13,7 +13,7 @@ require('../archivos_estaticos/chartjs-plugin-zoom');
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
 var Visual_Application = require('../GUI/Visual_Application');
-var ArgumentException = require('../Utilities/Exception');
+// var ArgumentException = require('../Utilities/Exception');
 // const main_Window = remote.getCurrentWindow();
 
 $(document).ready(function () {
@@ -49,11 +49,7 @@ $(document).ready(function () {
                 $('#canvas-container').removeClass('disabled');
 
                 if (psmc_msmc_paths.length != 0) {
-                    application.logic_application.Add_File_PSMC_MSMC(psmc_msmc_paths, function (err) {
-                        // try {
-                        if (err) {
-                            throw new ArgumentException(err);
-                        }
+                    application.logic_application.Add_File_PSMC_MSMC(psmc_msmc_paths, function () {
 
                         application.Visualize_PSMC_MSMC();
 
@@ -63,7 +59,7 @@ $(document).ready(function () {
                 }
 
                 if (nssc_paths.length != 0) {
-                    application.logic_application.Add_File_NSSC(nssc_paths, function (err) {
+                    application.logic_application.Add_File_NSSC(nssc_paths, function () {
                         // try {
                         // if (err) {
                         //     throw new ArgumentException(err);
@@ -331,9 +327,9 @@ $(document).ready(function () {
     })
 
     // if ($('#options #option-nref *').attr('disabled') == 'disabled') {
-        slider_nref.noUiSlider.on("update", function (a, b) {
-            document.getElementById("input-slider-value-nref").value = a[b];
-        });
+    slider_nref.noUiSlider.on("update", function (a, b) {
+        document.getElementById("input-slider-value-nref").value = a[b];
+    });
     // }
 
     slider_nref.noUiSlider.on('slide', function (a, b) {
@@ -385,10 +381,7 @@ $(document).ready(function () {
 
     ipc.on('nssc-json-result', function (event, scenario) {
         application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
-            if (nssc_function) {
-                application.Update_NSSC(nssc_function);
-            }
-
+            if (nssc_function) application.Update_NSSC(nssc_function);
             else application.Visualize_NSSC();
         });
     });
@@ -419,10 +412,11 @@ $(document).ready(function () {
         }
 
         else {
-            nssc_scenario = application.logic_application.Get_Function(name_item_clicked).scenario;
+            var nssc_model = application.logic_application.Get_Function(name_item_clicked);
+            nssc_scenario = nssc_model.scenario;
 
             $('#nssc-name').val(name_item_clicked)
-            var order = nssc_scenario.scenario[0].migMatrix.length;
+            if(nssc_model.type == 'General') var order = nssc_scenario.scenario[0].migMatrix.length;
             $('#order-n').val(order);
             $('#count-events').val(nssc_scenario.scenario.length - 1);
             $('#open-scenario-editor').trigger('click');
@@ -461,5 +455,29 @@ $(document).ready(function () {
 
     $('#reset-zoom').on('click', function () {
         application.Reset_Zoom();
+    });
+
+    $('#get-distance').on('click', function () {
+        var psmc_msmc_model = application.logic_application.Get_Function($('#psmc-msmc-model').val());
+        var nssc_model = application.logic_application.Get_Function($('#nssc-model').val());
+
+        var x_vector = psmc_msmc_model.time;
+        var y_vector;
+
+        if (psmc_msmc_model.model == 'psmc') y_vector = psmc_msmc_model.IICR_2;
+        else if (psmc_msmc_model.model == 'msmc') y_vector = psmc_msmc_model.IICR_k;
+
+        var vectors = {
+            x: x_vector,
+            y: y_vector
+        }
+
+        console.log(vectors)
+        console.log(nssc_model.scenario)
+        console.log($('#input-slider-value-nref').val());
+
+        application.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
+            $('#distance-result').val(result)
+        });
     });
 });
