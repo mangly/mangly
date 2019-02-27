@@ -137,6 +137,16 @@ class Visual_Application {
         });
     }
 
+    Index_Of(name_graphic) {
+        for (let index = 0; index < this.chart.data.datasets.length; index++) {
+            const element = this.chart.data.datasets[index];
+
+            if (element.label == name_graphic) return index;
+        }
+
+        return -1;
+    }
+
     Get_Graphic(name_graphic) {
         for (const element of this.chart.data.datasets) {
             if (name_graphic == element.label) return element;
@@ -443,6 +453,15 @@ class Visual_Application {
         $('#count-events').val(scenario.scenario.length - 1);
 
         setTimeout(function () { callback(); }, 0 | Math.random() * 100);
+    }
+
+    Delete_Function(event_target) {
+        var name_item_clicked = (event_target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text();
+        var index = this.Index_Of(name_item_clicked);
+        this.chart.data.datasets.splice(index, 1);
+        this.logic_application.functions_collection.splice(index, 1);
+        event_target.parents('.listview__item').remove();
+        this.chart.update()
     }
 
     static Fill_Initial_Data_Vector(value, type, order = 0) {
