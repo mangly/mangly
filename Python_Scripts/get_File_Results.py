@@ -2,10 +2,9 @@ import sys, json, random
 
 def get_PSMC_results(filename):
     """
-    Read the final output of PSMC and return a tuple of
-    four elements: the time vector, the IICR_2 vector, 
+    Read the final output of PSMC and return a dictionary of
+    six elements: name, model, the time vector, the IICR_2 vector, 
     the value of theta and the value of rho
-    (time, IICR_2, theta, rho)
     """
     text = ""
     with open(filename, "r") as f:

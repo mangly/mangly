@@ -197,7 +197,7 @@ class NSSC:
         F_x = self.cdfT2(t)
         f_x = self.pdfT2(t)
         return(np.true_divide(1-F_x, f_x)).real
-    
+        
     def compute_distance(self, x, y, Nref):
         """
         Compute the distance between the IICR of the model,
