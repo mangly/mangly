@@ -342,12 +342,14 @@ $(document).ready(function () {
         application.Reset_Scales(application.logic_application.Get_Function(name_item_clicked));
         slider_s.noUiSlider.set(100);
         slider_mu.noUiSlider.set(1.25);
+        slider_nref.noUiSlider.set(500);
     });
 
     $('#reset-all-scales').on('click', function () {
         application.Reset_All_Scales();
         slider_s.noUiSlider.set(100);
         slider_mu.noUiSlider.set(1.25);
+        slider_nref.noUiSlider.set(500);
     });
 
     // $('#order-n').on('keyup', function () {
