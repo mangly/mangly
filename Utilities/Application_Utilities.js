@@ -12,6 +12,20 @@ class Application_Utilities {
         return result;
     }
 
+    static Generate_Inverse_Data_To_Chart(data) {
+        var result = {
+            x:[],
+            y:[]
+        };
+
+        for (let index = 0; index < data.length; index++) {
+            result.x.push(data[index].x);
+            result.y.push(data[index].y);
+        }
+
+        return result;
+    }
+
     static Convert_Decimal_Scientific_Notation(decimal_number) {
         var temp_number = 0;
         var result = '';

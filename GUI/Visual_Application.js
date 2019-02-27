@@ -181,7 +181,7 @@ class Visual_Application {
 
                 var color = this.Get_Random_Color();
 
-                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
 
                 this.chart.data.datasets.push(graphic);
 
@@ -207,7 +207,7 @@ class Visual_Application {
 
                 var color = this.Get_Random_Color();
 
-                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.x_vector, element_scale_by_default.IICR_specie), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.x_vector, element_scale_by_default.IICR_specie), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
 
                 this.chart.data.datasets.push(graphic);
 
@@ -234,7 +234,7 @@ class Visual_Application {
         var nssc_scale_by_default = nssc.Clone();
         this.logic_application.Scale_NSSC_Function(nssc_scale_by_default);
 
-        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_scale_by_default.x_vector, nssc_scale_by_default.IICR_specie), 'label': nssc_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_scale_by_default.x_vector, nssc_scale_by_default.IICR_specie), 'label': nssc_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
 
         this.chart.data.datasets.push(graphic);
 
@@ -332,8 +332,7 @@ class Visual_Application {
         this.chart.update();
     }
 
-    Restart_NSSC_Options(scenario){
-        scenario = null;
+    Restart_NSSC_Options() {
         $('#count-events').val(1);
         $('#order-n').val(1);
         $('#nssc-name').val('NSSC new model');
@@ -430,13 +429,13 @@ class Visual_Application {
 
     Load_Principal_Window_Data(name, scenario, callback) {
         $('#nssc-name').val(name)
-        
-        if(Object.keys(scenario.scenario[0]).length == 4){
+
+        if (Object.keys(scenario.scenario[0]).length == 4) {
             $('#type-nssc-model').val('Symmetrical');
             $('#type-nssc-model').change();
 
             $('#order-n').val(scenario.scenario[0].n);
-        } 
+        }
         else {
             $('#type-nssc-model').val('General');
             $('#type-nssc-model').change();

@@ -356,7 +356,8 @@ $(document).ready(function () {
     // });
 
     ipc.on('restart-options-nssc', function () {
-        application.Restart_NSSC_Options(nssc_scenario);
+        nssc_scenario = null;
+        application.Restart_NSSC_Options();
     });
 
     var nssc_scenario;
@@ -457,26 +458,14 @@ $(document).ready(function () {
     });
 
     $('#get-distance').on('click', function () {
-        var psmc_msmc_model = application.logic_application.Get_Function($('#psmc-msmc-model').val());
+        var psmc_msmc_model_data = application.Get_Graphic($('#psmc-msmc-model').val()).data;
         var nssc_model = application.logic_application.Get_Function($('#nssc-model').val());
 
-        var x_vector = psmc_msmc_model.time;
-        var y_vector;
-
-        if (psmc_msmc_model.model == 'psmc') y_vector = psmc_msmc_model.IICR_2;
-        else if (psmc_msmc_model.model == 'msmc') y_vector = psmc_msmc_model.IICR_k;
-
-        var vectors = {
-            x: x_vector,
-            y: y_vector
-        }
-
-        console.log(vectors)
-        console.log(nssc_model.scenario)
-        console.log($('#input-slider-value-nref').val());
+        var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
 
         application.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
-            $('#distance-result').val(result)
+            $('#distance-result').val('The distance is: ' + result)
+            console.log(result);
         });
     });
 });
