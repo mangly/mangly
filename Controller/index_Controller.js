@@ -8,13 +8,14 @@ require('../archivos_estaticos/chartjs-plugin-zoom');
 // require('chart.js')
 
 // var fs = require('fs');
-// var remote = require('electron').remote;
 
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
 var Visual_Application = require('../GUI/Visual_Application');
 // var ArgumentException = require('../Utilities/Exception');
-// const main_Window = remote.getCurrentWindow();
+
+var remote = require('electron').remote;
+const main_Window = remote.getCurrentWindow();
 
 $(document).ready(function () {
     $('#change-color').attr('disabled', 'disabled');
@@ -89,6 +90,16 @@ $(document).ready(function () {
     });
 
     $('#list-graphics').on('click', function () {
+        //Delete function
+        if ($(event.target).is('.zmdi-delete')) {
+            var event_target = $(event.target);
+            
+            dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Accept', 'Cancel'] }, (response) => {
+                if (response == 0) application.Delete_Function(event_target);
+            });
+        }
+
+        //Selections
         if ($(event.target).is('.custom-control-input')) {
 
             name_item_clicked = ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text();
@@ -342,12 +353,14 @@ $(document).ready(function () {
         application.Reset_Scales(application.logic_application.Get_Function(name_item_clicked));
         slider_s.noUiSlider.set(100);
         slider_mu.noUiSlider.set(1.25);
+        slider_nref.noUiSlider.set(500);
     });
 
     $('#reset-all-scales').on('click', function () {
         application.Reset_All_Scales();
         slider_s.noUiSlider.set(100);
         slider_mu.noUiSlider.set(1.25);
+        slider_nref.noUiSlider.set(500);
     });
 
     // $('#order-n').on('keyup', function () {

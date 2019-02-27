@@ -28,15 +28,15 @@ class Visual_Application {
 
                         ticks: {
                             fontColor: "white",
-                            beginAtZero: true,
+                            // beginAtZero: false,
+
+                            // autoSkip: true,
+                            maxTicksLimit: 5,
+                            // stepSize: 10000,
 
                             callback: function (value) {
-                                return Application_Utilities.Convert_Positive_Number_Scientific_Notation(value.toString());
+                                if (value != 0) return Application_Utilities.Convert_Positive_Number_Scientific_Notation(value.toString());
                             },
-                            // suggestedMin: 0,
-                            // suggestedMax: 1000
-                            // min = 0,
-                            // max = 5e+2
                         },
 
                         gridLines: {
@@ -61,9 +61,6 @@ class Visual_Application {
                             callback: function (value) {
                                 return (Math.round(value * 100) / 100).toString();
                             },
-
-                            // min: 0,
-                            // max: 5000
                         },
 
                         gridLines: {
@@ -138,6 +135,16 @@ class Visual_Application {
                 }
             },
         });
+    }
+
+    Index_Of(name_graphic) {
+        for (let index = 0; index < this.chart.data.datasets.length; index++) {
+            const element = this.chart.data.datasets[index];
+
+            if (element.label == name_graphic) return index;
+        }
+
+        return -1;
     }
 
     Get_Graphic(name_graphic) {
@@ -317,16 +324,16 @@ class Visual_Application {
     }
 
     Reset_Scales(funct) {
-        // for (const element of this.logic_application.functions_collection) {
-        this.Update_Scale_PSMC_MSMC(funct.name, this.logic_application.Mu, this.logic_application.S);
-        // }
+        if (funct.model != 'nssc') this.Update_Scale_PSMC_MSMC(funct.name, this.logic_application.Mu, this.logic_application.S);
+        else this.Update_Scale_NSSC(funct.name, this.logic_application.n_ref);
 
         this.chart.update();
     }
 
     Reset_All_Scales() {
-        for (const element of this.logic_application.functions_collection) {
-            this.Update_Scale_PSMC_MSMC(element.name, this.logic_application.Mu, this.logic_application.S);
+        for (const funct of this.logic_application.functions_collection) {
+            if (funct.model != 'nssc') this.Update_Scale_PSMC_MSMC(funct.name, this.logic_application.Mu, this.logic_application.S);
+            else this.Update_Scale_NSSC(funct.name, this.logic_application.n_ref);
         }
 
         this.chart.update();
@@ -446,6 +453,15 @@ class Visual_Application {
         $('#count-events').val(scenario.scenario.length - 1);
 
         setTimeout(function () { callback(); }, 0 | Math.random() * 100);
+    }
+
+    Delete_Function(event_target) {
+        var name_item_clicked = (event_target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text();
+        var index = this.Index_Of(name_item_clicked);
+        this.chart.data.datasets.splice(index, 1);
+        this.logic_application.functions_collection.splice(index, 1);
+        event_target.parents('.listview__item').remove();
+        this.chart.update()
     }
 
     static Fill_Initial_Data_Vector(value, type, order = 0) {
