@@ -68,6 +68,14 @@ main{
         {
             padding: 0;
         }
+
+        div.disabled
+        {
+            pointer-events: none;
+            /* for "disabled" effect */
+            /* opacity: 0.5;
+            background: #CCC; */
+        }
     </style>
 
 </head>
@@ -171,15 +179,17 @@ main{
                                             <a id="tab-graphics" class="nav-link active" data-toggle="tab" href="#graphics"
                                                 role="tab">Graphics</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <!-- <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#axes" role="tab">Axes</a>
-                                        </li>
+                                        </li> -->
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#psmc-msmc" role="tab">Psmc /
-                                                Msmc</a>
+                                            <a class="nav-link" data-toggle="tab" href="#scales" role="tab">Scales</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#nssc" role="tab">Nssc</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#general" role="tab">Calculus</a>
                                         </li>
                                     </ul>
 
@@ -232,12 +242,15 @@ main{
                                             </div>
                                         </div>
 
-                                        <div class="tab-pane fade" id="axes" role="tabpanel">
+                                        <!-- <div class="tab-pane fade" id="axes" role="tabpanel">
+
+                                        </div> -->
+                                        <div class="tab-pane fade" id="scales" role="tabpanel">
                                             <div class="card p-4">
                                                 <div id="options-scale-axis">
                                                     <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <p>Scale:</p>
+                                                        <div class="col-sm-12">
+                                                            <p>AXES</p>
                                                         </div>
                                                     </div>
 
@@ -275,12 +288,10 @@ main{
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="psmc-msmc" role="tabpanel">
                                             <div class="card p-4">
                                                 <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <p>Scale parametters:</p>
+                                                    <div class="col-sm-12">
+                                                        <p>PSMC / MSMC</p>
                                                     </div>
                                                 </div>
 
@@ -328,70 +339,80 @@ main{
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="card p-4">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p>NSSC</p>
+                                                    </div>
+                                                </div>
 
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="row">
+                                                            <div id="option-nref">
+                                                                <div class="col-sm-12">
+                                                                    <span class="font-italic">N_ref</span>
+                                                                    <div id="slider-nref"></div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="form-group">
+                                                                                <input type="text" class="form-control"
+                                                                                    id="input-slider-value-nref"
+                                                                                    readonly />
+                                                                                <i class="form-group__bar"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
-                                                <div class="col-lg-4"></div>
-                                                <div class="col-lg-4"></div>
-                                                <div class="col-lg-4"> <button id="reset-scales" class="btn btn-light float-right"
-                                                        type="submit" hidden>Reset all scales</button></div>
+                                                <div class="col-lg-8"><button id="reset-scales" class="btn btn-light"
+                                                        type="submit" disabled>Reset scales of the selected function</button></div>
+                                                <div class="col-lg-4"> <button id="reset-all-scales" class="btn btn-light float-right"
+                                                        type="submit" disabled>Reset all scales</button></div>
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="nssc" role="tabpanel">
                                             <div class="card p-4">
                                                 <div class="row">
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <span>Name:</span>
-                                                            <input id="nssc-name" type="text" class="form-control input-mask">
+                                                            <input id="nssc-name" type="text" value="NSSC new model"
+                                                                class="form-control input-mask">
                                                             <i class="form-group__bar"></i>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <span>Number of matrices:</span>
-                                                            <input id="count-matrix" type="text" value="1" class="form-control input-mask">
-                                                            <i class="form-group__bar"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <span>Number of demes:</span>
-                                                        <div class="row">
-                                                            <div class="col-sm-4">
-                                                                <div class="form-group">
-                                                                    <input id="order-n" type="text" value="1" class="form-control input-mask"
-                                                                        placeholder="n">
-                                                                    <i class="form-group__bar"></i>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-1 pl-0 pr-0 pt-2"><span>x</span></div>
-                                                            <div class="col-sm-4">
-                                                                <div class="form-group">
-                                                                    <input id="order-m" type="text" value="1" class="form-control input-mask"
-                                                                        placeholder="m">
-                                                                    <i class="form-group__bar"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="card p-4">
-                                                <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <span>Type:</span>
                                                             <select id="type-nssc-model" class="select2"
                                                                 data-minimum-results-for-search="Infinity">
-                                                                <option>General</option>
-                                                                <option>Symmetrical</option>
+                                                                <option value="General">General</option>
+                                                                <option value="Symmetrical">Symmetrical</option>
                                                             </select>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="card p-4">
+                                                <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <span>Migration rate:</span>
-                                                            <input id="migration-rate" type="text" class="form-control input-mask">
+                                                            <span>Number of events:</span>
+                                                            <input id="count-events" type="text" value="1" class="form-control input-mask">
+                                                            <i class="form-group__bar"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <span>Number of demes:</span>
+                                                        <div class="form-group">
+                                                            <input id="order-n" type="text" value="1" class="form-control input-mask">
                                                             <i class="form-group__bar"></i>
                                                         </div>
                                                     </div>
@@ -399,13 +420,55 @@ main{
                                             </div>
 
                                             <div class="row">
-                                                <div class="col-sm-6"><button id="open-matrix-editor" class="btn btn-light"
-                                                        type="submit">Open
-                                                        matrix editor</button>
+                                                <div class="col-sm-6"><button id="open-scenario-editor" class="btn btn-light"
+                                                        type="submit">Open scenario editor</button>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="col-sm-6" style="padding-left:56%"><button id="load-nssc-state"
                                                             class="btn btn-light" type="submit">Load scenario</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="general" role="tabpanel">
+                                            <div class="card p-4">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p>Compute distance:</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <!-- <span>PSMC / MSMC</span> -->
+                                                            <select id="psmc-msmc-model" class="select2"
+                                                                data-minimum-results-for-search="Infinity">
+                                                                <option>Select PSMC / MSMC function</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <!-- <span>NSSC</span> -->
+                                                            <select id="nssc-model" class="select2"
+                                                                data-minimum-results-for-search="Infinity">
+                                                                <option>Select NSSC function</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card p-4">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <button id="get-distance" class="btn btn-light" type="submit">Get
+                                                            result:</button>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <input id="distance-result" type="text" readonly class="form-control input-mask">
+                                                            <i class="form-group__bar"></i>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -418,8 +481,19 @@ main{
                 </div>
                 <div class="col-lg-8 col-md-12 col-sm-12">
                     <div class="card" style="height: 100%">
-                        <div class="card-header">Graph of models</div>
-                        <div class="card-body" style="height: 100%;">
+                        <div class="card-header" style="padding-bottom:10.5px">
+                            <div class="row">
+                                <div class="col-sm-10">Graph of models</div>
+                                <div class="col-sm-1"><i style="line-height: 22px" id="zoom" class="zmdi zmdi-zoom-in zmdi-hc-3x float-right"></i></div>
+                                <div class="col-sm-1"></span> <button id="reset-zoom" style="height:24px; width: 60px; line-height: 7px"
+                                        class="btn btn-dark btn--icon-text float-right">
+                                        Reset</button></div>
+
+                            </div>
+
+
+                        </div>
+                        <div id="canvas-container" class="card-body disabled" style="height: 100%">
                             <canvas style="height:100%; width: 100%;" id="mycanvas"></canvas>
                         </div>
                     </div>
@@ -492,7 +566,7 @@ main{
     <script src="../archivos_estaticos/ChartJS/Chart.js"></script>
     <!-- <script src="../archivos_estaticos/ChartJS/"></script> -->
     <script src="../archivos_estaticos/SimplejQueryDropdowns/js/jquery.dropdownPlain.js"></script>
-    <script src="../archivos_estaticos/jexcel-master/dist/js/jquery.jexcel.js"></script>
+    <!-- <script src="../archivos_estaticos/jexcel-master/dist/js/jquery.jexcel.js"></script> -->
     <!-- <script src="../archivos_estaticos/Serializer.js"></script> -->
     <!-- <script src="../archivos_estaticos/handsontable-pro-master/dist/handsontable.full.min.js"></script> -->
 

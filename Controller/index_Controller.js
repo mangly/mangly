@@ -3,24 +3,24 @@ const ipc = electron.ipcRenderer;
 
 const { dialog } = require('electron').remote;
 
-const remote = require('electron').remote;
-
 require('../archivos_estaticos/chartjs-plugin-zoom');
 
-var fs = require('fs');
+// require('chart.js')
+
+// var fs = require('fs');
+// var remote = require('electron').remote;
 
 var Application = require('../Model/Logic_Application');
 var Application_Utilities = require('../Utilities/Application_Utilities');
-var Visual_Application = require('../GUI/Visual_Application')
-var NSSC = require('../Model/NSSC');
+var Visual_Application = require('../GUI/Visual_Application');
+// var ArgumentException = require('../Utilities/Exception');
+// const main_Window = remote.getCurrentWindow();
 
 $(document).ready(function () {
-    $('#options-color-edit-remove *').attr('disabled', 'disabled');
+    $('#change-color').attr('disabled', 'disabled');
     $('#options-scale-axis *').attr('disabled', 'disabled');
     $('#option-mu *').attr('disabled', 'disabled');
     $('#option-s *').attr('disabled', 'disabled');
-    $('#order-m').attr('disabled', 'disabled');
-
 
     // Instance Visual Application
     var application = new Visual_Application($('#mycanvas'), new Application());
@@ -46,37 +46,31 @@ $(document).ready(function () {
                 var paths = Application_Utilities.Divide_Paths(arrPath);
                 var psmc_msmc_paths = paths[0];
                 var nssc_paths = paths[1];
+                $('#canvas-container').removeClass('disabled');
 
-                // var array_extensions = arrPath[0].split('.');
-                // var model_type = array_extensions[array_extensions.length - 1];
-
-                // if (model_type == 'psmc' || model_type == 'msmc') {
                 if (psmc_msmc_paths.length != 0) {
-                    application.logic_application.Add_File(psmc_msmc_paths, function () {
+                    application.logic_application.Add_File_PSMC_MSMC(psmc_msmc_paths, function () {
 
                         application.Visualize_PSMC_MSMC();
 
                         $('#options-scale-axis *').removeAttr('disabled');
-                        $('#reset-scales').removeAttr('hidden');
                         $('#switch-selection').removeAttr('disabled');
-                    })
+                    });
                 }
 
                 if (nssc_paths.length != 0) {
-                    for (const path of nssc_paths) {
-                        fs.readFile(path, function read(err, data) {
-                            if (err) {
-                                throw err;
-                            }
+                    application.logic_application.Add_File_NSSC(nssc_paths, function () {
+                        // try {
+                        // if (err) {
+                        //     throw new ArgumentException(err);
+                        // }
+                        application.Visualize_NSSC_Saved();
+                        // }
 
-                            var nssc_file = JSON.parse(data);
-                            var path_split = path.split('/');
-                            var new_name = path_split[path_split.length - 1].slice(0, -5);
-                            var nssc_function = new NSSC(new_name, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario);
-                            application.logic_application.functions_collection.push(nssc_function);
-                            application.Visualize_NSSC_Saved(nssc_function);
-                        });
-                    }
+                        // catch (exception) {
+                        //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
+                        // }
+                    });
                 }
             }
         });
@@ -90,8 +84,8 @@ $(document).ready(function () {
         $('.custom-control-input').prop('checked', false);
         legend_color = [];
         items_selecteds = [];
-        slider_s.noUiSlider.set(100);
-        slider_mu.noUiSlider.set(1.25);
+
+        $('#reset-all-scales').trigger('click');
     });
 
     $('#list-graphics').on('click', function () {
@@ -106,15 +100,40 @@ $(document).ready(function () {
                     }
                 });
 
-                legend_color = [];
-                items_selecteds = [];
-                items_selecteds.push(name_item_clicked);
-                legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+                if ($(event.target).prop('checked')) {
+                    $('#reset-scales').removeAttr('disabled');
+                    $('#reset-all-scales').removeAttr('disabled');
+                    $('#change-color').removeAttr('disabled');
+                    $('#option-s *').removeAttr('disabled');
+                    $('#option-mu *').removeAttr('disabled');
+                    legend_color = [];
+                    items_selecteds = [];
+                    items_selecteds.push(name_item_clicked);
+                    legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+                }
+
+                else {
+                    $('#reset-scales').attr('disabled', 'disabled');
+                    $('#reset-all-scales').attr('disabled', 'disabled');
+                    $('#change-color').attr('disabled', 'disabled');
+                    $('#option-s *').attr('disabled', 'disabled');
+                    $('#option-mu *').attr('disabled', 'disabled');
+                    slider_s.noUiSlider.set(100);
+                    slider_mu.noUiSlider.set(1.25);
+
+                    legend_color = [];
+                    items_selecteds = [];
+                }
             }
 
             else {
                 if ($(event.target).prop('checked')) {
                     if (!items_selecteds.includes(name_item_clicked)) {
+                        $('#reset-scales').removeAttr('disabled');
+                        $('#reset-all-scales').removeAttr('disabled');
+                        $('#change-color').removeAttr('disabled');
+                        $('#option-s *').removeAttr('disabled');
+                        $('#option-mu *').removeAttr('disabled');
                         items_selecteds.push(name_item_clicked);
                         legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
                     }
@@ -123,6 +142,16 @@ $(document).ready(function () {
                     var index = items_selecteds.indexOf(name_item_clicked);
                     items_selecteds.splice(index, 1)
                     legend_color.splice(index, 1)
+
+                    if (items_selecteds.length == 0) {
+                        $('#reset-scales').attr('disabled', 'disabled');
+                        $('#reset-all-scales').attr('disabled', 'disabled');
+                        $('#change-color').attr('disabled', 'disabled');
+                        $('#option-s *').attr('disabled', 'disabled');
+                        $('#option-mu *').attr('disabled', 'disabled');
+                        slider_s.noUiSlider.set(100);
+                        slider_mu.noUiSlider.set(1.25);
+                    }
                 }
             }
 
@@ -130,9 +159,6 @@ $(document).ready(function () {
 
 
             // if (items_selecteds.length != 0) {
-            $('#options-color-edit-remove *').removeAttr('disabled');
-            $('#option-s *').removeAttr('disabled');
-            $('#option-mu *').removeAttr('disabled');
 
             // }
 
@@ -149,29 +175,30 @@ $(document).ready(function () {
             // $('#option-s *').removeAttr('disabled');
             // $('#option-mu *').removeAttr('disabled');
 
-            if (items_selecteds.length == 0 || items_selecteds.length > 1) {
+            if (items_selecteds.length == 1) {
+                // if (items_selecteds.length == 0) $('#option-mu *').attr('disabled', 'disabled');
+                var graphic = application.logic_application.Get_Function(name_item_clicked);
 
-                if (items_selecteds.length == 0) $('#option-mu *').attr('disabled', 'disabled');
-
-                if ($('#model').html() == 'Pairwise Sequentially Markovian Coalescent') {
+                if (graphic.model == 'psmc') {
                     $('#option-s *').removeAttr('disabled');
                     $('#option-mu *').removeAttr('disabled');
-                    slider_s.noUiSlider.set(100);
-                    slider_mu.noUiSlider.set(1.25);
+                    slider_s.noUiSlider.set(graphic.S);
+                    slider_mu.noUiSlider.set(graphic.Mu);
                 }
 
                 else {
+                    slider_s.noUiSlider.set(100);
+                    slider_mu.noUiSlider.set(graphic.Mu);
                     $('#option-mu *').removeAttr('disabled');
-                    slider_mu.noUiSlider.set(1.25);
+                    $('#option-s *').attr('disabled', 'disabled');
                 }
             }
 
             else {
-
                 for (const element of items_selecteds) {
                     var graphic = application.logic_application.Get_Function(element);
 
-                    if ($('#model').html() == 'Pairwise Sequentially Markovian Coalescent') {
+                    if (graphic.model == 'psmc') {
                         $('#option-s *').removeAttr('disabled');
                         $('#option-mu *').removeAttr('disabled');
                         slider_s.noUiSlider.set(graphic.S);
@@ -179,7 +206,6 @@ $(document).ready(function () {
                     }
 
                     else {
-
                         slider_s.noUiSlider.set(100);
                         slider_mu.noUiSlider.set(graphic.Mu);
                         $('#option-s *').attr('disabled', 'disabled');
@@ -187,23 +213,7 @@ $(document).ready(function () {
 
                 }
             }
-            // }
-            // for (const element of items_selecteds) {
-            //     var graphic = application.logic_application.Contain(element);
-            //     var found = false;
 
-            //     if (graphic.model == 'msmc') {
-            //         $('#option-s *').attr('disabled', 'disabled');
-            //         found = true;
-            //         break;
-            //     }
-
-            //     if (found) {
-            //         slider_s.noUiSlider.set(100);
-            //         // $('#option-s *').removeAttr('disabled');
-            //     }
-
-            // }
             application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
     })
@@ -236,16 +246,16 @@ $(document).ready(function () {
     //     // if (!$(event.target).is('#options-scale-axis *') && $('#options #option-mu *').attr('disabled') == 'disabled') $('#modal-default').modal('show');
     // });
 
-    var expand_file = false;
+    // var expand_file = false;
 
-    $('#modal-default').on('hidden.bs.modal', function () {
-        $('#open-menu').trigger('click');
+    // $('#modal-default').on('hidden.bs.modal', function () {
+    //     $('#open-menu').trigger('click');
 
-        if (!expand_file) {
-            $('#expand-file').trigger('click');
-            expand_file = true;
-        }
-    });
+    //     if (!expand_file) {
+    //         $('#expand-file').trigger('click');
+    //         expand_file = true;
+    //     }
+    // });
 
 
     // Sliders configurations
@@ -272,9 +282,8 @@ $(document).ready(function () {
     }
 
     slider_mu.noUiSlider.on('slide', function (a, b) {
-
         for (const element of items_selecteds) {
-            application.Update_Scale(element, a[b], $('#input-slider-value-s').val());
+            application.Update_Scale_PSMC_MSMC(element, a[b], $('#input-slider-value-s').val());
         }
 
         $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
@@ -300,102 +309,78 @@ $(document).ready(function () {
 
     slider_s.noUiSlider.on('slide', function (a, b) {
         for (const element of items_selecteds) {
-            application.Update_Scale(element, $('#input-slider-value-mu').val(), a[b]);
+            application.Update_Scale_PSMC_MSMC(element, $('#input-slider-value-mu').val(), a[b]);
         }
-    })
-
-    $('#reset-scales').on('click', function () {
-        application.Reset_Scales();
-        slider_s.noUiSlider.set(100);
-        slider_mu.noUiSlider.set(1.25);
-        $('.custom-control-input').prop('checked', false);
-        items_selecteds = [];
     });
 
-    $('#order-n').on('keyup', function () {
-        var order = $(this).val();
-        $('#order-m').val(order);
+    //--------------
+    var slider_nref = document.getElementById("slider-nref");
+
+    noUiSlider.create(slider_nref, {
+        start: [500],
+        connect: "lower",
+        range: { min: 1, max: 10000 },
+
+        format: wNumb({
+            decimals: 0,
+        })
     })
 
+    // if ($('#options #option-nref *').attr('disabled') == 'disabled') {
+    slider_nref.noUiSlider.on("update", function (a, b) {
+        document.getElementById("input-slider-value-nref").value = a[b];
+    });
+    // }
+
+    slider_nref.noUiSlider.on('slide', function (a, b) {
+        for (const element of items_selecteds) {
+            application.Update_Scale_NSSC(element, a[b]);
+        }
+    });
+
+    $('#reset-scales').on('click', function () {
+        application.Reset_Scales(application.logic_application.Get_Function(name_item_clicked));
+        slider_s.noUiSlider.set(100);
+        slider_mu.noUiSlider.set(1.25);
+    });
+
+    $('#reset-all-scales').on('click', function () {
+        application.Reset_All_Scales();
+        slider_s.noUiSlider.set(100);
+        slider_mu.noUiSlider.set(1.25);
+    });
+
+    // $('#order-n').on('keyup', function () {
+    //     var order = $(this).val();
+    //     $('#order-m').val(order);
+    // });
+
+    ipc.on('restart-options-nssc', function () {
+        nssc_scenario = null;
+        application.Restart_NSSC_Options();
+    });
+
     var nssc_scenario;
-    $('#open-matrix-editor').on('click', function () {
+    $('#open-scenario-editor').on('click', function () {
         var values = {
+            type: $('#type-nssc-model').val(),
             nssc_scenario: nssc_scenario,
-            number_of_matrix: parseInt($('#count-matrix').val()),
+            number_of_events: parseInt($('#count-events').val()),
             order: parseInt($('#order-n').val()),
-            // sampling_vector: sampling_vector.jexcel('getRowData', 0),
             name: $('#nssc-name').val(),
         }
 
-        ipc.send('open-matrix-editor', values);
-
-        // $('aside').removeClass('toggled');
+        ipc.send('open-scenario-editor', values);
     });
-
-    // $('#test').on('click', function () {
-    //     application.logic_application.Get_NSSC_Vectors('', function () {
-    //         application.Visualize_NSSC();
-    //         console.log('done!!!!!!!')
-    //     });
-    // });
 
     $('#test').on('click', function () {
 
-
-        // var options = {
-        //     title: 'Save as...',
-
-        //     filters: [
-        //         { name: 'PSMC', extensions: ['psmc'] }
-        //     ],
-        // }
-
-        // dialog.showSaveDialog(options, function (filename) {
-        //     let psmc = new PSMC('mandy', 1, [1, 2, 3], [2, 3, 4], 1, 2, 100, 100);
-
-        //     var objS = serialize.serialize(psmc);
-
-        //     var objUS = serialize.unserialize(objS)
-
-        //     fs.writeFile(filename, objS, function (err) {
-        //         if (err) {
-        //             console.log(err);
-        //         }
-
-        //         console.log('done!!!')
-        //     });
-        // })
-
-
-        // var data = {
-        //     name: "cliff",
-        //     age: "34",
-        //     othername: "ted",
-        //     otherage: "42",
-        //     othername: "bob",
-        //     otherage: "12"
-        // }
-
-        // var jsonData = JSON.stringify(data);
-
-        // fs.writeFile("test.mangly", jsonData, function (err) {
-        //     if (err) {
-        //         console.log(err);
-        //     }
-
-        //     else console.log('save done!!!!!');
-        // });
-
-
-        //............
-
-
-
     });
 
-    ipc.on('nssc-json-result', function (event, arg) {
-        application.logic_application.Get_NSSC_Vectors(arg, function () {
-            application.Visualize_NSSC();
+    ipc.on('nssc-json-result', function (event, scenario) {
+        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
+            if (nssc_function) application.Update_NSSC(nssc_function);
+            else application.Visualize_NSSC();
         });
     });
 
@@ -409,39 +394,32 @@ $(document).ready(function () {
 
             dialog.showOpenDialog(options, function (arrPath) {
                 if (arrPath) {
-                    fs.readFile(arrPath[0], function read(err, data) {
-                        if (err) {
-                            throw err;
-                        }
+                    Application.Load_File(arrPath[0], function (scenario) {
+                        nssc_scenario = scenario;
 
-                        nssc_scenario = JSON.parse(data);
+                        var path_split = arrPath[0].split('/');
+                        var file_name = path_split[path_split.length - 1].slice(0, -6);
 
-                        $('#nssc-name').val(nssc_scenario.name)
-
-                        var order = nssc_scenario.scenario[0].migMatrix.length;
-                        $('#order-n').val(order);
-                        $('#order-m').val(order);
-
-                        $('#count-matrix').val(nssc_scenario.scenario.length);
-
-                        $('#open-matrix-editor').trigger('click');
+                        application.Load_Principal_Window_Data(file_name, nssc_scenario, function () {
+                            $('#open-scenario-editor').trigger('click');
+                        });
                     });
                 }
             });
         }
 
-        else{
-            nssc_scenario = application.logic_application.Get_NSSC_Function(name_item_clicked).scenario;
-            
-            $('#nssc-name').val(nssc_scenario.name)
+        else {
+            var nssc_model = application.logic_application.Get_Function(name_item_clicked);
+            nssc_scenario = nssc_model.scenario;
 
-            var order = nssc_scenario.scenario[0].migMatrix.length;
-            $('#order-n').val(order);
-            $('#order-m').val(order);
-
-            $('#count-matrix').val(nssc_scenario.scenario.length);
-
-            $('#open-matrix-editor').trigger('click');
+            application.Load_Principal_Window_Data(nssc_model.name, nssc_scenario, function () {
+                $('#open-scenario-editor').trigger('click');
+            });
+            // $('#nssc-name').val(name_item_clicked)
+            // if(nssc_model.type == 'General') var order = nssc_scenario.scenario[0].migMatrix.length;
+            // $('#order-n').val(order);
+            // $('#count-events').val(nssc_scenario.scenario.length - 1);
+            // $('#open-scenario-editor').trigger('click');
         }
     });
 
@@ -451,13 +429,43 @@ $(document).ready(function () {
 
         var options = {
             title: 'Save...',
-            defaultPath: nssc_model.name,
+            defaultPath: name_item_clicked,
 
             filters: [
                 { name: 'NSSC', extensions: ['nssc'] }
             ],
         }
 
-        Application_Utilities.Save_File(nssc_save, options);
+        // Application_Utilities.Save_File(nssc_save, options);
+        dialog.showSaveDialog(options, function (filename) {
+            Application.Save_File(filename, nssc_save);
+        });
+    });
+
+    $('#mycanvas').bind('mousewheel', function (e) {
+        if (e.originalEvent.wheelDelta / 120 > 0) {
+            $('#zoom').removeClass('zmdi-zoom-out');
+            $('#zoom').addClass('zmdi-zoom-in');
+        }
+        else {
+            $('#zoom').removeClass('zmdi-zoom-in');
+            $('#zoom').addClass('zmdi-zoom-out');
+        }
+    });
+
+    $('#reset-zoom').on('click', function () {
+        application.Reset_Zoom();
+    });
+
+    $('#get-distance').on('click', function () {
+        var psmc_msmc_model_data = application.Get_Graphic($('#psmc-msmc-model').val()).data;
+        var nssc_model = application.logic_application.Get_Function($('#nssc-model').val());
+
+        var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
+
+        application.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
+            $('#distance-result').val('The distance is: ' + result)
+            console.log(result);
+        });
     });
 });

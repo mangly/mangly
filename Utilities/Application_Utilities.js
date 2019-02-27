@@ -1,8 +1,5 @@
 'use strict'
 
-const { dialog } = require('electron').remote;
-var fs = require('fs');
-
 class Application_Utilities {
 
     static Generate_Data_To_Chart(vector_X, vector_Y) {
@@ -10,6 +7,20 @@ class Application_Utilities {
 
         for (let index = 0; index < vector_X.length; index++) {
             result.push({ 'x': vector_X[index], 'y': vector_Y[index] });
+        }
+
+        return result;
+    }
+
+    static Generate_Inverse_Data_To_Chart(data) {
+        var result = {
+            x:[],
+            y:[]
+        };
+
+        for (let index = 0; index < data.length; index++) {
+            result.x.push(data[index].x);
+            result.y.push(data[index].y);
         }
 
         return result;
@@ -55,50 +66,6 @@ class Application_Utilities {
         return (Math.round(result * 100) / 100).toString() + 'e+' + (count - 1).toString();
     }
 
-    static Save_File(file, options) {
-        dialog.showSaveDialog(options, function (filename) {
-            fs.writeFile(filename, file, function (err) {
-                if (err) {
-                    console.log(err);
-                }
-            });
-        });
-    }
-
-    // static Load_PSMC_MSMC_Files(application, options) {
-    //     dialog.showOpenDialog(options, function (arrPath) {
-    //         if (arrPath) {
-    //             arrPath = this.Divide_Paths[0];
-    //             if (arrPath.length != 0) {
-    //                 application.logic_application.Add_File(arrPath, function () {
-    //                     application.Visualize_PSMC_MSMC();
-    //                 });
-    //             }
-    //         }
-    //     });
-    // }
-
-    // static Load_NSSC_Files(application, options) {
-    //     dialog.showOpenDialog(options, function (arrPath) {
-    //         if (arrPath) {
-    //             arrPath = this.Divide_Paths[1];
-    //             if (arrPath.length != 0) {
-    //                 for (const path of arrPath) {
-    //                     fs.readFile(path, function read(err, data) {
-    //                         if (err) {
-    //                             throw err;
-    //                         }
-
-    //                         var nssc_file = JSON.parse(data);
-    //                         application.logic_application.functions_collection.push(nssc_file);
-    //                         application.Visualize_NSSC_Saved(nssc_file);
-    //                     });
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
-
     static Get_Model_Selected(path) {
         var array_extensions = path.split('.');
         return array_extensions[array_extensions.length - 1];
@@ -114,6 +81,18 @@ class Application_Utilities {
         }
 
         return [psmc_msmc_paths, nssc_paths];
+    }
+
+    static Equals(a_collection, b_collection) {
+        if (a_collection.length == b_collection.length) {
+            for (let index = 0; index < a_collection.length; index++) {
+                if (a_collection[index] != b_collection[index]) return false;
+            }
+
+            return true;
+        }
+
+        else return false;
     }
 }
 

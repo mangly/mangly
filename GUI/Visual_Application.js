@@ -4,9 +4,9 @@ const Application_Utilities = require('../Utilities/Application_Utilities');
 
 class Visual_Application {
     constructor(canvas, logic_application) {
-        this.canvas;
+        this.canvas = canvas;
         this.logic_application = logic_application;
-        this.chart = new Chart(canvas, {
+        this.chart = new Chart(this.canvas, {
             type: 'line',
             data: {
                 datasets: [],
@@ -161,11 +161,13 @@ class Visual_Application {
     Visualize_PSMC_MSMC() {
         var element_scale_by_default;
         var IICR;
+
         for (const element of this.logic_application.functions_collection) {
             if (element.model != 'nssc' && this.Get_Graphic(element.name) == null) {
-                // var element_clone = element.Clone();
+
                 element_scale_by_default = element.Clone();
                 element.Mu = 1.25;
+
                 if (element.model == 'psmc') {
                     this.logic_application.Scale_Psmc_Function(element_scale_by_default);
                     IICR = element_scale_by_default.IICR_2;
@@ -179,25 +181,40 @@ class Visual_Application {
 
                 var color = this.Get_Random_Color();
 
-                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
 
                 this.chart.data.datasets.push(graphic);
 
                 this.Visualize_element_of_list(element.name, element.model, color);
+                this.Add_model_compute_distance($('#psmc-msmc-model'), element.name);
             }
         }
 
         this.chart.update();
     }
 
-    Visualize_NSSC_Saved(nssc_function) {
-        var color = this.Get_Random_Color();
+    Add_model_compute_distance(control, name) {
+        control.append('<option>' + name + '</option>')
+    }
 
-        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_function.x_vector, nssc_function.IICR_specie), 'label': nssc_function.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+    Visualize_NSSC_Saved() {
+        for (const element of this.logic_application.functions_collection) {
+            if (element.model == 'nssc' && this.Get_Graphic(element.name) == null) {
 
-        this.chart.data.datasets.push(graphic);
+                var element_scale_by_default = element.Clone();
 
-        this.Visualize_element_of_list(nssc_function.name, nssc_function.model, color);
+                this.logic_application.Scale_NSSC_Function(element_scale_by_default);
+
+                var color = this.Get_Random_Color();
+
+                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.x_vector, element_scale_by_default.IICR_specie), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
+
+                this.chart.data.datasets.push(graphic);
+
+                this.Visualize_element_of_list(element.name, element.model, color);
+                this.Add_model_compute_distance($('#nssc-model'), element.name);
+            }
+        }
 
         this.chart.update();
     }
@@ -208,13 +225,29 @@ class Visual_Application {
     }
 
     Visualize_NSSC() {
+        $('#canvas-container').removeClass('disabled');
+
         $('#tab-graphics').trigger('click');
         var color = this.Get_Random_Color();
         var nssc = this.logic_application.Get_Last_NSSC_Function();
-        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc.x_vector, nssc.IICR_specie), 'label': nssc.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 3, 'steppedLine': 'true' };
+
+        var nssc_scale_by_default = nssc.Clone();
+        this.logic_application.Scale_NSSC_Function(nssc_scale_by_default);
+
+        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_scale_by_default.x_vector, nssc_scale_by_default.IICR_specie), 'label': nssc_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
+
+        this.chart.data.datasets.push(graphic);
 
         this.Visualize_element_of_list(nssc.name, nssc.model, color);
-        this.chart.data.datasets.push(graphic);
+        this.Add_model_compute_distance($('#nssc-model'), nssc.name);
+
+        this.chart.update();
+    }
+
+    Update_NSSC(nssc_function) {
+        var graphic = this.Get_Graphic(nssc_function.name);
+
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(nssc_function.x_vector, nssc_function.IICR_specie);
 
         this.chart.update();
     }
@@ -232,7 +265,7 @@ class Visual_Application {
         this.chart.update();
     }
 
-    Update_Scale(name_graphic, mu, s) {
+    Update_Scale_PSMC_MSMC(name_graphic, mu, s) {
         var IICR;
         var original_function = this.logic_application.Get_Function(name_graphic);
         var clone_function = original_function.Clone();
@@ -271,12 +304,41 @@ class Visual_Application {
 
     }
 
-    Reset_Scales() {
+    Update_Scale_NSSC(name_graphic, n_ref) {
+        var original_function = this.logic_application.Get_Function(name_graphic);
+        var clone_function = original_function.Clone();
+        var graphic = this.Get_Graphic(name_graphic);
+
+        this.logic_application.Scale_NSSC_Function(clone_function, n_ref);
+
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.IICR_specie);
+
+        this.chart.update();
+    }
+
+    Reset_Scales(funct) {
+        // for (const element of this.logic_application.functions_collection) {
+        this.Update_Scale_PSMC_MSMC(funct.name, this.logic_application.Mu, this.logic_application.S);
+        // }
+
+        this.chart.update();
+    }
+
+    Reset_All_Scales() {
         for (const element of this.logic_application.functions_collection) {
-            this.Update_Scale(element.name, this.logic_application.Mu, this.logic_application.S);
+            this.Update_Scale_PSMC_MSMC(element.name, this.logic_application.Mu, this.logic_application.S);
         }
 
         this.chart.update();
+    }
+
+    Restart_NSSC_Options() {
+        $('#count-events').val(1);
+        $('#order-n').val(1);
+        $('#nssc-name').val('NSSC new model');
+
+        $('#type-nssc-model').val('General');
+        $('#type-nssc-model').change();
     }
 
     Get_Parametters(name) {
@@ -337,6 +399,10 @@ class Visual_Application {
         this.chart.update();
     }
 
+    Reset_Zoom() {
+        this.chart.resetZoom();
+    }
+
     Visualize_Information_Of_Functions(items_selecteds, name, theta, rho, model) {
         if (items_selecteds.length == 1) {
             var parametters = this.Get_Parametters(items_selecteds[0], this.logic_application);
@@ -355,10 +421,31 @@ class Visual_Application {
     }
 
     Initialize_Information_Of_Functions(name, theta, rho, model) {
-        name.text('There is no graph selected by the user')
+        name.text('There is not graph selected by the user')
         theta.text('-');
         rho.text('-');
         model.text('-');
+    }
+
+    Load_Principal_Window_Data(name, scenario, callback) {
+        $('#nssc-name').val(name)
+
+        if (Object.keys(scenario.scenario[0]).length == 4) {
+            $('#type-nssc-model').val('Symmetrical');
+            $('#type-nssc-model').change();
+
+            $('#order-n').val(scenario.scenario[0].n);
+        }
+        else {
+            $('#type-nssc-model').val('General');
+            $('#type-nssc-model').change();
+
+            $('#order-n').val(scenario.scenario[0].migMatrix.length);
+        }
+
+        $('#count-events').val(scenario.scenario.length - 1);
+
+        setTimeout(function () { callback(); }, 0 | Math.random() * 100);
     }
 
     static Fill_Initial_Data_Vector(value, type, order = 0) {
@@ -421,12 +508,11 @@ class Visual_Application {
     }
 
     static Add_Show_Time_Deme_Sizes(html, order, matrix_collection, id) {
-        this.Add_Matrix(html, order, matrix_collection, id, true);
-        this.Configuration_Vector();
+        this.Add_Matrix(html, $('#list-scenario'), order, matrix_collection, id, true);
     }
 
-    static Add_Matrix(html, order, matrix_collection, id, vector) {
-        $('#matrix-collection').append(html);
+    static Add_Matrix(html, html_append, order, matrix_collection, id, vector) {
+        html_append.append(html);
 
         var matrix = $(id + matrix_collection.length);
 

@@ -15,6 +15,7 @@
     <!-- App styles -->
     <link rel="stylesheet" href="css/app.min.css">
     <link rel="stylesheet" href="../archivos_estaticos/jexcel-master/dist/css/jquery.jexcel.css">
+    <link rel="stylesheet" href="../archivos_estaticos/jPages/css/jPages.css">
 
 
     <style>
@@ -59,7 +60,7 @@
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a id="add-matrix" class="dropdown-item">Add matrix</a>
                                         <a id="increment-order" class="dropdown-item">Increment order</a>
-                                        <a id="save-configuration" class="dropdown-item">Save configuration</a>
+                                        <a id="save-scenario" class="dropdown-item">Save scenario</a>
                                     </div>
                                 </div>
                             </div>
@@ -97,12 +98,34 @@
                 <!-- <div class="card"> -->
                 <!-- <div class="card-header">Plot NSSC model</div> -->
                 <!-- <div class="card-body"> -->
+
+                <div id="matrices-deme-sizes" class="card p-4">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <span>Fill all parameters of the NSSC model:</span>
+                        </div>
+                        <div class="col-sm-1">
+                            <span class="float-right">Pagination:</span>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="toggle-switch">
+                                <input id="switch-selection-pagination" class="toggle-switch__checkbox" type="checkbox">
+                                <i class="toggle-switch__helper"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card p-4">
                     <div class="row">
                         <div class="col-sm-12">
                             <div>
-                                <span>Matrices and Deme sizes:</span>
-                                <div id="matrix-collection" style="overflow-x: scroll; padding: 0 0 20px 0"></div>
+                                <div id="matrix-collection" style="overflow-x: scroll; padding: 0 0 20px 0">
+                                    <ul style="list-style-type:none;" id="list-scenario">
+
+                                    </ul>
+                                    <div class="holder">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -123,6 +146,8 @@
     <script src="vendors/bower_components/jquery.scrollbar/jquery.scrollbar.min.js"></script>
     <script src="vendors/bower_components/jquery-scrollLock/jquery-scrollLock.min.js"></script>
     <script src="../archivos_estaticos/jexcel-master/dist/js/jquery.jexcel.js"></script>
+
+    <script src="../archivos_estaticos/jPages/js/jPages.js"></script>
 
     <!-- App functions and actions -->
     <script src="js/app.min.js"></script>
