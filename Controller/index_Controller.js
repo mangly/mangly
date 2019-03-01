@@ -381,10 +381,10 @@ $(document).ready(function () {
         }
 
         else {
-            var nssc_model = application.logic_application.Get_Function(name_item_clicked);
-            nssc_scenario = nssc_model.scenario;
+            // var nssc_model = application.logic_application.Get_Function(name_item_clicked);
+            nssc_scenario = selected_function.scenario;
 
-            application.Load_Principal_Window_Data(nssc_model.name, nssc_scenario, function () {
+            application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
                 $('#open-scenario-editor').trigger('click');
             });
             // $('#nssc-name').val(name_item_clicked)
