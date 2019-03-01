@@ -27,8 +27,8 @@ $(document).ready(function () {
     var application = new Visual_Application($('#mycanvas'), new Application());
 
     // var sampling_vector = [];
-    var items_selecteds = [];
-    application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
+    // var items_selecteds = [];
+    application.Initialize_Information_Of_Functions($('#graphic'), $('#theta'), $('#rho'), $('#model'));
 
     $('#open-file').on('click', function () {
 
@@ -78,22 +78,14 @@ $(document).ready(function () {
     });
 
 
-    var name_item_clicked;
-    var legend_color = [];
-
-    $('#switch-selection').on('change', function () {
-        $('.custom-control-input').prop('checked', false);
-        legend_color = [];
-        items_selecteds = [];
-
-        $('#reset-all-scales').trigger('click');
-    });
+    var selected_function;
+    var legend_color;
 
     $('#list-graphics').on('click', function () {
         //Delete function
         if ($(event.target).is('.zmdi-delete')) {
             var event_target = $(event.target);
-            
+
             dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Accept', 'Cancel'] }, (response) => {
                 if (response == 0) application.Delete_Function(event_target);
             });
@@ -102,69 +94,84 @@ $(document).ready(function () {
         //Selections
         if ($(event.target).is('.custom-control-input')) {
 
-            name_item_clicked = ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text();
+            selected_function = application.logic_application.Get_Function(($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
+            legend_color = $(event.target).parents('.custom-control').children('.custom-control--char__helper');
 
-            if (!$('#switch-selection').prop('checked')) {
-                $('.custom-control-input').each(function () {
-                    if (($(this).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text() != ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()) {
-                        $(this).prop('checked', false);
-                    }
-                });
+            // Disable multiple selection in checkbox control
+            $('.custom-control-input').click(function () {
+                $('.custom-control-input').not(this).prop('checked', false);
+            });
+            //------------
 
-                if ($(event.target).prop('checked')) {
-                    $('#reset-scales').removeAttr('disabled');
-                    $('#reset-all-scales').removeAttr('disabled');
-                    $('#change-color').removeAttr('disabled');
+            if ($(event.target).prop('checked')) {
+                $('#reset-scales').removeAttr('disabled');
+                $('#reset-all-scales').removeAttr('disabled');
+                $('#change-color').removeAttr('disabled');
+
+                if (selected_function.model == 'psmc') {
                     $('#option-s *').removeAttr('disabled');
                     $('#option-mu *').removeAttr('disabled');
-                    legend_color = [];
-                    items_selecteds = [];
-                    items_selecteds.push(name_item_clicked);
-                    legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+                    // slider_s.noUiSlider.set(graphic.S);
+                    slider_mu.noUiSlider.set(selected_function.Mu);
                 }
 
                 else {
-                    $('#reset-scales').attr('disabled', 'disabled');
-                    $('#reset-all-scales').attr('disabled', 'disabled');
-                    $('#change-color').attr('disabled', 'disabled');
+                    // slider_s.noUiSlider.set(100);
+                    slider_mu.noUiSlider.set(selected_function.Mu);
+                    $('#option-mu *').removeAttr('disabled');
                     $('#option-s *').attr('disabled', 'disabled');
-                    $('#option-mu *').attr('disabled', 'disabled');
-                    slider_s.noUiSlider.set(100);
-                    slider_mu.noUiSlider.set(1.25);
-
-                    legend_color = [];
-                    items_selecteds = [];
                 }
+
+                // $('#option-s *').removeAttr('disabled');
+                // $('#option-mu *').removeAttr('disabled');
+                // legend_color = [];
+                // items_selecteds = [];
+                // items_selecteds.push(name_item_clicked);
+                // legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
             }
 
             else {
-                if ($(event.target).prop('checked')) {
-                    if (!items_selecteds.includes(name_item_clicked)) {
-                        $('#reset-scales').removeAttr('disabled');
-                        $('#reset-all-scales').removeAttr('disabled');
-                        $('#change-color').removeAttr('disabled');
-                        $('#option-s *').removeAttr('disabled');
-                        $('#option-mu *').removeAttr('disabled');
-                        items_selecteds.push(name_item_clicked);
-                        legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
-                    }
-                }
-                else {
-                    var index = items_selecteds.indexOf(name_item_clicked);
-                    items_selecteds.splice(index, 1)
-                    legend_color.splice(index, 1)
+                $('#reset-scales').attr('disabled', 'disabled');
+                $('#reset-all-scales').attr('disabled', 'disabled');
+                $('#change-color').attr('disabled', 'disabled');
+                $('#option-s *').attr('disabled', 'disabled');
+                $('#option-mu *').attr('disabled', 'disabled');
+                slider_s.noUiSlider.set(100);
+                slider_mu.noUiSlider.set(1.25);
 
-                    if (items_selecteds.length == 0) {
-                        $('#reset-scales').attr('disabled', 'disabled');
-                        $('#reset-all-scales').attr('disabled', 'disabled');
-                        $('#change-color').attr('disabled', 'disabled');
-                        $('#option-s *').attr('disabled', 'disabled');
-                        $('#option-mu *').attr('disabled', 'disabled');
-                        slider_s.noUiSlider.set(100);
-                        slider_mu.noUiSlider.set(1.25);
-                    }
-                }
+                // legend_color = [];
+                // items_selecteds = [];
             }
+            // }
+
+            // else {
+            //     if ($(event.target).prop('checked')) {
+            //         if (!items_selecteds.includes(name_item_clicked)) {
+            //             $('#reset-scales').removeAttr('disabled');
+            //             $('#reset-all-scales').removeAttr('disabled');
+            //             $('#change-color').removeAttr('disabled');
+            //             $('#option-s *').removeAttr('disabled');
+            //             $('#option-mu *').removeAttr('disabled');
+            //             items_selecteds.push(name_item_clicked);
+            //             legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+            //         }
+            //     }
+            //     else {
+            //         var index = items_selecteds.indexOf(name_item_clicked);
+            //         items_selecteds.splice(index, 1)
+            //         legend_color.splice(index, 1)
+
+            //         if (items_selecteds.length == 0) {
+            //             $('#reset-scales').attr('disabled', 'disabled');
+            //             $('#reset-all-scales').attr('disabled', 'disabled');
+            //             $('#change-color').attr('disabled', 'disabled');
+            //             $('#option-s *').attr('disabled', 'disabled');
+            //             $('#option-mu *').attr('disabled', 'disabled');
+            //             slider_s.noUiSlider.set(100);
+            //             slider_mu.noUiSlider.set(1.25);
+            //         }
+            //     }
+            // }
 
             // var graphic = application.logic_application.Contain(name_item_clicked);
 
@@ -186,56 +193,12 @@ $(document).ready(function () {
             // $('#option-s *').removeAttr('disabled');
             // $('#option-mu *').removeAttr('disabled');
 
-            if (items_selecteds.length == 1) {
-                // if (items_selecteds.length == 0) $('#option-mu *').attr('disabled', 'disabled');
-                var graphic = application.logic_application.Get_Function(name_item_clicked);
-
-                if (graphic.model == 'psmc') {
-                    $('#option-s *').removeAttr('disabled');
-                    $('#option-mu *').removeAttr('disabled');
-                    slider_s.noUiSlider.set(graphic.S);
-                    slider_mu.noUiSlider.set(graphic.Mu);
-                }
-
-                else {
-                    slider_s.noUiSlider.set(100);
-                    slider_mu.noUiSlider.set(graphic.Mu);
-                    $('#option-mu *').removeAttr('disabled');
-                    $('#option-s *').attr('disabled', 'disabled');
-                }
-            }
-
-            else {
-                for (const element of items_selecteds) {
-                    var graphic = application.logic_application.Get_Function(element);
-
-                    if (graphic.model == 'psmc') {
-                        $('#option-s *').removeAttr('disabled');
-                        $('#option-mu *').removeAttr('disabled');
-                        slider_s.noUiSlider.set(graphic.S);
-                        slider_mu.noUiSlider.set(graphic.Mu);
-                    }
-
-                    else {
-                        slider_s.noUiSlider.set(100);
-                        slider_mu.noUiSlider.set(graphic.Mu);
-                        $('#option-s *').attr('disabled', 'disabled');
-                    }
-
-                }
-            }
-
-            application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
+            application.Visualize_Information_Of_Functions(selected_function, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
     })
 
     $(".colorpicker-element").on("change", function () {
-        var color = $(this).val();
-
-        for (let index = 0; index < items_selecteds.length; index++) {
-            application.Update_Colors(items_selecteds[index], color, legend_color[index]);
-        }
-
+        application.Update_Colors(selected_function, $(this).val(), legend_color);
     });
 
     // $('#edit').on('click', function () {
@@ -293,36 +256,34 @@ $(document).ready(function () {
     }
 
     slider_mu.noUiSlider.on('slide', function (a, b) {
-        for (const element of items_selecteds) {
-            application.Update_Scale_PSMC_MSMC(element, a[b], $('#input-slider-value-s').val());
-        }
+        application.Update_Scale_PSMC_MSMC(selected_function, a[b], $('#input-slider-value-s').val());
 
         $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
     })
 
-    var slider_s = document.getElementById("slider-s");
+    // var slider_s = document.getElementById("slider-s");
 
-    noUiSlider.create(slider_s, {
-        start: [100],
-        connect: "lower",
-        range: { min: 1, max: 1000 },
+    // noUiSlider.create(slider_s, {
+    //     start: [100],
+    //     connect: "lower",
+    //     range: { min: 1, max: 1000 },
 
-        format: wNumb({
-            decimals: 0,
-        })
-    })
+    //     format: wNumb({
+    //         decimals: 0,
+    //     })
+    // })
 
-    if ($('#options #option-s *').attr('disabled') == 'disabled') {
-        slider_s.noUiSlider.on("update", function (a, b) {
-            document.getElementById("input-slider-value-s").value = a[b];
-        });
-    }
+    // if ($('#options #option-s *').attr('disabled') == 'disabled') {
+    //     slider_s.noUiSlider.on("update", function (a, b) {
+    //         document.getElementById("input-slider-value-s").value = a[b];
+    //     });
+    // }
 
-    slider_s.noUiSlider.on('slide', function (a, b) {
-        for (const element of items_selecteds) {
-            application.Update_Scale_PSMC_MSMC(element, $('#input-slider-value-mu').val(), a[b]);
-        }
-    });
+    // slider_s.noUiSlider.on('slide', function (a, b) {
+    //     for (const element of items_selecteds) {
+    //         application.Update_Scale_PSMC_MSMC(element, $('#input-slider-value-mu').val(), a[b]);
+    //     }
+    // });
 
     //--------------
     var slider_nref = document.getElementById("slider-nref");
@@ -344,9 +305,7 @@ $(document).ready(function () {
     // }
 
     slider_nref.noUiSlider.on('slide', function (a, b) {
-        for (const element of items_selecteds) {
-            application.Update_Scale_NSSC(element, a[b]);
-        }
+        application.Update_Scale_NSSC(selected_function, a[b]);
     });
 
     $('#reset-scales').on('click', function () {

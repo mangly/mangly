@@ -259,24 +259,19 @@ class Visual_Application {
         this.chart.update();
     }
 
-    Update_Colors(function_name, color, legend_color) {
-        this.chart.data.datasets.forEach(function (element) {
-            if (element.label == function_name) {
-                element.borderColor = color;
-                element.backgroundColor = color;
-                legend_color.css('background-color', color);
-                // function_target.children('.album').css('color', color);
-            }
-        });
+    Update_Colors(funct, color, legend_color) {
+        var graphic = this.Get_Graphic(funct.name)
+        graphic.borderColor = color;
+        graphic.backgroundColor = color;
+        legend_color.css('background-color', color);
 
         this.chart.update();
     }
 
-    Update_Scale_PSMC_MSMC(name_graphic, mu, s) {
+    Update_Scale_PSMC_MSMC(original_function, mu, s) {
         var IICR;
-        var original_function = this.logic_application.Get_Function(name_graphic);
         var clone_function = original_function.Clone();
-        var graphic = this.Get_Graphic(name_graphic);
+        var graphic = this.Get_Graphic(original_function.name);
 
         if (original_function.model != 'nssc') {
             if (original_function.model == 'psmc') {
@@ -297,24 +292,12 @@ class Visual_Application {
 
         graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.time, IICR);
 
-        // for (let index = 0; index < this.chart.data.datasets.length; index++) {
-        //     const element = this.chart.data.datasets[index];
-
-        //     if (element.label == funct.name) {
-        //         this.chart.data.datasets[index].data = Application_Utilities.Generate_Data_To_Chart(funct.time, IICR);
-        //         this.logic_application.functions_collection[index].Mu = mu * Math.pow(10, 8);
-        //         this.logic_application.functions_collection[index].S = s;
-        //     }
-        // }
-
         this.chart.update();
-
     }
 
-    Update_Scale_NSSC(name_graphic, n_ref) {
-        var original_function = this.logic_application.Get_Function(name_graphic);
+    Update_Scale_NSSC(original_function, n_ref) {
         var clone_function = original_function.Clone();
-        var graphic = this.Get_Graphic(name_graphic);
+        var graphic = this.Get_Graphic(original_function.name);
 
         this.logic_application.Scale_NSSC_Function(clone_function, n_ref);
 
@@ -410,20 +393,13 @@ class Visual_Application {
         this.chart.resetZoom();
     }
 
-    Visualize_Information_Of_Functions(items_selecteds, name, theta, rho, model) {
-        if (items_selecteds.length == 1) {
-            var parametters = this.Get_Parametters(items_selecteds[0], this.logic_application);
+    Visualize_Information_Of_Functions(funct, name, theta, rho, model) {
+        var parametters = this.Get_Parametters(funct.name);
 
-            name.html(items_selecteds[0]);
-            theta.html(parametters[0]);
-            rho.html(parametters[1]);
-            model.html(parametters[2]);
-        }
-
-        else {
-            this.Initialize_Information_Of_Functions(name, theta, rho, model);
-            if (items_selecteds.length > 1) name.text('Some function are selected');
-        }
+        name.html(funct.name);
+        theta.html(parametters[0]);
+        rho.html(parametters[1]);
+        model.html(parametters[2]);
 
     }
 
