@@ -172,15 +172,16 @@ class Visual_Application {
         var IICR;
 
         for (const element of this.logic_application.functions_collection) {
-            if (element.model != 'nssc' && this.Get_Graphic(element.name) == null) {
+            if (element.model != 'nssc' && (this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
 
-                element_scale_by_default = element.Clone();
-                element.Mu = 1.25;
+                var last_element_add = this.logic_application.Get_Last_Function();
+                element_scale_by_default = last_element_add.Clone();
+                last_element_add.Mu = 1.25;
 
-                if (element.model == 'psmc') {
+                if (last_element_add.model == 'psmc') {
                     this.logic_application.Scale_Psmc_Function(element_scale_by_default);
                     IICR = element_scale_by_default.IICR_2;
-                    element.S = 100;
+                    last_element_add.S = 100;
                 }
 
                 else {
@@ -194,8 +195,8 @@ class Visual_Application {
 
                 this.chart.data.datasets.push(graphic);
 
-                this.Visualize_element_of_list(element.name, element.model, color);
-                this.Add_model_compute_distance($('#psmc-msmc-model'), element.name);
+                this.Visualize_element_of_list(last_element_add.name, last_element_add.model, color);
+                this.Add_model_compute_distance($('#psmc-msmc-model'), last_element_add.name);
             }
         }
 
@@ -208,9 +209,10 @@ class Visual_Application {
 
     Visualize_NSSC_Saved() {
         for (const element of this.logic_application.functions_collection) {
-            if (element.model == 'nssc' && this.Get_Graphic(element.name) == null) {
+            if (element.model == 'nssc' && (this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
 
-                var element_scale_by_default = element.Clone();
+                var last_element_add = this.logic_application.Get_Last_Function();
+                var element_scale_by_default = last_element_add.Clone();
 
                 this.logic_application.Scale_NSSC_Function(element_scale_by_default);
 
@@ -220,8 +222,8 @@ class Visual_Application {
 
                 this.chart.data.datasets.push(graphic);
 
-                this.Visualize_element_of_list(element.name, element.model, color);
-                this.Add_model_compute_distance($('#nssc-model'), element.name);
+                this.Visualize_element_of_list(last_element_add.name, last_element_add.model, color);
+                this.Add_model_compute_distance($('#nssc-model'), last_element_add.name);
             }
         }
 
@@ -234,23 +236,25 @@ class Visual_Application {
     }
 
     Visualize_NSSC() {
-        $('#canvas-container').removeClass('disabled');
+        if (this.logic_application.functions_collection.length > this.chart.data.datasets.length) {
+            $('#canvas-container').removeClass('disabled');
 
-        $('#tab-graphics').trigger('click');
-        var color = this.Get_Random_Color();
-        var nssc = this.logic_application.Get_Last_NSSC_Function();
+            $('#tab-graphics').trigger('click');
+            var color = this.Get_Random_Color();
+            var nssc = this.logic_application.Get_Last_Function();
 
-        var nssc_scale_by_default = nssc.Clone();
-        this.logic_application.Scale_NSSC_Function(nssc_scale_by_default);
+            var nssc_scale_by_default = nssc.Clone();
+            this.logic_application.Scale_NSSC_Function(nssc_scale_by_default);
 
-        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_scale_by_default.x_vector, nssc_scale_by_default.IICR_specie), 'label': nssc_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
+            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_scale_by_default.x_vector, nssc_scale_by_default.IICR_specie), 'label': nssc_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
 
-        this.chart.data.datasets.push(graphic);
+            this.chart.data.datasets.push(graphic);
 
-        this.Visualize_element_of_list(nssc.name, nssc.model, color);
-        this.Add_model_compute_distance($('#nssc-model'), nssc.name);
+            this.Visualize_element_of_list(nssc.name, nssc.model, color);
+            this.Add_model_compute_distance($('#nssc-model'), nssc.name);
 
-        this.chart.update();
+            this.chart.update();
+        }
     }
 
     Update_NSSC(nssc_function) {

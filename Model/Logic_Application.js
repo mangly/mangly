@@ -67,7 +67,7 @@ class Application {
             var nssc_function = this.Get_Function(name);
             if (nssc_function == null) {
                 var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario);
-                this.functions_collection.push(nssc);
+                if (!this.Contains(nssc)) this.functions_collection.push(nssc);
             }
             else {
                 nssc_function.x_vector = results.x_vector;
@@ -124,15 +124,15 @@ class Application {
         return null;
     }
 
-    Get_Last_NSSC_Function() {
-        var last_nssc;
-        for (const element of this.functions_collection) {
-            if (element.model == 'nssc') {
-                last_nssc = element;
-            }
-        }
+    Get_Last_Function() {
+        // var last_nssc;
+        // for (const element of this.functions_collection) {
+        //     if (element.model == 'nssc') {
+        //         last_nssc = element;
+        //     }
+        // }
 
-        return last_nssc;
+        return this.functions_collection[this.functions_collection.length - 1];
     }
 
     static Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector) {
