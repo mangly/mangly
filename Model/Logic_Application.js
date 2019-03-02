@@ -192,6 +192,18 @@ class Application {
         }
     }
 
+    static Load_General_Scenario_mejorado(scenario, sampling_vector) {
+        for (let index = 0; index < matrix_collection.length; index++) {
+            const matrix = matrix_collection[index];
+            const deme_sizes = deme_vector_collection[index];
+
+            matrix.jexcel('setData', scenario.scenario[index].migMatrix, false);
+            deme_sizes.jexcel('setData', [scenario.scenario[index].demeSizes], false);
+            sampling_vector.jexcel('setData', [scenario.samplingVector], false);
+            if (index != 0) $('#time' + index).val(scenario.scenario[index].time);
+        }
+    }
+
     static Load_Symmetrical_Scenario(scenario, sampling_vector) {
         for (let index = 0; index < scenario.scenario.length; index++) {
             sampling_vector.jexcel('setData', [scenario.samplingVector], false);

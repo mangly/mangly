@@ -18,6 +18,7 @@ var remote = require('electron').remote;
 const main_Window = remote.getCurrentWindow();
 
 $(document).ready(function () {
+    $('#container-edit-nssc').hide();
     $('#change-color').attr('disabled', 'disabled');
     $('#options-scale-axis *').attr('disabled', 'disabled');
     $('#option-mu *').attr('disabled', 'disabled');
@@ -356,6 +357,11 @@ $(document).ready(function () {
         });
     });
 
+
+    var matrix_collection = [];
+    var deme_vector_collection = [];
+    var sampling_vector = $('#sampling-vector');
+
     $('#load-nssc-state').on('click', function () {
         if ($('#model').html() != 'The Non-Stationary Structured Coalescent') {
             var options = {
@@ -381,19 +387,86 @@ $(document).ready(function () {
         }
 
         else {
-            // var nssc_model = application.logic_application.Get_Function(name_item_clicked);
+            $('#container-create-nssc').fadeOut(200, function () {
+                console.log('ok')
+                $('#container-edit-nssc').fadeIn(200);
+            });
+
             nssc_scenario = selected_function.scenario;
+            console.log(nssc_scenario);
+
+            // Application.Load_General_Scenario(nssc_scenario, $('#sampling-vector'));
+
 
             application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
-                $('#open-scenario-editor').trigger('click');
+                Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', parseInt($('#order-n').val()) - 1));
+
+                var number_of_events = parseInt($('#count-events').val());
+                var type = $('#type-nssc-model').val();
+                var order = parseInt($('#order-n').val());
+
+                for (let index = 0; index < number_of_events + 1; index++) {
+                    if (type == 'General') {
+                        if (index == 0) {
+                            var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-3"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-9"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme0"></div>';
+                            Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+                        }
+
+                        else {
+                            var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-3"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-9"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div>';
+                            Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+                        }
+
+                        var html_matrix = '<div class="matrix" id="matrix' + index + '"></div>';
+                        Visual_Application.Add_Matrix(html_matrix, $('#scen' + index), order, matrix_collection, '#matrix', false);
+                    }
+
+                    else if (type == 'Symmetrical') {
+                        $('#matrix-collection').attr("style", "overflow-x: none");
+                        var html;
+                        if (index == 0) {
+                            html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+                            $('#matrix-collection>ul').append(html);
+                        }
+
+                        else {
+                            html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+                            $('#matrix-collection>ul').append(html);
+                        }
+                    }
+                }
+
+                if (type == 'General') Application.Load_General_Scenario(nssc_scenario, sampling_vector, matrix_collection, deme_vector_collection);
+                else if (type == 'Symmetrical') Application.Load_Symmetrical_Scenario(nssc_scenario, sampling_vector);
+
+                Visual_Application.Configuration_Vector();
+
+                // $('#open-scenario-editor').trigger('click');
             });
-            // $('#nssc-name').val(name_item_clicked)
-            // if(nssc_model.type == 'General') var order = nssc_scenario.scenario[0].migMatrix.length;
-            // $('#order-n').val(order);
-            // $('#count-events').val(nssc_scenario.scenario.length - 1);
-            // $('#open-scenario-editor').trigger('click');
         }
     });
+
+    $('#ok').on('click', function () {
+        if ($('#type-nssc-model').val() == 'General') {
+            application.logic_application.Get_NSSC_Vectors('General', $('#nssc-name').val(), Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)), function (nssc_function) {
+                if (nssc_function) application.Update_NSSC(nssc_function);
+                else application.Visualize_NSSC();
+            });
+            // ipc.send('nssc-json-result', Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)));
+        }
+        else if ($('#type-nssc-model').val() == 'Symmetrical') {
+            application.logic_application.Get_NSSC_Vectors('Symmetrical', $('#nssc-name').val(), Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)), function (nssc_function) {
+                if (nssc_function) application.Update_NSSC(nssc_function);
+                else application.Visualize_NSSC();
+            });
+            // ipc.send('nssc-json-result', Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector.jexcel('getRowData', 0), number_of_events + 1));
+        }
+    });
+
+    // application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
+    //     if (nssc_function) application.Update_NSSC(nssc_function);
+    //     else application.Visualize_NSSC();
+    // });
 
     $('#save-nssc').on('click', function () {
         var nssc_model = application.logic_application.Get_NSSC_Function(name_item_clicked)
