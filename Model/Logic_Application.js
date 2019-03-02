@@ -59,7 +59,7 @@ class Application {
             });
         }
 
-        setTimeout(function () { callback(); }, 0 | Math.random() * 100);
+        setTimeout(function () { callback(); }, 100);
     }
 
     Get_NSSC_Vectors(type, name, scenario, callback) {

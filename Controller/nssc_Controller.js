@@ -5,7 +5,6 @@ const ipc = electron.ipcRenderer;
 var Visual_Application = require('../GUI/Visual_Application');
 var Application = require('../Model/Logic_Application');
 
-var nssc_scenario;
 var matrix_collection = [];
 var deme_vector_collection = [];
 var sampling_vector;
@@ -16,52 +15,13 @@ var number_of_events;
 
 $(document).ready(function () {
   ipc.on('parametters-nssc', function (event, arg) {
-    nssc_scenario = arg.nssc_scenario;
     name = arg.name;
     sampling_vector = $('#sampling-vector');
     order = arg.order;
     type = arg.type;
     number_of_events = arg.number_of_events;
 
-    Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
-
-    for (let index = 0; index < number_of_events + 1; index++) {
-      if (type == 'General') {
-        if (index == 0) {
-          var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme0"></div>';
-          Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
-        }
-
-        else {
-          var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div>';
-          Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
-        }
-
-        var html_matrix = '<div class="matrix" id="matrix' + index + '"></div>';
-        Visual_Application.Add_Matrix(html_matrix, $('#scen' + index), order, matrix_collection, '#matrix', false);
-      }
-
-      else if (type == 'Symmetrical') {
-        $('#matrix-collection').attr("style", "overflow-x: none");
-        var html;
-        if (index == 0) {
-          html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
-          $('#matrix-collection>ul').append(html);
-        }
-
-        else {
-          html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
-          $('#matrix-collection>ul').append(html);
-        }
-      }
-    }
-
-    if (nssc_scenario) {
-      if (type == 'General') Application.Load_General_Scenario(nssc_scenario, sampling_vector, matrix_collection, deme_vector_collection);
-      else if (type == 'Symmetrical') Application.Load_Symmetrical_Scenario(nssc_scenario, sampling_vector);
-    }
-
-    Visual_Application.Configuration_Vector();
+    Visual_Application.Build_Visual_Scenario(2, arg.nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
   });
 
   $('#add-matrix').on('click', function () {

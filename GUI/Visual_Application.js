@@ -1,6 +1,8 @@
 'use strict'
 
 const Application_Utilities = require('../Utilities/Application_Utilities');
+const Application = require('../Model/Logic_Application');
+
 
 class Visual_Application {
     constructor(canvas, logic_application) {
@@ -428,7 +430,7 @@ class Visual_Application {
 
         $('#count-events').val(scenario.scenario.length - 1);
 
-        setTimeout(function () { callback(); }, 0 | Math.random() * 100);
+        setTimeout(function () { callback(); }, 100);
     }
 
     Delete_Function(event_target) {
@@ -514,6 +516,48 @@ class Visual_Application {
 
         matrix_collection.push(matrix);
         this.Configuration_Matrix(matrix, order);
+    }
+
+    static Build_Visual_Scenario(time_size, nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
+        this.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
+
+        for (let index = 0; index < number_of_events + 1; index++) {
+            if (type == 'General') {
+                if (index == 0) {
+                    var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-' + time_size + '"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-' + (12 - time_size) + '"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme0"></div>';
+                    this.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+                }
+
+                else {
+                    var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-' + time_size + '"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-' + (12 - time_size) + '"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div>';
+                    this.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+                }
+
+                var html_matrix = '<div class="matrix" id="matrix' + index + '"></div>';
+                this.Add_Matrix(html_matrix, $('#scen' + index), order, matrix_collection, '#matrix', false);
+            }
+
+            else if (type == 'Symmetrical') {
+                $('#matrix-collection').attr("style", "overflow-x: none");
+                var html;
+                if (index == 0) {
+                    html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+                    $('#matrix-collection>ul').append(html);
+                }
+
+                else {
+                    html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+                    $('#matrix-collection>ul').append(html);
+                }
+            }
+        }
+
+        if (nssc_scenario) {
+            if (type == 'General') Application.Load_General_Scenario(nssc_scenario, sampling_vector, matrix_collection, deme_vector_collection);
+            else if (type == 'Symmetrical') Application.Load_Symmetrical_Scenario(nssc_scenario, sampling_vector);
+        }
+
+        Visual_Application.Configuration_Vector();
     }
 }
 
