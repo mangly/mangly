@@ -43,7 +43,7 @@ $(document).ready(function () {
 
 
         // Open a File or Files selected for user
-        dialog.showOpenDialog(options, function (arrPath) {
+        dialog.showOpenDialog(main_Window, options, function (arrPath) {
             if (arrPath) {
                 var paths = Application_Utilities.Divide_Paths(arrPath);
                 var psmc_msmc_paths = paths[0];
@@ -372,7 +372,7 @@ $(document).ready(function () {
                 ],
             }
 
-            dialog.showOpenDialog(options, function (arrPath) {
+            dialog.showOpenDialog(main_Window, options, function (arrPath) {
                 if (arrPath) {
                     Application.Load_File(arrPath[0], function (scenario) {
                         nssc_scenario = scenario;
@@ -402,7 +402,6 @@ $(document).ready(function () {
                 order = parseInt($('#order-n').val());
 
                 Visual_Application.Build_Visual_Scenario(3, nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
-
             });
         }
     });
@@ -418,6 +417,18 @@ $(document).ready(function () {
         });
     });
 
+    $('#switch-selection-pagination').on('change', function () {
+        /* initiate plugin */
+        if ($(this).prop('checked')) {
+            $("div.holder").jPages({
+                containerID: "list-scenario",
+                perPage: 1
+            });
+        }
+
+        else $("div.holder").jPages("destroy");
+    });
+
     $('#save-nssc').on('click', function () {
         var nssc_model = application.logic_application.Get_NSSC_Function(name_item_clicked)
         var nssc_save = JSON.stringify(nssc_model);
@@ -431,7 +442,7 @@ $(document).ready(function () {
             ],
         }
 
-        dialog.showSaveDialog(options, function (filename) {
+        dialog.showSaveDialog(main_Window, options, function (filename) {
             Application.Save_File(filename, nssc_save);
         });
     });
