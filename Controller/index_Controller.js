@@ -310,7 +310,7 @@ $(document).ready(function () {
     });
 
     $('#reset-scales').on('click', function () {
-        application.Reset_Scales(application.logic_application.Get_Function(name_item_clicked));
+        application.Reset_Scales(application.logic_application.Get_Function(selected_function.name));
         slider_s.noUiSlider.set(100);
         slider_mu.noUiSlider.set(1.25);
         slider_nref.noUiSlider.set(500);
@@ -430,12 +430,12 @@ $(document).ready(function () {
     });
 
     $('#save-nssc').on('click', function () {
-        var nssc_model = application.logic_application.Get_NSSC_Function(name_item_clicked)
-        var nssc_save = JSON.stringify(nssc_model);
+        // var nssc_model = application.logic_application.Get_NSSC_Function(selected_function.name)
+        var nssc_save = JSON.stringify(selected_function);
 
         var options = {
             title: 'Save...',
-            defaultPath: name_item_clicked,
+            defaultPath: selected_function.name,
 
             filters: [
                 { name: 'NSSC', extensions: ['nssc'] }
