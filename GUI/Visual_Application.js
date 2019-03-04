@@ -563,6 +563,15 @@ class Visual_Application {
 
         Visual_Application.Configuration_Vector();
     }
+
+    Restart_Edit_Container(){
+        $('#list-scenario').html('');
+        
+        if($('#switch-selection-pagination').prop('checked')){
+            $("div.holder").jPages("destroy");
+            $('#switch-selection-pagination').prop('checked', false);
+        }
+    }
 }
 
 module.exports = Visual_Application

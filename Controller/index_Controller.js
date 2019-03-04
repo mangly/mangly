@@ -406,6 +406,20 @@ $(document).ready(function () {
         }
     });
 
+    // $('highlight highlight-top highlight-bottom highlight-left highlight-right').on('click', function(){
+    //     console.log('ok')
+    // })
+
+    $('#back').on('click', function () {
+        $('#container-edit-nssc').fadeOut(50, function () {
+            $('#container-create-nssc').fadeIn(500);
+            application.Restart_Edit_Container(matrix_collection, deme_vector_collection, sampling_vector);
+            matrix_collection = [];
+            deme_vector_collection = [];
+            sampling_vector = $('#sampling-vector');
+        });
+    });
+
     $('#ok').on('click', function () {
         var scenario;
         if ($('#type-nssc-model').val() == 'General') scenario = Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
