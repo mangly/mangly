@@ -570,6 +570,7 @@ class Visual_Application {
     }
 
     Restart_Edit_Container(){
+        this.Restart_NSSC_Options();
         $('#list-scenario').html('');
         
         if($('#switch-selection-pagination').prop('checked')){

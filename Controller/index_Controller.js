@@ -413,7 +413,8 @@ $(document).ready(function () {
     $('#back').on('click', function () {
         $('#container-edit-nssc').fadeOut(50, function () {
             $('#container-create-nssc').fadeIn(500);
-            application.Restart_Edit_Container(matrix_collection, deme_vector_collection, sampling_vector);
+            application.Restart_Edit_Container();
+            nssc_scenario = null;
             matrix_collection = [];
             deme_vector_collection = [];
             sampling_vector = $('#sampling-vector');
