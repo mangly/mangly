@@ -431,6 +431,10 @@ $(document).ready(function () {
         });
     });
 
+    $('#tab-container').on('scroll', function () {
+        Visual_Application.Hide_Corner_Jexcel();
+    });
+
     $('#switch-selection-pagination').on('change', function () {
         /* initiate plugin */
         if ($(this).prop('checked')) {

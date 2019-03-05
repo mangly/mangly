@@ -564,6 +564,11 @@ class Visual_Application {
         Visual_Application.Configuration_Vector();
     }
 
+    static Hide_Corner_Jexcel(){
+        $('.jexcel_corner').css('top', -200);
+        $('.jexcel_corner').css('left', -200);
+    }
+
     Restart_Edit_Container(){
         $('#list-scenario').html('');
         
