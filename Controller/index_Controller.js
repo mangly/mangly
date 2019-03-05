@@ -144,6 +144,19 @@ $(document).ready(function () {
                 // legend_color = [];
                 // items_selecteds = [];
             }
+
+            $('#back').trigger('click');
+
+            // if ($('#container-edit-nssc').is(':visible')) { 
+            //     alert('el div ahora esta mostrado'); 
+            // }
+            // else { alert('el div esta oculto'); }
+            
+
+
+
+            // $('#container-edit-nssc').hide();
+            // $('#container-create-nssc').show();
             // }
 
             // else {
