@@ -18,7 +18,6 @@ var remote = require('electron').remote;
 const main_Window = remote.getCurrentWindow();
 
 $(document).ready(function () {
-    $('#container-edit-nssc').hide();
     $('#change-color').attr('disabled', 'disabled');
     $('#options-scale-axis *').attr('disabled', 'disabled');
     $('#option-mu *').attr('disabled', 'disabled');
@@ -29,7 +28,7 @@ $(document).ready(function () {
 
     // var sampling_vector = [];
     // var items_selecteds = [];
-    application.Initialize_Information_Of_Functions($('#graphic'), $('#theta'), $('#rho'), $('#model'));
+    application.Initialize_Information_Of_Functions();
 
     $('#open-file').on('click', function () {
 
@@ -99,10 +98,28 @@ $(document).ready(function () {
             legend_color = $(event.target).parents('.custom-control').children('.custom-control--char__helper');
 
             // Disable multiple selection in checkbox control
-            $('.custom-control-input').click(function () {
-                $('.custom-control-input').not(this).prop('checked', false);
-            });
+            // $($(event.target)).click(function () {
+            //     $('.custom-control-input').not(this).prop('checked', false);
+            // });
             //------------
+
+            $($(event.target)).on('click', function() {
+                console.log('ojk')
+                // in the handler, 'this' refers to the box clicked on
+                var $box = $(this);
+                if ($box.is(":checked")) {
+                  // the name of the box is retrieved using the .attr() method
+                  // as it is assumed and expected to be immutable
+                  var group = "input:checkbox[name='" + $box.attr("name") + "']";
+                  // the checked state of the group/box on the other hand will change
+                  // and the current value is retrieved using .prop() method
+                  $(group).prop("checked", false);
+                  $box.prop("checked", true);
+                } else {
+                  $box.prop("checked", false);
+                }
+              });
+
 
             if ($(event.target).prop('checked')) {
                 $('#reset-scales').removeAttr('disabled');
@@ -123,6 +140,9 @@ $(document).ready(function () {
                     $('#option-s *').attr('disabled', 'disabled');
                 }
 
+                application.Visualize_Information_Of_Functions(selected_function, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
+
+
                 // $('#option-s *').removeAttr('disabled');
                 // $('#option-mu *').removeAttr('disabled');
                 // legend_color = [];
@@ -137,9 +157,11 @@ $(document).ready(function () {
                 $('#change-color').attr('disabled', 'disabled');
                 $('#option-s *').attr('disabled', 'disabled');
                 $('#option-mu *').attr('disabled', 'disabled');
-                slider_s.noUiSlider.set(100);
+                selected_function = null;
+                // slider_s.noUiSlider.set(100);
                 slider_mu.noUiSlider.set(1.25);
-
+                
+                application.Initialize_Information_Of_Functions();
                 // legend_color = [];
                 // items_selecteds = [];
             }
@@ -193,8 +215,6 @@ $(document).ready(function () {
             // if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
             // $('#option-s *').removeAttr('disabled');
             // $('#option-mu *').removeAttr('disabled');
-
-            application.Visualize_Information_Of_Functions(selected_function, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
     })
 

@@ -409,11 +409,11 @@ class Visual_Application {
 
     }
 
-    Initialize_Information_Of_Functions(name, theta, rho, model) {
-        name.text('There is not graph selected by the user')
-        theta.text('-');
-        rho.text('-');
-        model.text('-');
+    Initialize_Information_Of_Functions() {
+        $('#graphic').text('There is not graph selected by the user')
+        $('#theta').text('-');
+        $('#rho').text('-');
+        $('#model').text('-');
     }
 
     Load_Principal_Window_Data(name, scenario, callback) {
