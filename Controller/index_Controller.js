@@ -444,17 +444,6 @@ $(document).ready(function () {
         });
     });
 
-    $('#ok').on('click', function () {
-        // var scenario;
-        // if ($('#type-nssc-model').val() == 'General') scenario = Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
-        // else scenario = Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
-
-        // application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
-        //     application.Update_NSSC(nssc_function);
-        //     // else application.Visualize_NSSC();
-        // });
-    });
-
     $('#container-edit-nssc').on('scroll', function () {
         Visual_Application.Hide_Corner_Jexcel();
     });
