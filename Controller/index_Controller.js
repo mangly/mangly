@@ -424,7 +424,7 @@ $(document).ready(function () {
                 number_of_events = parseInt($('#count-events').val());
                 order = parseInt($('#order-n').val());
 
-                Visual_Application.Build_Visual_Scenario(3, nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
+                application.Build_Visual_Scenario_With_Sliders(6, nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
             });
         }
     });
