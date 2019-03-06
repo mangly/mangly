@@ -22,7 +22,7 @@ class Visual_Application {
                     mode: null
                 },
                 animation: {
-                    duration: 100
+                    duration: 1000
                 },
                 scales: {
                     xAxes: [{
@@ -514,7 +514,7 @@ class Visual_Application {
 
         var matrix = $(id + matrix_collection.length);
 
-        if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector('1', 'deme_sizes', order));
+        if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector(1, 'deme_sizes', order));
 
         else this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Matrix('', order));
 

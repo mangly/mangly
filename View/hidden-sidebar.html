@@ -29,15 +29,15 @@
 
     <!-- Styles inline -->
     <style>
-        /* About jexcel*/
-html, body{
+
+        html, body{
     height: 92%;
 }
 
 main{
     height: 100%;
 }
-
+/* About jexcel*/
         .jexcel_label {
             color: black
         }
@@ -49,6 +49,11 @@ main{
 
         .jexcel {
             background-color: transparent;
+        }
+
+        #jexcel_corner{
+            background-color: red;
+            border-color: #000000;
         }
 
         /* Finish jexcel */
@@ -81,7 +86,7 @@ main{
 
 </head>
 
-<body data-sa-theme="4" onmousedown="return false">
+<body data-sa-theme="4">
     <main class="main">
         <div class="page-loader">
             <div class="page-loader__spinner">
@@ -173,7 +178,7 @@ main{
                     <div id="options" style="height: 100%">
                         <div class="card" style="height: 100%">
                             <div class="card-header">Options</div>
-                            <div id="tab-container" class="card-body" style="height: 100%; overflow-y: auto">
+                            <div class="card-body" style="height: 100%;">
                                 <div class="tab-container">
                                     <ul class="nav nav-tabs nav-fill" role="tablist">
                                         <li class="nav-item">
@@ -247,90 +252,125 @@ main{
 
                                         </div> -->
                                         <div class="tab-pane fade" id="scales" role="tabpanel">
-                                            <div class="card p-4">
-                                                <div id="options-scale-axis">
+                                            <div id="scales-container" style="max-height: 580px; overflow-y: auto">
+                                                <div class="card p-4">
+                                                    <div id="options-scale-axis">
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <p>AXES</p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <span class="font-italic">Axis X</span>
+                                                                        <div class="form-group">
+                                                                            <select id="scaleX" class="select2"
+                                                                                data-minimum-results-for-search="Infinity">
+                                                                                <option>Logarithmic</option>
+                                                                                <option>Linear</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <span class="font-italic">Axis Y</span>
+                                                                        <div class="form-group">
+
+                                                                            <select id="scaleY" class="select2"
+                                                                                data-minimum-results-for-search="Infinity">
+                                                                                <option>Linear</option>
+                                                                                <option>Logarithmic</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card p-4">
                                                     <div class="row">
                                                         <div class="col-sm-12">
-                                                            <p>AXES</p>
+                                                            <p>PSMC / MSMC</p>
                                                         </div>
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="col-sm-6">
                                                             <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <span class="font-italic">Axis X</span>
-                                                                    <div class="form-group">
-                                                                        <select id="scaleX" class="select2"
-                                                                            data-minimum-results-for-search="Infinity">
-                                                                            <option>Logarithmic</option>
-                                                                            <option>Linear</option>
-                                                                        </select>
+                                                                <div id="option-mu">
+                                                                    <div class="col-sm-12">
+                                                                        <span class="font-italic">Mu</span>
+                                                                        <div id="slider-mu"></div>
+
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <input type="text" class="form-control"
+                                                                                        id="input-slider-value-mu"
+                                                                                        readonly />
+                                                                                    <i class="form-group__bar"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
 
+                                                        <div class="col-lg-6">
+                                                            <div class="row">
+                                                                <div id="option-s">
+                                                                    <div class="col-lg-12">
+                                                                        <span class="font-italic">S</span>
+                                                                        <div id="slider-s"></div>
+
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <input type="text" class="form-control"
+                                                                                        id="input-slider-value-s"
+                                                                                        readonly />
+                                                                                    <i class="form-group__bar"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card p-4">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <p>NSSC</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
                                                         <div class="col-sm-6">
                                                             <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <span class="font-italic">Axis Y</span>
-                                                                    <div class="form-group">
+                                                                <div id="option-nref">
+                                                                    <div class="col-sm-12">
+                                                                        <span class="font-italic">N_ref</span>
+                                                                        <div id="slider-nref"></div>
 
-                                                                        <select id="scaleY" class="select2"
-                                                                            data-minimum-results-for-search="Infinity">
-                                                                            <option>Linear</option>
-                                                                            <option>Logarithmic</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card p-4">
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <p>PSMC / MSMC</p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="row">
-                                                            <div id="option-mu">
-                                                                <div class="col-sm-12">
-                                                                    <span class="font-italic">Mu</span>
-                                                                    <div id="slider-mu"></div>
-
-                                                                    <div class="row">
-                                                                        <div class="col-6">
-                                                                            <div class="form-group">
-                                                                                <input type="text" class="form-control"
-                                                                                    id="input-slider-value-mu" readonly />
-                                                                                <i class="form-group__bar"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6">
-                                                        <div class="row">
-                                                            <div id="option-s">
-                                                                <div class="col-lg-12">
-                                                                    <span class="font-italic">S</span>
-                                                                    <div id="slider-s"></div>
-
-                                                                    <div class="row">
-                                                                        <div class="col-6">
-                                                                            <div class="form-group">
-                                                                                <input type="text" class="form-control"
-                                                                                    id="input-slider-value-s" readonly />
-                                                                                <i class="form-group__bar"></i>
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <div class="form-group">
+                                                                                    <input type="text" class="form-control"
+                                                                                        id="input-slider-value-nref"
+                                                                                        readonly />
+                                                                                    <i class="form-group__bar"></i>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -339,43 +379,13 @@ main{
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="card p-4">
                                                 <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <p>NSSC</p>
-                                                    </div>
+                                                    <div class="col-lg-8"><button id="reset-scales" class="btn btn-light"
+                                                            type="submit" disabled>Reset scales of the selected
+                                                            function</button></div>
+                                                    <div class="col-lg-4"> <button id="reset-all-scales" class="btn btn-light float-right"
+                                                            type="submit" disabled>Reset all scales</button></div>
                                                 </div>
-
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="row">
-                                                            <div id="option-nref">
-                                                                <div class="col-sm-12">
-                                                                    <span class="font-italic">N_ref</span>
-                                                                    <div id="slider-nref"></div>
-
-                                                                    <div class="row">
-                                                                        <div class="col-6">
-                                                                            <div class="form-group">
-                                                                                <input type="text" class="form-control"
-                                                                                    id="input-slider-value-nref"
-                                                                                    readonly />
-                                                                                <i class="form-group__bar"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-8"><button id="reset-scales" class="btn btn-light"
-                                                        type="submit" disabled>Reset scales of the selected function</button></div>
-                                                <div class="col-lg-4"> <button id="reset-all-scales" class="btn btn-light float-right"
-                                                        type="submit" disabled>Reset all scales</button></div>
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="nssc" role="tabpanel">
@@ -433,7 +443,7 @@ main{
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div id="container-edit-nssc" style="display:none">
+                                            <div id="container-edit-nssc" style="display:none; max-height: 580px; overflow-y: auto">
                                                 <div class="content__inner">
                                                     <!-- <div class="quick-stats__info card p-4">
                                                                 <h2><span id="graphic">Plot NSSC model</span></h2>
@@ -473,13 +483,11 @@ main{
                                                     <div class="card p-4">
                                                         <div class="row">
                                                             <div class="col-sm-12">
-                                                                <div>
-                                                                    <div id="matrix-collection" style="overflow-x: scroll; padding: 0 0 20px 0">
-                                                                        <ul style="list-style-type:none;" id="list-scenario">
+                                                                <div id="matrix-collection" style="overflow-x: scroll; padding: 0 0 20px 0">
+                                                                    <ul style="list-style-type:none;" id="list-scenario">
 
-                                                                        </ul>
-                                                                        <div class="holder">
-                                                                        </div>
+                                                                    </ul>
+                                                                    <div class="holder">
                                                                     </div>
                                                                 </div>
                                                             </div>
