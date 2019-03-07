@@ -176,12 +176,13 @@ class Visual_Application {
 
                 var last_element_add = this.logic_application.Get_Last_Function();
                 element_scale_by_default = last_element_add.Clone();
+
                 last_element_add.Mu = 1.25;
 
                 if (last_element_add.model == 'psmc') {
                     this.logic_application.Scale_Psmc_Function(element_scale_by_default);
                     IICR = element_scale_by_default.IICR_2;
-                    last_element_add.S = 100;
+                    // last_element_add.S = 100;
                 }
 
                 else {
@@ -257,10 +258,13 @@ class Visual_Application {
         }
     }
 
-    Update_NSSC(nssc_function) {
+    Update_NSSC(nssc_function, n_ref) {
         var graphic = this.Get_Graphic(nssc_function.name);
+        var clone = nssc_function.Clone();
 
-        graphic.data = Application_Utilities.Generate_Data_To_Chart(nssc_function.x_vector, nssc_function.IICR_specie);
+        this.logic_application.Scale_NSSC_Function(clone, n_ref);
+
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone.x_vector, clone.IICR_specie);
 
         this.chart.update();
     }
@@ -306,6 +310,7 @@ class Visual_Application {
         var graphic = this.Get_Graphic(original_function.name);
 
         this.logic_application.Scale_NSSC_Function(clone_function, n_ref);
+        original_function.N_ref = n_ref;
 
         graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.IICR_specie);
 

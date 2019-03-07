@@ -214,7 +214,7 @@ $(document).ready(function () {
         var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
 
         application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, function (nssc_function) {
-            application.Update_NSSC(nssc_function);
+            application.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
         });
     });
 
