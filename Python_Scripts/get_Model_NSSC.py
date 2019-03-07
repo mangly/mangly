@@ -22,7 +22,7 @@ def get_NSSC_vectors(type, scenario, start = 0, end = 500, n = 500):
     for i in range(0, len(x_vector)):
         y = model.evaluateIICR(x_vector[i])
 
-        if np.isinf(y):
+        if np.isinf(y) or np.isnan(y):
             y = IICR_specie[i-1]
             
         IICR_specie.append(y)
