@@ -581,7 +581,7 @@ class Visual_Application {
             }
 
             if (type == 'General') {
-                var html_time_dime_sizes = '<li id="scen' + index + '"><div class="row pt-4"><div class="col-sm-10"><span>' + time_of_change + '</span><div ' + disabled + 'id="slider-time' + index + '" class="slider-time"></div></div><div class="col-sm-2"><div class="form-group"><input type="text" class="form-control" id="time' + index + '" value="' + value + '"' + readonly + ' /><i class="form-group__bar"></i></div></div></div><div class="row pb-5"><div class="col-sm-12"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div></div></div></li>';
+                var html_time_dime_sizes = '<li id="scen' + index + '"><div class="row pt-4"><div class="col-sm-10"><span>' + time_of_change + '</span><div ' + disabled + ' class="slider-time"></div></div><div class="col-sm-2"><div class="form-group"><input type="text" class="form-control" id="time' + index + '" value="' + value + '"' + readonly + ' /><i class="form-group__bar"></i></div></div></div><div class="row pb-5"><div class="col-sm-12"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div></div></div></li>';
                 Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
 
 
@@ -631,7 +631,6 @@ class Visual_Application {
             });
 
             slider.noUiSlider.on("set", (a, b) => {
-                console.log('ok')
                 document.getElementById("time" + index).value = a[b];
                 var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
@@ -641,7 +640,7 @@ class Visual_Application {
             });
 
             $('#time' + index).on('change', function () {
-                document.getElementById("slider-time" + index).noUiSlider.set($(this).val());
+                slider.noUiSlider.set($(this).val());
             });
         }
     }

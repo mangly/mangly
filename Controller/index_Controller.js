@@ -306,7 +306,7 @@ $(document).ready(function () {
     //     }
     // });
 
-    //--------------
+    //Start N_ref--------------
     var slider_nref = document.getElementById("slider-nref");
 
     noUiSlider.create(slider_nref, {
@@ -319,15 +319,14 @@ $(document).ready(function () {
         })
     })
 
-    // if ($('#options #option-nref *').attr('disabled') == 'disabled') {
-    slider_nref.noUiSlider.on("update", function (a, b) {
-        document.getElementById("input-slider-value-nref").value = a[b];
+    $("#input-slider-value-nref").on('change', function(){
+        document.getElementById("slider-nref").noUiSlider.set($(this).val());
     });
-    // }
-
-    slider_nref.noUiSlider.on('slide', function (a, b) {
+    slider_nref.noUiSlider.on('set', function (a, b) {
+        document.getElementById("input-slider-value-nref").value = a[b];
         application.Update_Scale_NSSC(selected_function, a[b]);
     });
+    //finish N_ref-------------------
 
     $('#reset-scales').on('click', function () {
         application.Reset_Scales(application.logic_application.Get_Function(selected_function.name));

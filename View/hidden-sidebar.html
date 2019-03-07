@@ -252,7 +252,7 @@ main{
 
                                         </div> -->
                                         <div class="tab-pane fade" id="scales" role="tabpanel">
-                                            <div id="scales-container" style="max-height: 580px; overflow-y: auto">
+                                            <div id="scales-container">
                                                 <div class="card p-4">
                                                     <div id="options-scale-axis">
                                                         <div class="row">
@@ -348,37 +348,7 @@ main{
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="card p-4">
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <p>NSSC</p>
-                                                        </div>
-                                                    </div>
 
-                                                    <div class="row">
-                                                        <div class="col-sm-6">
-                                                            <div class="row">
-                                                                <div id="option-nref">
-                                                                    <div class="col-sm-12">
-                                                                        <span class="font-italic">N_ref</span>
-                                                                        <div id="slider-nref"></div>
-
-                                                                        <div class="row">
-                                                                            <div class="col-6">
-                                                                                <div class="form-group">
-                                                                                    <input type="text" class="form-control"
-                                                                                        id="input-slider-value-nref"
-                                                                                        readonly />
-                                                                                    <i class="form-group__bar"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="row">
                                                     <div class="col-lg-8"><button id="reset-scales" class="btn btn-light"
                                                             type="submit" disabled>Reset scales of the selected
@@ -445,10 +415,6 @@ main{
                                             </div>
                                             <div id="container-edit-nssc" style="display:none; max-height: 580px; overflow-y: auto">
                                                 <div class="content__inner">
-                                                    <!-- <div class="quick-stats__info card p-4">
-                                                                <h2><span id="graphic">Plot NSSC model</span></h2>
-                                                                <small>Enter all parametters and fill matrices</small>
-                                                            </div> -->
                                                     <div class="card p-4">
                                                         <div class="row">
                                                             <div class="col-sm-12">
@@ -459,9 +425,23 @@ main{
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="card"> -->
-                                                    <!-- <div class="card-header">Plot NSSC model</div> -->
-                                                    <!-- <div class="card-body"> -->
+
+                                                    <div class="card p-4">
+                                                        <div class="row">
+                                                            <div class="col-sm-10">
+                                                                <span>N_ref</span>
+                                                                <div id="slider-nref"></div>
+                                                            </div>
+                                                            <div class="col-sm-2">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control" value="500"
+                                                                        id="input-slider-value-nref" />
+                                                                    <i class="form-group__bar"></i>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
 
                                                     <div id="matrices-deme-sizes" class="card p-4">
                                                         <div class="row">
