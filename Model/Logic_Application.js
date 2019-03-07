@@ -179,6 +179,11 @@ class Application {
         return { "samplingVector": sampling_vector, "scenario": scenario };
     }
 
+    static Build_Scenario_Update(type_nssc_model, matrix_collection, deme_vector_collection, sampling_vector, order, count){
+        if (type_nssc_model == 'General') return Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector);
+        else return Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector, count);
+    }
+
 
     static Load_General_Scenario(scenario, sampling_vector, matrix_collection, deme_vector_collection) {
         for (let index = 0; index < matrix_collection.length; index++) {

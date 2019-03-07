@@ -211,13 +211,10 @@ $(document).ready(function () {
     });
 
     $(document).on('change', 'td', function () {
-        var scenario;
-        if ($('#type-nssc-model').val() == 'General') scenario = Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
-        else scenario = Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
+        var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
 
-        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
+        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, function (nssc_function) {
             application.Update_NSSC(nssc_function);
-            // else application.Visualize_NSSC();
         });
     });
 
@@ -424,14 +421,10 @@ $(document).ready(function () {
                 number_of_events = parseInt($('#count-events').val());
                 order = parseInt($('#order-n').val());
 
-                application.Build_Visual_Scenario_With_Sliders(6, nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
+                application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
             });
         }
     });
-
-    // $('highlight highlight-top highlight-bottom highlight-left highlight-right').on('click', function(){
-    //     console.log('ok')
-    // })
 
     $('#back').on('click', function () {
         $('#container-edit-nssc').fadeOut(50, function () {
