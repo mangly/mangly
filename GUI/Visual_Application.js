@@ -570,7 +570,7 @@ class Visual_Application {
         for (let index = 0; index < number_of_events + 1; index++) {
             var value = 0;
             var readonly = 'readonly';
-            var time_of_change = 'The first time of change can not be modified.';
+            var time_of_change = 'First time is constant.';
             var disabled = 'disabled';
 
             if (index != 0) {
@@ -591,16 +591,16 @@ class Visual_Application {
 
             else if (type == 'Symmetrical') {
                 // $('#matrix-collection').attr("style", "overflow-x: none");
-                var html;
-                if (index == 0) {
-                    html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
-                    $('#matrix-collection>ul').append(html);
-                }
+                // var html;
+                // if (index == 0) {
+                // var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>' + time_of_change + '</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+                // $('#matrix-collection>ul').append(html);
+                // }
 
-                else {
-                    html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
-                    $('#matrix-collection>ul').append(html);
-                }
+                // else {
+                var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><span>' + time_of_change + '</span><div ' + disabled + ' class="slider-time"></div><div class="form-group"><input type="text" class="form-control" id="time' + index + '" value="' + value + '"' + readonly + ' /><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>M:</span><div class="slider-m"></div><div class="form-group"><input type="text" class="form-control" id="M' + index + '"/><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>c:</span><div class="slider-c"></div><div class="form-group"><input type="text" class="form-control" id="c' + index + '"/><i class="form-group__bar"></i></div></div></div></li>';
+                $('#matrix-collection>ul').append(html);
+                // }
             }
         }
 
@@ -610,38 +610,98 @@ class Visual_Application {
         }
 
         Visual_Application.Configuration_Vector();
-        this.Configuration_Sliders(matrix_collection, deme_vector_collection, sampling_vector, order, number_of_events + 1);
+        this.Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, order, number_of_events + 1);
     }
 
-    Configuration_Sliders(matrix_collection, deme_vector_collection, sampling_vector, order, count) {
+    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, order, count) {
         var slider_time = document.getElementsByClassName("slider-time");
+        var slider_mlist = document.getElementsByClassName("slider-m");
+        var slider_clist = document.getElementsByClassName("slider-c");
 
         for (let index = 0; index < slider_time.length; index++) {
-            const slider = slider_time[index];
+            const slider_t = slider_time[index];
 
-            noUiSlider.create(slider, {
-                start: [1],
+            noUiSlider.create(slider_t, {
+                start: [0],
                 connect: "lower",
                 step: 0.01,
-                range: { min: 1, max: 100 },
+                range: { min: 0, max: 100 },
 
                 format: wNumb({
                     decimals: 2,
                 })
             });
 
-            slider.noUiSlider.on("set", (a, b) => {
+            slider_t.noUiSlider.on("set", (a, b) => {
                 document.getElementById("time" + index).value = a[b];
-                var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
+                var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
-                this.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, (nssc_function) => {
+                this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
                     this.Update_NSSC(nssc_function);
                 });
             });
 
             $('#time' + index).on('change', function () {
-                slider.noUiSlider.set($(this).val());
+                slider_t.noUiSlider.set($(this).val());
             });
+
+            if (type == 'Symmetrical') {
+                //M------------------------
+                const slider_m = slider_mlist[index];
+
+                noUiSlider.create(slider_m, {
+                    start: [0],
+                    connect: "lower",
+                    step: 0.01,
+                    range: { min: 0, max: 100 },
+
+                    format: wNumb({
+                        decimals: 2,
+                    })
+                });
+
+                slider_m.noUiSlider.on("set", (a, b) => {
+                    document.getElementById("M" + index).value = a[b];
+                    var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
+
+                    this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
+                        this.Update_NSSC(nssc_function);
+                    });
+                });
+
+                $('#M' + index).on('change', function () {
+                    slider_m.noUiSlider.set($(this).val());
+                });
+                //---------------------
+
+                //C------------------------
+                const slider_c = slider_clist[index];
+
+                noUiSlider.create(slider_c, {
+                    start: [0],
+                    connect: "lower",
+                    step: 0.01,
+                    range: { min: 0, max: 1000 },
+
+                    format: wNumb({
+                        decimals: 2,
+                    })
+                });
+
+                slider_c.noUiSlider.on("set", (a, b) => {
+                    document.getElementById("c" + index).value = a[b];
+                    var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
+
+                    this.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, (nssc_function) => {
+                        this.Update_NSSC(nssc_function);
+                    });
+                });
+
+                $('#c' + index).on('change', function () {
+                    slider_c.noUiSlider.set($(this).val());
+                });
+                //---------------------
+            }
         }
     }
 
