@@ -318,16 +318,14 @@ class Visual_Application {
     }
 
     Reset_Scales(funct) {
-        if (funct.model != 'nssc') this.Update_Scale_PSMC_MSMC(funct.name, this.logic_application.Mu, this.logic_application.S);
-        else this.Update_Scale_NSSC(funct.name, this.logic_application.n_ref);
+        this.Update_Scale_PSMC_MSMC(funct, this.logic_application.Mu, this.logic_application.S);
 
         this.chart.update();
     }
 
     Reset_All_Scales() {
         for (const funct of this.logic_application.functions_collection) {
-            if (funct.model != 'nssc') this.Update_Scale_PSMC_MSMC(funct.name, this.logic_application.Mu, this.logic_application.S);
-            else this.Update_Scale_NSSC(funct.name, this.logic_application.n_ref);
+            this.Update_Scale_PSMC_MSMC(funct, this.logic_application.Mu, this.logic_application.S);
         }
 
         this.chart.update();
@@ -638,12 +636,15 @@ class Visual_Application {
             });
 
             slider_t.noUiSlider.on("set", (a, b) => {
-                document.getElementById("time" + index).value = a[b];
                 var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
                 this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
                     this.Update_NSSC(nssc_function);
                 });
+            });
+
+            slider_t.noUiSlider.on("slide", (a, b) => {
+                document.getElementById("time" + index).value = a[b];
             });
 
             $('#time' + index).on('change', function () {
@@ -666,12 +667,15 @@ class Visual_Application {
                 });
 
                 slider_m.noUiSlider.on("set", (a, b) => {
-                    document.getElementById("M" + index).value = a[b];
                     var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
                     this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
                         this.Update_NSSC(nssc_function);
                     });
+                });
+
+                slider_m.noUiSlider.on("slide", (a, b) => {
+                    document.getElementById("M" + index).value = a[b];
                 });
 
                 $('#M' + index).on('change', function () {
@@ -694,7 +698,6 @@ class Visual_Application {
                 });
 
                 slider_c.noUiSlider.on("set", (a, b) => {
-                    document.getElementById("c" + index).value = a[b];
                     var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
                     this.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, (nssc_function) => {
@@ -702,11 +705,27 @@ class Visual_Application {
                     });
                 });
 
+                slider_c.noUiSlider.on("slide", (a, b) => {
+                    document.getElementById("c" + index).value = a[b];
+                });
+
                 $('#c' + index).on('change', function () {
                     slider_c.noUiSlider.set($(this).val());
                 });
                 //---------------------
             }
+        }
+    }
+
+    Reset_Slider(type, slider, input) {
+        if (type == 'mu') {
+            slider.noUiSlider.set(1.25);
+            input.val(1.25e-8)
+        }
+
+        else if(type == 'n-ref'){
+            slider.noUiSlider.set(500);
+            input.val(500)
         }
     }
 

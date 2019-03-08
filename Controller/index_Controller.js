@@ -34,10 +34,10 @@ $(document).ready(function () {
 
         var options = {
             filters: [
-                { name: 'PSMC', extensions: ['psmc', 'txt', 'msmc'] }
+                { name: 'File', extensions: ['psmc', 'txt', 'msmc', 'nssc'] }
             ],
 
-            properties: ['multiSelections'],
+            // properties: ['multiSelections'],
         }
 
 
@@ -110,9 +110,10 @@ $(document).ready(function () {
                     $('#option-mu *').removeAttr('disabled');
                     // slider_s.noUiSlider.set(graphic.S);
                     slider_mu.noUiSlider.set(selected_function.Mu);
+                    $('#input-slider-value-s').val(selected_function.S)
                 }
 
-                else {
+                else if (selected_function.model == 'msmc') {
                     // slider_s.noUiSlider.set(100);
                     slider_mu.noUiSlider.set(selected_function.Mu);
                     $('#option-mu *').removeAttr('disabled');
@@ -137,7 +138,7 @@ $(document).ready(function () {
                 $('#option-s *').attr('disabled', 'disabled');
                 $('#option-mu *').attr('disabled', 'disabled');
                 selected_function = null;
-                // slider_s.noUiSlider.set(100);
+                $('#input-slider-value-s').val(100);
                 slider_mu.noUiSlider.set(1.25);
 
                 application.Initialize_Information_Of_Functions();
@@ -270,41 +271,19 @@ $(document).ready(function () {
         })
     })
 
-    if ($('#option-mu *').attr('disabled') == 'disabled') {
-        slider_mu.noUiSlider.on("update", function (a, b) {
-            $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
-        });
-    }
-
-    slider_mu.noUiSlider.on('slide', function (a, b) {
-        application.Update_Scale_PSMC_MSMC(selected_function, a[b], $('#input-slider-value-s').val());
-
+    slider_mu.noUiSlider.on("slide", function (a, b) {
         $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
-    })
 
-    // var slider_s = document.getElementById("slider-s");
+        application.Update_Scale_PSMC_MSMC(selected_function, a[b], $('#input-slider-value-s').val());
+    });
 
-    // noUiSlider.create(slider_s, {
-    //     start: [100],
-    //     connect: "lower",
-    //     range: { min: 1, max: 1000 },
+    $("#input-slider-value-mu").on('change', function () {
+        document.getElementById("slider-mu").noUiSlider.set($(this).val() * Math.pow(10, 8));
+    });
 
-    //     format: wNumb({
-    //         decimals: 0,
-    //     })
-    // })
-
-    // if ($('#options #option-s *').attr('disabled') == 'disabled') {
-    //     slider_s.noUiSlider.on("update", function (a, b) {
-    //         document.getElementById("input-slider-value-s").value = a[b];
-    //     });
-    // }
-
-    // slider_s.noUiSlider.on('slide', function (a, b) {
-    //     for (const element of items_selecteds) {
-    //         application.Update_Scale_PSMC_MSMC(element, $('#input-slider-value-mu').val(), a[b]);
-    //     }
-    // });
+    $('#input-slider-value-s').on('change', function () {
+        application.Update_Scale_PSMC_MSMC(selected_function, $("#input-slider-value-mu").val(), $(this).val());
+    });
 
     //Start N_ref--------------
     var slider_nref = document.getElementById("slider-nref");
@@ -319,10 +298,11 @@ $(document).ready(function () {
         })
     })
 
-    $("#input-slider-value-nref").on('change', function(){
+    $("#input-slider-value-nref").on('change', function () {
         document.getElementById("slider-nref").noUiSlider.set($(this).val());
     });
-    slider_nref.noUiSlider.on('set', function (a, b) {
+
+    slider_nref.noUiSlider.on('slide', function (a, b) {
         document.getElementById("input-slider-value-nref").value = a[b];
         application.Update_Scale_NSSC(selected_function, a[b]);
     });
@@ -330,16 +310,14 @@ $(document).ready(function () {
 
     $('#reset-scales').on('click', function () {
         application.Reset_Scales(application.logic_application.Get_Function(selected_function.name));
-        slider_s.noUiSlider.set(100);
-        slider_mu.noUiSlider.set(1.25);
-        slider_nref.noUiSlider.set(500);
+        $('#input-slider-value-s').val(100);
+        application.Reset_Slider('mu', slider_mu, $("#input-slider-value-mu"));
     });
 
     $('#reset-all-scales').on('click', function () {
         application.Reset_All_Scales();
-        slider_s.noUiSlider.set(100);
-        slider_mu.noUiSlider.set(1.25);
-        slider_nref.noUiSlider.set(500);
+        $('#input-slider-value-s').val(100);
+        application.Reset_Slider('mu', slider_mu, $("#input-slider-value-mu"));
     });
 
     // $('#order-n').on('keyup', function () {
@@ -387,7 +365,7 @@ $(document).ready(function () {
         if ($('#model').html() != 'The Non-Stationary Structured Coalescent') {
             var options = {
                 filters: [
-                    { name: 'SNSSC', extensions: ['snssc'] }
+                    { name: 'File', extensions: ['snssc'] }
                 ],
             }
 
@@ -461,7 +439,7 @@ $(document).ready(function () {
             defaultPath: selected_function.name,
 
             filters: [
-                { name: 'NSSC', extensions: ['nssc'] }
+                { name: 'File', extensions: ['nssc'] }
             ],
         }
 
