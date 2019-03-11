@@ -86,8 +86,8 @@ $(document).ready(function () {
         if ($(event.target).is('.zmdi-delete')) {
             var event_target = $(event.target);
 
-            dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Accept', 'Cancel'] }, (response) => {
-                if (response == 0) application.Delete_Function(event_target);
+            dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Cancel', 'Accept'] }, (response) => {
+                if (response == 1) application.Delete_Function(event_target);
             });
         }
 
@@ -109,13 +109,14 @@ $(document).ready(function () {
                     $('#option-s *').removeAttr('disabled');
                     $('#option-mu *').removeAttr('disabled');
                     // slider_s.noUiSlider.set(graphic.S);
-                    slider_mu.noUiSlider.set(selected_function.Mu);
+                    // slider_mu.noUiSlider.set(selected_function.Mu);
+                    application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
                     $('#input-slider-value-s').val(selected_function.S)
                 }
 
                 else if (selected_function.model == 'msmc') {
                     // slider_s.noUiSlider.set(100);
-                    slider_mu.noUiSlider.set(selected_function.Mu);
+                    application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
                     $('#option-mu *').removeAttr('disabled');
                     $('#option-s *').attr('disabled', 'disabled');
                 }
@@ -139,7 +140,8 @@ $(document).ready(function () {
                 $('#option-mu *').attr('disabled', 'disabled');
                 selected_function = null;
                 $('#input-slider-value-s').val(100);
-                slider_mu.noUiSlider.set(1.25);
+                // slider_mu.noUiSlider.set(1.25);
+                application.Update_Slider(1.25, 'mu', slider_mu, $("#input-slider-value-mu"));
 
                 application.Initialize_Information_Of_Functions();
                 // legend_color = [];
@@ -261,24 +263,19 @@ $(document).ready(function () {
         start: [1.25],
         connect: "lower",
         range: { min: 1, max: 3 },
-
-        format: wNumb({
-            decimals: 10,
-
-            encoder: function (a) {
-                return a * 1e-8;
-            }
-        })
-    })
+    });
 
     slider_mu.noUiSlider.on("slide", function (a, b) {
-        $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
-
-        application.Update_Scale_PSMC_MSMC(selected_function, a[b], $('#input-slider-value-s').val());
+        var mu = (Math.round(a[b] * 100) / 100) + 'e-8';
+        var real_mu = a[b] * 1e-8;
+        var s = $('#input-slider-value-s').val();
+        $('#input-slider-value-mu').val(mu);
+        application.Update_Scale_PSMC_MSMC(selected_function, real_mu, s);
     });
 
     $("#input-slider-value-mu").on('change', function () {
-        document.getElementById("slider-mu").noUiSlider.set($(this).val() * Math.pow(10, 8));
+        document.getElementById("slider-mu").noUiSlider.set($(this).val() / 1e-8);
+        application.Update_Scale_PSMC_MSMC(selected_function, $(this).val(), $("#input-slider-value-s").val());
     });
 
     $('#input-slider-value-s').on('change', function () {

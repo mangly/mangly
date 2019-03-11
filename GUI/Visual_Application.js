@@ -288,7 +288,7 @@ class Visual_Application {
                 this.logic_application.Scale_Psmc_Function(clone_function, mu, s);
 
                 IICR = clone_function.IICR_2;
-                original_function.Mu = mu * Math.pow(10, 8);
+                original_function.Mu = mu / 1e-8;
                 original_function.S = s;
             }
 
@@ -296,7 +296,7 @@ class Visual_Application {
                 this.logic_application.Scale_Msmc_Function(clone_function, mu);
 
                 IICR = clone_function.IICR_k;
-                original_function.Mu = mu * Math.pow(10, 8);
+                original_function.Mu = mu / 1e-8;
             }
         }
 
@@ -482,6 +482,7 @@ class Visual_Application {
             {
                 data: data,
                 allowManualInsertColumn: false,
+                allowManualInsertRow: false,
             });
     }
 
@@ -717,13 +718,25 @@ class Visual_Application {
         }
     }
 
+    Update_Slider(value, type, slider, input) {
+        if (type == 'mu') {
+            slider.noUiSlider.set(value);
+            input.val((Math.round(value * 100) / 100) + 'e-8');
+        }
+
+        else if (type == 'n-ref') {
+            slider.noUiSlider.set(500);
+            input.val(500);
+        }
+    }
+
     Reset_Slider(type, slider, input) {
         if (type == 'mu') {
             slider.noUiSlider.set(1.25);
-            input.val(1.25e-8)
+            input.val(1.25e-8);
         }
 
-        else if(type == 'n-ref'){
+        else if (type == 'n-ref') {
             slider.noUiSlider.set(500);
             input.val(500)
         }
