@@ -121,6 +121,10 @@ $(document).ready(function () {
                     $('#option-s *').attr('disabled', 'disabled');
                 }
 
+                else{
+                    application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $("#input-slider-value-nref"));
+                }
+
                 application.Visualize_Information_Of_Functions(selected_function, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
 
 
@@ -297,10 +301,11 @@ $(document).ready(function () {
 
     $("#input-slider-value-nref").on('change', function () {
         document.getElementById("slider-nref").noUiSlider.set($(this).val());
+        application.Update_Scale_NSSC(selected_function, $("#input-slider-value-nref").val());
     });
 
     slider_nref.noUiSlider.on('slide', function (a, b) {
-        document.getElementById("input-slider-value-nref").value = a[b];
+        $("#input-slider-value-nref").val(a[b]);
         application.Update_Scale_NSSC(selected_function, a[b]);
     });
     //finish N_ref-------------------
