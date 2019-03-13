@@ -640,7 +640,9 @@ class Visual_Application {
                 var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
                 this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
-                    this.Update_NSSC(nssc_function);
+                    // this.Update_NSSC(nssc_function);
+                    this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+
                 });
             });
 
@@ -671,7 +673,8 @@ class Visual_Application {
                     var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
                     this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
-                        this.Update_NSSC(nssc_function);
+                        // this.Update_NSSC(nssc_function);
+                        this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
                     });
                 });
 
@@ -702,7 +705,8 @@ class Visual_Application {
                     var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
                     this.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, (nssc_function) => {
-                        this.Update_NSSC(nssc_function);
+                        // this.Update_NSSC(nssc_function);
+                        this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
                     });
                 });
 
