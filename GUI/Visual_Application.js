@@ -1,6 +1,8 @@
 'use strict'
 
 const Application_Utilities = require('../Utilities/Application_Utilities');
+const Application = require('../Model/Logic_Application');
+
 
 class Visual_Application {
     constructor(canvas, logic_application) {
@@ -20,7 +22,7 @@ class Visual_Application {
                     mode: null
                 },
                 animation: {
-                    duration: 100
+                    duration: 1000
                 },
                 scales: {
                     xAxes: [{
@@ -170,15 +172,17 @@ class Visual_Application {
         var IICR;
 
         for (const element of this.logic_application.functions_collection) {
-            if (element.model != 'nssc' && this.Get_Graphic(element.name) == null) {
+            if (element.model != 'nssc' && (this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
 
-                element_scale_by_default = element.Clone();
-                element.Mu = 1.25;
+                var last_element_add = this.logic_application.Get_Last_Function();
+                element_scale_by_default = last_element_add.Clone();
 
-                if (element.model == 'psmc') {
+                last_element_add.Mu = 1.25;
+
+                if (last_element_add.model == 'psmc') {
                     this.logic_application.Scale_Psmc_Function(element_scale_by_default);
                     IICR = element_scale_by_default.IICR_2;
-                    element.S = 100;
+                    // last_element_add.S = 100;
                 }
 
                 else {
@@ -192,8 +196,8 @@ class Visual_Application {
 
                 this.chart.data.datasets.push(graphic);
 
-                this.Visualize_element_of_list(element.name, element.model, color);
-                this.Add_model_compute_distance($('#psmc-msmc-model'), element.name);
+                this.Visualize_element_of_list(last_element_add.name, last_element_add.model, color);
+                this.Add_model_compute_distance($('#psmc-msmc-model'), last_element_add.name);
             }
         }
 
@@ -206,9 +210,10 @@ class Visual_Application {
 
     Visualize_NSSC_Saved() {
         for (const element of this.logic_application.functions_collection) {
-            if (element.model == 'nssc' && this.Get_Graphic(element.name) == null) {
+            if (element.model == 'nssc' && (this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
 
-                var element_scale_by_default = element.Clone();
+                var last_element_add = this.logic_application.Get_Last_Function();
+                var element_scale_by_default = last_element_add.Clone();
 
                 this.logic_application.Scale_NSSC_Function(element_scale_by_default);
 
@@ -218,8 +223,8 @@ class Visual_Application {
 
                 this.chart.data.datasets.push(graphic);
 
-                this.Visualize_element_of_list(element.name, element.model, color);
-                this.Add_model_compute_distance($('#nssc-model'), element.name);
+                this.Visualize_element_of_list(last_element_add.name, last_element_add.model, color);
+                this.Add_model_compute_distance($('#nssc-model'), last_element_add.name);
             }
         }
 
@@ -232,58 +237,58 @@ class Visual_Application {
     }
 
     Visualize_NSSC() {
-        $('#canvas-container').removeClass('disabled');
+        if (this.logic_application.functions_collection.length > this.chart.data.datasets.length) {
+            $('#canvas-container').removeClass('disabled');
 
-        $('#tab-graphics').trigger('click');
-        var color = this.Get_Random_Color();
-        var nssc = this.logic_application.Get_Last_NSSC_Function();
+            $('#tab-graphics').trigger('click');
+            var color = this.Get_Random_Color();
+            var nssc = this.logic_application.Get_Last_Function();
 
-        var nssc_scale_by_default = nssc.Clone();
-        this.logic_application.Scale_NSSC_Function(nssc_scale_by_default);
+            var nssc_scale_by_default = nssc.Clone();
+            this.logic_application.Scale_NSSC_Function(nssc_scale_by_default);
 
-        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_scale_by_default.x_vector, nssc_scale_by_default.IICR_specie), 'label': nssc_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
+            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_scale_by_default.x_vector, nssc_scale_by_default.IICR_specie), 'label': nssc_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
 
-        this.chart.data.datasets.push(graphic);
+            this.chart.data.datasets.push(graphic);
 
-        this.Visualize_element_of_list(nssc.name, nssc.model, color);
-        this.Add_model_compute_distance($('#nssc-model'), nssc.name);
+            this.Visualize_element_of_list(nssc.name, nssc.model, color);
+            this.Add_model_compute_distance($('#nssc-model'), nssc.name);
 
-        this.chart.update();
+            this.chart.update();
+        }
     }
 
-    Update_NSSC(nssc_function) {
+    Update_NSSC(nssc_function, n_ref) {
         var graphic = this.Get_Graphic(nssc_function.name);
+        var clone = nssc_function.Clone();
 
-        graphic.data = Application_Utilities.Generate_Data_To_Chart(nssc_function.x_vector, nssc_function.IICR_specie);
+        this.logic_application.Scale_NSSC_Function(clone, n_ref);
 
-        this.chart.update();
-    }
-
-    Update_Colors(function_name, color, legend_color) {
-        this.chart.data.datasets.forEach(function (element) {
-            if (element.label == function_name) {
-                element.borderColor = color;
-                element.backgroundColor = color;
-                legend_color.css('background-color', color);
-                // function_target.children('.album').css('color', color);
-            }
-        });
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone.x_vector, clone.IICR_specie);
 
         this.chart.update();
     }
 
-    Update_Scale_PSMC_MSMC(name_graphic, mu, s) {
+    Update_Colors(funct, color, legend_color) {
+        var graphic = this.Get_Graphic(funct.name)
+        graphic.borderColor = color;
+        graphic.backgroundColor = color;
+        legend_color.css('background-color', color);
+
+        this.chart.update();
+    }
+
+    Update_Scale_PSMC_MSMC(original_function, mu, s) {
         var IICR;
-        var original_function = this.logic_application.Get_Function(name_graphic);
         var clone_function = original_function.Clone();
-        var graphic = this.Get_Graphic(name_graphic);
+        var graphic = this.Get_Graphic(original_function.name);
 
         if (original_function.model != 'nssc') {
             if (original_function.model == 'psmc') {
                 this.logic_application.Scale_Psmc_Function(clone_function, mu, s);
 
                 IICR = clone_function.IICR_2;
-                original_function.Mu = mu * Math.pow(10, 8);
+                original_function.Mu = mu / 1e-8;
                 original_function.S = s;
             }
 
@@ -291,32 +296,21 @@ class Visual_Application {
                 this.logic_application.Scale_Msmc_Function(clone_function, mu);
 
                 IICR = clone_function.IICR_k;
-                original_function.Mu = mu * Math.pow(10, 8);
+                original_function.Mu = mu / 1e-8;
             }
         }
 
         graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.time, IICR);
 
-        // for (let index = 0; index < this.chart.data.datasets.length; index++) {
-        //     const element = this.chart.data.datasets[index];
-
-        //     if (element.label == funct.name) {
-        //         this.chart.data.datasets[index].data = Application_Utilities.Generate_Data_To_Chart(funct.time, IICR);
-        //         this.logic_application.functions_collection[index].Mu = mu * Math.pow(10, 8);
-        //         this.logic_application.functions_collection[index].S = s;
-        //     }
-        // }
-
         this.chart.update();
-
     }
 
-    Update_Scale_NSSC(name_graphic, n_ref) {
-        var original_function = this.logic_application.Get_Function(name_graphic);
+    Update_Scale_NSSC(original_function, n_ref) {
         var clone_function = original_function.Clone();
-        var graphic = this.Get_Graphic(name_graphic);
+        var graphic = this.Get_Graphic(original_function.name);
 
         this.logic_application.Scale_NSSC_Function(clone_function, n_ref);
+        original_function.N_ref = n_ref;
 
         graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.IICR_specie);
 
@@ -324,16 +318,14 @@ class Visual_Application {
     }
 
     Reset_Scales(funct) {
-        if (funct.model != 'nssc') this.Update_Scale_PSMC_MSMC(funct.name, this.logic_application.Mu, this.logic_application.S);
-        else this.Update_Scale_NSSC(funct.name, this.logic_application.n_ref);
+        this.Update_Scale_PSMC_MSMC(funct, this.logic_application.Mu, this.logic_application.S);
 
         this.chart.update();
     }
 
     Reset_All_Scales() {
         for (const funct of this.logic_application.functions_collection) {
-            if (funct.model != 'nssc') this.Update_Scale_PSMC_MSMC(funct.name, this.logic_application.Mu, this.logic_application.S);
-            else this.Update_Scale_NSSC(funct.name, this.logic_application.n_ref);
+            this.Update_Scale_PSMC_MSMC(funct, this.logic_application.Mu, this.logic_application.S);
         }
 
         this.chart.update();
@@ -410,28 +402,21 @@ class Visual_Application {
         this.chart.resetZoom();
     }
 
-    Visualize_Information_Of_Functions(items_selecteds, name, theta, rho, model) {
-        if (items_selecteds.length == 1) {
-            var parametters = this.Get_Parametters(items_selecteds[0], this.logic_application);
+    Visualize_Information_Of_Functions(funct, name, theta, rho, model) {
+        var parametters = this.Get_Parametters(funct.name);
 
-            name.html(items_selecteds[0]);
-            theta.html(parametters[0]);
-            rho.html(parametters[1]);
-            model.html(parametters[2]);
-        }
-
-        else {
-            this.Initialize_Information_Of_Functions(name, theta, rho, model);
-            if (items_selecteds.length > 1) name.text('Some function are selected');
-        }
+        name.html(funct.name);
+        theta.html(parametters[0]);
+        rho.html(parametters[1]);
+        model.html(parametters[2]);
 
     }
 
-    Initialize_Information_Of_Functions(name, theta, rho, model) {
-        name.text('There is not graph selected by the user')
-        theta.text('-');
-        rho.text('-');
-        model.text('-');
+    Initialize_Information_Of_Functions() {
+        $('#graphic').text('There is not graph selected by the user')
+        $('#theta').text('-');
+        $('#rho').text('-');
+        $('#model').text('-');
     }
 
     Load_Principal_Window_Data(name, scenario, callback) {
@@ -452,7 +437,7 @@ class Visual_Application {
 
         $('#count-events').val(scenario.scenario.length - 1);
 
-        setTimeout(function () { callback(); }, 0 | Math.random() * 100);
+        setTimeout(function () { callback(); }, 100);
     }
 
     Delete_Function(event_target) {
@@ -497,6 +482,7 @@ class Visual_Application {
             {
                 data: data,
                 allowManualInsertColumn: false,
+                allowManualInsertRow: false,
             });
     }
 
@@ -532,12 +518,243 @@ class Visual_Application {
 
         var matrix = $(id + matrix_collection.length);
 
-        if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector('1', 'deme_sizes', order));
+        if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector(1, 'deme_sizes', order));
 
         else this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Matrix('', order));
 
         matrix_collection.push(matrix);
         this.Configuration_Matrix(matrix, order);
+    }
+
+    static Build_Visual_Scenario(time_size, nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
+        this.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
+
+        for (let index = 0; index < number_of_events + 1; index++) {
+            if (type == 'General') {
+                if (index == 0) {
+                    var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-' + time_size + '"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-' + (12 - time_size) + '"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme0"></div>';
+                    this.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+                }
+
+                else {
+                    var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-' + time_size + '"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-' + (12 - time_size) + '"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div>';
+                    this.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+                }
+
+                var html_matrix = '<div class="matrix" id="matrix' + index + '"></div>';
+                this.Add_Matrix(html_matrix, $('#scen' + index), order, matrix_collection, '#matrix', false);
+            }
+
+            else if (type == 'Symmetrical') {
+                $('#matrix-collection').attr("style", "overflow-x: none");
+                var html;
+                if (index == 0) {
+                    html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+                    $('#matrix-collection>ul').append(html);
+                }
+
+                else {
+                    html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+                    $('#matrix-collection>ul').append(html);
+                }
+            }
+        }
+
+        if (nssc_scenario) {
+            if (type == 'General') Application.Load_General_Scenario(nssc_scenario, sampling_vector, matrix_collection, deme_vector_collection);
+            else if (type == 'Symmetrical') Application.Load_Symmetrical_Scenario(nssc_scenario, sampling_vector);
+        }
+
+        Visual_Application.Configuration_Vector();
+    }
+
+    Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
+        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
+
+        for (let index = 0; index < number_of_events + 1; index++) {
+            var value = 0;
+            var readonly = 'readonly';
+            var time_of_change = 'First time is constant.';
+            var disabled = 'disabled';
+
+            if (index != 0) {
+                value = '';
+                readonly = '';
+                time_of_change = 'Time of change'
+                disabled = '';
+            }
+
+            if (type == 'General') {
+                var html_time_dime_sizes = '<li id="scen' + index + '"><div class="row pt-4"><div class="col-sm-10"><span>' + time_of_change + '</span><div ' + disabled + ' class="slider-time"></div></div><div class="col-sm-2"><div class="form-group"><input type="text" class="form-control" id="time' + index + '" value="' + value + '"' + readonly + ' /><i class="form-group__bar"></i></div></div></div><div class="row pb-5"><div class="col-sm-12"><span>Deme Sizes:</span><div class="matrix 1xn" id="deme' + index + '"></div></div></div></li>';
+                Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+
+
+                var html_matrix = '<div class="matrix" id="matrix' + index + '"></div>';
+                Visual_Application.Add_Matrix(html_matrix, $('#scen' + index), order, matrix_collection, '#matrix', false);
+            }
+
+            else if (type == 'Symmetrical') {
+                // $('#matrix-collection').attr("style", "overflow-x: none");
+                // var html;
+                // if (index == 0) {
+                // var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>' + time_of_change + '</span><input id="time0" value="0" disabled type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M0" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c0" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+                // $('#matrix-collection>ul').append(html);
+                // }
+
+                // else {
+                var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><span>' + time_of_change + '</span><div ' + disabled + ' class="slider-time"></div><div class="form-group"><input type="text" class="form-control" id="time' + index + '" value="' + value + '"' + readonly + ' /><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>M:</span><div class="slider-m"></div><div class="form-group"><input type="text" class="form-control" id="M' + index + '"/><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>c:</span><div class="slider-c"></div><div class="form-group"><input type="text" class="form-control" id="c' + index + '"/><i class="form-group__bar"></i></div></div></div></li>';
+                $('#matrix-collection>ul').append(html);
+                // }
+            }
+        }
+
+        if (nssc_scenario) {
+            if (type == 'General') Application.Load_General_Scenario(nssc_scenario, sampling_vector, matrix_collection, deme_vector_collection);
+            else if (type == 'Symmetrical') Application.Load_Symmetrical_Scenario(nssc_scenario, sampling_vector);
+        }
+
+        Visual_Application.Configuration_Vector();
+        this.Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, order, number_of_events + 1);
+    }
+
+    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, order, count) {
+        var slider_time = document.getElementsByClassName("slider-time");
+        var slider_mlist = document.getElementsByClassName("slider-m");
+        var slider_clist = document.getElementsByClassName("slider-c");
+
+        for (let index = 0; index < slider_time.length; index++) {
+            const slider_t = slider_time[index];
+
+            noUiSlider.create(slider_t, {
+                start: [0],
+                connect: "lower",
+                step: 0.01,
+                range: { min: 0, max: 100 },
+
+                format: wNumb({
+                    decimals: 2,
+                })
+            });
+
+            slider_t.noUiSlider.on("set", (a, b) => {
+                var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
+
+                this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
+                    this.Update_NSSC(nssc_function);
+                });
+            });
+
+            slider_t.noUiSlider.on("slide", (a, b) => {
+                document.getElementById("time" + index).value = a[b];
+            });
+
+            $('#time' + index).on('change', function () {
+                slider_t.noUiSlider.set($(this).val());
+            });
+
+            if (type == 'Symmetrical') {
+                //M------------------------
+                const slider_m = slider_mlist[index];
+
+                noUiSlider.create(slider_m, {
+                    start: [0],
+                    connect: "lower",
+                    step: 0.01,
+                    range: { min: 0, max: 100 },
+
+                    format: wNumb({
+                        decimals: 2,
+                    })
+                });
+
+                slider_m.noUiSlider.on("set", (a, b) => {
+                    var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
+
+                    this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
+                        this.Update_NSSC(nssc_function);
+                    });
+                });
+
+                slider_m.noUiSlider.on("slide", (a, b) => {
+                    document.getElementById("M" + index).value = a[b];
+                });
+
+                $('#M' + index).on('change', function () {
+                    slider_m.noUiSlider.set($(this).val());
+                });
+                //---------------------
+
+                //C------------------------
+                const slider_c = slider_clist[index];
+
+                noUiSlider.create(slider_c, {
+                    start: [0],
+                    connect: "lower",
+                    step: 0.01,
+                    range: { min: 0, max: 1000 },
+
+                    format: wNumb({
+                        decimals: 2,
+                    })
+                });
+
+                slider_c.noUiSlider.on("set", (a, b) => {
+                    var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
+
+                    this.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, (nssc_function) => {
+                        this.Update_NSSC(nssc_function);
+                    });
+                });
+
+                slider_c.noUiSlider.on("slide", (a, b) => {
+                    document.getElementById("c" + index).value = a[b];
+                });
+
+                $('#c' + index).on('change', function () {
+                    slider_c.noUiSlider.set($(this).val());
+                });
+                //---------------------
+            }
+        }
+    }
+
+    Update_Slider(value, type, slider, input) {
+        if (type == 'mu') {
+            slider.noUiSlider.set(value);
+            input.val((Math.round(value * 100) / 100) + 'e-8');
+        }
+
+        else if (type == 'n-ref') {
+            slider.noUiSlider.set(500);
+            input.val(500);
+        }
+    }
+
+    Reset_Slider(type, slider, input) {
+        if (type == 'mu') {
+            slider.noUiSlider.set(1.25);
+            input.val(1.25e-8);
+        }
+
+        else if (type == 'n-ref') {
+            slider.noUiSlider.set(500);
+            input.val(500)
+        }
+    }
+
+    static Hide_Corner_Jexcel() {
+        $('.jexcel_corner').css('top', -200);
+        $('.jexcel_corner').css('left', -200);
+    }
+
+    Restart_Edit_Container() {
+        this.Restart_NSSC_Options();
+        $('#list-scenario').html('');
+
+        if ($('#switch-selection-pagination').prop('checked')) {
+            $("div.holder").jPages("destroy");
+            $('#switch-selection-pagination').prop('checked', false);
+        }
     }
 }
 

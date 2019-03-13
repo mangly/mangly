@@ -27,22 +27,22 @@ $(document).ready(function () {
     var application = new Visual_Application($('#mycanvas'), new Application());
 
     // var sampling_vector = [];
-    var items_selecteds = [];
-    application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
+    // var items_selecteds = [];
+    application.Initialize_Information_Of_Functions();
 
     $('#open-file').on('click', function () {
 
         var options = {
             filters: [
-                { name: 'PSMC', extensions: ['psmc', 'txt', 'msmc'] }
+                { name: 'File', extensions: ['psmc', 'txt', 'msmc', 'nssc'] }
             ],
 
-            properties: ['multiSelections'],
+            // properties: ['multiSelections'],
         }
 
 
         // Open a File or Files selected for user
-        dialog.showOpenDialog(options, function (arrPath) {
+        dialog.showOpenDialog(main_Window, options, function (arrPath) {
             if (arrPath) {
                 var paths = Application_Utilities.Divide_Paths(arrPath);
                 var psmc_msmc_paths = paths[0];
@@ -78,93 +78,118 @@ $(document).ready(function () {
     });
 
 
-    var name_item_clicked;
-    var legend_color = [];
-
-    $('#switch-selection').on('change', function () {
-        $('.custom-control-input').prop('checked', false);
-        legend_color = [];
-        items_selecteds = [];
-
-        $('#reset-all-scales').trigger('click');
-    });
+    var selected_function;
+    var legend_color;
 
     $('#list-graphics').on('click', function () {
         //Delete function
         if ($(event.target).is('.zmdi-delete')) {
             var event_target = $(event.target);
-            
-            dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Accept', 'Cancel'] }, (response) => {
-                if (response == 0) application.Delete_Function(event_target);
+
+            dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Cancel', 'Accept'] }, (response) => {
+                if (response == 1) application.Delete_Function(event_target);
             });
         }
 
         //Selections
         if ($(event.target).is('.custom-control-input')) {
+            // Disable multiple selection in checkbox control
+            $('.custom-control-input').not($(event.target)).prop('checked', false);
+            //------------
 
-            name_item_clicked = ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text();
+            selected_function = application.logic_application.Get_Function(($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
+            legend_color = $(event.target).parents('.custom-control').children('.custom-control--char__helper');
 
-            if (!$('#switch-selection').prop('checked')) {
-                $('.custom-control-input').each(function () {
-                    if (($(this).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text() != ($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()) {
-                        $(this).prop('checked', false);
-                    }
-                });
+            if ($(event.target).prop('checked')) {
+                $('#reset-scales').removeAttr('disabled');
+                $('#reset-all-scales').removeAttr('disabled');
+                $('#change-color').removeAttr('disabled');
 
-                if ($(event.target).prop('checked')) {
-                    $('#reset-scales').removeAttr('disabled');
-                    $('#reset-all-scales').removeAttr('disabled');
-                    $('#change-color').removeAttr('disabled');
+                if (selected_function.model == 'psmc') {
                     $('#option-s *').removeAttr('disabled');
                     $('#option-mu *').removeAttr('disabled');
-                    legend_color = [];
-                    items_selecteds = [];
-                    items_selecteds.push(name_item_clicked);
-                    legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+                    // slider_s.noUiSlider.set(graphic.S);
+                    // slider_mu.noUiSlider.set(selected_function.Mu);
+                    application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
+                    $('#input-slider-value-s').val(selected_function.S)
                 }
 
-                else {
-                    $('#reset-scales').attr('disabled', 'disabled');
-                    $('#reset-all-scales').attr('disabled', 'disabled');
-                    $('#change-color').attr('disabled', 'disabled');
+                else if (selected_function.model == 'msmc') {
+                    // slider_s.noUiSlider.set(100);
+                    application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
+                    $('#option-mu *').removeAttr('disabled');
                     $('#option-s *').attr('disabled', 'disabled');
-                    $('#option-mu *').attr('disabled', 'disabled');
-                    slider_s.noUiSlider.set(100);
-                    slider_mu.noUiSlider.set(1.25);
-
-                    legend_color = [];
-                    items_selecteds = [];
                 }
+
+                application.Visualize_Information_Of_Functions(selected_function, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
+
+
+                // $('#option-s *').removeAttr('disabled');
+                // $('#option-mu *').removeAttr('disabled');
+                // legend_color = [];
+                // items_selecteds = [];
+                // items_selecteds.push(name_item_clicked);
+                // legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
             }
 
             else {
-                if ($(event.target).prop('checked')) {
-                    if (!items_selecteds.includes(name_item_clicked)) {
-                        $('#reset-scales').removeAttr('disabled');
-                        $('#reset-all-scales').removeAttr('disabled');
-                        $('#change-color').removeAttr('disabled');
-                        $('#option-s *').removeAttr('disabled');
-                        $('#option-mu *').removeAttr('disabled');
-                        items_selecteds.push(name_item_clicked);
-                        legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
-                    }
-                }
-                else {
-                    var index = items_selecteds.indexOf(name_item_clicked);
-                    items_selecteds.splice(index, 1)
-                    legend_color.splice(index, 1)
+                $('#reset-scales').attr('disabled', 'disabled');
+                $('#reset-all-scales').attr('disabled', 'disabled');
+                $('#change-color').attr('disabled', 'disabled');
+                $('#option-s *').attr('disabled', 'disabled');
+                $('#option-mu *').attr('disabled', 'disabled');
+                selected_function = null;
+                $('#input-slider-value-s').val(100);
+                // slider_mu.noUiSlider.set(1.25);
+                application.Update_Slider(1.25, 'mu', slider_mu, $("#input-slider-value-mu"));
 
-                    if (items_selecteds.length == 0) {
-                        $('#reset-scales').attr('disabled', 'disabled');
-                        $('#reset-all-scales').attr('disabled', 'disabled');
-                        $('#change-color').attr('disabled', 'disabled');
-                        $('#option-s *').attr('disabled', 'disabled');
-                        $('#option-mu *').attr('disabled', 'disabled');
-                        slider_s.noUiSlider.set(100);
-                        slider_mu.noUiSlider.set(1.25);
-                    }
-                }
+                application.Initialize_Information_Of_Functions();
+                // legend_color = [];
+                // items_selecteds = [];
             }
+
+            $('#back').trigger('click');
+
+            // if ($('#container-edit-nssc').is(':visible')) { 
+            //     alert('el div ahora esta mostrado'); 
+            // }
+            // else { alert('el div esta oculto'); }
+
+
+
+
+            // $('#container-edit-nssc').hide();
+            // $('#container-create-nssc').show();
+            // }
+
+            // else {
+            //     if ($(event.target).prop('checked')) {
+            //         if (!items_selecteds.includes(name_item_clicked)) {
+            //             $('#reset-scales').removeAttr('disabled');
+            //             $('#reset-all-scales').removeAttr('disabled');
+            //             $('#change-color').removeAttr('disabled');
+            //             $('#option-s *').removeAttr('disabled');
+            //             $('#option-mu *').removeAttr('disabled');
+            //             items_selecteds.push(name_item_clicked);
+            //             legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
+            //         }
+            //     }
+            //     else {
+            //         var index = items_selecteds.indexOf(name_item_clicked);
+            //         items_selecteds.splice(index, 1)
+            //         legend_color.splice(index, 1)
+
+            //         if (items_selecteds.length == 0) {
+            //             $('#reset-scales').attr('disabled', 'disabled');
+            //             $('#reset-all-scales').attr('disabled', 'disabled');
+            //             $('#change-color').attr('disabled', 'disabled');
+            //             $('#option-s *').attr('disabled', 'disabled');
+            //             $('#option-mu *').attr('disabled', 'disabled');
+            //             slider_s.noUiSlider.set(100);
+            //             slider_mu.noUiSlider.set(1.25);
+            //         }
+            //     }
+            // }
 
             // var graphic = application.logic_application.Contain(name_item_clicked);
 
@@ -185,57 +210,19 @@ $(document).ready(function () {
             // if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
             // $('#option-s *').removeAttr('disabled');
             // $('#option-mu *').removeAttr('disabled');
-
-            if (items_selecteds.length == 1) {
-                // if (items_selecteds.length == 0) $('#option-mu *').attr('disabled', 'disabled');
-                var graphic = application.logic_application.Get_Function(name_item_clicked);
-
-                if (graphic.model == 'psmc') {
-                    $('#option-s *').removeAttr('disabled');
-                    $('#option-mu *').removeAttr('disabled');
-                    slider_s.noUiSlider.set(graphic.S);
-                    slider_mu.noUiSlider.set(graphic.Mu);
-                }
-
-                else {
-                    slider_s.noUiSlider.set(100);
-                    slider_mu.noUiSlider.set(graphic.Mu);
-                    $('#option-mu *').removeAttr('disabled');
-                    $('#option-s *').attr('disabled', 'disabled');
-                }
-            }
-
-            else {
-                for (const element of items_selecteds) {
-                    var graphic = application.logic_application.Get_Function(element);
-
-                    if (graphic.model == 'psmc') {
-                        $('#option-s *').removeAttr('disabled');
-                        $('#option-mu *').removeAttr('disabled');
-                        slider_s.noUiSlider.set(graphic.S);
-                        slider_mu.noUiSlider.set(graphic.Mu);
-                    }
-
-                    else {
-                        slider_s.noUiSlider.set(100);
-                        slider_mu.noUiSlider.set(graphic.Mu);
-                        $('#option-s *').attr('disabled', 'disabled');
-                    }
-
-                }
-            }
-
-            application.Visualize_Information_Of_Functions(items_selecteds, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
         }
-    })
+    });
+
+    $(document).on('change', 'td', function () {
+        var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
+
+        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, function (nssc_function) {
+            application.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+        });
+    });
 
     $(".colorpicker-element").on("change", function () {
-        var color = $(this).val();
-
-        for (let index = 0; index < items_selecteds.length; index++) {
-            application.Update_Colors(items_selecteds[index], color, legend_color[index]);
-        }
-
+        application.Update_Colors(selected_function, $(this).val(), legend_color);
     });
 
     // $('#edit').on('click', function () {
@@ -276,55 +263,26 @@ $(document).ready(function () {
         start: [1.25],
         connect: "lower",
         range: { min: 1, max: 3 },
-
-        format: wNumb({
-            decimals: 10,
-
-            encoder: function (a) {
-                return a * 1e-8;
-            }
-        })
-    })
-
-    if ($('#option-mu *').attr('disabled') == 'disabled') {
-        slider_mu.noUiSlider.on("update", function (a, b) {
-            $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
-        });
-    }
-
-    slider_mu.noUiSlider.on('slide', function (a, b) {
-        for (const element of items_selecteds) {
-            application.Update_Scale_PSMC_MSMC(element, a[b], $('#input-slider-value-s').val());
-        }
-
-        $('#input-slider-value-mu').val(Application_Utilities.Convert_Decimal_Scientific_Notation(a[b]));
-    })
-
-    var slider_s = document.getElementById("slider-s");
-
-    noUiSlider.create(slider_s, {
-        start: [100],
-        connect: "lower",
-        range: { min: 1, max: 1000 },
-
-        format: wNumb({
-            decimals: 0,
-        })
-    })
-
-    if ($('#options #option-s *').attr('disabled') == 'disabled') {
-        slider_s.noUiSlider.on("update", function (a, b) {
-            document.getElementById("input-slider-value-s").value = a[b];
-        });
-    }
-
-    slider_s.noUiSlider.on('slide', function (a, b) {
-        for (const element of items_selecteds) {
-            application.Update_Scale_PSMC_MSMC(element, $('#input-slider-value-mu').val(), a[b]);
-        }
     });
 
-    //--------------
+    slider_mu.noUiSlider.on("slide", function (a, b) {
+        var mu = (Math.round(a[b] * 100) / 100) + 'e-8';
+        var real_mu = a[b] * 1e-8;
+        var s = $('#input-slider-value-s').val();
+        $('#input-slider-value-mu').val(mu);
+        application.Update_Scale_PSMC_MSMC(selected_function, real_mu, s);
+    });
+
+    $("#input-slider-value-mu").on('change', function () {
+        document.getElementById("slider-mu").noUiSlider.set($(this).val() / 1e-8);
+        application.Update_Scale_PSMC_MSMC(selected_function, $(this).val(), $("#input-slider-value-s").val());
+    });
+
+    $('#input-slider-value-s').on('change', function () {
+        application.Update_Scale_PSMC_MSMC(selected_function, $("#input-slider-value-mu").val(), $(this).val());
+    });
+
+    //Start N_ref--------------
     var slider_nref = document.getElementById("slider-nref");
 
     noUiSlider.create(slider_nref, {
@@ -337,30 +295,26 @@ $(document).ready(function () {
         })
     })
 
-    // if ($('#options #option-nref *').attr('disabled') == 'disabled') {
-    slider_nref.noUiSlider.on("update", function (a, b) {
-        document.getElementById("input-slider-value-nref").value = a[b];
+    $("#input-slider-value-nref").on('change', function () {
+        document.getElementById("slider-nref").noUiSlider.set($(this).val());
     });
-    // }
 
     slider_nref.noUiSlider.on('slide', function (a, b) {
-        for (const element of items_selecteds) {
-            application.Update_Scale_NSSC(element, a[b]);
-        }
+        document.getElementById("input-slider-value-nref").value = a[b];
+        application.Update_Scale_NSSC(selected_function, a[b]);
     });
+    //finish N_ref-------------------
 
     $('#reset-scales').on('click', function () {
-        application.Reset_Scales(application.logic_application.Get_Function(name_item_clicked));
-        slider_s.noUiSlider.set(100);
-        slider_mu.noUiSlider.set(1.25);
-        slider_nref.noUiSlider.set(500);
+        application.Reset_Scales(application.logic_application.Get_Function(selected_function.name));
+        $('#input-slider-value-s').val(100);
+        application.Reset_Slider('mu', slider_mu, $("#input-slider-value-mu"));
     });
 
     $('#reset-all-scales').on('click', function () {
         application.Reset_All_Scales();
-        slider_s.noUiSlider.set(100);
-        slider_mu.noUiSlider.set(1.25);
-        slider_nref.noUiSlider.set(500);
+        $('#input-slider-value-s').val(100);
+        application.Reset_Slider('mu', slider_mu, $("#input-slider-value-mu"));
     });
 
     // $('#order-n').on('keyup', function () {
@@ -392,20 +346,27 @@ $(document).ready(function () {
 
     ipc.on('nssc-json-result', function (event, scenario) {
         application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
-            if (nssc_function) application.Update_NSSC(nssc_function);
-            else application.Visualize_NSSC();
+            // if (nssc_function) application.Update_NSSC(nssc_function);
+            application.Visualize_NSSC();
         });
     });
+
+
+    var matrix_collection = [];
+    var deme_vector_collection = [];
+    var sampling_vector = $('#sampling-vector');
+    var order;
+    var number_of_events;
 
     $('#load-nssc-state').on('click', function () {
         if ($('#model').html() != 'The Non-Stationary Structured Coalescent') {
             var options = {
                 filters: [
-                    { name: 'SNSSC', extensions: ['snssc'] }
+                    { name: 'File', extensions: ['snssc'] }
                 ],
             }
 
-            dialog.showOpenDialog(options, function (arrPath) {
+            dialog.showOpenDialog(main_Window, options, function (arrPath) {
                 if (arrPath) {
                     Application.Load_File(arrPath[0], function (scenario) {
                         nssc_scenario = scenario;
@@ -422,35 +383,64 @@ $(document).ready(function () {
         }
 
         else {
-            var nssc_model = application.logic_application.Get_Function(name_item_clicked);
-            nssc_scenario = nssc_model.scenario;
-
-            application.Load_Principal_Window_Data(nssc_model.name, nssc_scenario, function () {
-                $('#open-scenario-editor').trigger('click');
+            $('#container-create-nssc').fadeOut(50, function () {
+                $('#container-edit-nssc').fadeIn(500);
             });
-            // $('#nssc-name').val(name_item_clicked)
-            // if(nssc_model.type == 'General') var order = nssc_scenario.scenario[0].migMatrix.length;
-            // $('#order-n').val(order);
-            // $('#count-events').val(nssc_scenario.scenario.length - 1);
-            // $('#open-scenario-editor').trigger('click');
+
+            nssc_scenario = selected_function.scenario;
+
+            application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
+
+                var type = $('#type-nssc-model').val();
+                number_of_events = parseInt($('#count-events').val());
+                order = parseInt($('#order-n').val());
+
+                application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
+            });
         }
     });
 
+    $('#back').on('click', function () {
+        $('#container-edit-nssc').fadeOut(50, function () {
+            $('#container-create-nssc').fadeIn(500);
+            application.Restart_Edit_Container();
+            nssc_scenario = null;
+            matrix_collection = [];
+            deme_vector_collection = [];
+            sampling_vector = $('#sampling-vector');
+        });
+    });
+
+    $('#container-edit-nssc').on('scroll', function () {
+        Visual_Application.Hide_Corner_Jexcel();
+    });
+
+    $('#switch-selection-pagination').on('change', function () {
+        /* initiate plugin */
+        if ($(this).prop('checked')) {
+            $("div.holder").jPages({
+                containerID: "list-scenario",
+                perPage: 1
+            });
+        }
+
+        else $("div.holder").jPages("destroy");
+    });
+
     $('#save-nssc').on('click', function () {
-        var nssc_model = application.logic_application.Get_NSSC_Function(name_item_clicked)
-        var nssc_save = JSON.stringify(nssc_model);
+        // var nssc_model = application.logic_application.Get_NSSC_Function(selected_function.name)
+        var nssc_save = JSON.stringify(selected_function);
 
         var options = {
             title: 'Save...',
-            defaultPath: name_item_clicked,
+            defaultPath: selected_function.name,
 
             filters: [
-                { name: 'NSSC', extensions: ['nssc'] }
+                { name: 'File', extensions: ['nssc'] }
             ],
         }
 
-        // Application_Utilities.Save_File(nssc_save, options);
-        dialog.showSaveDialog(options, function (filename) {
+        dialog.showSaveDialog(main_Window, options, function (filename) {
             Application.Save_File(filename, nssc_save);
         });
     });
@@ -478,7 +468,6 @@ $(document).ready(function () {
 
         application.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
             $('#distance-result').val('The distance is: ' + result)
-            console.log(result);
         });
     });
 });

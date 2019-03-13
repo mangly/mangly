@@ -14,8 +14,8 @@ class Application_Utilities {
 
     static Generate_Inverse_Data_To_Chart(data) {
         var result = {
-            x:[],
-            y:[]
+            x: [],
+            y: []
         };
 
         for (let index = 0; index < data.length; index++) {
@@ -24,28 +24,6 @@ class Application_Utilities {
         }
 
         return result;
-    }
-
-    static Convert_Decimal_Scientific_Notation(decimal_number) {
-        var temp_number = 0;
-        var result = '';
-
-        for (let index = 2; index < decimal_number.length; index++) {
-            const element = decimal_number[index];
-
-            if (parseInt(element) != 0) {
-                temp_number = decimal_number.substring(index);
-                break;
-            }
-        }
-
-        for (let index = 0; index < temp_number.length; index++) {
-            if (index == 1) result += '.' + temp_number[index];
-            else result += temp_number[index];
-        }
-
-
-        return parseFloat(result + 'e-' + (decimal_number.length - result.length).toString());
     }
 
     static Remove_Character(str, char_pos) {
@@ -93,6 +71,19 @@ class Application_Utilities {
         }
 
         else return false;
+    }
+
+    static Is_Number(evt, element) {
+
+        var charCode = (evt.which) ? evt.which : event.keyCode
+
+        if (
+            (charCode != 45 || $(element).val().indexOf('-') != -1) &&      // “-” CHECK MINUS, AND ONLY ONE.
+            (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
+            (charCode < 48 || charCode > 57))
+            return false;
+
+        return true;
     }
 }
 
