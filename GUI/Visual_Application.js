@@ -636,11 +636,15 @@ class Visual_Application {
                 })
             });
 
+            slider_t.noUiSlider.set($('#time'+index).val());
+
             slider_t.noUiSlider.on("set", (a, b) => {
                 var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
                 this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
-                    this.Update_NSSC(nssc_function);
+                    // this.Update_NSSC(nssc_function);
+                    this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+
                 });
             });
 
@@ -667,11 +671,14 @@ class Visual_Application {
                     })
                 });
 
+                slider_m.noUiSlider.set($('#M'+index).val());
+
                 slider_m.noUiSlider.on("set", (a, b) => {
                     var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
                     this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
-                        this.Update_NSSC(nssc_function);
+                        // this.Update_NSSC(nssc_function);
+                        this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
                     });
                 });
 
@@ -698,11 +705,14 @@ class Visual_Application {
                     })
                 });
 
+                slider_c.noUiSlider.set($('#c'+index).val());
+
                 slider_c.noUiSlider.on("set", (a, b) => {
                     var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
 
                     this.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, (nssc_function) => {
-                        this.Update_NSSC(nssc_function);
+                        // this.Update_NSSC(nssc_function);
+                        this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
                     });
                 });
 
@@ -725,8 +735,8 @@ class Visual_Application {
         }
 
         else if (type == 'n-ref') {
-            slider.noUiSlider.set(500);
-            input.val(500);
+            slider.noUiSlider.set(value);
+            input.val(value);
         }
     }
 
