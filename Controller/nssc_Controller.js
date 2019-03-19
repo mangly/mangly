@@ -81,54 +81,12 @@ $(document).ready(function () {
   });
 
   $('#add-deme').on('click', function () {
-
-
-
-    sampling_vector.jexcel('insertColumn', 1);
-    for (let index = 0; index < deme_vector_collection.length; index++) {
-      const deme = deme_vector_collection[index];
-
-      deme.jexcel('insertColumn', 1);
-    }
-
-    for (let index = 0; index < matrix_collection.length; index++) {
-      const matrix = matrix_collection[index];
-      matrix.jexcel('insertColumn');
-      matrix.jexcel('insertRow');
-
-      for (let index = 0; index < order + 1; index++) {
-        matrix.jexcel('setHeader', index, (index + 1).toString());
-      }
-    }
-
-    $('.1xn td.jexcel_label').text('Values:');
-
+    Visual_Application.Add_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection);
     order++;
   })
 
   $('#remove-deme').on('click', function () {
-    sampling_vector.jexcel('deleteColumn', order - 1);
-    for (let index = 0; index < deme_vector_collection.length; index++) {
-      const deme = deme_vector_collection[index];
-      deme.jexcel('deleteColumn', order - 1);
-    }
-    // for (const deme of deme_vector_collection) {
-    //   deme.jexcel('insertColumn');
-    // }
-
-    for (let index = 0; index < matrix_collection.length; index++) {
-      const matrix = matrix_collection[index];
-
-      matrix.jexcel('deleteColumn', order - 1);
-      matrix.jexcel('deleteRow');
-
-      for (let index = 0; index < order + 1; index++) {
-        matrix.jexcel('setHeader', index, (index + 1).toString());
-      }
-    }
-
-    $('.1xn td.jexcel_label').text('Values:');
-
+    Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection);
     order--;
   })
 });

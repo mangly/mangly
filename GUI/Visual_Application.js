@@ -569,6 +569,50 @@ class Visual_Application {
         Visual_Application.Configuration_Vector();
     }
 
+    static Add_Deme(count, order, deme_vector_collection, sampling_vector, matrix_collection) {
+        sampling_vector.jexcel('insertColumn', count, null, order);
+        for (let index = 0; index < deme_vector_collection.length; index++) {
+            const deme = deme_vector_collection[index];
+
+            deme.jexcel('insertColumn', count, null, order);
+        }
+
+        for (let index = 0; index < matrix_collection.length; index++) {
+            const matrix = matrix_collection[index];
+            matrix.jexcel('insertColumn', count, null, order);
+            matrix.jexcel('insertRow');
+
+            for (let index = 0; index < order + 1; index++) {
+                matrix.jexcel('setHeader', index, (index + 1).toString());
+            }
+        }
+
+        $('.1xn td.jexcel_label').text('Values:');
+
+        order++;
+    }
+
+    static Delete_Deme(count, order, deme_vector_collection, sampling_vector, matrix_collection) {
+        sampling_vector.jexcel('deleteColumn', order - 1, count);
+        for (let index = 0; index < deme_vector_collection.length; index++) {
+            const deme = deme_vector_collection[index];
+            deme.jexcel('deleteColumn', order - 1, count);
+        }
+
+        for (let index = 0; index < matrix_collection.length; index++) {
+            const matrix = matrix_collection[index];
+
+            matrix.jexcel('deleteColumn', order - 1, count);
+            matrix.jexcel('deleteRow', order - 1, count);
+
+            for (let index = 0; index < order + 1; index++) {
+                matrix.jexcel('setHeader', index, (index + 1).toString());
+            }
+        }
+
+        $('.1xn td.jexcel_label').text('Values:');
+    }
+
     Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
         Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
 
@@ -637,7 +681,7 @@ class Visual_Application {
                 })
             });
 
-            slider_t.noUiSlider.set($('#time'+index).val());
+            slider_t.noUiSlider.set($('#time' + index).val());
 
             slider_t.noUiSlider.on("set", (a, b) => {
                 var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
@@ -672,7 +716,7 @@ class Visual_Application {
                     })
                 });
 
-                slider_m.noUiSlider.set($('#M'+index).val());
+                slider_m.noUiSlider.set($('#M' + index).val());
 
                 slider_m.noUiSlider.on("set", (a, b) => {
                     var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
@@ -706,7 +750,7 @@ class Visual_Application {
                     })
                 });
 
-                slider_c.noUiSlider.set($('#c'+index).val());
+                slider_c.noUiSlider.set($('#c' + index).val());
 
                 slider_c.noUiSlider.on("set", (a, b) => {
                     var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
