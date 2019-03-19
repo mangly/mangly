@@ -580,32 +580,30 @@ class Visual_Application {
         for (let index = 0; index < matrix_collection.length; index++) {
             const matrix = matrix_collection[index];
             matrix.jexcel('insertColumn', count, null, order);
-            matrix.jexcel('insertRow');
+            matrix.jexcel('insertRow', count, null, order);
 
-            for (let index = 0; index < order + 1; index++) {
+            for (let index = 0; index < order + count; index++) {
                 matrix.jexcel('setHeader', index, (index + 1).toString());
             }
         }
 
         $('.1xn td.jexcel_label').text('Values:');
-
-        order++;
     }
 
     static Delete_Deme(count, order, deme_vector_collection, sampling_vector, matrix_collection) {
-        sampling_vector.jexcel('deleteColumn', order - 1, count);
+        sampling_vector.jexcel('deleteColumn', order, count);
         for (let index = 0; index < deme_vector_collection.length; index++) {
             const deme = deme_vector_collection[index];
-            deme.jexcel('deleteColumn', order - 1, count);
+            deme.jexcel('deleteColumn', order, count);
         }
 
         for (let index = 0; index < matrix_collection.length; index++) {
             const matrix = matrix_collection[index];
 
-            matrix.jexcel('deleteColumn', order - 1, count);
-            matrix.jexcel('deleteRow', order - 1, count);
+            matrix.jexcel('deleteColumn', order, count);
+            matrix.jexcel('deleteRow', order, count);
 
-            for (let index = 0; index < order + 1; index++) {
+            for (let index = 0; index < order + count; index++) {
                 matrix.jexcel('setHeader', index, (index + 1).toString());
             }
         }

@@ -104,7 +104,7 @@ $(document).ready(function () {
                 $('#reset-scales').removeAttr('disabled');
                 $('#reset-all-scales').removeAttr('disabled');
                 $('#change-color').removeAttr('disabled');
-                
+
                 var color = application.Get_Graphic(selected_function.name).backgroundColor;
                 $('#change-color').val(color);
                 $('.color-picker__preview').css('background-color', color);
@@ -126,7 +126,7 @@ $(document).ready(function () {
                     $('#option-s *').attr('disabled', 'disabled');
                 }
 
-                else{
+                else {
                     application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $("#input-slider-value-nref"));
                 }
 
@@ -407,6 +407,21 @@ $(document).ready(function () {
 
                 application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
             });
+        }
+    });
+
+    $('#demes-sv').val(order);
+
+    $('#demes-sv').on('change', function () {
+        var diference = $(this).val() - order;
+
+        if (diference > 0) {
+            Visual_Application.Add_Deme(diference, order, deme_vector_collection, sampling_vector, matrix_collection);
+            order += diference;
+        }
+        else if (diference != 0) {
+            Visual_Application.Delete_Deme(Math.abs(diference), order, deme_vector_collection, sampling_vector, matrix_collection);
+            order -= diference;
         }
     });
 

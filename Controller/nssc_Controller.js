@@ -86,7 +86,7 @@ $(document).ready(function () {
   })
 
   $('#remove-deme').on('click', function () {
-    Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection);
     order--;
+    Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection);
   })
 });
