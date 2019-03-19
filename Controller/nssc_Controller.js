@@ -81,15 +81,15 @@ $(document).ready(function () {
   });
 
   $('#add-deme').on('click', function () {
-    sampling_vector.jexcel('insertColumn');
+
+
+
+    sampling_vector.jexcel('insertColumn', 1);
     for (let index = 0; index < deme_vector_collection.length; index++) {
       const deme = deme_vector_collection[index];
 
-      deme.jexcel('insertColumn');
+      deme.jexcel('insertColumn', 1);
     }
-    // for (const deme of deme_vector_collection) {
-    //   deme.jexcel('insertColumn');
-    // }
 
     for (let index = 0; index < matrix_collection.length; index++) {
       const matrix = matrix_collection[index];
@@ -101,20 +101,16 @@ $(document).ready(function () {
       }
     }
 
-    // for (const matrix of matrix_collection) {
-
-    // }
-
     $('.1xn td.jexcel_label').text('Values:');
 
     order++;
   })
 
   $('#remove-deme').on('click', function () {
-    sampling_vector.jexcel('deleteColumn');
+    sampling_vector.jexcel('deleteColumn', order - 1);
     for (let index = 0; index < deme_vector_collection.length; index++) {
       const deme = deme_vector_collection[index];
-      deme.jexcel('deleteColumn');
+      deme.jexcel('deleteColumn', order - 1);
     }
     // for (const deme of deme_vector_collection) {
     //   deme.jexcel('insertColumn');
@@ -123,7 +119,7 @@ $(document).ready(function () {
     for (let index = 0; index < matrix_collection.length; index++) {
       const matrix = matrix_collection[index];
 
-      matrix.jexcel('deleteColumn', 1);
+      matrix.jexcel('deleteColumn', order - 1);
       matrix.jexcel('deleteRow');
 
       for (let index = 0; index < order + 1; index++) {
