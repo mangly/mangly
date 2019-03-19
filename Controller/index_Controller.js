@@ -356,7 +356,6 @@ $(document).ready(function () {
 
     ipc.on('nssc-json-result', function (event, scenario) {
         application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
-            // if (nssc_function) application.Update_NSSC(nssc_function);
             application.Visualize_NSSC();
         });
     });
@@ -406,11 +405,10 @@ $(document).ready(function () {
                 order = parseInt($('#order-n').val());
 
                 application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
+                $('#demes-sv').val(order);
             });
         }
     });
-
-    $('#demes-sv').val(order);
 
     $('#demes-sv').on('change', function () {
         var diference = $(this).val() - order;
@@ -420,9 +418,17 @@ $(document).ready(function () {
             order += diference;
         }
         else if (diference != 0) {
-            Visual_Application.Delete_Deme(Math.abs(diference), order, deme_vector_collection, sampling_vector, matrix_collection);
+            diference = Math.abs(diference);
             order -= diference;
+            Visual_Application.Delete_Deme(diference, order, deme_vector_collection, sampling_vector, matrix_collection);
         }
+
+        var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
+
+        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, function (nssc_function) {
+            application.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+        });
+
     });
 
     $('#back').on('click', function () {
