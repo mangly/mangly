@@ -80,7 +80,53 @@ $(document).ready(function () {
     });
   });
 
-  $('#increment-order').on('click', function () {
+  $('#add-deme').on('click', function () {
+    for (let index = 0; index < deme_vector_collection.length; index++) {
+      const deme = deme_vector_collection[index];
 
+      deme.jexcel('insertColumn');
+      sampling_vector.jexcel('insertColumn');
+    }
+    // for (const deme of deme_vector_collection) {
+    //   deme.jexcel('insertColumn');
+    // }
+
+    for (const matrix of matrix_collection) {
+      matrix.jexcel('insertColumn');
+      matrix.jexcel('insertRow');
+      
+      for (let index = 0; index < order + 1; index++) {
+        matrix.jexcel('setHeader', index, (index + 1).toString());
+      }
+    }
+
+    $('.1xn td.jexcel_label').text('Values:');
+
+    order++;
+  })
+
+  $('#remove-deme').on('click', function () {
+    for (let index = 0; index < deme_vector_collection.length; index++) {
+      const deme = deme_vector_collection[index];
+
+      deme.jexcel('deleteColumn');
+      sampling_vector.jexcel('deleteColumn', sampling_vector.length);
+    }
+    // for (const deme of deme_vector_collection) {
+    //   deme.jexcel('insertColumn');
+    // }
+
+    for (const matrix of matrix_collection) {
+      matrix.jexcel('deleteColumn', sampling_vector.length);
+      matrix.jexcel('deleteRow', sampling_vector.length);
+      
+      for (let index = 0; index < order + 1; index++) {
+        matrix.jexcel('setHeader', index, (index + 1).toString());
+      }
+    }
+
+    $('.1xn td.jexcel_label').text('Values:');
+
+    order--;
   })
 });

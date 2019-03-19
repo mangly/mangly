@@ -511,6 +511,7 @@ class Visual_Application {
 
     static Add_Show_Time_Deme_Sizes(html, order, matrix_collection, id) {
         this.Add_Matrix(html, $('#list-scenario'), order, matrix_collection, id, true);
+        Visual_Application.Configuration_Vector();
     }
 
     static Add_Matrix(html, html_append, order, matrix_collection, id, vector) {

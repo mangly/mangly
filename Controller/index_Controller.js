@@ -104,6 +104,11 @@ $(document).ready(function () {
                 $('#reset-scales').removeAttr('disabled');
                 $('#reset-all-scales').removeAttr('disabled');
                 $('#change-color').removeAttr('disabled');
+                
+                var color = application.Get_Graphic(selected_function.name).backgroundColor;
+                $('#change-color').val(color);
+                $('.color-picker__preview').css('background-color', color);
+
 
                 if (selected_function.model == 'psmc') {
                     $('#option-s *').removeAttr('disabled');
@@ -225,7 +230,7 @@ $(document).ready(function () {
         });
     });
 
-    $(".colorpicker-element").on("change", function () {
+    $("#change-color").on("change", function () {
         application.Update_Colors(selected_function, $(this).val(), legend_color);
     });
 
