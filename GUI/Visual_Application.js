@@ -594,9 +594,9 @@ class Visual_Application {
         for (let index = 0; index < data_matrix[0].length; index++) {
             last_row.push(0);
         }
-        
+
         for (let index = 0; index < count_demes; index++) {
-            data_matrix.push(last_row);            
+            data_matrix.push(last_row);
         }
 
         matrix.jexcel({
@@ -614,14 +614,16 @@ class Visual_Application {
             this.Fill_Deme_Vector(deme, count_demes, 1);
         }
 
-        for (let index = 0; index < matrix_collection.length; index++) {
-            const matrix = matrix_collection[index];
+        if ($('#type-nssc-model').val() == 'General') {
+            for (let index = 0; index < matrix_collection.length; index++) {
+                const matrix = matrix_collection[index];
 
-            this.Fill_Deme_Matrix(matrix, count_demes, 0);
+                this.Fill_Deme_Matrix(matrix, count_demes, 0);
 
-            this.Configuration_Matrix(matrix, order + count_demes);
+                this.Configuration_Matrix(matrix, order + count_demes);
+            }
         }
-
+        
         this.Configuration_Vector();
     }
 
