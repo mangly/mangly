@@ -487,7 +487,7 @@ class Visual_Application {
     }
 
     static Configuration_Vector() {
-        $('.1xn thead.jexcel_label').remove();
+        $('.1xn thead.jexcel_label').hide();
         $('.1xn td.jexcel_label').text('Values:');
         $('.1xn td.jexcel_label').css("width", "60px");
         // $('.1xn .jexcel_label').hide()
@@ -521,7 +521,7 @@ class Visual_Application {
 
         if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector(1, 'deme_sizes', order));
 
-        else this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Matrix('', order));
+        else this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Matrix(0, order));
 
         matrix_collection.push(matrix);
         this.Configuration_Matrix(matrix, order);
@@ -569,25 +569,60 @@ class Visual_Application {
         Visual_Application.Configuration_Vector();
     }
 
-    static Add_Deme(count, order, deme_vector_collection, sampling_vector, matrix_collection) {
-        sampling_vector.jexcel('insertColumn', count, null, order);
+    static Fill_Deme_Vector(vector, count_demes, value) {
+        var data_vector = vector.jexcel('getData', false);
+
+        for (let index = 0; index < count_demes; index++) {
+            data_vector[0].push(value);
+        }
+
+        vector.jexcel({
+            data: data_vector
+        });
+    }
+
+    static Fill_Deme_Matrix(matrix, count_demes, value) {
+        var data_matrix = matrix.jexcel('getData', false);
+        var last_row = [];
+
+        for (let index1 = 0; index1 < data_matrix.length; index1++) {
+            for (let index2 = 0; index2 < count_demes; index2++) {
+                data_matrix[index1].push(value);
+            }
+        }
+
+        for (let index = 0; index < data_matrix[0].length; index++) {
+            last_row.push(0);
+        }
+        
+        for (let index = 0; index < count_demes; index++) {
+            data_matrix.push(last_row);            
+        }
+
+        matrix.jexcel({
+            data: data_matrix
+        });
+    }
+
+    static Add_Deme(count_demes, order, deme_vector_collection, sampling_vector, matrix_collection) {
+
+        this.Fill_Deme_Vector(sampling_vector, count_demes, 0);
+
         for (let index = 0; index < deme_vector_collection.length; index++) {
             const deme = deme_vector_collection[index];
 
-            deme.jexcel('insertColumn', count, null, order);
+            this.Fill_Deme_Vector(deme, count_demes, 1);
         }
 
         for (let index = 0; index < matrix_collection.length; index++) {
             const matrix = matrix_collection[index];
-            matrix.jexcel('insertColumn', count, null, order);
-            matrix.jexcel('insertRow', count, null, order);
 
-            for (let index = 0; index < order + count; index++) {
-                matrix.jexcel('setHeader', index, (index + 1).toString());
-            }
+            this.Fill_Deme_Matrix(matrix, count_demes, 0);
+
+            this.Configuration_Matrix(matrix, order + count_demes);
         }
 
-        $('.1xn td.jexcel_label').text('Values:');
+        this.Configuration_Vector();
     }
 
     static Delete_Deme(count, order, deme_vector_collection, sampling_vector, matrix_collection) {
@@ -603,12 +638,10 @@ class Visual_Application {
             matrix.jexcel('deleteColumn', order, count);
             matrix.jexcel('deleteRow', order, count);
 
-            for (let index = 0; index < order + count; index++) {
-                matrix.jexcel('setHeader', index, (index + 1).toString());
-            }
+            this.Configuration_Matrix(matrix, order + count);;
         }
 
-        $('.1xn td.jexcel_label').text('Values:');
+        this.Configuration_Vector();
     }
 
     Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
