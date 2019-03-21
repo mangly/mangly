@@ -401,6 +401,10 @@ $(document).ready(function () {
             application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
 
                 var type = $('#type-nssc-model').val();
+
+                if (type == 'Symmetrical') $('#demes-sv').removeAttr('hidden');
+                else $('#demes-sv').attr('hidden', 'hidden');
+
                 number_of_events = parseInt($('#count-events').val());
                 order = parseInt($('#order-n').val());
 
