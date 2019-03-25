@@ -230,6 +230,10 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('keypress', '.edition', function (e) {
+        Application_Utilities.Allow_Only_Number(e)
+    });
+
     $("#change-color").on("change", function () {
         application.Update_Colors(selected_function, $(this).val(), legend_color);
     });
