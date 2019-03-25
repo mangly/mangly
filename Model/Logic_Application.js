@@ -66,7 +66,7 @@ class Application {
         Python_Communicator.get_Model_NSSC(type, scenario, 'Python_Scripts/get_Model_NSSC.py', (results) => {
             var nssc_function = this.Get_Function(name);
             if (nssc_function == null) {
-                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario);
+                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario, this.N_ref);
                 if (!this.Contains(nssc)) this.functions_collection.push(nssc);
             }
             else {
