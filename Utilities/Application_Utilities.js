@@ -80,28 +80,6 @@ class Application_Utilities {
         if (!((charCode >= 48 && charCode <= 57) || charCode == 46)) {
             evt.preventDefault();
         }
-
-
-
-        // if (
-        //     (charCode != 45 || $(element).val().indexOf('-') != -1) &&      // “-” CHECK MINUS, AND ONLY ONE.
-        //     (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
-        //     (charCode < 48 || charCode > 57))
-        //     return false;
-
-        // return true;
-
-        // var allowedCode = [8, 13, 32, 44, 45, 46, 95];
-        // var charCode = (e.charCode) ? e.charCode : ((e.keyCode) ? e.keyCode :
-        //     ((e.which) ? e.which : 0));
-        // if (charCode > 31 && (charCode < 64 || charCode > 90) &&
-        //     (charCode < 97 || charCode > 122) &&
-        //     (charCode < 48 || charCode > 57) &&
-        //     (allowedCode.indexOf(charCode) == -1)) {
-        //     e.preventDefault();
-        //     $('.alert-box.onerror').html('<h3>ALLOW CHARACTERS: a..z A..Z 0..9 - _ . , @</h3>').fadeIn();
-        //     return false;
-        // }
     }
 
     static Is_Int_Type(number) {
@@ -109,6 +87,17 @@ class Application_Utilities {
 
         if (position >= 0) return false;
         return true;
+    }
+
+    static Sum(Array){
+        var sum = 0;
+        for (let index = 0; index < Array.length; index++) {
+            const element = Array[index];
+            
+            sum += element;
+        }
+
+        return sum;
     }
 }
 
