@@ -103,6 +103,13 @@ class Application_Utilities {
         //     return false;
         // }
     }
+
+    static Is_Int_Type(number) {
+        var position = number.indexOf('.');
+
+        if (position >= 0) return false;
+        return true;
+    }
 }
 
 module.exports = Application_Utilities

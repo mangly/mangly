@@ -577,7 +577,9 @@ class Visual_Application {
         }
 
         vector.jexcel({
-            data: data_vector
+            data: data_vector,
+            allowManualInsertColumn: false,
+            allowManualInsertRow: false,
         });
     }
 
@@ -600,7 +602,9 @@ class Visual_Application {
         }
 
         matrix.jexcel({
-            data: data_matrix
+            data: data_matrix,
+            allowManualInsertColumn: false,
+            allowManualInsertRow: false,
         });
     }
 
@@ -623,7 +627,7 @@ class Visual_Application {
                 this.Configuration_Matrix(matrix, order + count_demes);
             }
         }
-        
+
         this.Configuration_Vector();
     }
 

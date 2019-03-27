@@ -222,7 +222,27 @@ $(document).ready(function () {
         }
     });
 
+
+    var matrix;
+    var vector_array;
+    $(document).on('click', 'td', function () {
+        matrix = $(this).closest('.matrix');
+        vector_array = matrix.jexcel('getData', false);
+    });
+
     $(document).on('change', 'td', function () {
+        var new_value = $(this).children('input').val();
+
+        if (matrix.prop('id') == 'sampling-vector' && !Application_Utilities.Is_Int_Type(new_value)) {
+            sampling_vector.jexcel({
+                data: vector_array,
+                allowManualInsertColumn: false,
+                allowManualInsertRow: false,
+            });
+
+            Visual_Application.Configuration_Vector();
+        }
+
         var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
 
         application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, function (nssc_function) {
