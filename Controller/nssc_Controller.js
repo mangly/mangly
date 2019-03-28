@@ -55,14 +55,14 @@ $(document).ready(function () {
 
   $('#ok').on('click', function () {
     if (type == 'General') ipc.send('nssc-json-result', Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0)));
-    else if (type == 'Symmetrical') ipc.send('nssc-json-result', Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector.jexcel('getRowData', 0), number_of_events + 1));
+    else if (type == 'Symmetrical') ipc.send('nssc-json-result', Application.Build_Symmetrical_Scenario_NSSC(sampling_vector.jexcel('getRowData', 0), number_of_events + 1));
   });
 
   $('#save-scenario').on('click', function () {
     var json_result;
 
     if (type == 'General') json_result = Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0));
-    else json_result = Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector.jexcel('getRowData', 0), number_of_events + 1)
+    else json_result = Application.Build_Symmetrical_Scenario_NSSC(sampling_vector.jexcel('getRowData', 0), number_of_events + 1)
 
     var json_save = JSON.stringify(json_result);
 

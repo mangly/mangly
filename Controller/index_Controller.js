@@ -243,7 +243,7 @@ $(document).ready(function () {
             Visual_Application.Configuration_Vector();
         }
 
-        var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
+        var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
 
         application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.type, scenario_update, function (nssc_function) {
             application.Update_NSSC(nssc_function, selected_function.N_ref);
@@ -451,13 +451,10 @@ $(document).ready(function () {
             Visual_Application.Delete_Deme(diference, order, deme_vector_collection, sampling_vector, matrix_collection);
         }
 
-        var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
+        var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
 
         application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
             application.Update_NSSC(nssc_function, selected_function.N_ref);
-
-            console.log(selected_function.scenario)
-            nssc_scenario = scenario_update;
         });
 
         
