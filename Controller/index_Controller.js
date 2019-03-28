@@ -127,7 +127,7 @@ $(document).ready(function () {
                 }
 
                 else {
-                    application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $("#input-slider-value-nref"));
+                    application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $('#input-slider-value-nref'));
                 }
 
                 application.Visualize_Information_Of_Functions(selected_function, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
@@ -243,10 +243,10 @@ $(document).ready(function () {
             Visual_Application.Configuration_Vector();
         }
 
-        var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
+        var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
 
-        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, function (nssc_function) {
-            application.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+        application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.type, scenario_update, function (nssc_function) {
+            application.Update_NSSC(nssc_function, selected_function.N_ref);
         });
     });
 
@@ -301,18 +301,18 @@ $(document).ready(function () {
     slider_mu.noUiSlider.on("slide", function (a, b) {
         var mu = (Math.round(a[b] * 100) / 100) + 'e-8';
         var real_mu = a[b] * 1e-8;
-        var s = $('#input-slider-value-s').val();
+        var s = selected_function.S;
         $('#input-slider-value-mu').val(mu);
         application.Update_Scale_PSMC_MSMC(selected_function, real_mu, s);
     });
 
-    $("#input-slider-value-mu").on('change', function () {
+    $('#input-slider-value-mu').on('change', function () {
         document.getElementById("slider-mu").noUiSlider.set($(this).val() / 1e-8);
-        application.Update_Scale_PSMC_MSMC(selected_function, $(this).val(), $("#input-slider-value-s").val());
+        application.Update_Scale_PSMC_MSMC(selected_function, $(this).val(), selected_function.S);
     });
 
     $('#input-slider-value-s').on('change', function () {
-        application.Update_Scale_PSMC_MSMC(selected_function, $("#input-slider-value-mu").val(), $(this).val());
+        application.Update_Scale_PSMC_MSMC(selected_function, $('#input-slider-value-mu').val(), $(this).val());
     });
 
     //Start N_ref--------------
@@ -328,13 +328,13 @@ $(document).ready(function () {
         })
     })
 
-    $("#input-slider-value-nref").on('change', function () {
+    $('#input-slider-value-nref').on('change', function () {
         document.getElementById("slider-nref").noUiSlider.set($(this).val());
-        application.Update_Scale_NSSC(selected_function, $("#input-slider-value-nref").val());
+        application.Update_Scale_NSSC(selected_function, $('#input-slider-value-nref').val());
     });
 
     slider_nref.noUiSlider.on('slide', function (a, b) {
-        $("#input-slider-value-nref").val(a[b]);
+        $('#input-slider-value-nref').val(a[b]);
         application.Update_Scale_NSSC(selected_function, a[b]);
     });
     //finish N_ref-------------------
@@ -342,7 +342,7 @@ $(document).ready(function () {
     $('#reset-scales').on('click', function () {
         application.Reset_Scales(application.logic_application.Get_Function(selected_function.name));
         $('#input-slider-value-s').val(100);
-        application.Reset_Slider('mu', slider_mu, $("#input-slider-value-mu"));
+        application.Reset_Slider('mu', slider_mu, $('#input-slider-value-mu'));
     });
 
     $('#reset-all-scales').on('click', function () {
@@ -374,9 +374,9 @@ $(document).ready(function () {
         ipc.send('open-scenario-editor', values);
     });
 
-    $('#test').on('click', function () {
+    // $('#test').on('click', function () {
 
-    });
+    // });
 
     ipc.on('nssc-json-result', function (event, scenario) {
         application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
@@ -424,7 +424,7 @@ $(document).ready(function () {
 
             application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
 
-                var type = $('#type-nssc-model').val();
+                var type = selected_function.type;
 
                 if (type == 'Symmetrical') $('#demes-sv').removeAttr('hidden');
                 else $('#demes-sv').attr('hidden', 'hidden');
@@ -451,11 +451,16 @@ $(document).ready(function () {
             Visual_Application.Delete_Deme(diference, order, deme_vector_collection, sampling_vector, matrix_collection);
         }
 
-        var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
+        var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
 
-        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, function (nssc_function) {
-            application.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+        application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
+            application.Update_NSSC(nssc_function, selected_function.N_ref);
+
+            console.log(selected_function.scenario)
+            nssc_scenario = scenario_update;
         });
+
+        
 
     });
 

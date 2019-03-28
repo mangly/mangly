@@ -725,7 +725,7 @@ class Visual_Application {
 
                 this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
                     // this.Update_NSSC(nssc_function);
-                    this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+                    this.Update_NSSC(nssc_function, nssc_function.N_ref);
 
                 });
             });
@@ -760,7 +760,7 @@ class Visual_Application {
 
                     this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
                         // this.Update_NSSC(nssc_function);
-                        this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+                        this.Update_NSSC(nssc_function, nssc_function.N_ref);
                     });
                 });
 
@@ -794,7 +794,7 @@ class Visual_Application {
 
                     this.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, (nssc_function) => {
                         // this.Update_NSSC(nssc_function);
-                        this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+                        this.Update_NSSC(nssc_function, nssc_function.N_ref);
                     });
                 });
 
