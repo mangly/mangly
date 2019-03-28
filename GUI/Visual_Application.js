@@ -696,10 +696,10 @@ class Visual_Application {
         }
 
         Visual_Application.Configuration_Vector();
-        this.Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, order, number_of_events + 1);
+        this.Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, number_of_events + 1);
     }
 
-    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, order, count) {
+    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, count) {
         var slider_time = document.getElementsByClassName("slider-time");
         var slider_mlist = document.getElementsByClassName("slider-m");
         var slider_clist = document.getElementsByClassName("slider-c");
