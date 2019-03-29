@@ -608,8 +608,7 @@ class Visual_Application {
         });
     }
 
-    static Add_Deme(count_demes, order, deme_vector_collection, sampling_vector, matrix_collection) {
-
+    static Add_Deme(count_demes, order, deme_vector_collection, sampling_vector, matrix_collection, type) {
         this.Fill_Deme_Vector(sampling_vector, count_demes, 0);
 
         for (let index = 0; index < deme_vector_collection.length; index++) {
@@ -618,7 +617,7 @@ class Visual_Application {
             this.Fill_Deme_Vector(deme, count_demes, 1);
         }
 
-        if ($('#type-nssc-model').val() == 'General') {
+        if (type == 'General') {
             for (let index = 0; index < matrix_collection.length; index++) {
                 const matrix = matrix_collection[index];
 

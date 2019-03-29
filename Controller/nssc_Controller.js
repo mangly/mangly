@@ -81,7 +81,7 @@ $(document).ready(function () {
   });
 
   $('#add-deme').on('click', function () {
-    Visual_Application.Add_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection);
+    Visual_Application.Add_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection, type);
     order++;
   })
 
