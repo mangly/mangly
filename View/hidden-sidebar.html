@@ -341,13 +341,12 @@ main{
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-lg-8"><button id="reset-scales" class="btn btn-light"
-                                                            type="submit" disabled>Reset scales of the selected
-                                                            function</button></div>
-                                                    <div class="col-lg-4"> <button id="reset-all-scales" class="btn btn-light float-right"
-                                                            type="submit" disabled>Reset all scales</button></div>
-                                                </div>
+                                                <div class="row float-right">
+                                                    <button id="reset-scales" class="btn btn-primary mr-3" type="submit"
+                                                        disabled>Reset scales of the selected
+                                                        function</button>
+                                                    <button id="reset-all-scales" class="btn btn-primary mr-4 float-primary"
+                                                        type="submit" disabled>Reset all scales</button></div>
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="nssc" role="tabpanel">
@@ -393,16 +392,11 @@ main{
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-sm-6"><button id="open-scenario-editor" class="btn btn-light"
-                                                            type="submit">Create new scenario</button>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="col-sm-6" style="padding-left:35%"><button id="load-nssc-state"
-                                                                class="btn btn-light" type="submit">Load / Open
-                                                                scenario</button>
-                                                        </div>
-                                                    </div>
+                                                <div class="row float-right">
+                                                    <button id="open-scenario-editor" class="btn btn-primary mr-3" type="submit">Create
+                                                        new scenario</button>
+                                                    <button id="load-nssc-state" class="btn btn-primary mr-4" type="submit">Load
+                                                        / Open scenario</button>
                                                 </div>
                                             </div>
                                             <div id="container-edit-nssc" style="display:none; max-height: 580px; overflow-y: auto">
@@ -479,7 +473,7 @@ main{
                                                     </div>
                                                     <!-- </div> -->
                                                     <!-- </div> -->
-                                                    <button id="back" class="btn btn-light" type="submit">Back</button>
+                                                    <button id="back" class="btn btn-primary" type="submit">Back</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -511,20 +505,27 @@ main{
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- <div class="card p-4">
+                                            <div class="card p-4">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p>Select algorithm:</p>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
                                                     <div class="col-sm-6">
-                                                        <button id="get-distance" class="btn btn-light" type="submit">Get
-                                                            result:</button>
-                                                    </div>
-                                                    <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <input id="distance-result" type="text" readonly class="form-control input-mask">
-                                                            <i class="form-group__bar"></i>
+                                                            <select id="psmc-msmc-model" class="select2"
+                                                                data-minimum-results-for-search="Infinity">
+                                                                <option>Differential Evolution</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div> -->
+                                            </div>
+                                            <div class="row float-right">
+                                                <button class="btn btn-primary mr-3" type="submit">Start Algorithm</button>
+                                                <button class="btn btn-primary mr-4" type="submit">Evaluate Solutions</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -533,13 +534,13 @@ main{
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-12 col-sm-12">
-                    <div class="card" style="height: 100%">
+                    <div id="card-canvas" tabindex="0" class="card" style="height: 100%">
                         <div class="card-header" style="padding-bottom:10.5px">
                             <div class="row">
                                 <div class="col-sm-10">Graph of models</div>
                                 <div class="col-sm-1"><i style="line-height: 22px" id="zoom" class="zmdi zmdi-zoom-in zmdi-hc-3x float-right"></i></div>
                                 <div class="col-sm-1"></span> <button id="reset-zoom" style="height:24px; width: 60px; line-height: 7px"
-                                        class="btn btn-dark btn--icon-text float-right">
+                                        class="btn btn-primary btn--icon-text float-right">
                                         Reset</button></div>
 
                             </div>

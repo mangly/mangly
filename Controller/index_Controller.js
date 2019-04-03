@@ -47,7 +47,7 @@ $(document).ready(function () {
                 var paths = Application_Utilities.Divide_Paths(arrPath);
                 var psmc_msmc_paths = paths[0];
                 var nssc_paths = paths[1];
-                $('#canvas-container').removeClass('disabled');
+                // $('#canvas-container').removeClass('disabled');
 
                 if (psmc_msmc_paths.length != 0) {
                     application.logic_application.Add_File_PSMC_MSMC(psmc_msmc_paths, function () {
@@ -223,6 +223,14 @@ $(document).ready(function () {
     });
 
 
+    $('#card-canvas').on('keydown', function (e) {
+        if (e.ctrlKey) $('#canvas-container').removeClass('disabled');
+    });
+
+    $('#card-canvas').on('keyup', function () {
+        $('#canvas-container').addClass('disabled');
+    });
+
     var matrix;
     var vector_array;
     $(document).on('click', 'td', function () {
@@ -339,7 +347,7 @@ $(document).ready(function () {
     });
 
     slider_nref.noUiSlider.on('set', function (a, b) {
-        if(compute_distance) application.Show_Distance();
+        if (compute_distance) application.Show_Distance();
     });
     //finish N_ref-------------------
 
@@ -459,7 +467,7 @@ $(document).ready(function () {
 
         application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
             application.Update_NSSC(nssc_function, selected_function.N_ref);
-            if(compute_distance) application.Show_Distance();
+            if (compute_distance) application.Show_Distance();
         });
     });
 
