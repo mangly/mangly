@@ -459,10 +459,8 @@ $(document).ready(function () {
 
         application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
             application.Update_NSSC(nssc_function, selected_function.N_ref);
+            if(compute_distance) application.Show_Distance();
         });
-
-
-
     });
 
     $('#back').on('click', function () {

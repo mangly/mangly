@@ -7,6 +7,6 @@ def compute_Distance(vectors, scenario_NSSC, n_ref):
 
     model_NSSC = Pnisland(scenario_NSSC)
 
-    return model_NSSC.compute_distance(vectors['x'], vectors['y'], float(n_ref))
+    return model_NSSC.compute_distance(vectors['x'], vectors['y'], int(n_ref))
 
 print(compute_Distance(sys.argv[1], sys.argv[2], sys.argv[3]))
