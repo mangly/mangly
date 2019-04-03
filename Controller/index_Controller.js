@@ -527,8 +527,8 @@ $(document).ready(function () {
             application.Change_Information_Of_Functions();
         }
         else {
-            if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
-            else application.Initialize_Information_Of_Functions();
+            // if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
+            // else application.Initialize_Information_Of_Functions();
             $('#distance-value-col').fadeOut(50, function () {
                 $('.theta-rho').fadeIn(500);
             });
@@ -542,8 +542,8 @@ $(document).ready(function () {
             application.Change_Information_Of_Functions();
         }
         else {
-            if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
-            else application.Initialize_Information_Of_Functions();
+            // if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
+            // else application.Initialize_Information_Of_Functions();
             $('#distance-value-col').fadeOut(50, function () {
                 $('.theta-rho').fadeIn(500);
             });

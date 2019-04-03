@@ -421,8 +421,8 @@ class Visual_Application {
     }
 
     Change_Information_Of_Functions(){
-        $('#model').text('The distance between curves is:');
-        $('#model-subtitle').text('Distance between PSMC and NSSC models')
+        // $('#model').text('The distance between curves is:');
+        // $('#model-subtitle').text('Distance between PSMC and NSSC models')
         $('.theta-rho').fadeOut(50, function(){
             $('#distance-value-col').fadeIn(500);
         });
