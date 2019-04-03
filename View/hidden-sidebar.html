@@ -145,14 +145,14 @@ main{
                     <div class="quick-stats__item">
                         <div class="quick-stats__info">
                             <h2><span id="model"></span></h2>
-                            <small>Model by which the graph is based</small>
+                            <small id="model-subtitle"></small>
                         </div>
 
                         <div class="quick-stats__chart peity-bar">4,7,6,2,5,3,8,6,6,4,8</div>
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-md-2">
+                <div class="col-sm-6 col-md-2 theta-rho">
                     <div class="quick-stats__item">
                         <div class="quick-stats__info">
                             <h2><span id="theta"></span></h2>
@@ -162,7 +162,7 @@ main{
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-md-2">
+                <div class="col-sm-6 col-md-2 theta-rho">
                     <div class="quick-stats__item">
                         <div class="quick-stats__info">
                             <h2><span id="rho"></span></h2>
@@ -170,6 +170,16 @@ main{
                         </div>
 
                         <div class="quick-stats__chart peity-bar">5,6,3,9,7,5,4,6,5,6,4</div>
+                    </div>
+                </div>
+
+                <div id="distance-value-col" class="col-sm-6 col-md-4" style="display:none">
+                    <div class="quick-stats__item">
+                        <div class="quick-stats__info">
+                            <h2><span id="distance-value"></span></h2>
+                            <small>Value of distance</small>
+                        </div>
+                        <div class="quick-stats__chart peity-bar">3,5,8,2,4,9,4,3,3,6,4</div>
                     </div>
                 </div>
             </div>
@@ -195,7 +205,7 @@ main{
                                             <a class="nav-link" data-toggle="tab" href="#nssc" role="tab">Nssc</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#general" role="tab">Calculus</a>
+                                            <a class="nav-link" data-toggle="tab" href="#general" role="tab">Metaheuristics</a>
                                         </li>
                                     </ul>
 
@@ -401,19 +411,20 @@ main{
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div style="overflow-x: scroll">
-                                                                <div class="row">
-                                                                    <div class="col-sm-10">
-                                                                        <span>Sampling Vector:</span>
-                                                                    </div>
-                                                                    <div class="col-sm-2">
-                                                                        <div class="form-group">
-                                                                            <input type="text" class="form-control"
-                                                                                id="demes-sv"/>
-                                                                            <i class="form-group__bar"></i>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-10">
+                                                                            <span>Sampling Vector:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-2">
+                                                                            <div class="form-group">
+                                                                                <input type="text" class="form-control"
+                                                                                    id="demes-sv" />
+                                                                                <i class="form-group__bar"></i>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                                    <div id="sampling-vector" class="matrix 1xn pt-0" style="padding:20px 0 20px 0"></div>
+                                                                    <div id="sampling-vector" class="matrix 1xn pt-0"
+                                                                        style="padding:20px 0 20px 0"></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -476,7 +487,7 @@ main{
                                             <div class="card p-4">
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <p>Compute distance:</p>
+                                                        <p>Select functions:</p>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -485,7 +496,7 @@ main{
                                                             <!-- <span>PSMC / MSMC</span> -->
                                                             <select id="psmc-msmc-model" class="select2"
                                                                 data-minimum-results-for-search="Infinity">
-                                                                <option>Select PSMC / MSMC function</option>
+                                                                <option>PSMC / MSMC</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -494,7 +505,7 @@ main{
                                                             <!-- <span>NSSC</span> -->
                                                             <select id="nssc-model" class="select2"
                                                                 data-minimum-results-for-search="Infinity">
-                                                                <option>Select NSSC function</option>
+                                                                <option>NSSC</option>
                                                             </select>
                                                         </div>
                                                     </div>

@@ -402,14 +402,14 @@ class Visual_Application {
         this.chart.resetZoom();
     }
 
-    Visualize_Information_Of_Functions(funct, name, theta, rho, model) {
+    Visualize_Information_Of_Functions(funct) {
         var parametters = this.Get_Parametters(funct.name);
 
-        name.html(funct.name);
-        theta.html(parametters[0]);
-        rho.html(parametters[1]);
-        model.html(parametters[2]);
-
+        $('#graphic').text(funct.name)
+        $('#theta').text(parametters[0]);
+        $('#rho').text(parametters[1]);
+        $('#model').text(parametters[2]);
+        $('#model-subtitle').text('Model by which the graph is based');
     }
 
     Initialize_Information_Of_Functions() {
@@ -417,6 +417,16 @@ class Visual_Application {
         $('#theta').text('-');
         $('#rho').text('-');
         $('#model').text('-');
+        $('#model-subtitle').text('Model by which the graph is based');
+    }
+
+    Change_Information_Of_Functions(distance){
+        $('#model').text('The distance between curves is:');
+        $('#model-subtitle').text('Distance between PSMC and NSSC models')
+        $('.theta-rho').fadeOut(50, function(){
+            $('#distance-value-col').fadeIn(500);
+            $('#distance-value').text(distance);
+        });
     }
 
     Load_Principal_Window_Data(name, scenario, callback) {

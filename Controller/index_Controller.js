@@ -130,7 +130,7 @@ $(document).ready(function () {
                     application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $('#input-slider-value-nref'));
                 }
 
-                application.Visualize_Information_Of_Functions(selected_function, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
+                application.Visualize_Information_Of_Functions(selected_function);
 
 
                 // $('#option-s *').removeAttr('disabled');
@@ -457,7 +457,7 @@ $(document).ready(function () {
             application.Update_NSSC(nssc_function, selected_function.N_ref);
         });
 
-        
+
 
     });
 
@@ -519,6 +519,29 @@ $(document).ready(function () {
 
     $('#reset-zoom').on('click', function () {
         application.Reset_Zoom();
+    });
+
+    $('#psmc-msmc-model').on('change', function () {
+        if ($(this).val() != 'PSMC / MSMC' && $('#nssc-model').val() != 'NSSC') application.Change_Information_Of_Functions(1234);
+        else {
+            if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
+            else application.Initialize_Information_Of_Functions();
+            $('#distance-value-col').fadeOut(50, function () {
+                $('.theta-rho').fadeIn(500);
+            });
+        }
+
+    });
+
+    $('#nssc-model').on('change', function () {
+        if ($(this).val() != 'NSSC' && $('#nssc-model').val() != 'PSMC / MSMC') application.Change_Information_Of_Functions(1234);
+        else {
+            if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
+            else application.Initialize_Information_Of_Functions();
+            $('#distance-value-col').fadeOut(50, function () {
+                $('.theta-rho').fadeIn(500);
+            });
+        }
     });
 
     $('#get-distance').on('click', function () {
