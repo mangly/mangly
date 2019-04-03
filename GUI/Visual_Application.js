@@ -420,12 +420,11 @@ class Visual_Application {
         $('#model-subtitle').text('Model by which the graph is based');
     }
 
-    Change_Information_Of_Functions(distance){
+    Change_Information_Of_Functions(){
         $('#model').text('The distance between curves is:');
         $('#model-subtitle').text('Distance between PSMC and NSSC models')
         $('.theta-rho').fadeOut(50, function(){
             $('#distance-value-col').fadeIn(500);
-            $('#distance-value').text(distance);
         });
     }
 
@@ -457,6 +456,17 @@ class Visual_Application {
         this.logic_application.functions_collection.splice(index, 1);
         event_target.parents('.listview__item').remove();
         this.chart.update()
+    }
+
+    Show_Distance(){
+        var psmc_msmc_model_data = this.Get_Graphic($('#psmc-msmc-model').val()).data;
+        var nssc_model = this.logic_application.Get_Function($('#nssc-model').val());
+    
+        var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
+    
+        this.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
+            $('#distance-value').text(result);
+        });
     }
 
     static Fill_Initial_Data_Vector(value, type, order = 0) {

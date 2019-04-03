@@ -522,7 +522,10 @@ $(document).ready(function () {
     });
 
     $('#psmc-msmc-model').on('change', function () {
-        if ($(this).val() != 'PSMC / MSMC' && $('#nssc-model').val() != 'NSSC') application.Change_Information_Of_Functions(1234);
+        if ($(this).val() != 'PSMC / MSMC' && $('#nssc-model').val() != 'NSSC') {
+            application.Show_Distance();
+            application.Change_Information_Of_Functions();
+        }
         else {
             if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
             else application.Initialize_Information_Of_Functions();
@@ -534,7 +537,10 @@ $(document).ready(function () {
     });
 
     $('#nssc-model').on('change', function () {
-        if ($(this).val() != 'NSSC' && $('#nssc-model').val() != 'PSMC / MSMC') application.Change_Information_Of_Functions(1234);
+        if ($(this).val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
+            application.Show_Distance();
+            application.Change_Information_Of_Functions();
+        }
         else {
             if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
             else application.Initialize_Information_Of_Functions();
@@ -544,14 +550,14 @@ $(document).ready(function () {
         }
     });
 
-    $('#get-distance').on('click', function () {
-        var psmc_msmc_model_data = application.Get_Graphic($('#psmc-msmc-model').val()).data;
-        var nssc_model = application.logic_application.Get_Function($('#nssc-model').val());
+    // $('#get-distance').on('click', function () {
+    //     var psmc_msmc_model_data = application.Get_Graphic($('#psmc-msmc-model').val()).data;
+    //     var nssc_model = application.logic_application.Get_Function($('#nssc-model').val());
 
-        var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
+    //     var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
 
-        application.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
-            $('#distance-result').val('The distance is: ' + result)
-        });
-    });
+    //     application.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
+    //         $('#distance-result').val('The distance is: ' + result)
+    //     });
+    // });
 });
