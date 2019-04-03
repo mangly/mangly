@@ -718,7 +718,7 @@ class Visual_Application {
         this.Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, number_of_events + 1);
     }
 
-    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, count) {
+    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, count, compute_distance) {
         var slider_time = document.getElementsByClassName("slider-time");
         var slider_mlist = document.getElementsByClassName("slider-m");
         var slider_clist = document.getElementsByClassName("slider-c");
@@ -745,7 +745,7 @@ class Visual_Application {
                 this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
                     // this.Update_NSSC(nssc_function);
                     this.Update_NSSC(nssc_function, nssc_function.N_ref);
-
+                    if($('#distance-value-col').css('display') != 'none') this.Show_Distance();
                 });
             });
 
@@ -780,6 +780,7 @@ class Visual_Application {
                     this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
                         // this.Update_NSSC(nssc_function);
                         this.Update_NSSC(nssc_function, nssc_function.N_ref);
+                        if($('#distance-value-col').css('display') != 'none') this.Show_Distance();
                     });
                 });
 
@@ -814,6 +815,7 @@ class Visual_Application {
                     this.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, (nssc_function) => {
                         // this.Update_NSSC(nssc_function);
                         this.Update_NSSC(nssc_function, nssc_function.N_ref);
+                        if($('#distance-value-col').css('display') != 'none') this.Show_Distance();
                     });
                 });
 

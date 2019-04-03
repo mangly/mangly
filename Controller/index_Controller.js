@@ -337,6 +337,10 @@ $(document).ready(function () {
         $('#input-slider-value-nref').val(a[b]);
         application.Update_Scale_NSSC(selected_function, a[b]);
     });
+
+    slider_nref.noUiSlider.on('set', function (a, b) {
+        if(compute_distance) application.Show_Distance();
+    });
     //finish N_ref-------------------
 
     $('#reset-scales').on('click', function () {
@@ -521,8 +525,10 @@ $(document).ready(function () {
         application.Reset_Zoom();
     });
 
+    var compute_distance = false;
     $('#psmc-msmc-model').on('change', function () {
         if ($(this).val() != 'PSMC / MSMC' && $('#nssc-model').val() != 'NSSC') {
+            compute_distance = true;
             application.Show_Distance();
             application.Change_Information_Of_Functions();
         }
@@ -538,6 +544,7 @@ $(document).ready(function () {
 
     $('#nssc-model').on('change', function () {
         if ($(this).val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
+            compute_distance = true;
             application.Show_Distance();
             application.Change_Information_Of_Functions();
         }
