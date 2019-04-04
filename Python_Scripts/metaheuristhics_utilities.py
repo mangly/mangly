@@ -78,7 +78,7 @@ def valid_state(multi_state):
         if(len(multi_state[i + 1]) != 2):
             next_time = multi_state[i + 1][0]
 
-        M= multi_state[i][1]
+        M = multi_state[i][1]
         c = multi_state[i][2]
 
         
@@ -87,4 +87,18 @@ def valid_state(multi_state):
         
     return True
 
-def get_optimal_values
+def get_optimal_values(ndarray):
+    result = {}
+    multi_ndarray = multi_dim_conversion(ndarray, 3)
+    n = multi_ndarray[len(multi_ndarray)-1][0]
+    n_ref = multi_ndarray[len(multi_ndarray)-1][1]
+
+    for i in range(0, len(multi_ndarray) - 1):
+        result['time_'+ str(i)] = multi_ndarray[i][0]
+        result['M_'+ str(i)] = multi_ndarray[i][1]
+        result['c_'+ str(i)] = multi_ndarray[i][2]
+    
+    result['n'] = n
+    result['n_ref'] = n_ref
+
+    return result
