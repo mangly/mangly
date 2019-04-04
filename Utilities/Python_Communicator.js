@@ -35,7 +35,7 @@ class Python_Communicator {
 
         ps.PythonShell.run(python_script, options, function (err, results) {
             if (err) throw err;
-            else callback(results);
+            else callback(JSON.parse(results));
         });
     }
 
@@ -47,7 +47,7 @@ class Python_Communicator {
 
         ps.PythonShell.run(python_script, options, function (err, results) {
             if (err) throw err;
-            else callback(results);
+            else callback(JSON.parse(results));
         });
     }
 }

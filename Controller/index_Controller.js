@@ -565,7 +565,6 @@ $(document).ready(function () {
 
     $('#start_metaheuristic').on('click', function () {
         if ($('#nssc-model').val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
-            // compute_distance = true;
             $('#modal-default').modal({
                 backdrop: 'static',
                 keyboard: false
@@ -576,8 +575,11 @@ $(document).ready(function () {
                 $('#stop-yes').html('Yes');
                 $('#no').fadeIn(500);
                 $('#function_processing').fadeOut(50, function(){
-                    $('.solution').html(optimal_values)
-                    $('.solution').fadeIn(500);
+                    $('.solution').fadeIn(500, function(){
+                        best_distance = parseFloat($('#distance-value').text())>parseFloat(optimal_values.distance);
+                        if(best_distance) $('.solution').html('The algorithm obtained an acceptable solution');
+                        else $('.solution').html('The algorithm did not obtain an acceptable solution');
+                    });
                 });
             });
             // application.Change_Information_Of_Functions();
