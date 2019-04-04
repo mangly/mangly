@@ -468,7 +468,7 @@ class Visual_Application {
         });
     }
 
-    Show_Optimal_Values_Metaheuristics(metaheuristic_name) {
+    Show_Optimal_Values_Metaheuristics(metaheuristic_name, callback) {
         var psmc_msmc_model_data = this.Get_Graphic($('#psmc-msmc-model').val()).data;
         var nssc_model = this.logic_application.Get_Function($('#nssc-model').val());
         var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
@@ -477,6 +477,7 @@ class Visual_Application {
             console.log('processing...')
             this.logic_application.Get_Optimal_Values_Metaheuristic_DE(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
                 console.log(result);
+                callback(result);
             });
         }
     }

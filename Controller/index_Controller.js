@@ -563,12 +563,36 @@ $(document).ready(function () {
         }
     });
 
-    $('#start_metaheuristic').on('click', function(){
+    $('#start_metaheuristic').on('click', function () {
         if ($('#nssc-model').val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
             // compute_distance = true;
-            application.Show_Optimal_Values_Metaheuristics('de');
+            $('#modal-default').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            application.Show_Optimal_Values_Metaheuristics('de', function(optimal_values){
+                // $('#modal-default').modal('hide');
+                $('.modal-title').text('Do you want evaluate this solution?')
+                $('#stop-yes').html('Yes');
+                $('#no').fadeIn(500);
+                $('#function_processing').fadeOut(50, function(){
+                    $('.solution').html(optimal_values)
+                    $('.solution').fadeIn(500);
+                });
+            });
             // application.Change_Information_Of_Functions();
         }
+    });
+
+
+
+    $('#es').on('click', function () {
+        // $('#modal-default').modal({
+        //     backdrop: 'static',
+        //     keyboard: false
+        // });
+
+        // $('body').attr('disabled', 'disabled')
     });
 
     // $('#get-distance').on('click', function () {

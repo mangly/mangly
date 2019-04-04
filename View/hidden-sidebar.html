@@ -523,8 +523,10 @@ main{
                                                 </div>
                                             </div>
                                             <div class="row float-right">
-                                                <button id="start_metaheuristic" class="btn btn-primary mr-3" type="submit">Start Algorithm</button>
-                                                <button class="btn btn-primary mr-4" type="submit">Evaluate Solutions</button>
+                                                <button id="start_metaheuristic" class="btn btn-primary mr-3" type="submit">Start
+                                                    Algorithm</button>
+                                                <button id="es" class="btn btn-primary mr-4" type="submit">Evaluate
+                                                    Solutions</button>
                                             </div>
                                         </div>
                                     </div>
@@ -560,17 +562,17 @@ main{
         <!-- Modal window -->
         <div class="modal fade" id="modal-default" tabindex="-1">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="display:flex; align-items:center">
                     <div class="modal-header">
-                        <h5 class="modal-title pull-left">Warning</h5>
+                        <h5 class="modal-title pull-left">Curve fiting processing...</h5>
                     </div>
-                    <div class="modal-body">
-                        You must have a graphic LOADED and SELECTED. Go to the MENU ( See File -> Open File... OR
-                        Select a graphic )
+                    <div class="modal-body" style="margin:0">
+                        <img id="function_processing" src="../archivos_estaticos/GIFs/function_processing.gif" alt="">
                     </div>
+                    <div class="solution" style="display:none; margin:0"></div>
                     <div class="modal-footer">
-                        <!-- <button type="button" class="btn btn-link">Save changes</button> -->
-                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button id="stop-yes" type="button" class="btn btn-primary" data-dismiss="modal">Stop</button>
+                        <button id="no" type="button" class="btn btn-link" style="display:none">No</button>
                     </div>
                 </div>
             </div>
