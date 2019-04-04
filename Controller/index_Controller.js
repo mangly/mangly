@@ -563,6 +563,14 @@ $(document).ready(function () {
         }
     });
 
+    $('#start_metaheuristic').on('click', function(){
+        if ($('#nssc-model').val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
+            // compute_distance = true;
+            application.Show_Optimal_Values_Metaheuristics('de');
+            // application.Change_Information_Of_Functions();
+        }
+    });
+
     // $('#get-distance').on('click', function () {
     //     var psmc_msmc_model_data = application.Get_Graphic($('#psmc-msmc-model').val()).data;
     //     var nssc_model = application.logic_application.Get_Function($('#nssc-model').val());

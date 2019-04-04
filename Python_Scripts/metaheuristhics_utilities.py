@@ -86,3 +86,5 @@ def valid_state(multi_state):
             return False
         
     return True
+
+def get_optimal_values

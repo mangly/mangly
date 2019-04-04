@@ -5,6 +5,8 @@ from model import NSSC, Pnisland
 # from get_File_Results import get_PSMC_results
 # import random
 from metaheuristhics_utilities import get_scenario
+from metaheuristhics_utilities import multi_dim_conversion
+from metaheuristhics_utilities import valid_state
 
 # psmc = get_PSMC_results('./experiment_1.psmc')
 
@@ -25,10 +27,10 @@ from metaheuristhics_utilities import get_scenario
 
 #     return model_NSSC.compute_distance(vectors['x'], vectors['y'], int(n_ref))
 
-vectors = json.loads(vectors)
-scenario_NSSC = json.loads(scenario_NSSC)
+vectors = json.loads(sys.argv[1])
+scenario_NSSC = json.loads(sys.argv[2])
 
-variables_count = (len(scenario_NSSC['scenario']) * 3) + 2
+# variables_count = (len(scenario_NSSC['scenario']) * 3) + 2
 # init_state = get_initial_state(new_scenario, 500)
 
 def compute_distance(state):
@@ -43,5 +45,10 @@ def compute_distance(state):
 
 bounds = [(0, 0), (1, 50), (1,5), (1, 50), (1, 50), (1,5), (2, 50), (1, 50), (1,5), (2,20), (1, 1000)]
 result = differential_evolution(compute_distance, bounds, maxiter = 1000, popsize = 15, mutation = (0.5,1), recombination = 0.7)
-print(result.x, result.fun)
+
+json_result = {'opt_values': result.x, 'distance': result.fun}
+# json_result = {'distance': result.fun}
+
+# print(result.x, result.fun)
+print(json.dumps(json_result))
 

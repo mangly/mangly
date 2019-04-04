@@ -79,6 +79,12 @@ class Application {
         });
     }
 
+    Get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, callback){
+        Python_Communicator.get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, 'Python_Scripts/Differential_Evolution.py', (results) => {
+            callback(results)
+        });
+    }
+
     Compute_Distance(vectors, scenario_NSSC, n_ref, callback) {
         Python_Communicator.compute_Distance(vectors, scenario_NSSC, n_ref, 'Python_Scripts/compute_Distance.py', (results) => {
             callback(results)
