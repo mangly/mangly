@@ -238,9 +238,8 @@ class Visual_Application {
 
     Visualize_NSSC() {
         if (this.logic_application.functions_collection.length > this.chart.data.datasets.length) {
-            $('#canvas-container').removeClass('disabled');
-
-            $('#tab-graphics').trigger('click');
+            // $('#canvas-container').removeClass('disabled');
+            // $('#tab-graphics').trigger('click');
             var color = this.Get_Random_Color();
             var nssc = this.logic_application.Get_Last_Function();
 
@@ -476,7 +475,6 @@ class Visual_Application {
         if (metaheuristic_name == 'de') {
             console.log('processing...')
             this.logic_application.Get_Optimal_Values_Metaheuristic_DE(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
-                console.log(result);
                 callback(result);
             });
         }

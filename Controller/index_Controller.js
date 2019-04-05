@@ -391,7 +391,7 @@ $(document).ready(function () {
     // });
 
     ipc.on('nssc-json-result', function (event, scenario) {
-        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
+        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function () {
             application.Visualize_NSSC();
         });
     });
@@ -563,30 +563,50 @@ $(document).ready(function () {
         }
     });
 
+    var metaheuristic_scenario_result;
+    var metaheuristic_n_result;
+    var metaheuristic_n_ref_result;
+    var metaheuristic_distance_result;
+    var metaheuristic_vectors_result;
     $('#start_metaheuristic').on('click', function () {
         if ($('#nssc-model').val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
             $('#modal-default').modal({
                 backdrop: 'static',
                 keyboard: false
             });
-            application.Show_Optimal_Values_Metaheuristics('de', function(optimal_values){
+            application.Show_Optimal_Values_Metaheuristics('de', function(metaheuristic_results){
                 // $('#modal-default').modal('hide');
                 $('.modal-title').text('Do you want evaluate this solution?')
                 $('#stop-yes').html('Yes');
                 $('#no').fadeIn(500);
                 $('#function_processing').fadeOut(50, function(){
                     $('.solution').fadeIn(500, function(){
-                        best_distance = parseFloat($('#distance-value').text())>parseFloat(optimal_values.distance);
+                        metaheuristic_scenario_result = metaheuristic_results.optimal_scenario;
+                        metaheuristic_distance_result = metaheuristic_results.distance;
+                        metaheuristic_n_result = metaheuristic_results.n;
+                        metaheuristic_n_ref_result = metaheuristic_results.n_ref;
+                        metaheuristic_vectors_result = metaheuristic_results.vectors;
+
+                        best_distance = parseFloat($('#distance-value').text())>parseFloat(metaheuristic_distance_result);
                         if(best_distance) $('.solution').html('The algorithm obtained an acceptable solution');
                         else $('.solution').html('The algorithm did not obtain an acceptable solution');
+
+                        // console.log(metaheuristic_scenario_result);
+                        // console.log(metaheuristic_distance_result);
+                        // console.log(metaheuristic_n_result);
+                        // console.log(metaheuristic_n_ref_result);
+                        // console.log(metaheuristic_vectors_result);
                     });
                 });
             });
-            // application.Change_Information_Of_Functions();
         }
     });
 
-
+    $('#stop-yes').on('click', function(){
+        application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
+        application.Update_NSSC(selected_function, metaheuristic_n_ref_result);
+        // console.log(JSON.stringify(metaheuristic_scenario_result));
+    });
 
     $('#es').on('click', function () {
         // $('#modal-default').modal({

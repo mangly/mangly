@@ -87,18 +87,19 @@ def valid_state(multi_state):
         
     return True
 
-def get_optimal_values(ndarray):
-    result = {}
+def get_optimal_scenario(ndarray):
+    result = []
+    result_content = {}
     multi_ndarray = multi_dim_conversion(ndarray, 3)
     n = multi_ndarray[len(multi_ndarray)-1][0]
-    n_ref = multi_ndarray[len(multi_ndarray)-1][1]
+    # n_ref = multi_ndarray[len(multi_ndarray)-1][1]
 
     for i in range(0, len(multi_ndarray) - 1):
-        result['time_'+ str(i)] = multi_ndarray[i][0]
-        result['M_'+ str(i)] = multi_ndarray[i][1]
-        result['c_'+ str(i)] = multi_ndarray[i][2]
+        result_content['time'] = multi_ndarray[i][0]
+        result_content['n'] = n
+        result_content['M'] = multi_ndarray[i][1]
+        result_content['c'] = multi_ndarray[i][2]
+        result.append(result_content.copy())
     
-    result['n'] = n
-    result['n_ref'] = n_ref
-
+    # result['n_ref'] = n_ref
     return result

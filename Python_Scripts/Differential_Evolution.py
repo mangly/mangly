@@ -7,7 +7,8 @@ from model import NSSC, Pnisland
 from metaheuristhics_utilities import get_scenario
 from metaheuristhics_utilities import multi_dim_conversion
 from metaheuristhics_utilities import valid_state
-from metaheuristhics_utilities import get_optimal_values
+from metaheuristhics_utilities import get_optimal_scenario
+from functions import get_NSSC_vectors
 
 # psmc = get_PSMC_results('./experiment_1.psmc')
 
@@ -47,9 +48,14 @@ def compute_distance(state):
 bounds = [(0, 0), (1, 50), (1,5), (1, 50), (1, 50), (1,5), (2, 50), (1, 50), (1,5), (2,20), (1, 1000)]
 result = differential_evolution(compute_distance, bounds, maxiter = 1000, popsize = 15, mutation = (0.5,1), recombination = 0.7)
 
-json_result = {'opt_values': get_optimal_values(result.x), 'distance': result.fun}
-# json_result = {'distance': result.fun}
+n_ref = round(result.x[len(result.x) - 1])
+n = round(result.x[len(result.x) - 2])
+optimal_scenario = get_optimal_scenario(result.x)
 
-# print(result.x, result.fun)
+scenario_NSSC['scenario'] = optimal_scenario
+optimal_vectors = get_NSSC_vectors('Symmetrical', scenario_NSSC)
+
+json_result = {'optimal_scenario': optimal_scenario, 'n': n, 'n_ref': n_ref, 'distance': result.fun, 'vectors': optimal_vectors}
+
 print(json.dumps(json_result))
 

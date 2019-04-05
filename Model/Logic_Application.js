@@ -69,17 +69,24 @@ class Application {
                 var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario, this.N_ref);
                 if (!this.Contains(nssc)) this.functions_collection.push(nssc);
             }
-            else {
-                nssc_function.x_vector = results.x_vector;
-                nssc_function.IICR_specie = results.IICR_specie;
-                nssc_function.scenario = scenario;
-            }
-
+            
+            else this.Update_NSSC(nssc_function, scenario, results);
             callback(nssc_function);
+            // {
+            //     nssc_function.x_vector = results.x_vector;
+            //     nssc_function.IICR_specie = results.IICR_specie;
+            //     nssc_function.scenario = scenario;
+            // }
         });
     }
 
-    Get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, callback){
+    Update_NSSC(nssc_function, scenario, vectors_results) {
+        nssc_function.x_vector = vectors_results.x_vector;
+        nssc_function.IICR_specie = vectors_results.IICR_specie;
+        nssc_function.scenario = scenario;
+    }
+
+    Get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, callback) {
         Python_Communicator.get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, 'Python_Scripts/Differential_Evolution.py', (results) => {
             callback(results)
         });
@@ -185,7 +192,7 @@ class Application {
         return { "samplingVector": sampling_vector, "scenario": scenario };
     }
 
-    static Build_Scenario_Update(type_nssc_model, matrix_collection, deme_vector_collection, sampling_vector, count){
+    static Build_Scenario_Update(type_nssc_model, matrix_collection, deme_vector_collection, sampling_vector, count) {
         if (type_nssc_model == 'General') return Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector);
         else return Application.Build_Symmetrical_Scenario_NSSC(sampling_vector, count);
     }
