@@ -55,7 +55,7 @@ optimal_scenario = get_optimal_scenario(result.x)
 scenario_NSSC['scenario'] = optimal_scenario
 optimal_vectors = get_NSSC_vectors('Symmetrical', scenario_NSSC)
 
-json_result = {'optimal_scenario': optimal_scenario, 'n': n, 'n_ref': n_ref, 'distance': result.fun, 'vectors': optimal_vectors}
+json_result = {'optimal_scenario': scenario_NSSC, 'n_ref': n_ref, 'distance': result.fun, 'vectors': optimal_vectors}
 
 print(json.dumps(json_result))
 

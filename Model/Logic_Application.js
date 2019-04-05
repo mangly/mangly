@@ -72,11 +72,6 @@ class Application {
             
             else this.Update_NSSC(nssc_function, scenario, results);
             callback(nssc_function);
-            // {
-            //     nssc_function.x_vector = results.x_vector;
-            //     nssc_function.IICR_specie = results.IICR_specie;
-            //     nssc_function.scenario = scenario;
-            // }
         });
     }
 

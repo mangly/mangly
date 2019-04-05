@@ -126,9 +126,9 @@ $(document).ready(function () {
                     $('#option-s *').attr('disabled', 'disabled');
                 }
 
-                else {
-                    application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $('#input-slider-value-nref'));
-                }
+                // else {
+                //     application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $('#input-slider-value-nref'));
+                // }
 
                 application.Visualize_Information_Of_Functions(selected_function);
 
@@ -253,8 +253,8 @@ $(document).ready(function () {
 
         var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
 
-        application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.type, scenario_update, function (nssc_function) {
-            application.Update_NSSC(nssc_function, selected_function.N_ref);
+        application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
+            application.Update_NSSC(nssc_function);
         });
     });
 
@@ -433,18 +433,17 @@ $(document).ready(function () {
             });
 
             nssc_scenario = selected_function.scenario;
+            var type = selected_function.type;
+            var n_ref = selected_function.N_ref;
 
             application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
-
-                var type = selected_function.type;
-
                 if (type == 'Symmetrical') $('#demes-sv').removeAttr('hidden');
                 else $('#demes-sv').attr('hidden', 'hidden');
 
                 number_of_events = parseInt($('#count-events').val());
                 order = parseInt($('#order-n').val());
 
-                application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
+                application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events, n_ref);
                 $('#demes-sv').val(order);
             });
         }
@@ -466,7 +465,7 @@ $(document).ready(function () {
         var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
 
         application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
-            application.Update_NSSC(nssc_function, selected_function.N_ref);
+            application.Update_NSSC(nssc_function);
             if (compute_distance) application.Show_Distance();
         });
     });
@@ -564,7 +563,6 @@ $(document).ready(function () {
     });
 
     var metaheuristic_scenario_result;
-    var metaheuristic_n_result;
     var metaheuristic_n_ref_result;
     var metaheuristic_distance_result;
     var metaheuristic_vectors_result;
@@ -583,19 +581,12 @@ $(document).ready(function () {
                     $('.solution').fadeIn(500, function(){
                         metaheuristic_scenario_result = metaheuristic_results.optimal_scenario;
                         metaheuristic_distance_result = metaheuristic_results.distance;
-                        metaheuristic_n_result = metaheuristic_results.n;
                         metaheuristic_n_ref_result = metaheuristic_results.n_ref;
                         metaheuristic_vectors_result = metaheuristic_results.vectors;
 
                         best_distance = parseFloat($('#distance-value').text())>parseFloat(metaheuristic_distance_result);
                         if(best_distance) $('.solution').html('The algorithm obtained an acceptable solution');
                         else $('.solution').html('The algorithm did not obtain an acceptable solution');
-
-                        // console.log(metaheuristic_scenario_result);
-                        // console.log(metaheuristic_distance_result);
-                        // console.log(metaheuristic_n_result);
-                        // console.log(metaheuristic_n_ref_result);
-                        // console.log(metaheuristic_vectors_result);
                     });
                 });
             });
@@ -604,7 +595,10 @@ $(document).ready(function () {
 
     $('#stop-yes').on('click', function(){
         application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
-        application.Update_NSSC(selected_function, metaheuristic_n_ref_result);
+        selected_function.N_ref = metaheuristic_n_ref_result;
+        application.Update_NSSC(selected_function);
+        $('#load-nssc-state').trigger('click');
+        $('#tab-nssc').trigger('click');
         // console.log(JSON.stringify(metaheuristic_scenario_result));
     });
 

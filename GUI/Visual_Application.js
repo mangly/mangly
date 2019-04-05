@@ -238,7 +238,6 @@ class Visual_Application {
 
     Visualize_NSSC() {
         if (this.logic_application.functions_collection.length > this.chart.data.datasets.length) {
-            // $('#canvas-container').removeClass('disabled');
             // $('#tab-graphics').trigger('click');
             var color = this.Get_Random_Color();
             var nssc = this.logic_application.Get_Last_Function();
@@ -257,11 +256,11 @@ class Visual_Application {
         }
     }
 
-    Update_NSSC(nssc_function, n_ref) {
+    Update_NSSC(nssc_function) {
         var graphic = this.Get_Graphic(nssc_function.name);
         var clone = nssc_function.Clone();
 
-        this.logic_application.Scale_NSSC_Function(clone, n_ref);
+        this.logic_application.Scale_NSSC_Function(clone, nssc_function.N_ref);
 
         graphic.data = Application_Utilities.Generate_Data_To_Chart(clone.x_vector, clone.IICR_specie);
 
@@ -428,7 +427,7 @@ class Visual_Application {
     }
 
     Load_Principal_Window_Data(name, scenario, callback) {
-        $('#nssc-name').val(name)
+        $('#nssc-name').val(name);
 
         if (Object.keys(scenario.scenario[0]).length == 4) {
             $('#type-nssc-model').val('Symmetrical');
@@ -680,8 +679,9 @@ class Visual_Application {
         this.Configuration_Vector();
     }
 
-    Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
+    Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events, n_ref) {
         Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
+        $('#input-slider-value-nref').val(n_ref);
 
         for (let index = 0; index < number_of_events + 1; index++) {
             var value = 0;
