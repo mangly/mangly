@@ -594,12 +594,12 @@ $(document).ready(function () {
     });
 
     $('#stop-yes').on('click', function(){
+        $('#distance-value').text(metaheuristic_distance_result);
         application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
         selected_function.N_ref = metaheuristic_n_ref_result;
         application.Update_NSSC(selected_function);
         $('#load-nssc-state').trigger('click');
         $('#tab-nssc').trigger('click');
-        // console.log(JSON.stringify(metaheuristic_scenario_result));
     });
 
     $('#es').on('click', function () {
