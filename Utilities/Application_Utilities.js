@@ -73,17 +73,31 @@ class Application_Utilities {
         else return false;
     }
 
-    static Is_Number(evt, element) {
+    static Allow_Only_Number(evt) {
 
-        var charCode = (evt.which) ? evt.which : event.keyCode
+        var charCode = evt.charCode;
 
-        if (
-            (charCode != 45 || $(element).val().indexOf('-') != -1) &&      // “-” CHECK MINUS, AND ONLY ONE.
-            (charCode != 46 || $(element).val().indexOf('.') != -1) &&      // “.” CHECK DOT, AND ONLY ONE.
-            (charCode < 48 || charCode > 57))
-            return false;
+        if (!((charCode >= 48 && charCode <= 57) || charCode == 46)) {
+            evt.preventDefault();
+        }
+    }
 
+    static Is_Int_Type(number) {
+        var position = number.indexOf('.');
+
+        if (position >= 0) return false;
         return true;
+    }
+
+    static Sum(Array){
+        var sum = 0;
+        for (let index = 0; index < Array.length; index++) {
+            const element = Array[index];
+            
+            sum += element;
+        }
+
+        return sum;
     }
 }
 

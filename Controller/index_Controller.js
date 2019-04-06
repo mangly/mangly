@@ -47,7 +47,7 @@ $(document).ready(function () {
                 var paths = Application_Utilities.Divide_Paths(arrPath);
                 var psmc_msmc_paths = paths[0];
                 var nssc_paths = paths[1];
-                $('#canvas-container').removeClass('disabled');
+                // $('#canvas-container').removeClass('disabled');
 
                 if (psmc_msmc_paths.length != 0) {
                     application.logic_application.Add_File_PSMC_MSMC(psmc_msmc_paths, function () {
@@ -105,6 +105,11 @@ $(document).ready(function () {
                 $('#reset-all-scales').removeAttr('disabled');
                 $('#change-color').removeAttr('disabled');
 
+                var color = application.Get_Graphic(selected_function.name).backgroundColor;
+                $('#change-color').val(color);
+                $('.color-picker__preview').css('background-color', color);
+
+
                 if (selected_function.model == 'psmc') {
                     $('#option-s *').removeAttr('disabled');
                     $('#option-mu *').removeAttr('disabled');
@@ -121,11 +126,11 @@ $(document).ready(function () {
                     $('#option-s *').attr('disabled', 'disabled');
                 }
 
-                else{
-                    application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $("#input-slider-value-nref"));
+                else {
+                    application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $('#input-slider-value-nref'));
                 }
 
-                application.Visualize_Information_Of_Functions(selected_function, $('#graphic'), $('#theta'), $('#rho'), $('#model'));
+                application.Visualize_Information_Of_Functions(selected_function);
 
 
                 // $('#option-s *').removeAttr('disabled');
@@ -217,15 +222,47 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('change', 'td', function () {
-        var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, number_of_events + 1);
 
-        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, function (nssc_function) {
-            application.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+    $('#card-canvas').on('keydown', function (e) {
+        if (e.ctrlKey) $('#canvas-container').removeClass('disabled');
+    });
+
+    $('#card-canvas').on('keyup', function () {
+        $('#canvas-container').addClass('disabled');
+    });
+
+    var matrix;
+    var vector_array;
+    $(document).on('click', 'td', function () {
+        matrix = $(this).closest('.matrix');
+        vector_array = matrix.jexcel('getData', false);
+    });
+
+    $(document).on('change', 'td', function () {
+        var new_value = $(this).children('input').val();
+
+        if (matrix.prop('id') == 'sampling-vector' && !Application_Utilities.Is_Int_Type(new_value)) {
+            sampling_vector.jexcel({
+                data: vector_array,
+                allowManualInsertColumn: false,
+                allowManualInsertRow: false,
+            });
+
+            Visual_Application.Configuration_Vector();
+        }
+
+        var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
+
+        application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.type, scenario_update, function (nssc_function) {
+            application.Update_NSSC(nssc_function, selected_function.N_ref);
         });
     });
 
-    $(".colorpicker-element").on("change", function () {
+    $(document).on('keypress', '.edition', function (e) {
+        Application_Utilities.Allow_Only_Number(e)
+    });
+
+    $("#change-color").on("change", function () {
         application.Update_Colors(selected_function, $(this).val(), legend_color);
     });
 
@@ -272,18 +309,18 @@ $(document).ready(function () {
     slider_mu.noUiSlider.on("slide", function (a, b) {
         var mu = (Math.round(a[b] * 100) / 100) + 'e-8';
         var real_mu = a[b] * 1e-8;
-        var s = $('#input-slider-value-s').val();
+        var s = selected_function.S;
         $('#input-slider-value-mu').val(mu);
         application.Update_Scale_PSMC_MSMC(selected_function, real_mu, s);
     });
 
-    $("#input-slider-value-mu").on('change', function () {
+    $('#input-slider-value-mu').on('change', function () {
         document.getElementById("slider-mu").noUiSlider.set($(this).val() / 1e-8);
-        application.Update_Scale_PSMC_MSMC(selected_function, $(this).val(), $("#input-slider-value-s").val());
+        application.Update_Scale_PSMC_MSMC(selected_function, $(this).val(), selected_function.S);
     });
 
     $('#input-slider-value-s').on('change', function () {
-        application.Update_Scale_PSMC_MSMC(selected_function, $("#input-slider-value-mu").val(), $(this).val());
+        application.Update_Scale_PSMC_MSMC(selected_function, $('#input-slider-value-mu').val(), $(this).val());
     });
 
     //Start N_ref--------------
@@ -299,21 +336,25 @@ $(document).ready(function () {
         })
     })
 
-    $("#input-slider-value-nref").on('change', function () {
+    $('#input-slider-value-nref').on('change', function () {
         document.getElementById("slider-nref").noUiSlider.set($(this).val());
-        application.Update_Scale_NSSC(selected_function, $("#input-slider-value-nref").val());
+        application.Update_Scale_NSSC(selected_function, $('#input-slider-value-nref').val());
     });
 
     slider_nref.noUiSlider.on('slide', function (a, b) {
-        $("#input-slider-value-nref").val(a[b]);
+        $('#input-slider-value-nref').val(a[b]);
         application.Update_Scale_NSSC(selected_function, a[b]);
+    });
+
+    slider_nref.noUiSlider.on('set', function (a, b) {
+        if (compute_distance) application.Show_Distance();
     });
     //finish N_ref-------------------
 
     $('#reset-scales').on('click', function () {
         application.Reset_Scales(application.logic_application.Get_Function(selected_function.name));
         $('#input-slider-value-s').val(100);
-        application.Reset_Slider('mu', slider_mu, $("#input-slider-value-mu"));
+        application.Reset_Slider('mu', slider_mu, $('#input-slider-value-mu'));
     });
 
     $('#reset-all-scales').on('click', function () {
@@ -345,13 +386,12 @@ $(document).ready(function () {
         ipc.send('open-scenario-editor', values);
     });
 
-    $('#test').on('click', function () {
+    // $('#test').on('click', function () {
 
-    });
+    // });
 
     ipc.on('nssc-json-result', function (event, scenario) {
-        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function (nssc_function) {
-            // if (nssc_function) application.Update_NSSC(nssc_function);
+        application.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario, function () {
             application.Visualize_NSSC();
         });
     });
@@ -396,13 +436,39 @@ $(document).ready(function () {
 
             application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
 
-                var type = $('#type-nssc-model').val();
+                var type = selected_function.type;
+
+                if (type == 'Symmetrical') $('#demes-sv').removeAttr('hidden');
+                else $('#demes-sv').attr('hidden', 'hidden');
+
                 number_of_events = parseInt($('#count-events').val());
                 order = parseInt($('#order-n').val());
 
                 application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
+                $('#demes-sv').val(order);
             });
         }
+    });
+
+    $('#demes-sv').on('change', function () {
+        var diference = $(this).val() - order;
+
+        if (diference > 0) {
+            Visual_Application.Add_Deme(diference, order, deme_vector_collection, sampling_vector, matrix_collection);
+            order += diference;
+        }
+        else if (diference != 0) {
+            diference = Math.abs(diference);
+            order -= diference;
+            Visual_Application.Delete_Deme(diference, order, deme_vector_collection, sampling_vector, matrix_collection);
+        }
+
+        var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
+
+        application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
+            application.Update_NSSC(nssc_function, selected_function.N_ref);
+            if (compute_distance) application.Show_Distance();
+        });
     });
 
     $('#back').on('click', function () {
@@ -465,14 +531,100 @@ $(document).ready(function () {
         application.Reset_Zoom();
     });
 
-    $('#get-distance').on('click', function () {
-        var psmc_msmc_model_data = application.Get_Graphic($('#psmc-msmc-model').val()).data;
-        var nssc_model = application.logic_application.Get_Function($('#nssc-model').val());
+    var compute_distance = false;
+    $('#psmc-msmc-model').on('change', function () {
+        if ($(this).val() != 'PSMC / MSMC' && $('#nssc-model').val() != 'NSSC') {
+            compute_distance = true;
+            application.Show_Distance();
+            application.Change_Information_Of_Functions();
+        }
+        else {
+            // if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
+            // else application.Initialize_Information_Of_Functions();
+            $('#distance-value-col').fadeOut(50, function () {
+                $('.theta-rho').fadeIn(500);
+            });
+        }
 
-        var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
-
-        application.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
-            $('#distance-result').val('The distance is: ' + result)
-        });
     });
+
+    $('#nssc-model').on('change', function () {
+        if ($(this).val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
+            compute_distance = true;
+            application.Show_Distance();
+            application.Change_Information_Of_Functions();
+        }
+        else {
+            // if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
+            // else application.Initialize_Information_Of_Functions();
+            $('#distance-value-col').fadeOut(50, function () {
+                $('.theta-rho').fadeIn(500);
+            });
+        }
+    });
+
+    var metaheuristic_scenario_result;
+    var metaheuristic_n_result;
+    var metaheuristic_n_ref_result;
+    var metaheuristic_distance_result;
+    var metaheuristic_vectors_result;
+    $('#start_metaheuristic').on('click', function () {
+        if ($('#nssc-model').val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
+            $('#modal-default').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+            application.Show_Optimal_Values_Metaheuristics('de', function(metaheuristic_results){
+                // $('#modal-default').modal('hide');
+                $('.modal-title').text('Do you want evaluate this solution?')
+                $('#stop-yes').html('Yes');
+                $('#no').fadeIn(500);
+                $('#function_processing').fadeOut(50, function(){
+                    $('.solution').fadeIn(500, function(){
+                        metaheuristic_scenario_result = metaheuristic_results.optimal_scenario;
+                        metaheuristic_distance_result = metaheuristic_results.distance;
+                        metaheuristic_n_result = metaheuristic_results.n;
+                        metaheuristic_n_ref_result = metaheuristic_results.n_ref;
+                        metaheuristic_vectors_result = metaheuristic_results.vectors;
+
+                        best_distance = parseFloat($('#distance-value').text())>parseFloat(metaheuristic_distance_result);
+                        if(best_distance) $('.solution').html('The algorithm obtained an acceptable solution');
+                        else $('.solution').html('The algorithm did not obtain an acceptable solution');
+
+                        // console.log(metaheuristic_scenario_result);
+                        // console.log(metaheuristic_distance_result);
+                        // console.log(metaheuristic_n_result);
+                        // console.log(metaheuristic_n_ref_result);
+                        // console.log(metaheuristic_vectors_result);
+                    });
+                });
+            });
+        }
+    });
+
+    $('#stop-yes').on('click', function(){
+        application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
+        application.Update_NSSC(selected_function, metaheuristic_n_ref_result);
+        // console.log(JSON.stringify(metaheuristic_scenario_result));
+    });
+
+    $('#es').on('click', function () {
+        // $('#modal-default').modal({
+        //     backdrop: 'static',
+        //     keyboard: false
+        // });
+
+        // $('body').attr('disabled', 'disabled')
+    });
+
+    // $('#get-distance').on('click', function () {
+    //     var psmc_msmc_model_data = application.Get_Graphic($('#psmc-msmc-model').val()).data;
+    //     var nssc_model = application.logic_application.Get_Function($('#nssc-model').val());
+
+    //     var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
+
+    //     application.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
+    //         $('#distance-result').val('The distance is: ' + result)
+    //     });
+    // });
 });

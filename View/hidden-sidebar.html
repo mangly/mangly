@@ -145,14 +145,14 @@ main{
                     <div class="quick-stats__item">
                         <div class="quick-stats__info">
                             <h2><span id="model"></span></h2>
-                            <small>Model by which the graph is based</small>
+                            <small id="model-subtitle"></small>
                         </div>
 
                         <div class="quick-stats__chart peity-bar">4,7,6,2,5,3,8,6,6,4,8</div>
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-md-2">
+                <div class="col-sm-6 col-md-2 theta-rho">
                     <div class="quick-stats__item">
                         <div class="quick-stats__info">
                             <h2><span id="theta"></span></h2>
@@ -162,7 +162,7 @@ main{
                     </div>
                 </div>
 
-                <div class="col-sm-6 col-md-2">
+                <div class="col-sm-6 col-md-2 theta-rho">
                     <div class="quick-stats__item">
                         <div class="quick-stats__info">
                             <h2><span id="rho"></span></h2>
@@ -170,6 +170,16 @@ main{
                         </div>
 
                         <div class="quick-stats__chart peity-bar">5,6,3,9,7,5,4,6,5,6,4</div>
+                    </div>
+                </div>
+
+                <div id="distance-value-col" class="col-sm-6 col-md-4" style="display:none">
+                    <div class="quick-stats__item">
+                        <div class="quick-stats__info">
+                            <h2><span id="distance-value"></span></h2>
+                            <small>Value of distance</small>
+                        </div>
+                        <div class="quick-stats__chart peity-bar">3,5,8,2,4,9,4,3,3,6,4</div>
                     </div>
                 </div>
             </div>
@@ -195,7 +205,7 @@ main{
                                             <a class="nav-link" data-toggle="tab" href="#nssc" role="tab">Nssc</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#general" role="tab">Calculus</a>
+                                            <a class="nav-link" data-toggle="tab" href="#general" role="tab">Metaheuristics</a>
                                         </li>
                                     </ul>
 
@@ -331,13 +341,12 @@ main{
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-lg-8"><button id="reset-scales" class="btn btn-light"
-                                                            type="submit" disabled>Reset scales of the selected
-                                                            function</button></div>
-                                                    <div class="col-lg-4"> <button id="reset-all-scales" class="btn btn-light float-right"
-                                                            type="submit" disabled>Reset all scales</button></div>
-                                                </div>
+                                                <div class="row float-right">
+                                                    <button id="reset-scales" class="btn btn-primary mr-3" type="submit"
+                                                        disabled>Reset scales of the selected
+                                                        function</button>
+                                                    <button id="reset-all-scales" class="btn btn-primary mr-4 float-primary"
+                                                        type="submit" disabled>Reset all scales</button></div>
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="nssc" role="tabpanel">
@@ -383,16 +392,11 @@ main{
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-sm-6"><button id="open-scenario-editor" class="btn btn-light"
-                                                            type="submit">Create new scenario</button>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="col-sm-6" style="padding-left:35%"><button id="load-nssc-state"
-                                                                class="btn btn-light" type="submit">Load / Open
-                                                                scenario</button>
-                                                        </div>
-                                                    </div>
+                                                <div class="row float-right">
+                                                    <button id="open-scenario-editor" class="btn btn-primary mr-3" type="submit">Create
+                                                        new scenario</button>
+                                                    <button id="load-nssc-state" class="btn btn-primary mr-4" type="submit">Load
+                                                        / Open scenario</button>
                                                 </div>
                                             </div>
                                             <div id="container-edit-nssc" style="display:none; max-height: 580px; overflow-y: auto">
@@ -401,8 +405,20 @@ main{
                                                         <div class="row">
                                                             <div class="col-sm-12">
                                                                 <div style="overflow-x: scroll">
-                                                                    <span>Sampling Vector:</span>
-                                                                    <div id="sampling-vector" class="matrix 1xn" style="padding:20px 0 20px 0"></div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-10">
+                                                                            <span>Sampling Vector:</span>
+                                                                        </div>
+                                                                        <div class="col-sm-2">
+                                                                            <div class="form-group">
+                                                                                <input type="text" class="form-control"
+                                                                                    id="demes-sv" />
+                                                                                <i class="form-group__bar"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="sampling-vector" class="matrix 1xn pt-0"
+                                                                        style="padding:20px 0 20px 0"></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -457,7 +473,7 @@ main{
                                                     </div>
                                                     <!-- </div> -->
                                                     <!-- </div> -->
-                                                    <button id="back" class="btn btn-light" type="submit">Back</button>
+                                                    <button id="back" class="btn btn-primary" type="submit">Back</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -465,7 +481,7 @@ main{
                                             <div class="card p-4">
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <p>Compute distance:</p>
+                                                        <p>Select functions:</p>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -474,7 +490,7 @@ main{
                                                             <!-- <span>PSMC / MSMC</span> -->
                                                             <select id="psmc-msmc-model" class="select2"
                                                                 data-minimum-results-for-search="Infinity">
-                                                                <option>Select PSMC / MSMC function</option>
+                                                                <option>PSMC / MSMC</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -483,7 +499,7 @@ main{
                                                             <!-- <span>NSSC</span> -->
                                                             <select id="nssc-model" class="select2"
                                                                 data-minimum-results-for-search="Infinity">
-                                                                <option>Select NSSC function</option>
+                                                                <option>NSSC</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -491,17 +507,26 @@ main{
                                             </div>
                                             <div class="card p-4">
                                                 <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <button id="get-distance" class="btn btn-light" type="submit">Get
-                                                            result:</button>
+                                                    <div class="col-sm-12">
+                                                        <p>Select algorithm:</p>
                                                     </div>
+                                                </div>
+                                                <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <input id="distance-result" type="text" readonly class="form-control input-mask">
-                                                            <i class="form-group__bar"></i>
+                                                            <select id="psmc-msmc-model" class="select2"
+                                                                data-minimum-results-for-search="Infinity">
+                                                                <option>Differential Evolution</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="row float-right">
+                                                <button id="start_metaheuristic" class="btn btn-primary mr-3" type="submit">Start
+                                                    Algorithm</button>
+                                                <button id="es" class="btn btn-primary mr-4" type="submit">Evaluate
+                                                    Solutions</button>
                                             </div>
                                         </div>
                                     </div>
@@ -511,13 +536,13 @@ main{
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-12 col-sm-12">
-                    <div class="card" style="height: 100%">
+                    <div id="card-canvas" tabindex="0" class="card" style="height: 100%">
                         <div class="card-header" style="padding-bottom:10.5px">
                             <div class="row">
                                 <div class="col-sm-10">Graph of models</div>
                                 <div class="col-sm-1"><i style="line-height: 22px" id="zoom" class="zmdi zmdi-zoom-in zmdi-hc-3x float-right"></i></div>
                                 <div class="col-sm-1"></span> <button id="reset-zoom" style="height:24px; width: 60px; line-height: 7px"
-                                        class="btn btn-dark btn--icon-text float-right">
+                                        class="btn btn-primary btn--icon-text float-right">
                                         Reset</button></div>
 
                             </div>
@@ -537,17 +562,20 @@ main{
         <!-- Modal window -->
         <div class="modal fade" id="modal-default" tabindex="-1">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="display:flex; align-items:center">
                     <div class="modal-header">
-                        <h5 class="modal-title pull-left">Warning</h5>
+                        <h5 class="modal-title pull-left">Curve fiting processing...</h5>
                     </div>
-                    <div class="modal-body">
-                        You must have a graphic LOADED and SELECTED. Go to the MENU ( See File -> Open File... OR
-                        Select a graphic )
+                    <div class="modal-body" style="margin:0">
+                        <div id="function_processing">
+                            <img src="../archivos_estaticos/GIFs/function_processing.gif" alt="">
+                        </div>
+                        <div class="solution"></div>
                     </div>
+                    <!-- <div class="solution" style="display:none; margin:0"></div> -->
                     <div class="modal-footer">
-                        <!-- <button type="button" class="btn btn-link">Save changes</button> -->
-                        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                        <button id="stop-yes" type="button" class="btn btn-primary" data-dismiss="modal">Stop</button>
+                        <button id="no" type="button" class="btn btn-link" style="display:none">No</button>
                     </div>
                 </div>
             </div>

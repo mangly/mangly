@@ -66,16 +66,29 @@ class Application {
         Python_Communicator.get_Model_NSSC(type, scenario, 'Python_Scripts/get_Model_NSSC.py', (results) => {
             var nssc_function = this.Get_Function(name);
             if (nssc_function == null) {
-                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario);
+                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario, this.N_ref);
                 if (!this.Contains(nssc)) this.functions_collection.push(nssc);
             }
-            else {
-                nssc_function.x_vector = results.x_vector;
-                nssc_function.IICR_specie = results.IICR_specie;
-                nssc_function.scenario = scenario;
-            }
-
+            
+            else this.Update_NSSC(nssc_function, scenario, results);
             callback(nssc_function);
+            // {
+            //     nssc_function.x_vector = results.x_vector;
+            //     nssc_function.IICR_specie = results.IICR_specie;
+            //     nssc_function.scenario = scenario;
+            // }
+        });
+    }
+
+    Update_NSSC(nssc_function, scenario, vectors_results) {
+        nssc_function.x_vector = vectors_results.x_vector;
+        nssc_function.IICR_specie = vectors_results.IICR_specie;
+        nssc_function.scenario = scenario;
+    }
+
+    Get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, callback) {
+        Python_Communicator.get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, 'Python_Scripts/Differential_Evolution.py', (results) => {
+            callback(results)
         });
     }
 
@@ -157,13 +170,13 @@ class Application {
         return { "samplingVector": sampling_vector, "scenario": scenario };
     }
 
-    static Build_Symmetrical_Scenario_NSSC(n, sampling_vector, count) {
+    static Build_Symmetrical_Scenario_NSSC(sampling_vector, count) {
         var scenario = [];
         var time_of_change = 0;
         var M = 0;
         var c = 0;
         for (let index = 0; index < count; index++) {
-            var content_of_scenario = { "time": 0, "n": n, "M": 0, "c": 0 };
+            var content_of_scenario = { "time": 0, "n": sampling_vector.length, "M": 0, "c": 0 };
 
             time_of_change = parseFloat($('#time' + index).val());
             M = parseFloat($('#M' + index).val());
@@ -179,9 +192,9 @@ class Application {
         return { "samplingVector": sampling_vector, "scenario": scenario };
     }
 
-    static Build_Scenario_Update(type_nssc_model, matrix_collection, deme_vector_collection, sampling_vector, order, count){
+    static Build_Scenario_Update(type_nssc_model, matrix_collection, deme_vector_collection, sampling_vector, count) {
         if (type_nssc_model == 'General') return Application.Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector);
-        else return Application.Build_Symmetrical_Scenario_NSSC(order, sampling_vector, count);
+        else return Application.Build_Symmetrical_Scenario_NSSC(sampling_vector, count);
     }
 
 

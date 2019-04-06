@@ -362,7 +362,7 @@
             }*/
 
             // Create headers
-            //My change I
+            //My change I nxn
 
             tr = '<td width="30" class="jexcel_label">nxn</td>';
             cg = '<col width="30">';
@@ -1864,8 +1864,8 @@
                     $.fn.jexcel.ignoreHistory = true;
                 }
 
-                // Get value from column and set the default
-                $.fn.jexcel.defaults[id].data[position[1]][position[0]] = value;
+                // Get value from column and set the default. My change II
+                $.fn.jexcel.defaults[id].data[position[1]][position[0]] = parseFloat(value);
 
                 // Update cell
                 $(this).jexcel('updateCells', [{
@@ -2194,8 +2194,8 @@
                     }
                 }
 
-                // Get value from column and set the default
-                $.fn.jexcel.defaults[id].data[position[1]][position[0]] = value;
+                // Get value from column and set the default. My change III
+                $.fn.jexcel.defaults[id].data[position[1]][position[0]] = parseFloat(value);
 
                 // Global variables
                 var i = $.fn.jexcel('getColumnName', v.col) + (parseInt(v.row) + 1);

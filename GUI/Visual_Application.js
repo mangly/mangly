@@ -238,9 +238,8 @@ class Visual_Application {
 
     Visualize_NSSC() {
         if (this.logic_application.functions_collection.length > this.chart.data.datasets.length) {
-            $('#canvas-container').removeClass('disabled');
-
-            $('#tab-graphics').trigger('click');
+            // $('#canvas-container').removeClass('disabled');
+            // $('#tab-graphics').trigger('click');
             var color = this.Get_Random_Color();
             var nssc = this.logic_application.Get_Last_Function();
 
@@ -402,14 +401,14 @@ class Visual_Application {
         this.chart.resetZoom();
     }
 
-    Visualize_Information_Of_Functions(funct, name, theta, rho, model) {
+    Visualize_Information_Of_Functions(funct) {
         var parametters = this.Get_Parametters(funct.name);
 
-        name.html(funct.name);
-        theta.html(parametters[0]);
-        rho.html(parametters[1]);
-        model.html(parametters[2]);
-
+        $('#graphic').text(funct.name)
+        $('#theta').text(parametters[0]);
+        $('#rho').text(parametters[1]);
+        $('#model').text(parametters[2]);
+        $('#model-subtitle').text('Model by which the graph is based');
     }
 
     Initialize_Information_Of_Functions() {
@@ -417,6 +416,15 @@ class Visual_Application {
         $('#theta').text('-');
         $('#rho').text('-');
         $('#model').text('-');
+        $('#model-subtitle').text('Model by which the graph is based');
+    }
+
+    Change_Information_Of_Functions() {
+        // $('#model').text('The distance between curves is:');
+        // $('#model-subtitle').text('Distance between PSMC and NSSC models')
+        $('.theta-rho').fadeOut(50, function () {
+            $('#distance-value-col').fadeIn(500);
+        });
     }
 
     Load_Principal_Window_Data(name, scenario, callback) {
@@ -447,6 +455,29 @@ class Visual_Application {
         this.logic_application.functions_collection.splice(index, 1);
         event_target.parents('.listview__item').remove();
         this.chart.update()
+    }
+
+    Show_Distance() {
+        var psmc_msmc_model_data = this.Get_Graphic($('#psmc-msmc-model').val()).data;
+        var nssc_model = this.logic_application.Get_Function($('#nssc-model').val());
+        var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
+
+        this.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
+            $('#distance-value').text(result);
+        });
+    }
+
+    Show_Optimal_Values_Metaheuristics(metaheuristic_name, callback) {
+        var psmc_msmc_model_data = this.Get_Graphic($('#psmc-msmc-model').val()).data;
+        var nssc_model = this.logic_application.Get_Function($('#nssc-model').val());
+        var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
+
+        if (metaheuristic_name == 'de') {
+            console.log('processing...')
+            this.logic_application.Get_Optimal_Values_Metaheuristic_DE(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
+                callback(result);
+            });
+        }
     }
 
     static Fill_Initial_Data_Vector(value, type, order = 0) {
@@ -487,7 +518,7 @@ class Visual_Application {
     }
 
     static Configuration_Vector() {
-        $('.1xn thead.jexcel_label').remove();
+        $('.1xn thead.jexcel_label').hide();
         $('.1xn td.jexcel_label').text('Values:');
         $('.1xn td.jexcel_label').css("width", "60px");
         // $('.1xn .jexcel_label').hide()
@@ -511,6 +542,7 @@ class Visual_Application {
 
     static Add_Show_Time_Deme_Sizes(html, order, matrix_collection, id) {
         this.Add_Matrix(html, $('#list-scenario'), order, matrix_collection, id, true);
+        Visual_Application.Configuration_Vector();
     }
 
     static Add_Matrix(html, html_append, order, matrix_collection, id, vector) {
@@ -520,7 +552,7 @@ class Visual_Application {
 
         if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector(1, 'deme_sizes', order));
 
-        else this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Matrix('', order));
+        else this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Matrix(0, order));
 
         matrix_collection.push(matrix);
         this.Configuration_Matrix(matrix, order);
@@ -566,6 +598,86 @@ class Visual_Application {
         }
 
         Visual_Application.Configuration_Vector();
+    }
+
+    static Fill_Deme_Vector(vector, count_demes, value) {
+        var data_vector = vector.jexcel('getData', false);
+
+        for (let index = 0; index < count_demes; index++) {
+            data_vector[0].push(value);
+        }
+
+        vector.jexcel({
+            data: data_vector,
+            allowManualInsertColumn: false,
+            allowManualInsertRow: false,
+        });
+    }
+
+    static Fill_Deme_Matrix(matrix, count_demes, value) {
+        var data_matrix = matrix.jexcel('getData', false);
+        var last_row = [];
+
+        for (let index1 = 0; index1 < data_matrix.length; index1++) {
+            for (let index2 = 0; index2 < count_demes; index2++) {
+                data_matrix[index1].push(value);
+            }
+        }
+
+        for (let index = 0; index < data_matrix[0].length; index++) {
+            last_row.push(0);
+        }
+
+        for (let index = 0; index < count_demes; index++) {
+            data_matrix.push(last_row);
+        }
+
+        matrix.jexcel({
+            data: data_matrix,
+            allowManualInsertColumn: false,
+            allowManualInsertRow: false,
+        });
+    }
+
+    static Add_Deme(count_demes, order, deme_vector_collection, sampling_vector, matrix_collection, type) {
+        this.Fill_Deme_Vector(sampling_vector, count_demes, 0);
+
+        for (let index = 0; index < deme_vector_collection.length; index++) {
+            const deme = deme_vector_collection[index];
+
+            this.Fill_Deme_Vector(deme, count_demes, 1);
+        }
+
+        if (type == 'General') {
+            for (let index = 0; index < matrix_collection.length; index++) {
+                const matrix = matrix_collection[index];
+
+                this.Fill_Deme_Matrix(matrix, count_demes, 0);
+
+                this.Configuration_Matrix(matrix, order + count_demes);
+            }
+        }
+
+        this.Configuration_Vector();
+    }
+
+    static Delete_Deme(count, order, deme_vector_collection, sampling_vector, matrix_collection) {
+        sampling_vector.jexcel('deleteColumn', order, count);
+        for (let index = 0; index < deme_vector_collection.length; index++) {
+            const deme = deme_vector_collection[index];
+            deme.jexcel('deleteColumn', order, count);
+        }
+
+        for (let index = 0; index < matrix_collection.length; index++) {
+            const matrix = matrix_collection[index];
+
+            matrix.jexcel('deleteColumn', order, count);
+            matrix.jexcel('deleteRow', order, count);
+
+            this.Configuration_Matrix(matrix, order + count);;
+        }
+
+        this.Configuration_Vector();
     }
 
     Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
@@ -614,10 +726,10 @@ class Visual_Application {
         }
 
         Visual_Application.Configuration_Vector();
-        this.Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, order, number_of_events + 1);
+        this.Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, number_of_events + 1);
     }
 
-    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, order, count) {
+    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, count, compute_distance) {
         var slider_time = document.getElementsByClassName("slider-time");
         var slider_mlist = document.getElementsByClassName("slider-m");
         var slider_clist = document.getElementsByClassName("slider-c");
@@ -636,15 +748,15 @@ class Visual_Application {
                 })
             });
 
-            slider_t.noUiSlider.set($('#time'+index).val());
+            slider_t.noUiSlider.set($('#time' + index).val());
 
             slider_t.noUiSlider.on("set", (a, b) => {
-                var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
+                var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), count);
 
                 this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
                     // this.Update_NSSC(nssc_function);
-                    this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
-
+                    this.Update_NSSC(nssc_function, nssc_function.N_ref);
+                    if ($('#distance-value-col').css('display') != 'none') this.Show_Distance();
                 });
             });
 
@@ -671,14 +783,15 @@ class Visual_Application {
                     })
                 });
 
-                slider_m.noUiSlider.set($('#M'+index).val());
+                slider_m.noUiSlider.set($('#M' + index).val());
 
                 slider_m.noUiSlider.on("set", (a, b) => {
-                    var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
+                    var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), count);
 
                     this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
                         // this.Update_NSSC(nssc_function);
-                        this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+                        this.Update_NSSC(nssc_function, nssc_function.N_ref);
+                        if ($('#distance-value-col').css('display') != 'none') this.Show_Distance();
                     });
                 });
 
@@ -705,14 +818,15 @@ class Visual_Application {
                     })
                 });
 
-                slider_c.noUiSlider.set($('#c'+index).val());
+                slider_c.noUiSlider.set($('#c' + index).val());
 
                 slider_c.noUiSlider.on("set", (a, b) => {
-                    var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), order, count);
+                    var scenario_update = Application.Build_Scenario_Update($('#type-nssc-model').val(), matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), count);
 
                     this.logic_application.Get_NSSC_Vectors($('#type-nssc-model').val(), $('#nssc-name').val(), scenario_update, (nssc_function) => {
                         // this.Update_NSSC(nssc_function);
-                        this.Update_NSSC(nssc_function, $('#input-slider-value-nref').val());
+                        this.Update_NSSC(nssc_function, nssc_function.N_ref);
+                        if ($('#distance-value-col').css('display') != 'none') this.Show_Distance();
                     });
                 });
 
