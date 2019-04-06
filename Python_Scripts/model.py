@@ -194,29 +194,9 @@ class NSSC:
         """
         Evaluates the IICR at time t for the current model
         """
-        F_x = self.cdfT2(t)
+        F_x = np.min(np.array([self.cdfT2(t), 1]))
         f_x = self.pdfT2(t)
-        return(np.true_divide(1-F_x, f_x)).real
-        
-    def compute_distance(self, x, y, Nref):
-        """
-        Compute the distance between the IICR of the model,
-        scaled by Nref, and some psmc curve given by x, y
-        """
-        points_to_evaluate = [(x[i] + x[i-1])*0.5/(2*Nref) 
-                                for i in range(1, len(x))]
-        m_pdf = [self.pdfT2(i) for i in points_to_evaluate]
-        m_cdf = [self.cdfT2(i) for i in points_to_evaluate]
-        m_IICR = []
-        distance = 0
-        d2 = 0
-        for i in range(len(m_pdf)):
-            if m_pdf[i] < 1e-14:
-                m_IICR+=[m_IICR[-1]]
-            else:
-                m_IICR += [(1 - m_cdf[i]) / m_pdf[i]]
-            distance += (y[i] - Nref*m_IICR[i])**2
-        return distance
+        return(np.true_divide(1-F_x, f_x))
 
 class Pnisland(NSSC):
     """
@@ -275,7 +255,7 @@ class Pnisland(NSSC):
 
     def createQmatrix(self, n, M, c):
 
-        Q = np.array([[-M-c, M, c], 
-                      [float(M)/(n-1), -float(M)/(n-1), 0], 
+        Q = np.array([[-M-c, M, c],
+                      [float(M)/(n-1), -float(M)/(n-1), 0],
                       [0, 0, 0]])
         return Q
