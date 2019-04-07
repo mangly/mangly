@@ -194,8 +194,11 @@ class NSSC:
         """
         Evaluates the IICR at time t for the current model
         """
+        # Sometimes, for numerical
+        # errors, F_x and f_x get negative values
+        # To avoid this, I use np.min and np.abs
         F_x = np.min(np.array([self.cdfT2(t), 1]))
-        f_x = self.pdfT2(t)
+        f_x = np.abs(self.pdfT2(t))
         return(np.true_divide(1-F_x, f_x))
 
 class Pnisland(NSSC):
