@@ -193,13 +193,41 @@ class NSSC:
     def evaluateIICR(self, t):
         """
         Evaluates the IICR at time t for the current model
+        t: list of values to evaluate the IICR
         """
         # Sometimes, for numerical
         # errors, F_x and f_x get negative values
-        # To avoid this, I use np.min and np.abs
-        F_x = np.min(np.array([self.cdfT2(t), 1]))
-        f_x = np.abs(self.pdfT2(t))
+        # or "nan" or "inf"
+        # In any of these cases, a default value is returned
+        F_x = np.ones(len(t))
+        f_x = np.ones(len(t))
+        F_x[0] = self.cdfT2(t[0])
+        if not(0<=F_x[0]<=1): F_x[0]=1
+        f_x[0] = self.pdfT2(t[0])
+        if (f_x[0] < 1e-14) or (np.isinf(f_x[0])) or np.isnan(f_x[0]):
+            f_x[0] = 1e-14
+        for i in range(1, len(t)):
+            F_x[i] = self.cdfT2(t[i])
+            if not(0<=F_x[i]<=1): F_x[i]=F_x[i-1]
+            f_x[i] = self.pdfT2(t[i])
+            if (f_x[i] < 1e-14) or (np.isinf(f_x[i])) or np.isnan(f_x[i]):
+                f_x[i] = f_x[i-1]
         return(np.true_divide(1-F_x, f_x))
+
+    def compute_distance(self, x, y, Nref):
+        """
+        Compute the distance between the IICR of the model,
+        scaled by Nref, and some psmc curve given by x, y
+        """
+        # We evaluate the theoretical IICR at points
+        # (x[i] + x[i-1])*0.5/(2*Nref)
+        points_to_evaluate = [(x[i] + x[i-1])*0.25/Nref
+                             for i in range(1, len(x))]
+        m_IICR = self.evaluateIICR(points_to_evaluate)
+        distance = 0
+        for i in range(len(m_IICR)):
+            distance += (y[i] - Nref*m_IICR[i])**2
+        return distance
 
 class Pnisland(NSSC):
     """
