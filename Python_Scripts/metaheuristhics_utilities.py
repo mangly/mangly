@@ -1,3 +1,5 @@
+from model import Pnisland
+
 def get_initial_random_state(scenario):
     initial_state = []
 
@@ -101,5 +103,52 @@ def get_optimal_scenario(ndarray):
         result_content['c'] = multi_ndarray[i][2]
         result.append(result_content.copy())
     
-    # result['n_ref'] = n_ref
     return result
+
+def best_initial_n_ref(scenario, x_vector, y_vector):
+    n_ref = 1
+    d = 10000000000000000000
+    nssc_model = Pnisland(scenario)
+
+    for i in range (1, 10000):
+        d_temp = nssc_model.compute_distance(x_vector, y_vector, i)
+        if(d_temp < d): 
+            d = d_temp
+            n_ref = i
+
+    return n_ref
+
+def get_best_values(scenario, x_vector, y_vector):
+    M = 0
+    time = scenario['scenario'][len(scenario['scenario']) - 1]['time']
+    n = scenario['scenario'][0]['n']
+    c = 0
+    n_ref = best_initial_n_ref(scenario, x_vector, y_vector)
+
+    for i in range(0, len(scenario['scenario'])):
+        M_temp = scenario['scenario'][i]['M']
+        c_temp = scenario['scenario'][i]['c']
+        
+        if(M_temp > M): M = M_temp
+        if(c_temp > c): c = c_temp
+
+    return (time, n, M, c, n_ref)
+
+
+def get_initial_bounds(scenario, x_vector, y_vector):
+    bounds_result = []
+    best_values = get_best_values(scenario, x_vector, y_vector)
+
+    for i in range(0, len(scenario['scenario'])):
+        if(i==0): bounds_result.append((0,0))
+        else: bounds_result.append((1, best_values[0] + 4))
+
+        bounds_result.append((1, best_values[2] + 4))
+        bounds_result.append((1, best_values[3] + 4))
+
+    bounds_result.append((2, best_values[1] + 4))
+
+    if(best_values[4] + 500 <= 10000): bounds_result.append((1, best_values[4] + 500))
+    else: bounds_result.append((1, best_values[4] + (10000 - best_values[4])))
+
+    return bounds_result

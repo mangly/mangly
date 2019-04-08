@@ -679,9 +679,8 @@ class Visual_Application {
         this.Configuration_Vector();
     }
 
-    Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events, n_ref) {
+    Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
         Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
-        $('#input-slider-value-nref').val(n_ref);
 
         for (let index = 0; index < number_of_events + 1; index++) {
             var value = 0;
@@ -729,11 +728,11 @@ class Visual_Application {
         this.Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, number_of_events + 1);
     }
 
-    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, count, compute_distance) {
+    Configuration_Sliders(type, matrix_collection, deme_vector_collection, sampling_vector, count) {
         var slider_time = document.getElementsByClassName("slider-time");
         var slider_mlist = document.getElementsByClassName("slider-m");
         var slider_clist = document.getElementsByClassName("slider-c");
-
+        
         for (let index = 0; index < slider_time.length; index++) {
             const slider_t = slider_time[index];
 
