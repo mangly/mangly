@@ -599,10 +599,11 @@ $(document).ready(function () {
         $('#distance-value').text(metaheuristic_distance_result);
         application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
         selected_function.N_ref = metaheuristic_n_ref_result;
-        application.Update_Slider(metaheuristic_n_ref_result, 'n-ref', slider_nref, $('#input-slider-value-nref'));
-        // application.Update_NSSC(selected_function);
+        application.Update_NSSC(selected_function);
         $('#load-nssc-state').trigger('click');
         $('#tab-nssc').trigger('click');
+        $('#input-slider-value-nref').val(selected_function.N_ref);
+        document.getElementById("slider-nref").noUiSlider.set(selected_function.N_ref);
     });
 
     $('#es').on('click', function () {
