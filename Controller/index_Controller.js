@@ -82,143 +82,68 @@ $(document).ready(function () {
     var legend_color;
 
     $('#list-graphics').on('click', function () {
+        var target = $(event.target);
         //Delete function
-        if ($(event.target).is('.zmdi-delete')) {
-            var event_target = $(event.target);
-
+        if (target.is('.zmdi-delete')) {
+            // var event_target = target;
             dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Cancel', 'Accept'] }, (response) => {
-                if (response == 1) application.Delete_Function(event_target);
+                if (response == 1) application.Delete_Function(target);
             });
         }
 
         //Selections
-        if ($(event.target).is('.custom-control-input')) {
-            // Disable multiple selection in checkbox control
-            $('.custom-control-input').not($(event.target)).prop('checked', false);
-            //------------
+        else if (target.is('.custom-control-input')) {
+            selected_function = application.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
+            application.Select_Function(target, selected_function, legend_color, slider_mu);
+            // // Disable multiple selection in checkbox control
+            // $('.custom-control-input').not($(event.target)).prop('checked', false);
+            // //------------
 
-            selected_function = application.logic_application.Get_Function(($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
-            legend_color = $(event.target).parents('.custom-control').children('.custom-control--char__helper');
+            // selected_function = application.logic_application.Get_Function(($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
+            // legend_color = $(event.target).parents('.custom-control').children('.custom-control--char__helper');
 
-            if ($(event.target).prop('checked')) {
-                $('#reset-scales').removeAttr('disabled');
-                $('#reset-all-scales').removeAttr('disabled');
-                $('#change-color').removeAttr('disabled');
+            // if ($(event.target).prop('checked')) {
+            //     $('#reset-scales').removeAttr('disabled');
+            //     $('#reset-all-scales').removeAttr('disabled');
+            //     $('#change-color').removeAttr('disabled');
 
-                var color = application.Get_Graphic(selected_function.name).backgroundColor;
-                $('#change-color').val(color);
-                $('.color-picker__preview').css('background-color', color);
-
-
-                if (selected_function.model == 'psmc') {
-                    $('#option-s *').removeAttr('disabled');
-                    $('#option-mu *').removeAttr('disabled');
-                    // slider_s.noUiSlider.set(graphic.S);
-                    // slider_mu.noUiSlider.set(selected_function.Mu);
-                    application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
-                    $('#input-slider-value-s').val(selected_function.S)
-                }
-
-                else if (selected_function.model == 'msmc') {
-                    // slider_s.noUiSlider.set(100);
-                    application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
-                    $('#option-mu *').removeAttr('disabled');
-                    $('#option-s *').attr('disabled', 'disabled');
-                }
-
-                // else {
-                //     application.Update_Slider(selected_function.N_ref, 'n-ref', slider_nref, $('#input-slider-value-nref'));
-                // }
-
-                application.Visualize_Information_Of_Functions(selected_function);
+            //     var color = application.Get_Graphic(selected_function.name).backgroundColor;
+            //     $('#change-color').val(color);
+            //     $('.color-picker__preview').css('background-color', color);
 
 
-                // $('#option-s *').removeAttr('disabled');
-                // $('#option-mu *').removeAttr('disabled');
-                // legend_color = [];
-                // items_selecteds = [];
-                // items_selecteds.push(name_item_clicked);
-                // legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
-            }
+            //     if (selected_function.model == 'psmc') {
+            //         $('#option-s *').removeAttr('disabled');
+            //         $('#option-mu *').removeAttr('disabled');
 
-            else {
-                $('#reset-scales').attr('disabled', 'disabled');
-                $('#reset-all-scales').attr('disabled', 'disabled');
-                $('#change-color').attr('disabled', 'disabled');
-                $('#option-s *').attr('disabled', 'disabled');
-                $('#option-mu *').attr('disabled', 'disabled');
-                selected_function = null;
-                $('#input-slider-value-s').val(100);
-                // slider_mu.noUiSlider.set(1.25);
-                application.Update_Slider(1.25, 'mu', slider_mu, $("#input-slider-value-mu"));
+            //         application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
+            //         $('#input-slider-value-s').val(selected_function.S)
+            //     }
 
-                application.Initialize_Information_Of_Functions();
-                // legend_color = [];
-                // items_selecteds = [];
-            }
+            //     else if (selected_function.model == 'msmc') {
+            //         application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
+            //         $('#option-mu *').removeAttr('disabled');
+            //         $('#option-s *').attr('disabled', 'disabled');
+            //     }
 
-            $('#back').trigger('click');
-
-            // if ($('#container-edit-nssc').is(':visible')) { 
-            //     alert('el div ahora esta mostrado'); 
-            // }
-            // else { alert('el div esta oculto'); }
-
-
-
-
-            // $('#container-edit-nssc').hide();
-            // $('#container-create-nssc').show();
+            //     application.Visualize_Information_Of_Functions(selected_function);
             // }
 
             // else {
-            //     if ($(event.target).prop('checked')) {
-            //         if (!items_selecteds.includes(name_item_clicked)) {
-            //             $('#reset-scales').removeAttr('disabled');
-            //             $('#reset-all-scales').removeAttr('disabled');
-            //             $('#change-color').removeAttr('disabled');
-            //             $('#option-s *').removeAttr('disabled');
-            //             $('#option-mu *').removeAttr('disabled');
-            //             items_selecteds.push(name_item_clicked);
-            //             legend_color.push($(event.target).parents('.custom-control').children('.custom-control--char__helper'));
-            //         }
-            //     }
-            //     else {
-            //         var index = items_selecteds.indexOf(name_item_clicked);
-            //         items_selecteds.splice(index, 1)
-            //         legend_color.splice(index, 1)
+            //     $('#reset-scales').attr('disabled', 'disabled');
+            //     $('#reset-all-scales').attr('disabled', 'disabled');
+            //     $('#change-color').attr('disabled', 'disabled');
+            //     $('#option-s *').attr('disabled', 'disabled');
+            //     $('#option-mu *').attr('disabled', 'disabled');
+            //     selected_function = null;
+            //     $('#input-slider-value-s').val(100);
 
-            //         if (items_selecteds.length == 0) {
-            //             $('#reset-scales').attr('disabled', 'disabled');
-            //             $('#reset-all-scales').attr('disabled', 'disabled');
-            //             $('#change-color').attr('disabled', 'disabled');
-            //             $('#option-s *').attr('disabled', 'disabled');
-            //             $('#option-mu *').attr('disabled', 'disabled');
-            //             slider_s.noUiSlider.set(100);
-            //             slider_mu.noUiSlider.set(1.25);
-            //         }
-            //     }
+            //     application.Update_Slider(1.25, 'mu', slider_mu, $("#input-slider-value-mu"));
+
+            //     application.Initialize_Information_Of_Functions();
             // }
 
-            // var graphic = application.logic_application.Contain(name_item_clicked);
-
-
-            // if (items_selecteds.length != 0) {
-
-            // }
-
-            // else {
-            //     // $('#options-color-edit-remove *').attr('disabled', 'disabled');
-
-            // }
-
-            // $('#options-color-edit-remove *').removeAttr('disabled');
-            // $('#option-mu *').removeAttr('disabled');
-
-            // var graphic = application.logic_application.Contain(name_item_clicked);
-            // if (application.Get_Parametters(name_item_clicked)[2] == 'Pairwise Sequentially Markovian Coalescent') {
-            // $('#option-s *').removeAttr('disabled');
-            // $('#option-mu *').removeAttr('disabled');
+            // $('#back').trigger('click');
         }
     });
 
@@ -548,14 +473,22 @@ $(document).ready(function () {
     });
 
     $('#nssc-model').on('change', function () {
+        var target;
         var name_model = $(this).val();
         list_graphics = $('.custom-control-input');
 
         for (let index = 0; index < list_graphics.length; index++) {
             const element = list_graphics.eq(index);
-            
-            if (name_model == (element.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()) element.prop('checked', 'true');
+
+            if (name_model == (element.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()) {
+                element.prop('checked', 'true');
+                target = element;
+                break;
+            }
         }
+
+        selected_function = application.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
+        application.Select_Function(target, selected_function, legend_color, slider_mu);
 
         if (name_model != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
             compute_distance = true;

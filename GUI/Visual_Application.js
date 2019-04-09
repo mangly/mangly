@@ -167,6 +167,57 @@ class Visual_Application {
         return "#" + color;
     }
 
+    Select_Function(target, selected_function, legend_color, slider_mu) {
+        // Disable multiple selection in checkbox control
+        $('.custom-control-input').not(target).prop('checked', false);
+        //------------
+
+        // selected_function = this.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
+        legend_color = target.parents('.custom-control').children('.custom-control--char__helper');
+
+        if (target.prop('checked')) {
+            $('#reset-scales').removeAttr('disabled');
+            $('#reset-all-scales').removeAttr('disabled');
+            $('#change-color').removeAttr('disabled');
+
+            var color = this.Get_Graphic(selected_function.name).backgroundColor;
+            $('#change-color').val(color);
+            $('.color-picker__preview').css('background-color', color);
+
+
+            if (selected_function.model == 'psmc') {
+                $('#option-s *').removeAttr('disabled');
+                $('#option-mu *').removeAttr('disabled');
+
+                this.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
+                $('#input-slider-value-s').val(selected_function.S)
+            }
+
+            else if (selected_function.model == 'msmc') {
+                this.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
+                $('#option-mu *').removeAttr('disabled');
+                $('#option-s *').attr('disabled', 'disabled');
+            }
+
+            this.Visualize_Information_Of_Functions(selected_function);
+        }
+
+        else {
+            $('#reset-scales').attr('disabled', 'disabled');
+            $('#reset-all-scales').attr('disabled', 'disabled');
+            $('#change-color').attr('disabled', 'disabled');
+            $('#option-s *').attr('disabled', 'disabled');
+            $('#option-mu *').attr('disabled', 'disabled');
+            selected_function = null;
+            $('#input-slider-value-s').val(100);
+
+            this.Update_Slider(1.25, 'mu', slider_mu, $("#input-slider-value-mu"));
+            this.Initialize_Information_Of_Functions();
+        }
+
+        $('#back').trigger('click');
+    }
+
     Visualize_PSMC_MSMC() {
         var element_scale_by_default;
         var IICR;
