@@ -87,7 +87,11 @@ $(document).ready(function () {
         if (target.is('.zmdi-delete')) {
             // var event_target = target;
             dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Cancel', 'Accept'] }, (response) => {
-                if (response == 1) application.Delete_Function(target);
+                if (response == 1) {
+                    application.Delete_Function(target);
+                    selected_function = null;
+                    application.Initialize_Information_Of_Functions();
+                }
             });
         }
 
@@ -329,7 +333,7 @@ $(document).ready(function () {
     var number_of_events;
 
     $('#load-nssc-state').on('click', function () {
-        if ($('#model').html() != 'The Non-Stationary Structured Coalescent') {
+        if (!selected_function) {
             var options = {
                 filters: [
                     { name: 'File', extensions: ['snssc'] }
