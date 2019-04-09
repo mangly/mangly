@@ -89,8 +89,9 @@ $(document).ready(function () {
             dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Cancel', 'Accept'] }, (response) => {
                 if (response == 1) {
                     application.Delete_Function(target);
-                    selected_function = null;
+                    application.Delete_Function_Metaheuristic_List(selected_function.name);
                     application.Initialize_Information_Of_Functions();
+                    selected_function = null;
                 }
             });
         }
@@ -494,7 +495,7 @@ $(document).ready(function () {
         selected_function = application.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
         application.Select_Function(target, selected_function, legend_color, slider_mu);
 
-        if (name_model != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
+        if (name_model != '... NSSC ...' && $('#psmc-msmc-model').val() != '... PSMC / MSMC ...') {
             compute_distance = true;
             application.Show_Distance();
             application.Change_Information_Of_Functions();
@@ -511,7 +512,7 @@ $(document).ready(function () {
     var metaheuristic_distance_result;
     var metaheuristic_vectors_result;
     $('#start_metaheuristic').on('click', function () {
-        if ($('#nssc-model').val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
+        if ($('#nssc-model').val() != '... NSSC ...' && $('#psmc-msmc-model').val() != '... PSMC / MSMC ...') {
             $('#modal-default').modal({
                 backdrop: 'static',
                 keyboard: false

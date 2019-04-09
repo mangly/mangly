@@ -531,6 +531,26 @@ class Visual_Application {
         // }
     }
 
+    Delete_Function_Metaheuristic_List(name) {
+        var deleted = false;
+        $('#psmc-msmc-model option').each(function () {
+            if ($(this).text() == name) {
+                $(this).remove();
+                deleted = true;
+                return false;
+            }
+        });
+
+        if (!deleted) {
+            $('#nssc-model option').each(function () {
+                if ($(this).text() == name) {
+                    $(this).remove();
+                    return false;
+                }
+            });
+        }
+    }
+
     static Fill_Initial_Data_Vector(value, type, order = 0) {
         var data = new Array([[value]]);
         var i = 0;
