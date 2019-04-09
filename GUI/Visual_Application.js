@@ -188,6 +188,7 @@ class Visual_Application {
             if (selected_function.model == 'psmc') {
                 $('#option-s *').removeAttr('disabled');
                 $('#option-mu *').removeAttr('disabled');
+                $('#load-nssc-state').attr('disabled', 'disabled');
 
                 this.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
                 $('#input-slider-value-s').val(selected_function.S)
@@ -197,12 +198,16 @@ class Visual_Application {
                 this.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
                 $('#option-mu *').removeAttr('disabled');
                 $('#option-s *').attr('disabled', 'disabled');
+                $('#load-nssc-state').attr('disabled', 'disabled');
             }
+
+            else $('#load-nssc-state').removeAttr('disabled');
 
             this.Visualize_Information_Of_Functions(selected_function);
         }
 
         else {
+            $('#load-nssc-state').removeAttr('disabled');
             $('#reset-scales').attr('disabled', 'disabled');
             $('#reset-all-scales').attr('disabled', 'disabled');
             $('#change-color').attr('disabled', 'disabled');

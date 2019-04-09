@@ -468,14 +468,14 @@ $(document).ready(function () {
             compute_distance = true;
             application.Show_Distance();
             application.Change_Information_Of_Functions();
-            $('#start_metaheuristic').removeClass('disabled');
+            $('#start_metaheuristic').removeAttr('disabled');
         }
         else {
             $('#distance-value-col').fadeOut(50, function () {
                 $('.theta-rho').fadeIn(500);
             });
 
-            $('#start_metaheuristic').addClass('disabled');
+            $('#start_metaheuristic').attr('disabled', 'disabled');
         }
     });
 
