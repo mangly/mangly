@@ -466,17 +466,18 @@ class Visual_Application {
         });
     }
 
-    Show_Optimal_Values_Metaheuristics(metaheuristic_name, callback) {
+    Show_Optimal_Values_Metaheuristics(callback) {
         var psmc_msmc_model_data = this.Get_Graphic($('#psmc-msmc-model').val()).data;
         var nssc_model = this.logic_application.Get_Function($('#nssc-model').val());
         var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
+        var metaheuristic_name = $('#metaheuristic').val();
 
-        if (metaheuristic_name == 'de') {
-            console.log('processing...')
-            this.logic_application.Get_Optimal_Values_Metaheuristic_DE(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
-                callback(result);
-            });
-        }
+        // if (metaheuristic_name == 'Differential Evolution') {
+        console.log('processing...')
+        this.logic_application.Get_Optimal_Values_Metaheuristics(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), metaheuristic_name, function (result) {
+            callback(result);
+        });
+        // }
     }
 
     static Fill_Initial_Data_Vector(value, type, order = 0) {
@@ -732,7 +733,7 @@ class Visual_Application {
         var slider_time = document.getElementsByClassName("slider-time");
         var slider_mlist = document.getElementsByClassName("slider-m");
         var slider_clist = document.getElementsByClassName("slider-c");
-        
+
         for (let index = 0; index < slider_time.length; index++) {
             const slider_t = slider_time[index];
 

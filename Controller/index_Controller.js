@@ -574,7 +574,7 @@ $(document).ready(function () {
                 backdrop: 'static',
                 keyboard: false
             });
-            application.Show_Optimal_Values_Metaheuristics('de', function (metaheuristic_results) {
+            application.Show_Optimal_Values_Metaheuristics(function (metaheuristic_results) {
                 // $('#modal-default').modal('hide');
                 $('.modal-title').text('Do you want evaluate this solution?')
                 $('#stop-yes').html('Yes');

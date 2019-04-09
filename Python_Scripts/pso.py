@@ -1,5 +1,5 @@
 from __future__ import division
-import math, sys, json
+import math, sys, json, random
 from model import Pnisland
 from metaheuristhics_utilities import get_scenario, multi_dim_conversion, valid_state, get_optimal_scenario, best_initial_n_ref, get_best_values, get_initial_bounds, get_initial_state
 from functions import get_NSSC_vectors
@@ -14,8 +14,8 @@ def compute_distance(state):
     multi_state = multi_dim_conversion(state, 3)
 
     if(valid_state(multi_state)):  
-        nssc_model = Pnisland(get_scenario(new_scenario, state))
-        d = nssc_model.compute_distance(x_vector, y_vector, state[len(state) - 1])
+        nssc_model = Pnisland(get_scenario(scenario_NSSC, state))
+        d = nssc_model.compute_distance(vectors['x'], vectors['y'], state[len(state) - 1])
         return d
 
     return 10000000000000000000
@@ -113,7 +113,7 @@ class PSO():
         scenario_NSSC['scenario'] = optimal_scenario
         optimal_vectors = get_NSSC_vectors('Symmetrical', scenario_NSSC)
 
-        json_result = {'optimal_scenario': scenario_NSSC, 'n_ref': n_ref, 'distance': result.fun, 'vectors': optimal_vectors}
+        json_result = {'optimal_scenario': scenario_NSSC, 'n_ref': n_ref, 'distance': err_best_g, 'vectors': optimal_vectors}
 
         print(json.dumps(json_result))
 
@@ -129,8 +129,8 @@ if __name__ == "__PSO__":
 
 # initial=[0,1,1,10,50,1,50,1,1,15,464]   
  
-bounds = get_initial_bounds(new_scenario, x_vector, y_vector)
-initial=get_initial_state(new_scenario, bounds[1]) 
+bounds = get_initial_bounds(scenario_NSSC, vectors['x'], vectors['y'])
+initial=get_initial_state(scenario_NSSC, bounds[1]) 
 # bounds=[(0, 0), (1, 50), (1,5), (1, 50), (1, 50), (1,5), (2, 50), (1, 50), (1,5), (2,20), (500, 1000)]  # input bounds [(x1_min,x1_max),(x2_min,x2_max)...]
 PSO(compute_distance, initial, bounds[0], num_particles=20, maxiter=80)
 

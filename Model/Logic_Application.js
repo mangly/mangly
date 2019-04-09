@@ -69,7 +69,7 @@ class Application {
                 var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario, this.N_ref);
                 if (!this.Contains(nssc)) this.functions_collection.push(nssc);
             }
-            
+
             else this.Update_NSSC(nssc_function, scenario, results);
             callback(nssc_function);
         });
@@ -81,10 +81,18 @@ class Application {
         nssc_function.scenario = scenario;
     }
 
-    Get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, callback) {
-        Python_Communicator.get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, 'Python_Scripts/Differential_Evolution.py', (results) => {
-            callback(results)
-        });
+    Get_Optimal_Values_Metaheuristics(vectors, scenario_NSSC, n_ref, metaheuristic_name, callback) {
+        if (metaheuristic_name == 'Differential Evolution') {
+            Python_Communicator.get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, 'Python_Scripts/Differential_Evolution.py', (results) => {
+                callback(results)
+            });
+        }
+
+        else {
+            Python_Communicator.get_Optimal_Values_Metaheuristic_PSO(vectors, scenario_NSSC, n_ref, 'Python_Scripts/pso.py', (results) => {
+                callback(results)
+            });
+        }
     }
 
     Compute_Distance(vectors, scenario_NSSC, n_ref, callback) {
