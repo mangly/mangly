@@ -540,8 +540,6 @@ $(document).ready(function () {
             application.Change_Information_Of_Functions();
         }
         else {
-            // if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
-            // else application.Initialize_Information_Of_Functions();
             $('#distance-value-col').fadeOut(50, function () {
                 $('.theta-rho').fadeIn(500);
             });
@@ -550,14 +548,21 @@ $(document).ready(function () {
     });
 
     $('#nssc-model').on('change', function () {
-        if ($(this).val() != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
+        var name_model = $(this).val();
+        list_graphics = $('.custom-control-input');
+
+        for (let index = 0; index < list_graphics.length; index++) {
+            const element = list_graphics.eq(index);
+            
+            if (name_model == (element.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()) element.prop('checked', 'true');
+        }
+
+        if (name_model != 'NSSC' && $('#psmc-msmc-model').val() != 'PSMC / MSMC') {
             compute_distance = true;
             application.Show_Distance();
             application.Change_Information_Of_Functions();
         }
         else {
-            // if (selected_function != null) application.Visualize_Information_Of_Functions(selected_function);
-            // else application.Initialize_Information_Of_Functions();
             $('#distance-value-col').fadeOut(50, function () {
                 $('.theta-rho').fadeIn(500);
             });
