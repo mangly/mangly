@@ -464,17 +464,19 @@ $(document).ready(function () {
 
     var compute_distance = false;
     $('#psmc-msmc-model').on('change', function () {
-        if ($(this).val() != 'PSMC / MSMC' && $('#nssc-model').val() != 'NSSC') {
+        if ($(this).val() != '... PSMC / MSMC ...' && $('#nssc-model').val() != '... NSSC ...') {
             compute_distance = true;
             application.Show_Distance();
             application.Change_Information_Of_Functions();
+            $('#start_metaheuristic').removeClass('disabled');
         }
         else {
             $('#distance-value-col').fadeOut(50, function () {
                 $('.theta-rho').fadeIn(500);
             });
-        }
 
+            $('#start_metaheuristic').addClass('disabled');
+        }
     });
 
     $('#nssc-model').on('change', function () {
@@ -492,18 +494,23 @@ $(document).ready(function () {
             }
         }
 
-        selected_function = application.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
-        application.Select_Function(target, selected_function, legend_color, slider_mu);
+        if (target) {
+            selected_function = application.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
+            application.Select_Function(target, selected_function, legend_color, slider_mu);
+        }
 
         if (name_model != '... NSSC ...' && $('#psmc-msmc-model').val() != '... PSMC / MSMC ...') {
             compute_distance = true;
             application.Show_Distance();
             application.Change_Information_Of_Functions();
+            $('#start_metaheuristic').removeClass('disabled');
         }
         else {
             $('#distance-value-col').fadeOut(50, function () {
                 $('.theta-rho').fadeIn(500);
             });
+
+            $('#start_metaheuristic').addClass('disabled');
         }
     });
 
