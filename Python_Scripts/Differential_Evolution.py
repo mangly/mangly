@@ -23,7 +23,7 @@ def compute_distance(state):
 # bounds = [(0, 0), (1, 50), (1,5), (1, 50), (1, 50), (1,5), (2, 50), (1, 50), (1,5), (2,20), (1, 1000)]
 bounds = get_initial_bounds(scenario_NSSC, vectors['x'], vectors['y'])
 
-result = differential_evolution(compute_distance, bounds, maxiter = 1000, popsize = 15, mutation = (0.5,1), recombination = 0.7)
+result = differential_evolution(compute_distance, bounds[0], maxiter = 1000, popsize = 15, mutation = (0.5,1), recombination = 0.7)
 
 n_ref = round(result.x[len(result.x) - 1])
 n = round(result.x[len(result.x) - 2])

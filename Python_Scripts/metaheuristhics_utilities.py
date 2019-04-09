@@ -105,6 +105,19 @@ def get_optimal_scenario(ndarray):
     
     return result
 
+def get_initial_state(scenario, n_ref):
+    initial_state = []
+
+    for i in range(0, len(scenario['scenario'])):
+        initial_state.append(scenario['scenario'][i]['time'])
+        initial_state.append(scenario['scenario'][i]['M'])
+        initial_state.append(scenario['scenario'][i]['c'])
+    
+    initial_state.append(scenario['scenario'][0]['n'])
+    initial_state.append(n_ref)
+
+    return initial_state
+
 def best_initial_n_ref(scenario, x_vector, y_vector):
     n_ref = 1
     d = 10000000000000000000
@@ -151,4 +164,4 @@ def get_initial_bounds(scenario, x_vector, y_vector):
     if(best_values[4] + 500 <= 10000): bounds_result.append((1, best_values[4] + 500))
     else: bounds_result.append((1, best_values[4] + (10000 - best_values[4])))
 
-    return bounds_result
+    return (bounds_result, best_values[4])
