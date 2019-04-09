@@ -64,7 +64,7 @@ ul.dropdown li:last-child a {
 /* Doesn't work in IE */
 
 ul.dropdown li.hover, ul.dropdown li:hover {
-	background: #692626;
+	background: #414141;
 	position: relative;
 }
 
@@ -103,7 +103,7 @@ ul.dropdown ul li a {
 }
 
 ul.dropdown ul li a:hover {
-	background: #2e5588;
+	background: #6e6e6e;
 }
 
 ul.dropdown ul li:hover {
