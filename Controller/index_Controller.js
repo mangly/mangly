@@ -113,12 +113,16 @@ $(document).ready(function () {
     });
 
     var matrix;
-    var sum = 0;
+    var sum = 2;
     var old_value = 0;
     $(document).on('click', 'td', function () {
         matrix = $(this).closest('.matrix');
-        if(!$(this).hasClass('edition')) old_value = parseInt($(this).html());
-        if (matrix.prop('id') != 'sampling-vector' && sum != 2) dialog.showMessageBox(main_Window, { type: 'error', message: 'The sum of the sampling vector has to be 2', buttons: ['Accept'] });
+        if (matrix.prop('id') == 'sampling-vector') {
+            if (!$(this).hasClass('edition')) old_value = parseInt($(this).html());
+        }
+        else if (sum != 2) dialog.showMessageBox(main_Window, { type: 'error', message: 'The sum of the sampling vector has to be 2', buttons: ['Accept'] });
+        //     if (matrix.prop('id') == 'sampling-vector' && !$(this).hasClass('edition')) old_value = parseInt($(this).html());
+        //     if (matrix.prop('id') != 'sampling-vector' && sum != 2) dialog.showMessageBox(main_Window, { type: 'error', message: 'The sum of the sampling vector has to be 2', buttons: ['Accept'] });
     });
 
     $(document).on('change', 'td', function () {
@@ -134,6 +138,39 @@ $(document).ready(function () {
         else if (isNaN(sum) || sum > 2) {
             $(this).text(old_value);
             $(this).removeClass('edition');
+            // sum = Application_Utilities.Sum(sampling_vector.jexcel('getRowData', 0));
+        }
+    });
+
+    $(document).on('enterKey', 'td', function () {
+        console.log('ok')
+        // sum = Application_Utilities.Sum(sampling_vector.jexcel('getRowData', 0));
+        // if (sum == 2) {
+        //     var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
+
+        //     application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
+        //         application.Update_NSSC(nssc_function);
+        //     });
+        // }
+
+        if (isNaN(sum) || sum > 2) {
+            $(this).text(old_value);
+            $(this).removeClass('edition');
+        }
+    });
+
+    $(document).on('click', '.symmetrical-input', function () {
+        // sum = Application_Utilities.Sum(sampling_vector.jexcel('getRowData', 0));
+        // if (sum == 2) {
+        //     var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
+
+        //     application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
+        //         application.Update_NSSC(nssc_function);
+        //     });
+        // }
+
+        if (sum != 2) {
+            dialog.showMessageBox(main_Window, { type: 'error', message: 'The sum of the sampling vector has to be 2', buttons: ['Accept'] });
         }
     });
 
@@ -314,7 +351,6 @@ $(document).ready(function () {
 
             nssc_scenario = selected_function.scenario;
             var type = selected_function.type;
-            var n_ref = selected_function.N_ref;
 
             application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
                 if (type == 'Symmetrical') $('#demes-sv').removeAttr('hidden');
@@ -325,7 +361,6 @@ $(document).ready(function () {
 
                 application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
                 $('#demes-sv').val(order);
-                // application.Update_Slider(n_ref, 'n-ref', slider_nref, $('#input-slider-value-nref'));
             });
         }
     });

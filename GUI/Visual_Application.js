@@ -790,7 +790,7 @@ class Visual_Application {
                 // }
 
                 // else {
-                var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><span>' + time_of_change + '</span><div ' + disabled + ' class="slider-time"></div><div class="form-group"><input type="text" class="form-control" id="time' + index + '" value="' + value + '"' + readonly + ' /><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>M:</span><div class="slider-m"></div><div class="form-group"><input type="text" class="form-control" id="M' + index + '"/><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>c:</span><div class="slider-c"></div><div class="form-group"><input type="text" class="form-control" id="c' + index + '"/><i class="form-group__bar"></i></div></div></div></li>';
+                var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><span>' + time_of_change + '</span><div ' + disabled + ' class="slider-time"></div><div class="form-group"><input type="text" class="form-control symmetrical-input" id="time' + index + '" value="' + value + '"' + readonly + ' /><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>M:</span><div class="slider-m"></div><div class="form-group"><input type="text" class="form-control symmetrical-input" id="M' + index + '"/><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>c:</span><div class="slider-c"></div><div class="form-group"><input type="text" class="form-control symmetrical-input" id="c' + index + '"/><i class="form-group__bar"></i></div></div></div></li>';
                 $('#matrix-collection>ul').append(html);
                 // }
             }
