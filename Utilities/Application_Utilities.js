@@ -73,12 +73,19 @@ class Application_Utilities {
         else return false;
     }
 
-    static Allow_Only_Number(evt) {
-
+    static Allow_Only_Number(evt, type) {
         var charCode = evt.charCode;
 
-        if (!((charCode >= 48 && charCode <= 57) || charCode == 46)) {
-            evt.preventDefault();
+        if (type == 'float') {
+            if (!((charCode >= 48 && charCode <= 57) || charCode == 46)) {
+                evt.preventDefault();
+            }
+        }
+
+        else {
+            if (!(charCode >= 48 && charCode <= 57)) {
+                evt.preventDefault();
+            }
         }
     }
 
@@ -89,11 +96,11 @@ class Application_Utilities {
         return true;
     }
 
-    static Sum(Array){
+    static Sum(Array) {
         var sum = 0;
         for (let index = 0; index < Array.length; index++) {
             const element = Array[index];
-            
+
             sum += element;
         }
 

@@ -95,60 +95,11 @@ $(document).ready(function () {
                 }
             });
         }
-
         //Selections
         else if (target.is('.custom-control-input')) {
             selected_function = application.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
+            legend_color = target.parents('.custom-control').children('.custom-control--char__helper');
             application.Select_Function(target, selected_function, legend_color, slider_mu);
-            // // Disable multiple selection in checkbox control
-            // $('.custom-control-input').not($(event.target)).prop('checked', false);
-            // //------------
-
-            // selected_function = application.logic_application.Get_Function(($(event.target).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
-            // legend_color = $(event.target).parents('.custom-control').children('.custom-control--char__helper');
-
-            // if ($(event.target).prop('checked')) {
-            //     $('#reset-scales').removeAttr('disabled');
-            //     $('#reset-all-scales').removeAttr('disabled');
-            //     $('#change-color').removeAttr('disabled');
-
-            //     var color = application.Get_Graphic(selected_function.name).backgroundColor;
-            //     $('#change-color').val(color);
-            //     $('.color-picker__preview').css('background-color', color);
-
-
-            //     if (selected_function.model == 'psmc') {
-            //         $('#option-s *').removeAttr('disabled');
-            //         $('#option-mu *').removeAttr('disabled');
-
-            //         application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
-            //         $('#input-slider-value-s').val(selected_function.S)
-            //     }
-
-            //     else if (selected_function.model == 'msmc') {
-            //         application.Update_Slider(selected_function.Mu, 'mu', slider_mu, $("#input-slider-value-mu"));
-            //         $('#option-mu *').removeAttr('disabled');
-            //         $('#option-s *').attr('disabled', 'disabled');
-            //     }
-
-            //     application.Visualize_Information_Of_Functions(selected_function);
-            // }
-
-            // else {
-            //     $('#reset-scales').attr('disabled', 'disabled');
-            //     $('#reset-all-scales').attr('disabled', 'disabled');
-            //     $('#change-color').attr('disabled', 'disabled');
-            //     $('#option-s *').attr('disabled', 'disabled');
-            //     $('#option-mu *').attr('disabled', 'disabled');
-            //     selected_function = null;
-            //     $('#input-slider-value-s').val(100);
-
-            //     application.Update_Slider(1.25, 'mu', slider_mu, $("#input-slider-value-mu"));
-
-            //     application.Initialize_Information_Of_Functions();
-            // }
-
-            // $('#back').trigger('click');
         }
     });
 
@@ -162,34 +113,33 @@ $(document).ready(function () {
     });
 
     var matrix;
-    var vector_array;
+    var sum = 0;
+    var old_value = 0;
     $(document).on('click', 'td', function () {
         matrix = $(this).closest('.matrix');
-        vector_array = matrix.jexcel('getData', false);
+        if(!$(this).hasClass('edition')) old_value = parseInt($(this).html());
+        if (matrix.prop('id') != 'sampling-vector' && sum != 2) dialog.showMessageBox(main_Window, { type: 'error', message: 'The sum of the sampling vector has to be 2', buttons: ['Accept'] });
     });
 
     $(document).on('change', 'td', function () {
-        var new_value = $(this).children('input').val();
+        sum = Application_Utilities.Sum(sampling_vector.jexcel('getRowData', 0));
+        if (sum == 2) {
+            var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
 
-        if (matrix.prop('id') == 'sampling-vector' && !Application_Utilities.Is_Int_Type(new_value)) {
-            sampling_vector.jexcel({
-                data: vector_array,
-                allowManualInsertColumn: false,
-                allowManualInsertRow: false,
+            application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
+                application.Update_NSSC(nssc_function);
             });
-
-            Visual_Application.Configuration_Vector();
         }
 
-        var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
-
-        application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
-            application.Update_NSSC(nssc_function);
-        });
+        else if (isNaN(sum) || sum > 2) {
+            $(this).text(old_value);
+            $(this).removeClass('edition');
+        }
     });
 
     $(document).on('keypress', '.edition', function (e) {
-        Application_Utilities.Allow_Only_Number(e)
+        if (matrix.prop('id') == 'sampling-vector') Application_Utilities.Allow_Only_Number(e, 'int');
+        else Application_Utilities.Allow_Only_Number(e, 'float')
     });
 
     $("#change-color").on("change", function () {

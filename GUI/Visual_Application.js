@@ -173,7 +173,7 @@ class Visual_Application {
         //------------
 
         // selected_function = this.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
-        legend_color = target.parents('.custom-control').children('.custom-control--char__helper');
+        // legend_color = target.parents('.custom-control').children('.custom-control--char__helper');
 
         if (target.prop('checked')) {
             $('#reset-scales').removeAttr('disabled');
