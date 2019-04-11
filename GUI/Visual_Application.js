@@ -593,6 +593,16 @@ class Visual_Application {
             });
     }
 
+    static Initialize_Sampling_Vector(matrix, data) {
+        matrix.jexcel(
+            {
+                data: data,
+                allowManualInsertColumn: false,
+                allowManualInsertRow: false,
+                selectionCopy: false
+            });
+    }
+
     static Configuration_Vector() {
         $('.1xn thead.jexcel_label').hide();
         $('.1xn td.jexcel_label').text('Values:');
@@ -635,7 +645,7 @@ class Visual_Application {
     }
 
     static Build_Visual_Scenario(time_size, nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
-        this.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
+        this.Initialize_Sampling_Vector(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
 
         for (let index = 0; index < number_of_events + 1; index++) {
             if (type == 'General') {
@@ -757,7 +767,7 @@ class Visual_Application {
     }
 
     Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
-        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
+        Visual_Application.Initialize_Sampling_Vector(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
 
         for (let index = 0; index < number_of_events + 1; index++) {
             var value = 0;

@@ -414,10 +414,10 @@
                 $(corner).prop('class', 'jexcel_corner jexcel');
                 $(corner).prop('id', 'jexcel_corner');
 
-                // Disable copy
-                if (options.selectionCopy == false) {
-                    $(corner).css('display', 'none');
-                }
+                // Disable copy. My change 5. Disable the next code
+                // if (options.selectionCopy == false) {
+                //     $(corner).css('display', 'none');
+                // }
 
                 // Hidden textarea copy and paste helper
                 var textarea = document.createElement('textarea');
@@ -2487,6 +2487,12 @@
          * @return void
          */
         updateCornerPosition: function () {
+            // Id
+            var id = $(this).prop('id');
+
+            // Var options
+            var options = $.fn.jexcel.defaults[id];
+
             // Highlighted cells
             var cells = $(this).find('.highlight');
 
@@ -2499,9 +2505,12 @@
                 var t = parseInt($(corner).offset().top) + $(corner).parent().outerHeight() - 4;
                 var l = parseInt($(corner).offset().left) + $(corner).outerWidth() - 4;
 
-                // Place the corner in the correct place
-                $('.jexcel_corner').css('top', t);
-                $('.jexcel_corner').css('left', l);
+                // Place the corner in the correct place. My Change 6. Included condicional for show the corner
+
+                if (options.selectionCopy) {
+                    $('.jexcel_corner').css('top', t);
+                    $('.jexcel_corner').css('left', l);
+                }
 
                 // Hide the corner in case is out of the range
                 var docViewTop = $(this).offset().top;
