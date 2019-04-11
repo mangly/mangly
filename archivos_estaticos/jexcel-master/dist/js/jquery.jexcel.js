@@ -1098,7 +1098,8 @@
                                     if ($.fn.jexcel.defaults[$.fn.jexcel.current].columns[columnId[0]].type == 'calendar') {
                                         $('#' + $.fn.jexcel.current).find('editor').jcalendar('close', 1);
                                     } else {
-                                        $('#' + $.fn.jexcel.current).jexcel('closeEditor', $($.fn.jexcel.selectedCell), true);
+                                        // My change 4 (changed true by false in the close editor)
+                                        $('#' + $.fn.jexcel.current).jexcel('closeEditor', $($.fn.jexcel.selectedCell), false);
                                     }
                                 }
                                 // If not edition check if the selected cell is in the last row
