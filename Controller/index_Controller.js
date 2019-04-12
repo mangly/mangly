@@ -329,16 +329,23 @@ $(document).ready(function () {
 
             dialog.showOpenDialog(main_Window, options, function (arrPath) {
                 if (arrPath) {
-                    Application.Load_File(arrPath[0], function (scenario) {
-                        nssc_scenario = scenario;
+                    var name = Application_Utilities.Get_Model_Name(arrPath[0]);
+                    var extension = Application_Utilities.Get_Model_Selected(arrPath[0]);
 
-                        var path_split = arrPath[0].split('/');
-                        var file_name = path_split[path_split.length - 1].slice(0, -6);
+                    if (extension == 'snssc') {
+                        Application.Load_File(arrPath[0], function (scenario) {
+                            nssc_scenario = scenario;
 
-                        application.Load_Principal_Window_Data(file_name, nssc_scenario, function () {
-                            $('#open-scenario-editor').trigger('click');
+                            var path_split = arrPath[0].split('/');
+                            var file_name = path_split[path_split.length - 1].slice(0, -6);
+
+                            application.Load_Principal_Window_Data(file_name, nssc_scenario, function () {
+                                $('#open-scenario-editor').trigger('click');
+                            });
                         });
-                    });
+                    }
+
+                    else dialog.showMessageBox(main_Window, { type: 'error', message: 'Invalid file: ' + name + '.' + extension, buttons: ['Accept'] });
                 }
             });
         }

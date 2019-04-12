@@ -1,4 +1,5 @@
 import sys, json
+import numpy as np
 from model import NSSC, Pnisland
 from functions import readScenario
 
