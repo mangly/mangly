@@ -1095,16 +1095,14 @@
                                     if ($.fn.jexcel.defaults[$.fn.jexcel.current].columns[columnId[0]].type == 'calendar') {
                                         $('#' + $.fn.jexcel.current).find('editor').jcalendar('close', 1);
                                     } else {
-                                        // My change 4 (changed comment code by next code)
+                                        // My change 5 (changed comment code by next code)
                                         // $('#' + $.fn.jexcel.current).jexcel('closeEditor', $($.fn.jexcel.selectedCell), true);
-
-                                        var sum = $(this).jexcel('sumData', options.data[0]);
                                         var value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
-
                                         if (isNaN(value)) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), 0);
-                                        else if (sum + value > 2 && value >= 2) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), old_value);
                                         else $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), value);
 
+                                        var sum = $(this).jexcel('sumData', options.data[0]);
+                                        if (sum > 2) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), old_value);
                                         $($.fn.jexcel.selectedCell).removeClass('edition');
                                     }
                                 }
@@ -1121,17 +1119,11 @@
                                     } else {
                                         // My change 4 (changed comment code by next code)
                                         // $('#' + $.fn.jexcel.current).jexcel('closeEditor', $($.fn.jexcel.selectedCell), true);
-
-
-
                                         var value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
-
                                         if (isNaN(value)) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), 0);
-
                                         else $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), value);
 
                                         var sum = $(this).jexcel('sumData', options.data[0]);
-
                                         if (sum > 2) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), old_value);
                                         $($.fn.jexcel.selectedCell).removeClass('edition');
                                     }
