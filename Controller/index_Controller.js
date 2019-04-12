@@ -354,6 +354,7 @@ $(document).ready(function () {
 
                 application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
                 $('#demes-sv').val(order);
+                Visual_Application.Hide_Corner_Jexcel();
             });
         }
     });
@@ -389,10 +390,6 @@ $(document).ready(function () {
             deme_vector_collection = [];
             sampling_vector = $('#sampling-vector');
         });
-    });
-
-    $('#container-edit-nssc').on('scroll', function () {
-        Visual_Application.Hide_Corner_Jexcel();
     });
 
     $('#switch-selection-pagination').on('change', function () {

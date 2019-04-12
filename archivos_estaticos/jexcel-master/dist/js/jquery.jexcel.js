@@ -811,10 +811,10 @@
                                 }
                             }
 
-                            // Open editor action
-                            if ($(e.target).is('.highlight')) {
-                                $('#' + $.fn.jexcel.current).jexcel('openEditor', $(e.target));
-                            }
+                            // Open editor action. My change 7. I commented the next code
+                            // if ($(e.target).is('.highlight')) {
+                            //     $('#' + $.fn.jexcel.current).jexcel('openEditor', $(e.target));
+                            // }
                         }
 
                         if ($.fn.jexcel.defaults[$.fn.jexcel.current].columnSorting == true) {
@@ -2524,12 +2524,6 @@
          * @return void
          */
         updateCornerPosition: function () {
-            // Id
-            var id = $(this).prop('id');
-
-            // Var options
-            var options = $.fn.jexcel.defaults[id];
-
             // Highlighted cells
             var cells = $(this).find('.highlight');
 
@@ -2543,11 +2537,8 @@
                 var l = parseInt($(corner).offset().left) + $(corner).outerWidth() - 4;
 
                 // Place the corner in the correct place. My Change 6. Included condicional for show the corner
-
-                if (options.selectionCopy) {
-                    $('.jexcel_corner').css('top', t);
-                    $('.jexcel_corner').css('left', l);
-                }
+                $('.jexcel_corner').css('top', t);
+                $('.jexcel_corner').css('left', l);
 
                 // Hide the corner in case is out of the range
                 var docViewTop = $(this).offset().top;
