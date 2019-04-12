@@ -152,22 +152,6 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('click', '.time', function () {
-        old_value = $(this).val();
-    });
-
-    $(document).on('change', '.time', function () {
-        var index_new_value = parseInt($(this).prop('id').substring(4));
-
-        var previous_time_value = $('#time' + (index_new_value - 1)).val();
-        var next_time_value = $('#time' + (index_new_value + 1)).val();
-
-        if (Visual_Application.Valid_Time_Of_Change(previous_time_value, $(this).val(), next_time_value)) {
-            console.log('ok')
-        }
-        else console.log('error')
-    });
-
     $(document).on('keypress', '.edition', function (e) {
         if (matrix.prop('id') == 'sampling-vector') Application_Utilities.Allow_Only_Number(e, 'int');
         else Application_Utilities.Allow_Only_Number(e, 'float');

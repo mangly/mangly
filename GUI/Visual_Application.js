@@ -757,7 +757,12 @@ class Visual_Application {
     }
 
     static Valid_Time_Of_Change(previous_value_time, new_value_time, next_value_time) {
-        return previous_value_time < new_value_time && new_value_time < next_value_time;
+        if (new_value_time != '' || new_value_time != 0) {
+            if (typeof next_value_time === 'undefined') return previous_value_time < new_value_time;
+            else return previous_value_time < new_value_time && new_value_time < next_value_time;
+        }
+
+        return false;
     }
 
     Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
@@ -844,8 +849,24 @@ class Visual_Application {
                 document.getElementById("time" + index).value = a[b];
             });
 
-            $('#time' + index).on('change', function () {
-                slider_t.noUiSlider.set($(this).val());
+            var old_value;
+            $('#time' + index).on('click', function () {
+                old_value = $(this).val();
+            });
+
+            $('#time' + index).on('change', function (event) {
+                var previous_time_value = $('#time' + (index - 1)).val();
+                var next_time_value = $('#time' + (index + 1)).val();
+
+                if (!Visual_Application.Valid_Time_Of_Change(previous_time_value, $(this).val(), next_time_value)) {
+                    $(this).val(old_value);
+                    event.preventDefault();
+                }
+
+                else {
+                    old_value = $(this).val();
+                    slider_t.noUiSlider.set($(this).val());
+                }
             });
 
             if (type == 'Symmetrical') {
