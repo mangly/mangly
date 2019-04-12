@@ -62,6 +62,21 @@ class Application {
         });
     }
 
+    Add_File_MSMC(path, name, callback) {
+        Python_Communicator.get_Model_MSMC(path, name, 'Python_Scripts/get_Model_MSMC.py', (element) => {
+            // for (const element of results.file_collection) {
+            var funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
+
+            // if (element.model == 'psmc') funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
+            // else funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
+
+            if (!this.Contains(funct)) this.functions_collection.push(funct);
+            // }
+
+            callback();
+        });
+    }
+
     Add_File_NSSC(path_collection, callback) {
         for (const path of path_collection) {
             Application.Load_File(path, (nssc_file) => {

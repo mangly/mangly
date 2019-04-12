@@ -26,6 +26,18 @@ class Python_Communicator {
         });
     }
 
+    static get_Model_MSMC(path, name, python_script, callback) {
+        let options = {
+            mode: 'text',
+            args: [path, name]
+        };
+
+        ps.PythonShell.run(python_script, options, function (err, results) {
+            if (err) throw err;
+            else callback(JSON.parse(results))
+        });
+    }
+
     static get_Model_NSSC(type, json, python_script, callback) {
         let options = {
             mode: 'text',

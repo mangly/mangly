@@ -26,8 +26,6 @@ $(document).ready(function () {
     // Instance Visual Application
     var application = new Visual_Application($('#mycanvas'), new Application());
 
-    // var sampling_vector = [];
-    // var items_selecteds = [];
     application.Initialize_Information_Of_Functions();
 
     $('#open-file').on('click', function () {
@@ -36,30 +34,32 @@ $(document).ready(function () {
             filters: [
                 { name: 'File', extensions: ['psmc', 'txt', 'msmc', 'nssc'] }
             ],
-
-            // properties: ['multiSelections'],
         }
-
 
         // Open a File selected for the user
         dialog.showOpenDialog(main_Window, options, function (arrPath) {
             if (arrPath) {
                 var model = Application_Utilities.Get_Model_Selected(arrPath[0]);
                 var name = Application_Utilities.Get_Model_Name(arrPath[0]);
-                // var paths = Application_Utilities.Divide_Paths(arrPath);
-                // var psmc_msmc_paths = paths[0];
-                // var nssc_paths = paths[1];
-                // console.log(arrPath)
-                // $('#canvas-container').removeClass('disabled');
 
-                if (model == 'psmc') {
-                    application.logic_application.Add_File_PSMC(arrPath[0], name, function () {
-                        application.Visualize_PSMC_MSMC();
+                if (model == 'psmc' || model == 'msmc' || model == 'txt') {
 
-                        $('#options-scale-axis *').removeAttr('disabled');
-                        $('#switch-selection').removeAttr('disabled');
-                    });
+                    if (model == 'psmc')
+                        application.logic_application.Add_File_PSMC(arrPath[0], name, function () {
+                            application.Visualize_PSMC_MSMC();
+                        });
+
+                    else if (model == 'msmc' || model == 'txt') {
+                        application.logic_application.Add_File_MSMC(arrPath[0], name, function () {
+                            application.Visualize_PSMC_MSMC();
+                        });
+                    }
+
+                    $('#options-scale-axis *').removeAttr('disabled');
+                    $('#switch-selection').removeAttr('disabled');
                 }
+
+
 
                 console.log(application.logic_application.functions_collection)
 
