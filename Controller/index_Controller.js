@@ -152,19 +152,20 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on('click', '.symmetrical-input', function () {
-        // sum = Application_Utilities.Sum(sampling_vector.jexcel('getRowData', 0));
-        // if (sum == 2) {
-        //     var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
+    $(document).on('click', '.time', function () {
+        old_value = $(this).val();
+    });
 
-        //     application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
-        //         application.Update_NSSC(nssc_function);
-        //     });
-        // }
+    $(document).on('change', '.time', function () {
+        var index_new_value = parseInt($(this).prop('id').substring(4));
 
-        if (sum != 2) {
-            dialog.showMessageBox(main_Window, { type: 'error', message: 'The sum of the sampling vector has to be 2', buttons: ['Accept'] });
+        var previous_time_value = $('#time' + (index_new_value - 1)).val();
+        var next_time_value = $('#time' + (index_new_value + 1)).val();
+
+        if (Visual_Application.Valid_Time_Of_Change(previous_time_value, $(this).val(), next_time_value)) {
+            console.log('ok')
         }
+        else console.log('error')
     });
 
     $(document).on('keypress', '.edition', function (e) {

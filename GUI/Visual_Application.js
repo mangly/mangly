@@ -756,6 +756,10 @@ class Visual_Application {
         this.Configuration_Vector();
     }
 
+    static Valid_Time_Of_Change(previous_value_time, new_value_time, next_value_time) {
+        return previous_value_time < new_value_time && new_value_time < next_value_time;
+    }
+
     Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
         Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, 'sampling_vector', order - 1));
 
@@ -790,7 +794,7 @@ class Visual_Application {
                 // }
 
                 // else {
-                var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><span>' + time_of_change + '</span><div ' + disabled + ' class="slider-time"></div><div class="form-group"><input type="text" class="form-control symmetrical-input" id="time' + index + '" value="' + value + '"' + readonly + ' /><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>M:</span><div class="slider-m"></div><div class="form-group"><input type="text" class="form-control symmetrical-input" id="M' + index + '"/><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>c:</span><div class="slider-c"></div><div class="form-group"><input type="text" class="form-control symmetrical-input" id="c' + index + '"/><i class="form-group__bar"></i></div></div></div></li>';
+                var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><span>' + time_of_change + '</span><div ' + disabled + ' class="slider-time"></div><div class="form-group"><input type="text" class="form-control time" id="time' + index + '" value="' + value + '"' + readonly + ' /><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>M:</span><div class="slider-m"></div><div class="form-group"><input type="text" class="form-control M" id="M' + index + '"/><i class="form-group__bar"></i></div></div><div class="col-sm-4"><span>c:</span><div class="slider-c"></div><div class="form-group"><input type="text" class="form-control c" id="c' + index + '"/><i class="form-group__bar"></i></div></div></div></li>';
                 $('#matrix-collection>ul').append(html);
                 // }
             }
