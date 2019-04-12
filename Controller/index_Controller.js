@@ -59,9 +59,26 @@ $(document).ready(function () {
                     $('#switch-selection').removeAttr('disabled');
                 }
 
+                else if (model == 'nssc') {
+                    application.logic_application.Add_File_NSSC(arrPath[0], function () {
+                        // try {
+                        // if (err) {
+                        //     throw new ArgumentException(err);
+                        // }
+                        application.Visualize_NSSC_Saved();
+                        // }
+
+                        // catch (exception) {
+                        //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
+                        // }
+                    });
+                }
+
+                else dialog.showMessageBox(main_Window, { type: 'error', message: 'Invalid file: ' + name + '.' + model, buttons: ['Accept'] });
 
 
-                console.log(application.logic_application.functions_collection)
+
+                // console.log(application.logic_application.functions_collection)
 
                 // if (nssc_paths.length != 0) {
                 //     application.logic_application.Add_File_NSSC(nssc_paths, function () {

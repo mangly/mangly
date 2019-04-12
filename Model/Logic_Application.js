@@ -77,17 +77,31 @@ class Application {
         });
     }
 
-    Add_File_NSSC(path_collection, callback) {
-        for (const path of path_collection) {
-            Application.Load_File(path, (nssc_file) => {
-                var path_split = path.split('/');
-                var new_name = path_split[path_split.length - 1].slice(0, -5);
+    // Add_File_NSSC(path_collection, callback) {
+    //     for (const path of path_collection) {
+    //         Application.Load_File(path, (nssc_file) => {
+    //             var path_split = path.split('/');
+    //             var new_name = path_split[path_split.length - 1].slice(0, -5);
 
-                var nssc_function = new NSSC(new_name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario, this.N_ref);
+    //             var nssc_function = new NSSC(new_name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario, this.N_ref);
 
-                if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
-            });
-        }
+    //             if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
+    //         });
+    //     }
+
+    //     setTimeout(function () { callback(); }, 100);
+    // }
+
+    Add_File_NSSC(path, callback) {
+        Application.Load_File(path, (nssc_file) => {
+            var path_split = path.split('/');
+            var new_name = path_split[path_split.length - 1].slice(0, -5);
+
+            var nssc_function = new NSSC(new_name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario, this.N_ref);
+
+            if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
+        });
+
 
         setTimeout(function () { callback(); }, 100);
     }
