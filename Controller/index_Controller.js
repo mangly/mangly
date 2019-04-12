@@ -120,13 +120,15 @@ $(document).ready(function () {
         if (matrix.prop('id') == 'sampling-vector') {
             if (!$(this).hasClass('edition')) old_value = parseInt($(this).html());
         }
-        else if (sum != 2) dialog.showMessageBox(main_Window, { type: 'error', message: 'The sum of the sampling vector has to be 2', buttons: ['Accept'] });
+        // else if (sum != 2) dialog.showMessageBox(main_Window, { type: 'error', message: 'The sum of the sampling vector has to be 2', buttons: ['Accept'] });
     });
 
     $(document).on('change', 'td', function (e) {
         var previous_sum = sum;
         sum = Application_Utilities.Sum(sampling_vector.jexcel('getRowData', 0));
         if (sum == 2) {
+            $('#container-nref').removeClass('disabled');
+            $('#container-matrices').removeClass('disabled');
             var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
 
             application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
@@ -139,6 +141,11 @@ $(document).ready(function () {
             else if (sum > 2) {
                 $(this).text(old_value);
                 sum = previous_sum;
+            }
+
+            else {
+                $('#container-nref').addClass('disabled');
+                $('#container-matrices').addClass('disabled');
             }
 
             $(this).removeClass('edition');
