@@ -698,8 +698,10 @@
 
                 $(document).on('mousedown touchstart', $.fn.jexcel.mouseDownControls);
 
+                var old_value;
                 // Global mouse click up controles
                 $.fn.jexcel.mouseUpControls = function (e) {
+                    old_value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
                     if (e.target.id == 'jexcel_arrow') {
                         if (!$.fn.jexcel.current) {
                             $.fn.jexcel.current = $(e.target).parents('.jexcel').parent().prop('id');
@@ -1098,8 +1100,17 @@
                                     if ($.fn.jexcel.defaults[$.fn.jexcel.current].columns[columnId[0]].type == 'calendar') {
                                         $('#' + $.fn.jexcel.current).find('editor').jcalendar('close', 1);
                                     } else {
-                                        // My change 4 (changed true by false in the close editor)
-                                        $('#' + $.fn.jexcel.current).jexcel('closeEditor', $($.fn.jexcel.selectedCell), false);
+                                        // My change 4 (changed comment code by next code)
+                                        // $('#' + $.fn.jexcel.current).jexcel('closeEditor', $($.fn.jexcel.selectedCell), true);
+
+                                        var sum = $(this).jexcel('sumData', options.data[0]);
+                                        var value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
+
+                                        if (isNaN(value)) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), 0);
+                                        else if (sum + value > 2 && value >= 2) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), old_value);
+                                        else $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), value);
+
+                                        $($.fn.jexcel.selectedCell).removeClass('edition');
                                     }
                                 }
                                 // If not edition check if the selected cell is in the last row
@@ -1297,6 +1308,17 @@
 
             // Load data
             $(this).jexcel('setData', $.fn.jexcel.defaults[id].data);
+        },
+
+        sumData: function (data) {
+            var sum = 0;
+            for (let index = 0; index < data.length; index++) {
+                const element = data[index];
+
+                sum += element;
+            }
+
+            return sum;
         },
 
         /**

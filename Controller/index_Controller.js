@@ -162,7 +162,7 @@ $(document).ready(function () {
 
     $(document).on('keypress', '.edition', function (e) {
         if (matrix.prop('id') == 'sampling-vector') Application_Utilities.Allow_Only_Number(e, 'int');
-        else Application_Utilities.Allow_Only_Number(e, 'float')
+        else Application_Utilities.Allow_Only_Number(e, 'float');
     });
 
     $("#change-color").on("change", function () {

@@ -96,10 +96,10 @@ class Application_Utilities {
         return true;
     }
 
-    static Sum(Array) {
+    static Sum(data) {
         var sum = 0;
-        for (let index = 0; index < Array.length; index++) {
-            const element = Array[index];
+        for (let index = 0; index < data.length; index++) {
+            const element = data[index];
 
             sum += element;
         }
