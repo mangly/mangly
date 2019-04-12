@@ -49,17 +49,23 @@ class Application_Utilities {
         return array_extensions[array_extensions.length - 1];
     }
 
-    static Divide_Paths(arrPath) {
-        var psmc_msmc_paths = [];
-        var nssc_paths = [];
-
-        for (const path of arrPath) {
-            if (this.Get_Model_Selected(path) != 'nssc') psmc_msmc_paths.push(path);
-            else nssc_paths.push(path);
-        }
-
-        return [psmc_msmc_paths, nssc_paths];
+    static Get_Model_Name(path) {
+        var array_extensions = path.split('.');
+        var array_path = array_extensions[0].split('/');
+        return array_path[array_path.length - 1];
     }
+
+    // static Divide_Paths(arrPath) {
+    //     var psmc_msmc_paths = [];
+    //     var nssc_paths = [];
+
+    //     for (const path of arrPath) {
+    //         if (this.Get_Model_Selected(path) != 'nssc') psmc_msmc_paths.push(path);
+    //         else nssc_paths.push(path);
+    //     }
+
+    //     return [psmc_msmc_paths, nssc_paths];
+    // }
 
     static Equals(a_collection, b_collection) {
         if (a_collection.length == b_collection.length) {

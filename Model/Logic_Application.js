@@ -32,16 +32,31 @@ class Application {
         return null;
     }
 
-    Add_File_PSMC_MSMC(path_collection, callback) {
-        Python_Communicator.get_File_Results(path_collection, 'Python_Scripts/get_File_Results.py', (results) => {
-            for (const element of results.file_collection) {
-                var funct;
+    // Add_File_PSMC_MSMC(path_collection, callback) {
+    //     Python_Communicator.get_File_Results(path_collection, 'Python_Scripts/get_File_Results.py', (results) => {
+    //         for (const element of results.file_collection) {
+    //             var funct;
 
-                if (element.model == 'psmc') funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
-                else funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
+    //             if (element.model == 'psmc') funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
+    //             else funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
 
-                if (!this.Contains(funct)) this.functions_collection.push(funct);
-            }
+    //             if (!this.Contains(funct)) this.functions_collection.push(funct);
+    //         }
+
+    //         callback();
+    //     });
+    // }
+
+    Add_File_PSMC(path, name, callback) {
+        Python_Communicator.get_Model_PSMC(path, name, 'Python_Scripts/get_Model_PSMC.py', (element) => {
+            // for (const element of results.file_collection) {
+            var funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
+
+            // if (element.model == 'psmc') funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
+            // else funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
+
+            if (!this.Contains(funct)) this.functions_collection.push(funct);
+            // }
 
             callback();
         });

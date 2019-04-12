@@ -41,17 +41,19 @@ $(document).ready(function () {
         }
 
 
-        // Open a File or Files selected for user
+        // Open a File selected for the user
         dialog.showOpenDialog(main_Window, options, function (arrPath) {
             if (arrPath) {
-                var paths = Application_Utilities.Divide_Paths(arrPath);
-                var psmc_msmc_paths = paths[0];
-                var nssc_paths = paths[1];
+                var model = Application_Utilities.Get_Model_Selected(arrPath[0]);
+                var name = Application_Utilities.Get_Model_Name(arrPath[0]);
+                // var paths = Application_Utilities.Divide_Paths(arrPath);
+                // var psmc_msmc_paths = paths[0];
+                // var nssc_paths = paths[1];
+                // console.log(arrPath)
                 // $('#canvas-container').removeClass('disabled');
 
-                if (psmc_msmc_paths.length != 0) {
-                    application.logic_application.Add_File_PSMC_MSMC(psmc_msmc_paths, function () {
-
+                if (model == 'psmc') {
+                    application.logic_application.Add_File_PSMC(arrPath[0], name, function () {
                         application.Visualize_PSMC_MSMC();
 
                         $('#options-scale-axis *').removeAttr('disabled');
@@ -59,20 +61,22 @@ $(document).ready(function () {
                     });
                 }
 
-                if (nssc_paths.length != 0) {
-                    application.logic_application.Add_File_NSSC(nssc_paths, function () {
-                        // try {
-                        // if (err) {
-                        //     throw new ArgumentException(err);
-                        // }
-                        application.Visualize_NSSC_Saved();
-                        // }
+                console.log(application.logic_application.functions_collection)
 
-                        // catch (exception) {
-                        //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
-                        // }
-                    });
-                }
+                // if (nssc_paths.length != 0) {
+                //     application.logic_application.Add_File_NSSC(nssc_paths, function () {
+                //         // try {
+                //         // if (err) {
+                //         //     throw new ArgumentException(err);
+                //         // }
+                //         application.Visualize_NSSC_Saved();
+                //         // }
+
+                //         // catch (exception) {
+                //         //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
+                //         // }
+                //     });
+                // }
             }
         });
     });
