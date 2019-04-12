@@ -1189,7 +1189,7 @@
                                                 $('#' + $.fn.jexcel.current).jexcel('deleteColumn', parseInt($(columns[0]).prop('id').split('-')[1]), parseInt(columns.length));
                                             }
                                         } else {
-                                            // Change value
+                                            // Change value. My change 6. Change '' by 0
                                             $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), 0);
                                         }
                                     }
