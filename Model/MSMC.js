@@ -3,10 +3,10 @@
 var Application_Utilities = require('../Utilities/Application_Utilities');
 
 class MSMC {
-    constructor(name, time, IICR_k, Mu, path){
+    constructor(name, x_vector, y_vector, Mu, path){
         this.name = name;
-        this.time = time;
-        this.IICR_k = IICR_k;
+        this.x_vector = x_vector;
+        this.y_vector = y_vector;
         this.model = 'msmc';
         this.Mu = Mu;
         this.path = path;
@@ -14,14 +14,14 @@ class MSMC {
 
     Clone() {
         var clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
-        clone.time = this.time.slice();
-        clone.IICR_k = this.IICR_k.slice();
+        clone.x_vector = this.x_vector.slice();
+        clone.y_vector = this.y_vector.slice();
 
         return clone;
     }
 
     Equals(msmc) {
-        return (this.name == msmc.name || (Application_Utilities.Equals(this.time, msmc.time) && Application_Utilities.Equals(this.IICR_k, msmc.IICR_k)));
+        return (this.name == msmc.name || (Application_Utilities.Equals(this.x_vector, msmc.x_vector) && Application_Utilities.Equals(this.y_vector, msmc.y_vector)));
     }
 }
 

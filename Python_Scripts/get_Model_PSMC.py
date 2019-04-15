@@ -24,7 +24,7 @@ def get_PSMC_results(filename, name):
     theta = float(theta)
     rho = float(rho)
 
-    return {'name': name, 'model':'psmc', 'time' : time, 'IICR_2': IICR_2, 'theta': theta, 'rho': rho}
+    return {'name': name, 'model':'psmc', 'x_vector' : time, 'y_vector': IICR_2, 'theta': theta, 'rho': rho}
 
 path = sys.argv[1]
 name = sys.argv[2]

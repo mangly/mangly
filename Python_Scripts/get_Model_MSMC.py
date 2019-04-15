@@ -14,7 +14,7 @@ def get_MSMC_results(filename, name):
     IICR_k = [v.split('\t')[3] for v in lines]
     IICR_k = [float(v) for v in IICR_k[1:]]
 
-    return {'name': name, 'model':'msmc', 'time' : time, 'IICR_k': IICR_k}
+    return {'name': name, 'model':'msmc', 'x_vector' : time, 'y_vector': IICR_k}
 
 path = sys.argv[1]
 name = sys.argv[2]

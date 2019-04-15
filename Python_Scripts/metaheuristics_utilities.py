@@ -15,7 +15,7 @@ def get_NSSC_vectors(type, scenario, start = 0, end = 500, n = 500):
     IICR_specie = list(model.evaluateIICR(x_vector))
     # IICR_specie = [model.evaluateIICR(i) for i in x_vector]
 
-    return {'x_vector': x_vector, 'IICR_specie': IICR_specie}
+    return {'x_vector': x_vector, 'y_vector': IICR_specie}
 
 def get_initial_random_state(scenario):
     initial_state = []

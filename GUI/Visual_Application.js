@@ -227,10 +227,10 @@ class Visual_Application {
         control.append('<option>' + name + '</option>')
     }
 
-    Visualize_Commun_Function(graphic, element_scale_by_default, psmc_msmc_nssc_model_control) {
+    Visualize_Commun_Function(element_scale_by_default, psmc_msmc_nssc_model_control) {
         var color = this.Get_Random_Color();
 
-        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, element_scale_by_default.IICR_2), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
+        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.x_vector, element_scale_by_default.y_vector), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
 
         this.chart.data.datasets.push(graphic);
 
@@ -288,7 +288,7 @@ class Visual_Application {
 
         this.logic_application.Scale_NSSC_Function(clone, nssc_function.N_ref);
 
-        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone.x_vector, clone.IICR_specie);
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone.x_vector, clone.y_vector);
 
         this.chart.update();
     }
@@ -303,28 +303,18 @@ class Visual_Application {
     }
 
     Update_Scale_PSMC_MSMC(original_function, mu, s) {
-        var IICR;
         var clone_function = original_function.Clone();
         var graphic = this.Get_Graphic(original_function.name);
 
-        if (original_function.model != 'nssc') {
-            if (original_function.model == 'psmc') {
-                this.logic_application.Scale_Psmc_Function(clone_function, mu, s);
-
-                IICR = clone_function.IICR_2;
-                original_function.Mu = mu / 1e-8;
-                original_function.S = s;
-            }
-
-            else {
-                this.logic_application.Scale_Msmc_Function(clone_function, mu);
-
-                IICR = clone_function.IICR_k;
-                original_function.Mu = mu / 1e-8;
-            }
+        if (original_function.model == 'psmc') {
+            this.logic_application.Scale_Psmc_Function(clone_function, mu, s);
+            original_function.S = s;
         }
 
-        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.time, IICR);
+        else this.logic_application.Scale_Msmc_Function(clone_function, mu);
+            
+        original_function.Mu = mu / 1e-8;
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.y_vector);
 
         this.chart.update();
     }
@@ -336,7 +326,7 @@ class Visual_Application {
         this.logic_application.Scale_NSSC_Function(clone_function, n_ref);
         original_function.N_ref = n_ref;
 
-        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.IICR_specie);
+        graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.y_vector);
 
         this.chart.update();
     }

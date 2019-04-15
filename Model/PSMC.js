@@ -3,10 +3,10 @@
 var Application_Utilities = require('../Utilities/Application_Utilities');
 
 class PSMC {
-    constructor(name, time, IICR_2, theta, rho, Mu, S, path) {
+    constructor(name, x_vector, y_vector, theta, rho, Mu, S, path) {
         this.name = name;
-        this.time = time;
-        this.IICR_2 = IICR_2;
+        this.x_vector = x_vector;
+        this.y_vector = y_vector;
         this.theta = theta;
         this.rho = rho;
         this.model = 'psmc';
@@ -17,14 +17,14 @@ class PSMC {
 
     Clone() {
         var clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
-        clone.time = this.time.slice();
-        clone.IICR_2 = this.IICR_2.slice();
+        clone.x_vector = this.x_vector.slice();
+        clone.y_vector = this.y_vector.slice();
 
         return clone;
     }
 
     Equals(psmc) {
-        return (this.name == psmc.name || (Application_Utilities.Equals(this.time, psmc.time) && Application_Utilities.Equals(this.IICR_2, psmc.IICR_2)));
+        return (this.name == psmc.name || (Application_Utilities.Equals(this.x_vector, psmc.x_vector) && Application_Utilities.Equals(this.y_vector, psmc.y_vector)));
     }
 }
 

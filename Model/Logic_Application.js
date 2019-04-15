@@ -35,7 +35,7 @@ class Application {
     Add_File_PSMC(path, name, callback) {
         Python_Communicator.get_Model_PSMC(path, name, 'Python_Scripts/get_Model_PSMC.py', (element) => {
             var error = false;
-            var funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S, path);
+            var funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, this.Mu * 1e-8, this.S, path);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
@@ -47,7 +47,7 @@ class Application {
     Add_File_MSMC(path, name, callback) {
         Python_Communicator.get_Model_MSMC(path, name, 'Python_Scripts/get_Model_MSMC.py', (element) => {
             var error = false;
-            var funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu, path);
+            var funct = new MSMC(element.name, element.x_vector, element.y_vector, this.Mu * 1e-8, path);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
@@ -59,7 +59,7 @@ class Application {
     Add_File_PSMCP(path, callback) {
         var error = false;
         Application.Load_File(path, (element) => {
-            var funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, element.Mu * 1e-8, element.S, path);
+            var funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, element.Mu * 1e-8, element.S, path);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
@@ -72,7 +72,7 @@ class Application {
     Add_File_MSMCP(path, callback) {
         var error = false;
         Application.Load_File(path, (element) => {
-            var funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu * 1e-8, path);
+            var funct = new MSMC(element.name, element.x_vector, element.y_vector, this.Mu * 1e-8, path);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
@@ -84,7 +84,7 @@ class Application {
     Add_File_NSSC(path, callback) {
         var error = false;
         Application.Load_File(path, (nssc_file) => {
-            var nssc_function = new NSSC(nssc_file.name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario, nssc_file.N_ref, path);
+            var nssc_function = new NSSC(nssc_file.name, nssc_file.type, nssc_file.x_vector, nssc_file.y_vector, nssc_file.scenario, nssc_file.N_ref, path);
 
             if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
             else error = true;
@@ -97,7 +97,7 @@ class Application {
         Python_Communicator.get_Model_NSSC(type, scenario, 'Python_Scripts/get_Model_NSSC.py', (results) => {
             var nssc_function = this.Get_Function(name);
             if (!nssc_function) {
-                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario, this.N_ref, null);
+                var nssc = new NSSC(name, type, results.x_vector, results.y_vector, scenario, this.N_ref, null);
                 if (!this.Contains(nssc)) this.functions_collection.push(nssc);
             }
 
@@ -108,7 +108,7 @@ class Application {
 
     Update_NSSC(nssc_function, scenario, vectors_results) {
         nssc_function.x_vector = vectors_results.x_vector;
-        nssc_function.IICR_specie = vectors_results.IICR_specie;
+        nssc_function.y_vector = vectors_results.y_vector;
         nssc_function.scenario = scenario;
     }
 
@@ -133,10 +133,10 @@ class Application {
     }
 
     Scale_Psmc_Function(funct, mu = this.Mu * 1e-8, s = this.S) {
-        for (let index = 0; index < funct.time.length; index++) {
+        for (let index = 0; index < funct.x_vector.length; index++) {
             var N = funct.theta / (4 * mu * s);
-            funct.time[index] = 2 * N * funct.time[index];
-            funct.IICR_2[index] = N * funct.IICR_2[index];
+            funct.x_vector[index] = 2 * N * funct.x_vector[index];
+            funct.y_vector[index] = N * funct.y_vector[index];
             // funct.Mu = mu;
             // funct.S = s;
         }
@@ -145,9 +145,9 @@ class Application {
     }
 
     Scale_Msmc_Function(funct, mu = this.Mu * 1e-8) {
-        for (let index = 0; index < funct.time.length; index++) {
-            funct.time[index] = funct.time[index] / mu;
-            funct.IICR_k[index] = 1 / funct.IICR_k[index] / (2 * mu);
+        for (let index = 0; index < funct.x_vector.length; index++) {
+            funct.x_vector[index] = funct.x_vector[index] / mu;
+            funct.y_vector[index] = 1 / funct.y_vector[index] / (2 * mu);
             // funct.Mu = mu;
         }
 
@@ -157,7 +157,7 @@ class Application {
     Scale_NSSC_Function(funct, N_ref = this.N_ref) {
         for (let index = 0; index < funct.x_vector.length; index++) {
             funct.x_vector[index] = funct.x_vector[index] * 2 * N_ref;
-            funct.IICR_specie[index] = funct.IICR_specie[index] * N_ref;
+            funct.y_vector[index] = funct.y_vector[index] * N_ref;
         }
     }
 
