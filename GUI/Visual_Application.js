@@ -229,8 +229,8 @@ class Visual_Application {
 
     Visualize_Commun_Function(element_scale_by_default, psmc_msmc_nssc_model_control) {
         var color = this.Get_Random_Color();
-
         var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.x_vector, element_scale_by_default.y_vector), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
+        if (element_scale_by_default.model == 'nssc') graphic['borderDash'] = [10, 5];
 
         this.chart.data.datasets.push(graphic);
 
@@ -312,7 +312,7 @@ class Visual_Application {
         }
 
         else this.logic_application.Scale_Msmc_Function(clone_function, mu);
-            
+
         original_function.Mu = mu / 1e-8;
         graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.y_vector);
 
