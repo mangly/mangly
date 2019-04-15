@@ -223,69 +223,23 @@ class Visual_Application {
         $('#back').trigger('click');
     }
 
-    Visualize_PSMC_MSMC() {
-        var element_scale_by_default;
-        var IICR;
-
-        for (const element of this.logic_application.functions_collection) {
-            if (element.model != 'nssc' && (this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
-
-                var last_element_add = this.logic_application.Get_Last_Function();
-                element_scale_by_default = last_element_add.Clone();
-
-                last_element_add.Mu = 1.25;
-
-                if (last_element_add.model == 'psmc') {
-                    this.logic_application.Scale_Psmc_Function(element_scale_by_default);
-                    IICR = element_scale_by_default.IICR_2;
-                    // last_element_add.S = 100;
-                }
-
-                else {
-                    this.logic_application.Scale_Msmc_Function(element_scale_by_default);
-                    IICR = element_scale_by_default.IICR_k;
-                }
-
-                var color = this.Get_Random_Color();
-
-                var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, IICR), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
-
-                this.chart.data.datasets.push(graphic);
-
-                this.Visualize_element_of_list(last_element_add.name, last_element_add.model, color);
-                this.Add_model_compute_distance($('#psmc-msmc-model'), last_element_add.name);
-            }
-        }
-
-        this.chart.update();
-    }
-
     Add_model_compute_distance(control, name) {
         control.append('<option>' + name + '</option>')
     }
 
-    Visualize_NSSC_Saved() {
-        if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
+    Visualize_Commun_Function(graphic, element_scale_by_default, psmc_msmc_nssc_model_control) {
+        var color = this.Get_Random_Color();
 
-            var last_element_add = this.logic_application.Get_Last_Function();
-            var element_scale_by_default = last_element_add.Clone();
+        var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, element_scale_by_default.IICR_2), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
 
-            this.logic_application.Scale_NSSC_Function(element_scale_by_default, element_scale_by_default.N_ref);
+        this.chart.data.datasets.push(graphic);
 
-            var color = this.Get_Random_Color();
-
-            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.x_vector, element_scale_by_default.IICR_specie), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
-
-            this.chart.data.datasets.push(graphic);
-
-            this.Visualize_element_of_list(element_scale_by_default.name, element_scale_by_default.model, color);
-            this.Add_model_compute_distance($('#nssc-model'), element_scale_by_default.name);
-        }
-
+        this.Visualize_element_of_list(element_scale_by_default.name, element_scale_by_default.model, color);
+        this.Add_model_compute_distance(psmc_msmc_nssc_model_control, element_scale_by_default.name);
         this.chart.update();
     }
 
-    Visualize_PSMC_Saved() {
+    Visualize_PSMC() {
         if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
 
             var last_element_add = this.logic_application.Get_Last_Function();
@@ -294,20 +248,11 @@ class Visual_Application {
             this.logic_application.Scale_Psmc_Function(element_scale_by_default, element_scale_by_default.Mu, element_scale_by_default.S);
             last_element_add.Mu = element_scale_by_default.Mu / 1e-8;
 
-            var color = this.Get_Random_Color();
-
-            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, element_scale_by_default.IICR_2), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
-
-            this.chart.data.datasets.push(graphic);
-
-            this.Visualize_element_of_list(element_scale_by_default.name, element_scale_by_default.model, color);
-            this.Add_model_compute_distance($('#psmc-msmc-model'), last_element_add.name);
+            this.Visualize_Commun_Function(element_scale_by_default, $('#psmc-msmc-model'));
         }
-
-        this.chart.update();
     }
 
-    Visualize_MSMC_Saved() {
+    Visualize_MSMC() {
         if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
 
             var last_element_add = this.logic_application.Get_Last_Function();
@@ -316,42 +261,25 @@ class Visual_Application {
             this.logic_application.Scale_Msmc_Function(element_scale_by_default, element_scale_by_default.Mu);
             last_element_add.Mu = element_scale_by_default.Mu / 1e-8;
 
-            var color = this.Get_Random_Color();
-
-            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, element_scale_by_default.IICR_k), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
-
-            this.chart.data.datasets.push(graphic);
-
-            this.Visualize_element_of_list(element_scale_by_default.name, element_scale_by_default.model, color);
-            this.Add_model_compute_distance($('#psmc-msmc-model'), last_element_add.name);
+            this.Visualize_Commun_Function(element_scale_by_default, $('#psmc-msmc-model'));
         }
+    }
 
-        this.chart.update();
+    Visualize_NSSC() {
+        if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
+
+            var last_element_add = this.logic_application.Get_Last_Function();
+            var element_scale_by_default = last_element_add.Clone();
+
+            this.logic_application.Scale_NSSC_Function(element_scale_by_default, element_scale_by_default.N_ref);
+
+            this.Visualize_Commun_Function(element_scale_by_default, $('#nssc-model'));
+        }
     }
 
     Visualize_element_of_list(name, model, color) {
         var html = '<div class="pb-4 listview__item"><label class="pl-0 pr-4 custom-control custom-control--char"><input class="custom-control-input" type="checkbox"><span class="custom-control--char__helper" style="background-color:' + color + '"><i></i></span></label><div class="listview__content"><div class="listview__heading">' + name + '</div><p>' + model + ' model</p></div><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-edit zmdi-hc-2x"></i></span></label><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></span></label></div>';
         $('#list-graphics').append(html);
-    }
-
-    Visualize_NSSC() {
-        if (this.logic_application.functions_collection.length > this.chart.data.datasets.length) {
-            // $('#tab-graphics').trigger('click');
-            var color = this.Get_Random_Color();
-            var nssc = this.logic_application.Get_Last_Function();
-
-            var nssc_scale_by_default = nssc.Clone();
-            this.logic_application.Scale_NSSC_Function(nssc_scale_by_default);
-
-            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(nssc_scale_by_default.x_vector, nssc_scale_by_default.IICR_specie), 'label': nssc_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
-
-            this.chart.data.datasets.push(graphic);
-
-            this.Visualize_element_of_list(nssc.name, nssc.model, color);
-            this.Add_model_compute_distance($('#nssc-model'), nssc.name);
-
-            this.chart.update();
-        }
     }
 
     Update_NSSC(nssc_function) {

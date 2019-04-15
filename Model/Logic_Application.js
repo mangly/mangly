@@ -78,7 +78,6 @@ class Application {
             else error = true;
         });
 
-
         setTimeout(function () { callback(error); }, 100);
     }
 

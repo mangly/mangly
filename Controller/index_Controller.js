@@ -39,20 +39,33 @@ $(document).ready(function () {
         // Open a File selected for the user
         dialog.showOpenDialog(main_Window, options, function (arrPath) {
             if (arrPath) {
-                var model = Application_Utilities.Get_Model_Selected(arrPath[0]);
+                var extension = Application_Utilities.Get_Model_Selected(arrPath[0]);
                 var name = Application_Utilities.Get_Model_Name(arrPath[0]);
 
-                if (model == 'psmc' || model == 'msmc' || model == 'txt') {
-
-                    if (model == 'psmc')
+                if (extension == 'psmc' || extension == 'psmcp' || extension == 'msmc' || extension == 'msmcp' || extension == 'txt') {
+                    if (extension == 'psmc')
                         application.logic_application.Add_File_PSMC(arrPath[0], name, function (error) {
-                            if (!error) application.Visualize_PSMC_MSMC();
+                            if (!error) application.Visualize_PSMC();
                             else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
                         });
 
-                    else if (model == 'msmc' || model == 'txt') {
+                    else if (extension == 'msmc' || extension == 'txt') {
                         application.logic_application.Add_File_MSMC(arrPath[0], name, function (error) {
-                            if (!error) application.Visualize_PSMC_MSMC();
+                            if (!error) application.Visualize_MSMC();
+                            else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
+                        });
+                    }
+
+                    else if (extension == 'psmcp') {
+                        application.logic_application.Add_File_PSMCP(arrPath[0], function (error) {
+                            if (!error) application.Visualize_PSMC();
+                            else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
+                        });
+                    }
+
+                    else if (extension == 'msmcp') {
+                        application.logic_application.Add_File_MSMCP(arrPath[0], function (error) {
+                            if (!error) application.Visualize_MSMC();
                             else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
                         });
                     }
@@ -61,47 +74,14 @@ $(document).ready(function () {
                     $('#switch-selection').removeAttr('disabled');
                 }
 
-                else if (model == 'psmcp') {
-                    application.logic_application.Add_File_PSMCP(arrPath[0], function (error) {
-                        if (!error) application.Visualize_PSMC_Saved();
-                        else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
-                    });
-                }
-
-                else if(model == 'msmcp'){
-                    application.logic_application.Add_File_MSMCP(arrPath[0], function (error) {
-                        if (!error) application.Visualize_MSMC_Saved();
-                        else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
-                    });
-                }
-
-                else if (model == 'nssc') {
+                else if (extension == 'nssc') {
                     application.logic_application.Add_File_NSSC(arrPath[0], function (error) {
-                        if (!error) application.Visualize_NSSC_Saved();
+                        if (!error) application.Visualize_NSSC();
                         else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
                     });
                 }
 
-                else dialog.showMessageBox(main_Window, { type: 'error', message: 'Invalid file: ' + name + '.' + model, buttons: ['Accept'] });
-
-
-
-                // console.log(application.logic_application.functions_collection)
-
-                // if (nssc_paths.length != 0) {
-                //     application.logic_application.Add_File_NSSC(nssc_paths, function () {
-                //         // try {
-                //         // if (err) {
-                //         //     throw new ArgumentException(err);
-                //         // }
-                //         application.Visualize_NSSC_Saved();
-                //         // }
-
-                //         // catch (exception) {
-                //         //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
-                //         // }
-                //     });
-                // }
+                else dialog.showMessageBox(main_Window, { type: 'error', message: 'Invalid file: ' + name + '.' + extension, buttons: ['Accept'] });
             }
         });
     });
