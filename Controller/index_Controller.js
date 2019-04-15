@@ -59,6 +59,21 @@ $(document).ready(function () {
                     $('#switch-selection').removeAttr('disabled');
                 }
 
+                else if (model == 'psmcp' || model == 'msmcp') {
+                    application.logic_application.Add_File_PSMCP(arrPath[0], function () {
+                        // try {
+                        // if (err) {
+                        //     throw new ArgumentException(err);
+                        // }
+                        application.Visualize_PSMC_Saved();
+                        // }
+
+                        // catch (exception) {
+                        //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
+                        // }
+                    });
+                }
+
                 else if (model == 'nssc') {
                     application.logic_application.Add_File_NSSC(arrPath[0], function () {
                         // try {
@@ -131,6 +146,10 @@ $(document).ready(function () {
 
     $('#card-canvas').on('keyup', function () {
         $('#canvas-container').addClass('disabled');
+    });
+
+    $('.dropdown ul li').on('click', function(){
+        $(this).trigger('mouseout');
     });
 
     var matrix;
@@ -417,22 +436,41 @@ $(document).ready(function () {
         else $("div.holder").jPages("destroy");
     });
 
-    $('#save-nssc').on('click', function () {
-        // var nssc_model = application.logic_application.Get_NSSC_Function(selected_function.name)
-        var nssc_save = JSON.stringify(selected_function);
+    $('#save').on('click', function () {
+        if (selected_function && path && selected_function.model == 'nssc') {
+            if (selected_function.path) {
+                var function_save = JSON.stringify(selected_function);
+                Application.Save_File(selected_function.path, function_save);
+            }
 
-        var options = {
-            title: 'Save...',
-            defaultPath: selected_function.name,
+            else $('#save-as').trigger('click');
+        }
+        else dialog.showMessageBox(main_Window, { type: 'error', message: 'NSSC model not selected', buttons: ['Accept'] });
+    });
 
-            filters: [
-                { name: 'File', extensions: ['nssc'] }
-            ],
+    $('#save-as').on('click', function () {
+        if (selected_function) {
+            var extension = selected_function.model;
+            if (extension == 'psmc') extension = 'psmcp';
+            else if (extension == 'msmc' || extension == 'txt') extension = 'msmcp'
+            else application.logic_application.Scale_NSSC_Function(selected_function, 1);
+            var function_save = JSON.stringify(selected_function);
+
+            var options = {
+                title: 'Save...',
+                defaultPath: selected_function.name,
+
+                filters: [
+                    { name: 'File', extensions: [extension] }
+                ],
+            }
+
+            dialog.showSaveDialog(main_Window, options, function (filename) {
+                Application.Save_File(filename, function_save);
+            });
         }
 
-        dialog.showSaveDialog(main_Window, options, function (filename) {
-            Application.Save_File(filename, nssc_save);
-        });
+        else dialog.showMessageBox(main_Window, { type: 'error', message: 'No function selected', buttons: ['Accept'] });
     });
 
     $('#mycanvas').bind('mousewheel', function (e) {

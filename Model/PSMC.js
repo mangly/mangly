@@ -3,7 +3,7 @@
 var Application_Utilities = require('../Utilities/Application_Utilities');
 
 class PSMC {
-    constructor(name, time, IICR_2, theta, rho, Mu, S) {
+    constructor(name, time, IICR_2, theta, rho, Mu, S, path) {
         this.name = name;
         this.time = time;
         this.IICR_2 = IICR_2;
@@ -12,6 +12,7 @@ class PSMC {
         this.model = 'psmc';
         this.Mu = Mu;
         this.S = S;
+        this.path = path;
     }
 
     Clone() {

@@ -50,7 +50,7 @@ class Application {
     Add_File_PSMC(path, name, callback) {
         Python_Communicator.get_Model_PSMC(path, name, 'Python_Scripts/get_Model_PSMC.py', (element) => {
             // for (const element of results.file_collection) {
-            var funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
+            var funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S, path);
 
             // if (element.model == 'psmc') funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
             // else funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
@@ -65,7 +65,7 @@ class Application {
     Add_File_MSMC(path, name, callback) {
         Python_Communicator.get_Model_MSMC(path, name, 'Python_Scripts/get_Model_MSMC.py', (element) => {
             // for (const element of results.file_collection) {
-            var funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
+            var funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu, path);
 
             // if (element.model == 'psmc') funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, this.Mu, this.S);
             // else funct = new MSMC(element.name, element.time, element.IICR_k, this.Mu);
@@ -91,13 +91,23 @@ class Application {
 
     //     setTimeout(function () { callback(); }, 100);
     // }
+    Add_File_PSMCP(path, callback) {
+        Application.Load_File(path, (element) => {
+            var funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, element.Mu, element.S, path);
+
+            if (!this.Contains(funct)) this.functions_collection.push(funct);
+        });
+
+
+        setTimeout(function () { callback(); }, 100);
+    }
 
     Add_File_NSSC(path, callback) {
         Application.Load_File(path, (nssc_file) => {
             var path_split = path.split('/');
             var new_name = path_split[path_split.length - 1].slice(0, -5);
 
-            var nssc_function = new NSSC(new_name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario, this.N_ref);
+            var nssc_function = new NSSC(new_name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario, nssc_file.N_ref, path);
 
             if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
         });
@@ -110,7 +120,7 @@ class Application {
         Python_Communicator.get_Model_NSSC(type, scenario, 'Python_Scripts/get_Model_NSSC.py', (results) => {
             var nssc_function = this.Get_Function(name);
             if (nssc_function == null) {
-                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario, this.N_ref);
+                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario, 1, null);
                 if (!this.Contains(nssc)) this.functions_collection.push(nssc);
             }
 

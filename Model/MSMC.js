@@ -3,12 +3,13 @@
 var Application_Utilities = require('../Utilities/Application_Utilities');
 
 class MSMC {
-    constructor(name, time, IICR_k, Mu){
+    constructor(name, time, IICR_k, Mu, path){
         this.name = name;
         this.time = time;
         this.IICR_k = IICR_k;
         this.model = 'msmc';
         this.Mu = Mu;
+        this.path = path;
     }
 
     Clone() {
