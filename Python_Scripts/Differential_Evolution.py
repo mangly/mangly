@@ -4,8 +4,11 @@ from scipy.optimize import differential_evolution
 from model import Pnisland
 # from get_File_Results import get_PSMC_results
 # import random
-from metaheuristhics_utilities import get_scenario, multi_dim_conversion, valid_state, get_optimal_scenario, best_initial_n_ref, get_best_values, get_initial_bounds
-from functions import get_NSSC_vectors
+from metaheuristics_utilities import get_scenario, multi_dim_conversion, valid_state, get_optimal_scenario, best_initial_n_ref, get_best_values, get_initial_bounds, get_NSSC_vectors
+# from get_Model_NSSC import get_NSSC_vectors
+
+model_type = sys.argv[2]
+scenario = json.loads(sys.argv[1])
 
 vectors = json.loads(sys.argv[1])
 scenario_NSSC = json.loads(sys.argv[2])

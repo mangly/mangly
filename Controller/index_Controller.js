@@ -75,6 +75,7 @@ $(document).ready(function () {
                 }
 
                 else if (model == 'nssc') {
+                    console.log(application.logic_application.functions_collection);
                     application.logic_application.Add_File_NSSC(arrPath[0], function () {
                         // try {
                         // if (err) {
@@ -242,11 +243,11 @@ $(document).ready(function () {
     });
 
     slider_mu.noUiSlider.on("slide", function (a, b) {
-        var mu = (Math.round(a[b] * 100) / 100) + 'e-8';
-        var real_mu = a[b] * 1e-8;
+        // var mu = (Math.round(a[b] * 100) / 100) + 'e-8';
+        var mu = a[b] + 'e-8';
         var s = selected_function.S;
         $('#input-slider-value-mu').val(mu);
-        application.Update_Scale_PSMC_MSMC(selected_function, real_mu, s);
+        application.Update_Scale_PSMC_MSMC(selected_function, mu, s);
     });
 
     $('#input-slider-value-mu').on('change', function () {
@@ -437,7 +438,7 @@ $(document).ready(function () {
     });
 
     $('#save').on('click', function () {
-        if (selected_function && path && selected_function.model == 'nssc') {
+        if (selected_function && selected_function.model == 'nssc') {
             if (selected_function.path) {
                 var function_save = JSON.stringify(selected_function);
                 Application.Save_File(selected_function.path, function_save);
@@ -453,7 +454,6 @@ $(document).ready(function () {
             var extension = selected_function.model;
             if (extension == 'psmc') extension = 'psmcp';
             else if (extension == 'msmc' || extension == 'txt') extension = 'msmcp'
-            var function_save = JSON.stringify(selected_function);
 
             var options = {
                 title: 'Save...',
@@ -465,6 +465,11 @@ $(document).ready(function () {
             }
 
             dialog.showSaveDialog(main_Window, options, function (filename) {
+                var new_name = Application_Utilities.Get_Name_Of_Path(filename);
+                var function_clone_to_save = selected_function.Clone();
+                function_clone_to_save.name = new_name;
+                var function_save = JSON.stringify(function_clone_to_save);
+                
                 Application.Save_File(filename, function_save);
             });
         }

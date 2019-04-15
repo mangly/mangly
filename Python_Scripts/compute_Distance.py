@@ -1,4 +1,4 @@
-from model import NSSC, Pnisland
+from model import Pnisland
 import sys, json
 
 def compute_Distance(vectors, scenario_NSSC, n_ref):

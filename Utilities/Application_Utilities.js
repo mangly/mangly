@@ -112,6 +112,13 @@ class Application_Utilities {
 
         return sum;
     }
+
+    static Get_Name_Of_Path(path){
+        var path_split = path.split('/');
+        var new_name = path_split[path_split.length - 1].slice(0, -5);
+
+        return new_name;
+    }
 }
 
 module.exports = Application_Utilities

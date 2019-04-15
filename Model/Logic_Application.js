@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 const Python_Communicator = require('../Utilities/Python_Communicator');
+const Application_Utilities = require('../Utilities/Application_Utilities');
 const PSMC = require('./PSMC');
 const MSMC = require('./MSMC');
 const NSSC = require('./NSSC');
@@ -9,7 +10,7 @@ const NSSC = require('./NSSC');
 class Application {
     constructor() {
         this.functions_collection = [];
-        this.Mu = 1.25e-8;
+        this.Mu = 1.25;
         this.S = 100;
         this.N_ref = 500;
     }
@@ -104,14 +105,14 @@ class Application {
 
     Add_File_NSSC(path, callback) {
         Application.Load_File(path, (nssc_file) => {
-            var path_split = path.split('/');
-            var new_name = path_split[path_split.length - 1].slice(0, -5);
+            // var path_split = path.split('/');
+            // var new_name = path_split[path_split.length - 1].slice(0, -5);
+            var new_name = Application_Utilities.Get_Name_Of_Path(path);
 
             var nssc_function = new NSSC(new_name, nssc_file.type, nssc_file.x_vector, nssc_file.IICR_specie, nssc_file.scenario, nssc_file.N_ref, path);
 
             if (!this.Contains(nssc_function)) this.functions_collection.push(nssc_function);
         });
-
 
         setTimeout(function () { callback(); }, 100);
     }
@@ -155,7 +156,7 @@ class Application {
         });
     }
 
-    Scale_Psmc_Function(funct, mu = this.Mu, s = this.S) {
+    Scale_Psmc_Function(funct, mu = this.Mu * 1e-8, s = this.S) {
         for (let index = 0; index < funct.time.length; index++) {
             var N = funct.theta / (4 * mu * s);
             funct.time[index] = 2 * N * funct.time[index];
@@ -167,7 +168,7 @@ class Application {
         // return funct;
     }
 
-    Scale_Msmc_Function(funct, mu = this.Mu) {
+    Scale_Msmc_Function(funct, mu = this.Mu * 1e-8) {
         for (let index = 0; index < funct.time.length; index++) {
             funct.time[index] = funct.time[index] / mu;
             funct.IICR_k[index] = 1 / funct.IICR_k[index] / (2 * mu);

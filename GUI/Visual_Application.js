@@ -213,8 +213,8 @@ class Visual_Application {
             $('#change-color').attr('disabled', 'disabled');
             $('#option-s *').attr('disabled', 'disabled');
             $('#option-mu *').attr('disabled', 'disabled');
-            selected_function = null;
             $('#input-slider-value-s').val(100);
+            selected_function = null;
 
             this.Update_Slider(1.25, 'mu', slider_mu, $("#input-slider-value-mu"));
             this.Initialize_Information_Of_Functions();
