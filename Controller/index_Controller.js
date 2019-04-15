@@ -453,7 +453,6 @@ $(document).ready(function () {
             var extension = selected_function.model;
             if (extension == 'psmc') extension = 'psmcp';
             else if (extension == 'msmc' || extension == 'txt') extension = 'msmcp'
-            else application.logic_application.Scale_NSSC_Function(selected_function, 1);
             var function_save = JSON.stringify(selected_function);
 
             var options = {

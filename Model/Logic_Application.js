@@ -93,7 +93,7 @@ class Application {
     // }
     Add_File_PSMCP(path, callback) {
         Application.Load_File(path, (element) => {
-            var funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, element.Mu, element.S, path);
+            var funct = new PSMC(element.name, element.time, element.IICR_2, element.theta, element.rho, element.Mu * 1e-8, element.S, path);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
         });
@@ -120,7 +120,7 @@ class Application {
         Python_Communicator.get_Model_NSSC(type, scenario, 'Python_Scripts/get_Model_NSSC.py', (results) => {
             var nssc_function = this.Get_Function(name);
             if (nssc_function == null) {
-                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario, 1, null);
+                var nssc = new NSSC(name, type, results.x_vector, results.IICR_specie, scenario, this.N_ref, null);
                 if (!this.Contains(nssc)) this.functions_collection.push(nssc);
             }
 

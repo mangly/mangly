@@ -268,18 +268,18 @@ class Visual_Application {
         if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
 
             var last_element_add = this.logic_application.Get_Last_Function();
-            // var element_scale_by_default = last_element_add.Clone();
+            var element_scale_by_default = last_element_add.Clone();
 
-            this.logic_application.Scale_NSSC_Function(last_element_add, last_element_add.N_ref);
+            this.logic_application.Scale_NSSC_Function(element_scale_by_default, element_scale_by_default.N_ref);
 
             var color = this.Get_Random_Color();
 
-            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(last_element_add.x_vector, last_element_add.IICR_specie), 'label': last_element_add.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
+            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.x_vector, element_scale_by_default.IICR_specie), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'borderDash': [10, 5], 'steppedLine': 'true' };
 
             this.chart.data.datasets.push(graphic);
 
-            this.Visualize_element_of_list(last_element_add.name, last_element_add.model, color);
-            this.Add_model_compute_distance($('#nssc-model'), last_element_add.name);
+            this.Visualize_element_of_list(element_scale_by_default.name, element_scale_by_default.model, color);
+            this.Add_model_compute_distance($('#nssc-model'), element_scale_by_default.name);
         }
 
         this.chart.update();
@@ -289,17 +289,18 @@ class Visual_Application {
         if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
 
             var last_element_add = this.logic_application.Get_Last_Function();
-            // var element_scale_by_default = last_element_add.Clone();
+            var element_scale_by_default = last_element_add.Clone();
 
-            this.logic_application.Scale_Psmc_Function(last_element_add, last_element_add.Mu * 1e-8, last_element_add.S);
+            this.logic_application.Scale_Psmc_Function(element_scale_by_default, element_scale_by_default.Mu, element_scale_by_default.S);
+            last_element_add.Mu = element_scale_by_default.Mu / 1e-8;
 
             var color = this.Get_Random_Color();
 
-            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(last_element_add.time, last_element_add.IICR_2), 'label': last_element_add.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
+            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, element_scale_by_default.IICR_2), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
 
             this.chart.data.datasets.push(graphic);
 
-            this.Visualize_element_of_list(last_element_add.name, last_element_add.model, color);
+            this.Visualize_element_of_list(element_scale_by_default.name, element_scale_by_default.model, color);
         }
 
         this.chart.update();
