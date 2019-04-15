@@ -410,7 +410,7 @@ $(document).ready(function () {
     });
 
     $('#save').on('click', function () {
-        if (selected_function && selected_function.model == 'nssc') {
+        if (selected_function) {
             if (selected_function.path) {
                 var function_save = JSON.stringify(selected_function);
                 Application.Save_File(selected_function.path, function_save);

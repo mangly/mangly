@@ -35,7 +35,7 @@ class Application {
     Add_File_PSMC(path, name, callback) {
         Python_Communicator.get_Model_PSMC(path, name, 'Python_Scripts/get_Model_PSMC.py', (element) => {
             var error = false;
-            var funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, this.Mu * 1e-8, this.S, path);
+            var funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, this.Mu * 1e-8, this.S, null);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
@@ -47,7 +47,7 @@ class Application {
     Add_File_MSMC(path, name, callback) {
         Python_Communicator.get_Model_MSMC(path, name, 'Python_Scripts/get_Model_MSMC.py', (element) => {
             var error = false;
-            var funct = new MSMC(element.name, element.x_vector, element.y_vector, this.Mu * 1e-8, path);
+            var funct = new MSMC(element.name, element.x_vector, element.y_vector, this.Mu * 1e-8, null);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
