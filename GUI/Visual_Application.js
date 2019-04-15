@@ -301,6 +301,29 @@ class Visual_Application {
             this.chart.data.datasets.push(graphic);
 
             this.Visualize_element_of_list(element_scale_by_default.name, element_scale_by_default.model, color);
+            this.Add_model_compute_distance($('#psmc-msmc-model'), last_element_add.name);
+        }
+
+        this.chart.update();
+    }
+
+    Visualize_MSMC_Saved() {
+        if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
+
+            var last_element_add = this.logic_application.Get_Last_Function();
+            var element_scale_by_default = last_element_add.Clone();
+
+            this.logic_application.Scale_Msmc_Function(element_scale_by_default, element_scale_by_default.Mu);
+            last_element_add.Mu = element_scale_by_default.Mu / 1e-8;
+
+            var color = this.Get_Random_Color();
+
+            var graphic = { 'data': Application_Utilities.Generate_Data_To_Chart(element_scale_by_default.time, element_scale_by_default.IICR_k), 'label': element_scale_by_default.name, 'fill': 'false', 'borderColor': color, 'backgroundColor': color, 'borderWidth': 2, 'steppedLine': 'true' };
+
+            this.chart.data.datasets.push(graphic);
+
+            this.Visualize_element_of_list(element_scale_by_default.name, element_scale_by_default.model, color);
+            this.Add_model_compute_distance($('#psmc-msmc-model'), last_element_add.name);
         }
 
         this.chart.update();

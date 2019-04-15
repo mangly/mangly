@@ -45,13 +45,15 @@ $(document).ready(function () {
                 if (model == 'psmc' || model == 'msmc' || model == 'txt') {
 
                     if (model == 'psmc')
-                        application.logic_application.Add_File_PSMC(arrPath[0], name, function () {
-                            application.Visualize_PSMC_MSMC();
+                        application.logic_application.Add_File_PSMC(arrPath[0], name, function (error) {
+                            if (!error) application.Visualize_PSMC_MSMC();
+                            else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
                         });
 
                     else if (model == 'msmc' || model == 'txt') {
-                        application.logic_application.Add_File_MSMC(arrPath[0], name, function () {
-                            application.Visualize_PSMC_MSMC();
+                        application.logic_application.Add_File_MSMC(arrPath[0], name, function (error) {
+                            if (!error) application.Visualize_PSMC_MSMC();
+                            else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
                         });
                     }
 
@@ -59,34 +61,24 @@ $(document).ready(function () {
                     $('#switch-selection').removeAttr('disabled');
                 }
 
-                else if (model == 'psmcp' || model == 'msmcp') {
-                    application.logic_application.Add_File_PSMCP(arrPath[0], function () {
-                        // try {
-                        // if (err) {
-                        //     throw new ArgumentException(err);
-                        // }
-                        application.Visualize_PSMC_Saved();
-                        // }
+                else if (model == 'psmcp') {
+                    application.logic_application.Add_File_PSMCP(arrPath[0], function (error) {
+                        if (!error) application.Visualize_PSMC_Saved();
+                        else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
+                    });
+                }
 
-                        // catch (exception) {
-                        //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
-                        // }
+                else if(model == 'msmcp'){
+                    application.logic_application.Add_File_MSMCP(arrPath[0], function (error) {
+                        if (!error) application.Visualize_MSMC_Saved();
+                        else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
                     });
                 }
 
                 else if (model == 'nssc') {
-                    console.log(application.logic_application.functions_collection);
-                    application.logic_application.Add_File_NSSC(arrPath[0], function () {
-                        // try {
-                        // if (err) {
-                        //     throw new ArgumentException(err);
-                        // }
-                        application.Visualize_NSSC_Saved();
-                        // }
-
-                        // catch (exception) {
-                        //     dialog.showMessageBox(main_Window, { type: 'error', message: exception.message, buttons: ['Accept'] });
-                        // }
+                    application.logic_application.Add_File_NSSC(arrPath[0], function (error) {
+                        if (!error) application.Visualize_NSSC_Saved();
+                        else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
                     });
                 }
 
@@ -149,7 +141,7 @@ $(document).ready(function () {
         $('#canvas-container').addClass('disabled');
     });
 
-    $('.dropdown ul li').on('click', function(){
+    $('.dropdown ul li').on('click', function () {
         $(this).trigger('mouseout');
     });
 
@@ -469,7 +461,7 @@ $(document).ready(function () {
                 var function_clone_to_save = selected_function.Clone();
                 function_clone_to_save.name = new_name;
                 var function_save = JSON.stringify(function_clone_to_save);
-                
+
                 Application.Save_File(filename, function_save);
             });
         }
