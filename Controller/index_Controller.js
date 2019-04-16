@@ -217,6 +217,7 @@ $(document).ready(function () {
 
     slider_mu.noUiSlider.on("slide", function (a, b) {
         // var mu = (Math.round(a[b] * 100) / 100) + 'e-8';
+        $('#save').css('color', 'white');
         var mu = a[b] + 'e-8';
         var s = selected_function.S;
         $('#input-slider-value-mu').val(mu);
@@ -224,11 +225,13 @@ $(document).ready(function () {
     });
 
     $('#input-slider-value-mu').on('change', function () {
+        $('#save').css('color', 'white');
         document.getElementById("slider-mu").noUiSlider.set($(this).val() / 1e-8);
         application.Update_Scale_PSMC_MSMC(selected_function, $(this).val(), selected_function.S);
     });
 
     $('#input-slider-value-s').on('change', function () {
+        $('#save').css('color', 'white');
         application.Update_Scale_PSMC_MSMC(selected_function, $('#input-slider-value-mu').val(), $(this).val());
     });
 
@@ -246,11 +249,13 @@ $(document).ready(function () {
     })
 
     $('#input-slider-value-nref').on('change', function () {
+        $('#save').css('color', 'white');
         document.getElementById("slider-nref").noUiSlider.set($(this).val());
         application.Update_Scale_NSSC(selected_function, $('#input-slider-value-nref').val());
     });
 
     slider_nref.noUiSlider.on('slide', function (a, b) {
+        $('#save').css('color', 'white');
         $('#input-slider-value-nref').val(a[b]);
         application.Update_Scale_NSSC(selected_function, a[b]);
     });
@@ -452,7 +457,11 @@ $(document).ready(function () {
             }
 
             dialog.showSaveDialog(main_Window, options, function (filename) {
-                var new_name = Application_Utilities.Get_Name_Of_Path(filename);
+                $('#save').css('color', 'gray');
+                var new_name;
+                if (extension.length == 4) new_name = Application_Utilities.Get_Name_Of_Path(filename, 5);
+                else new_name = Application_Utilities.Get_Name_Of_Path(filename, 6);
+
                 var function_clone_to_save = selected_function.Clone();
                 function_clone_to_save.name = new_name;
                 var function_save = JSON.stringify(function_clone_to_save);
