@@ -169,7 +169,9 @@ class Visual_Application {
 
     Select_Function(target, selected_function, slider_mu) {
         // Disable multiple selection in checkbox control
+        var selected_function_result = selected_function;
         $('.custom-control-input').not(target).prop('checked', false);
+        $('#save-as').css('color', 'white');
         //------------
 
         // selected_function = this.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
@@ -207,6 +209,7 @@ class Visual_Application {
         }
 
         else {
+            $('#save-as').css('color', 'gray');
             $('#load-nssc-state').removeAttr('disabled');
             $('#reset-scales').attr('disabled', 'disabled');
             $('#reset-all-scales').attr('disabled', 'disabled');
@@ -214,13 +217,15 @@ class Visual_Application {
             $('#option-s *').attr('disabled', 'disabled');
             $('#option-mu *').attr('disabled', 'disabled');
             $('#input-slider-value-s').val(100);
-            selected_function = null;
+            selected_function_result = selected_function.Clone();
+            selected_function_result = null;
 
             this.Update_Slider(1.25, 'mu', slider_mu, $("#input-slider-value-mu"));
             this.Initialize_Information_Of_Functions();
         }
 
         $('#back').trigger('click');
+        return selected_function_result;
     }
 
     Add_model_compute_distance(control, name) {

@@ -108,7 +108,7 @@ $(document).ready(function () {
         else if (target.is('.custom-control-input')) {
             selected_function = application.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
             legend_color = target.parents('.custom-control').children('.custom-control--char__helper');
-            application.Select_Function(target, selected_function, slider_mu);
+            selected_function = application.Select_Function(target, selected_function, slider_mu);
         }
     });
 
@@ -140,6 +140,7 @@ $(document).ready(function () {
         var previous_sum = sum;
         sum = Application_Utilities.Sum(sampling_vector.jexcel('getRowData', 0));
         if (sum == 2) {
+            $('#save').css('color', 'white');
             $('#container-nref').removeClass('disabled');
             $('#container-matrices').removeClass('disabled');
             var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
@@ -365,6 +366,7 @@ $(document).ready(function () {
     });
 
     $('#demes-sv').on('change', function () {
+        $('#save').css('color', 'white');
         var diference = $(this).val() - order;
 
         if (diference > 0) {
@@ -410,8 +412,9 @@ $(document).ready(function () {
     });
 
     $('#save').on('click', function () {
-        if (selected_function) {
+        if (selected_function && ($('#save').css('color') != "rgb(128, 128, 128)")) {
             if (selected_function.path) {
+                $('#save').css('color', 'gray');
                 var function_save = JSON.stringify(selected_function);
                 Application.Save_File(selected_function.path, function_save);
 
@@ -430,7 +433,7 @@ $(document).ready(function () {
             else $('#save-as').trigger('click');
         }
 
-        else dialog.showMessageBox(main_Window, { type: 'error', message: 'NSSC model not selected', buttons: ['Accept'] });
+        // else dialog.showMessageBox(main_Window, { type: 'error', message: 'NSSC model not selected', buttons: ['Accept'] });
     });
 
     $('#save-as').on('click', function () {
@@ -458,7 +461,7 @@ $(document).ready(function () {
             });
         }
 
-        else dialog.showMessageBox(main_Window, { type: 'error', message: 'No function selected', buttons: ['Accept'] });
+        // else dialog.showMessageBox(main_Window, { type: 'error', message: 'No function selected', buttons: ['Accept'] });
     });
 
     $('#mycanvas').bind('mousewheel', function (e) {
