@@ -167,7 +167,7 @@ class Visual_Application {
         return "#" + color;
     }
 
-    Select_Function(target, selected_function, legend_color, slider_mu) {
+    Select_Function(target, selected_function, slider_mu) {
         // Disable multiple selection in checkbox control
         $('.custom-control-input').not(target).prop('checked', false);
         //------------

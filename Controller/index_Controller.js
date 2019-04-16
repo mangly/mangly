@@ -108,7 +108,7 @@ $(document).ready(function () {
         else if (target.is('.custom-control-input')) {
             selected_function = application.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
             legend_color = target.parents('.custom-control').children('.custom-control--char__helper');
-            application.Select_Function(target, selected_function, legend_color, slider_mu);
+            application.Select_Function(target, selected_function, slider_mu);
         }
     });
 
@@ -414,10 +414,22 @@ $(document).ready(function () {
             if (selected_function.path) {
                 var function_save = JSON.stringify(selected_function);
                 Application.Save_File(selected_function.path, function_save);
+
+                $.notify('<strong>Saving...</strong> Do not close this page', {
+                    allow_dismiss: false,
+                    showProgressbar: true,
+                    delay: 1000,
+                    type: 'primary',
+                    placement: {
+                        align: "center",
+                        from: "bottom"
+                    }
+                });
             }
 
             else $('#save-as').trigger('click');
         }
+
         else dialog.showMessageBox(main_Window, { type: 'error', message: 'NSSC model not selected', buttons: ['Accept'] });
     });
 
