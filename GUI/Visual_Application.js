@@ -707,13 +707,13 @@ class Visual_Application {
     static Add_Deme(count_demes, order, deme_vector_collection, sampling_vector, matrix_collection, type) {
         this.Fill_Deme_Vector(sampling_vector, count_demes, 0);
 
-        for (let index = 0; index < deme_vector_collection.length; index++) {
-            const deme = deme_vector_collection[index];
-
-            this.Fill_Deme_Vector(deme, count_demes, 1);
-        }
-
         if (type == 'General') {
+            for (let index = 0; index < deme_vector_collection.length; index++) {
+                const deme = deme_vector_collection[index];
+
+                this.Fill_Deme_Vector(deme, count_demes, 1);
+            }
+
             for (let index = 0; index < matrix_collection.length; index++) {
                 const matrix = matrix_collection[index];
 
@@ -726,20 +726,23 @@ class Visual_Application {
         this.Configuration_Vector();
     }
 
-    static Delete_Deme(count, order, deme_vector_collection, sampling_vector, matrix_collection) {
+    static Delete_Deme(count, order, deme_vector_collection, sampling_vector, matrix_collection, type) {
         sampling_vector.jexcel('deleteColumn', order, count);
-        for (let index = 0; index < deme_vector_collection.length; index++) {
-            const deme = deme_vector_collection[index];
-            deme.jexcel('deleteColumn', order, count);
-        }
 
-        for (let index = 0; index < matrix_collection.length; index++) {
-            const matrix = matrix_collection[index];
+        if (type == 'General') {
+            for (let index = 0; index < deme_vector_collection.length; index++) {
+                const deme = deme_vector_collection[index];
+                deme.jexcel('deleteColumn', order, count);
+            }
 
-            matrix.jexcel('deleteColumn', order, count);
-            matrix.jexcel('deleteRow', order, count);
+            for (let index = 0; index < matrix_collection.length; index++) {
+                const matrix = matrix_collection[index];
 
-            this.Configuration_Matrix(matrix, order + count);;
+                matrix.jexcel('deleteColumn', order, count);
+                matrix.jexcel('deleteRow', order, count);
+
+                this.Configuration_Matrix(matrix, order + count);
+            }
         }
 
         this.Configuration_Vector();

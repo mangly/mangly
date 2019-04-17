@@ -26,11 +26,19 @@ $(document).ready(function () {
 
   $('#add-matrix').on('click', function () {
     var index = matrix_collection.length;
-    var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + matrix_collection.length + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" style="padding:20px 0 40px 0 0" id="deme' + matrix_collection.length + '"></div>';
-    Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
 
-    var html = '<div class="matrix" id="matrix' + index + '"></div>';
-    Visual_Application.Add_Matrix(html, $('#scen' + index), order, matrix_collection, '#matrix', false);
+    if (type == 'General') {
+      var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + matrix_collection.length + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" style="padding:20px 0 40px 0 0" id="deme' + matrix_collection.length + '"></div>';
+      Visual_Application.Add_Show_Time_Deme_Sizes(html_time_dime_sizes, order, deme_vector_collection, '#deme');
+
+      var html = '<div class="matrix" id="matrix' + index + '"></div>';
+      Visual_Application.Add_Matrix(html, $('#scen' + index), order, matrix_collection, '#matrix', false);
+    }
+
+    else if (type == 'Symmetrical') {
+      var html = '<li class="pt-4"><div class="row"><div class="col-sm-4"><div class="form-group"><span>Time of change:</span><input id="time' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>M:</span><input id="M' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-4"><div class="form-group"><span>c:</span><input id="c' + index + '" class="form-control input-mask"><i class="form-group__bar"></i></div></div></div></li>';
+      $('#matrix-collection>ul').append(html);
+    }
 
     if ($('#switch-selection-pagination').prop('checked')) {
       $("div.holder").jPages("destroy");
@@ -87,6 +95,6 @@ $(document).ready(function () {
 
   $('#remove-deme').on('click', function () {
     order--;
-    Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection);
+    Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection, type);
   })
 });
