@@ -204,7 +204,13 @@ class Visual_Application {
                 $('#load-nssc-state').attr('disabled', 'disabled');
             }
 
-            else $('#load-nssc-state').removeAttr('disabled');
+            else if (selected_function.model == 'nssc') {
+                $('#input-slider-value-nref').val(selected_function.N_ref);
+                document.getElementById("slider-nref").noUiSlider.set(selected_function.N_ref);
+                $('#load-nssc-state').removeAttr('disabled');
+            }
+
+            // else $('#load-nssc-state').removeAttr('disabled');
 
             this.Visualize_Information_Of_Functions(selected_function);
         }
@@ -291,7 +297,7 @@ class Visual_Application {
             // var last_element_add = this.logic_application.Get_Last_Function();
             this.logic_application.Scale_NSSC_Function(function_nssc, function_nssc.N_ref);
 
-            if(function_psmc_msmc.model == 'psmc') this.logic_application.Scale_Psmc_Function(function_psmc_msmc, function_psmc_msmc.Mu, function_psmc_msmc.S);
+            if (function_psmc_msmc.model == 'psmc') this.logic_application.Scale_Psmc_Function(function_psmc_msmc, function_psmc_msmc.Mu, function_psmc_msmc.S);
             else this.logic_application.Scale_Msmc_Function(function_psmc_msmc, function_psmc_msmc.Mu);
             // var element_scale_by_default = last_element_add.Clone();
 
