@@ -81,9 +81,10 @@ $(document).ready(function () {
                     });
                 }
 
-                else if(extension == 'fit'){
-                    application.logic_application.Add_File_Curve_Fiting(arrPath[0], function(){
+                else if (extension == 'fit') {
+                    application.logic_application.Add_File_Curve_Fiting(arrPath[0], function (old_function_list) {
                         application.Visualize_Curve_fiting();
+                        $.merge(application.logic_application.functions_collection, old_function_list);
                     });
                 }
 
@@ -512,7 +513,7 @@ $(document).ready(function () {
 
             // Application.Save_File(filename, function_save);
             Application.Save_File(filename, curve_fiting_save);
-        });  
+        });
     });
 
     $('#mycanvas').bind('mousewheel', function (e) {
@@ -537,6 +538,7 @@ $(document).ready(function () {
             application.Show_Distance();
             application.Change_Information_Of_Functions();
             $('#start_metaheuristic').removeAttr('disabled');
+            $('#save-fit').removeAttr('disabled');
         }
         else {
             $('#distance-value-col').fadeOut(50, function () {
@@ -544,6 +546,7 @@ $(document).ready(function () {
             });
 
             $('#start_metaheuristic').attr('disabled', 'disabled');
+            $('#save-fit').attr('disabled', 'disabled');
         }
     });
 
@@ -572,6 +575,7 @@ $(document).ready(function () {
             application.Show_Distance();
             application.Change_Information_Of_Functions();
             $('#start_metaheuristic').removeAttr('disabled');
+            $('#save-fit').removeAttr('disabled');
         }
         else {
             $('#distance-value-col').fadeOut(50, function () {
@@ -579,6 +583,7 @@ $(document).ready(function () {
             });
 
             $('#start_metaheuristic').attr('disabled', 'disabled');
+            $('#save-fit').attr('disabled', 'disabled');
         }
     });
 
@@ -618,10 +623,11 @@ $(document).ready(function () {
         application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
         selected_function.N_ref = metaheuristic_n_ref_result;
         application.Update_NSSC(selected_function);
-        $('#load-nssc-state').trigger('click');
-        $('#tab-nssc').trigger('click');
-        $('#input-slider-value-nref').val(selected_function.N_ref);
-        document.getElementById("slider-nref").noUiSlider.set(selected_function.N_ref);
+        // $('#save-fit').removeAttr('disabled');
+        // $('#load-nssc-state').trigger('click');
+        // $('#tab-nssc').trigger('click');
+        // $('#input-slider-value-nref').val(selected_function.N_ref);
+        // document.getElementById("slider-nref").noUiSlider.set(selected_function.N_ref);
     });
 
     $('#es').on('click', function () {

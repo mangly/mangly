@@ -210,8 +210,6 @@ class Visual_Application {
                 $('#load-nssc-state').removeAttr('disabled');
             }
 
-            // else $('#load-nssc-state').removeAttr('disabled');
-
             this.Visualize_Information_Of_Functions(selected_function);
         }
 

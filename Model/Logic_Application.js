@@ -94,7 +94,8 @@ class Application {
     }
 
     Add_File_Curve_Fiting(path, callback) {
-        // var error = false;
+        var actual_function_collection = this.functions_collection.slice();
+        this.functions_collection = [];
         Application.Load_File(path, (curve_fit) => {
             var object_nssc = curve_fit['nssc_funtion'];
             var object_psmc_msmc = curve_fit['psmc_msmc_function'];
@@ -107,10 +108,9 @@ class Application {
 
             this.functions_collection.push(nssc_function);
             this.functions_collection.push(psmc_msmc_function);
-            // else error = true;
         });
 
-        setTimeout(function () { callback(); }, 100);
+        setTimeout(function () { callback(actual_function_collection); }, 100);
     }
 
     Get_NSSC_Vectors(type, name, scenario, callback) {
