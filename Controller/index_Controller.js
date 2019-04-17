@@ -107,6 +107,10 @@ $(document).ready(function () {
                     application.Delete_Function(target);
                     application.Delete_Function_Metaheuristic_List(selected_function.name);
                     application.Initialize_Information_Of_Functions();
+                    $('#change-color').val('#000000')
+                    $('.color-picker__preview').css('background-color', '#000000');
+                    $('#change-color').attr('disabled', 'disabled');
+
                     selected_function = null;
                 }
             });
