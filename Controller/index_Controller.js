@@ -473,6 +473,42 @@ $(document).ready(function () {
         // else dialog.showMessageBox(main_Window, { type: 'error', message: 'No function selected', buttons: ['Accept'] });
     });
 
+    $('#save-fit').on('click', function () {
+        var nssc_funtion = application.logic_application.Get_Function($('#nssc-model').val());
+        var psmc_msmc_function = application.logic_application.Get_Function($('#psmc-msmc-model').val());
+        var name_curve_fiting = nssc_funtion.name + '_' + psmc_msmc_function.name;
+
+        var curve_fiting_to_save = {
+            nssc_funtion: nssc_funtion,
+            psmc_msmc_function: psmc_msmc_function,
+        }
+
+        var options = {
+            title: 'Save...',
+            defaultPath: name_curve_fiting,
+
+            filters: [
+                { name: 'File', extensions: ['fit'] }
+            ],
+        }
+
+        var curve_fiting_save = JSON.stringify(curve_fiting_to_save);
+
+        dialog.showSaveDialog(main_Window, options, function (filename) {
+            // $('#save').css('color', 'gray');
+            // var new_name;
+            // if (extension.length == 4) new_name = Application_Utilities.Get_Name_Of_Path(filename, 5);
+            // else new_name = Application_Utilities.Get_Name_Of_Path(filename, 6);
+
+            // var function_clone_to_save = selected_function.Clone();
+            // function_clone_to_save.name = new_name;
+            // var function_save = JSON.stringify(function_clone_to_save);
+
+            // Application.Save_File(filename, function_save);
+            Application.Save_File(filename, curve_fiting_save);
+        });  
+    });
+
     $('#mycanvas').bind('mousewheel', function (e) {
         if (e.originalEvent.wheelDelta / 120 > 0) {
             $('#zoom').removeClass('zmdi-zoom-out');
