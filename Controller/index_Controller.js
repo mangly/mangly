@@ -81,6 +81,12 @@ $(document).ready(function () {
                     });
                 }
 
+                else if(extension == 'fit'){
+                    application.logic_application.Add_File_Curve_Fiting(arrPath[0], function(){
+                        application.Visualize_Curve_fiting();
+                    });
+                }
+
                 else dialog.showMessageBox(main_Window, { type: 'error', message: 'Invalid file: ' + name + '.' + extension, buttons: ['Accept'] });
             }
         });
@@ -565,14 +571,14 @@ $(document).ready(function () {
             compute_distance = true;
             application.Show_Distance();
             application.Change_Information_Of_Functions();
-            $('#start_metaheuristic').removeClass('disabled');
+            $('#start_metaheuristic').removeAttr('disabled');
         }
         else {
             $('#distance-value-col').fadeOut(50, function () {
                 $('.theta-rho').fadeIn(500);
             });
 
-            $('#start_metaheuristic').addClass('disabled');
+            $('#start_metaheuristic').attr('disabled', 'disabled');
         }
     });
 

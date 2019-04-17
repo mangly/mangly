@@ -283,6 +283,25 @@ class Visual_Application {
         }
     }
 
+    Visualize_Curve_fiting() {
+        if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
+
+            var function_nssc = this.logic_application.functions_collection[0].Clone();
+            var function_psmc_msmc = this.logic_application.functions_collection[1].Clone();
+            // var last_element_add = this.logic_application.Get_Last_Function();
+            this.logic_application.Scale_NSSC_Function(function_nssc, function_nssc.N_ref);
+
+            if(function_psmc_msmc.model == 'psmc') this.logic_application.Scale_Psmc_Function(function_psmc_msmc, function_psmc_msmc.Mu, function_psmc_msmc.S);
+            else this.logic_application.Scale_Msmc_Function(function_psmc_msmc, function_psmc_msmc.Mu);
+            // var element_scale_by_default = last_element_add.Clone();
+
+            // this.logic_application.Scale_NSSC_Function(element_scale_by_default, element_scale_by_default.N_ref);
+
+            this.Visualize_Commun_Function(function_nssc, $('#nssc-model'));
+            this.Visualize_Commun_Function(function_psmc_msmc, $('#psmc-msmc-model'));
+        }
+    }
+
     Visualize_element_of_list(name, model, color) {
         var html = '<div class="pb-4 listview__item"><label class="pl-0 pr-4 custom-control custom-control--char"><input class="custom-control-input" type="checkbox"><span class="custom-control--char__helper" style="background-color:' + color + '"><i></i></span></label><div class="listview__content"><div class="listview__heading">' + name + '</div><p>' + model + ' model</p></div><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-edit zmdi-hc-2x"></i></span></label><label class="custom-control custom-checkbox align-self-start"><i class="zmdi zmdi-delete zmdi-hc-2x"></i></span></label></div>';
         $('#list-graphics').append(html);
