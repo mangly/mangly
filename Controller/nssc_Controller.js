@@ -49,10 +49,11 @@ $(document).ready(function () {
     }
   });
 
-  $('#remove-matrix').on('click', function(){
+  $('#remove-matrix').on('click', function () {
     var count = $('#list-scenario').children().length;
 
-    $('#list-scenario').children().eq(count - 1).remove();
+    if (count > 1) $('#list-scenario').children().eq(count - 1).remove();
+    else console.log('error');
 
   });
 
@@ -102,6 +103,8 @@ $(document).ready(function () {
 
   $('#remove-deme').on('click', function () {
     order--;
-    Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection, type);
+
+    if (order > 0) Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection, type);
+    else console.log('error');
   })
 });
