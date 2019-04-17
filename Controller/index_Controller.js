@@ -97,31 +97,39 @@ $(document).ready(function () {
     var selected_function;
     var legend_color;
 
-    $('#list-graphics').on('click', function () {
-        var target = $(event.target);
-        //Delete function
-        if (target.is('.zmdi-delete')) {
-            // var event_target = target;
-            dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Cancel', 'Accept'] }, (response) => {
-                if (response == 1) {
-                    application.Delete_Function(target);
-                    application.Delete_Function_Metaheuristic_List(selected_function.name);
-                    application.Initialize_Information_Of_Functions();
-                    $('#change-color').val('#000000')
-                    $('.color-picker__preview').css('background-color', '#000000');
-                    $('#change-color').attr('disabled', 'disabled');
+    $(document).on('click', '.zmdi-delete', function () {
+        dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Cancel', 'Accept'] }, (response) => {
+            if (response == 1) {
+                application.Delete_Function($(this));
+                application.Delete_Function_Metaheuristic_List(selected_function.name);
+                application.Initialize_Information_Of_Functions();
+                $('#change-color').val('#000000')
+                $('.color-picker__preview').css('background-color', '#000000');
+                $('#change-color').attr('disabled', 'disabled');
 
-                    selected_function = null;
-                }
-            });
-        }
-        //Selections
-        else if (target.is('.custom-control-input')) {
-            selected_function = application.logic_application.Get_Function((target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
-            legend_color = target.parents('.custom-control').children('.custom-control--char__helper');
-            selected_function = application.Select_Function(target, selected_function, slider_mu);
-        }
+                selected_function = null;
+            }
+        });
     });
+
+    $(document).on('click', '.custom-control-input', function () {
+        selected_function = application.logic_application.Get_Function(($(this).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
+        legend_color = $(this).parents('.custom-control').children('.custom-control--char__helper');
+        selected_function = application.Select_Function($(this), selected_function, slider_mu);
+    });
+
+    // $('#list-graphics').on('click', function () {
+    //     // var $(this) = $(event.target);
+    //     //Delete function
+    //     if ($(this).is('.zmdi-delete')) {
+    //         // var event_target = target;
+
+    //     }
+    //     //Selections
+    //     else if ($(this).is('.custom-control-input')) {
+
+    //     }
+    // });
 
 
     $('#card-canvas').on('keydown', function (e) {
