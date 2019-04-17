@@ -623,11 +623,8 @@ $(document).ready(function () {
         application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
         selected_function.N_ref = metaheuristic_n_ref_result;
         application.Update_NSSC(selected_function);
-        // $('#save-fit').removeAttr('disabled');
-        // $('#load-nssc-state').trigger('click');
-        // $('#tab-nssc').trigger('click');
-        // $('#input-slider-value-nref').val(selected_function.N_ref);
-        // document.getElementById("slider-nref").noUiSlider.set(selected_function.N_ref);
+        $('#input-slider-value-nref').val(selected_function.N_ref);
+        document.getElementById("slider-nref").noUiSlider.set(selected_function.N_ref);
     });
 
     $('#es').on('click', function () {
