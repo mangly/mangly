@@ -492,10 +492,10 @@ class Visual_Application {
         setTimeout(function () { callback(); }, 100);
     }
 
-    Show_Delete_Window(callback) {
+    Show_Delete_Window(message, callback) {
         swal({
             title: 'Are you sure?',
-            text: 'The function is going to be eliminated',
+            text: message,
             type: 'warning',
             showCancelButton: true,
             buttonsStyling: false,
@@ -521,6 +521,19 @@ class Visual_Application {
                 setTimeout(function () { callback(); }, 620);
             }
         }).catch(swal.noop);
+    }
+
+    Show_Error_Window(message) {
+        swal({
+            title: 'Error',
+            text: message,
+            type: 'error',
+            buttonsStyling: false,
+            confirmButtonClass: 'btn btn-sm btn-light',
+            background: 'rgba(0, 0, 0, 0.96)',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        })
     }
 
     Delete_Function(name, target) {
