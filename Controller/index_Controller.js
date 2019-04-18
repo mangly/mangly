@@ -148,11 +148,11 @@ $(document).ready(function () {
                     $('#demes-sv').val(order);
                     Visual_Application.Hide_Corner_Jexcel();
                 });
+
+                $('#tab-nssc').trigger('click');
             }
 
-            else{
-                
-            }
+            else $('#tab-scales').trigger('click');
         }
     });
 
@@ -366,57 +366,34 @@ $(document).ready(function () {
     var order;
     var number_of_events;
 
-    $('#load-nssc-state').on('click', function () {
-        if (!selected_function) {
-            var options = {
-                filters: [
-                    { name: 'File', extensions: ['snssc'] }
-                ],
-            }
+    $('#open-nssc-state').on('click', function () {
+        var options = {
+            filters: [
+                { name: 'File', extensions: ['snssc'] }
+            ],
+        }
 
-            dialog.showOpenDialog(main_Window, options, function (arrPath) {
-                if (arrPath) {
-                    var name = Application_Utilities.Get_Model_Name(arrPath[0]);
-                    var extension = Application_Utilities.Get_Model_Selected(arrPath[0]);
+        dialog.showOpenDialog(main_Window, options, function (arrPath) {
+            if (arrPath) {
+                var name = Application_Utilities.Get_Model_Name(arrPath[0]);
+                var extension = Application_Utilities.Get_Model_Selected(arrPath[0]);
 
-                    if (extension == 'snssc') {
-                        Application.Load_File(arrPath[0], function (scenario) {
-                            nssc_scenario = scenario;
+                if (extension == 'snssc') {
+                    Application.Load_File(arrPath[0], function (scenario) {
+                        nssc_scenario = scenario;
 
-                            var path_split = arrPath[0].split('/');
-                            var file_name = path_split[path_split.length - 1].slice(0, -6);
+                        var path_split = arrPath[0].split('/');
+                        var file_name = path_split[path_split.length - 1].slice(0, -6);
 
-                            application.Load_Principal_Window_Data(file_name, nssc_scenario, function () {
-                                $('#open-scenario-editor').trigger('click');
-                            });
+                        application.Load_Principal_Window_Data(file_name, nssc_scenario, function () {
+                            $('#open-scenario-editor').trigger('click');
                         });
-                    }
-
-                    else application.Show_Error_Window('Invalid file: ' + name + '.' + extension);
+                    });
                 }
-            });
-        }
 
-        else {
-            // $('#container-create-nssc').fadeOut(50, function () {
-            //     $('#container-edit-nssc').fadeIn(500);
-            // });
-
-            // nssc_scenario = selected_function.scenario;
-            // var type = selected_function.type;
-
-            // application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
-            //     if (type == 'Symmetrical') $('#demes-sv').removeAttr('hidden');
-            //     else $('#demes-sv').attr('hidden', 'hidden');
-
-            //     number_of_events = parseInt($('#count-events').val());
-            //     order = parseInt($('#order-n').val());
-
-            //     application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
-            //     $('#demes-sv').val(order);
-            //     Visual_Application.Hide_Corner_Jexcel();
-            // });
-        }
+                else application.Show_Error_Window('Invalid file: ' + name + '.' + extension);
+            }
+        });
     });
 
     $('#demes-sv').on('change', function () {
