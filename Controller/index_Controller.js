@@ -23,13 +23,30 @@ $(document).ready(function () {
     $('#option-mu *').attr('disabled', 'disabled');
     $('#option-s *').attr('disabled', 'disabled');
 
+    //Popovers
+    var popOverSettings = {
+        placement: 'right',
+        container: 'body',
+        html: true,
+        selector: '[rel="popover"]',
+        content: function () {
+            return $('#open-file').html();
+        }
+    }
+
+    $(document).on("click", "button[rel=popover]", function () {
+        $("button[rel=popover]").not(this).popover('hide');
+    });
+
+    $('body').popover(popOverSettings);
+    //Popovers
+
     // Instance Visual Application
     var application = new Visual_Application($('#mycanvas'), new Application());
 
     application.Initialize_Information_Of_Functions();
 
     $('#open-file').on('click', function () {
-
         var options = {
             filters: [
                 { name: 'File', extensions: ['psmc', 'txt', 'msmc', 'nssc'] }
@@ -97,11 +114,14 @@ $(document).ready(function () {
     var selected_function;
     var legend_color;
 
-    $(document).on('click', '.zmdi-delete', function () {
-        application.Show_Delete_Window('The function is going to be eliminated', () => {
-            application.Delete_Function(selected_function.name, $(this));
-            selected_function = null
-        });
+    $(document).on('click', '.btn-delete', function () {
+        if (selected_function && selected_function.name == ($(this).siblings('.listview__content').children('.listview__heading')).text()) {
+            $("button[rel=popover]").popover('hide');
+            application.Show_Delete_Window('The function is going to be eliminated', () => {
+                application.Delete_Function(selected_function.name, $(this));
+                selected_function = null
+            });
+        }
     });
 
     $(document).on('click', '.custom-control-input', function () {
