@@ -224,6 +224,10 @@ $(document).ready(function () {
         application.Update_Colors(selected_function, $(this).val(), legend_color);
     });
 
+    $('#tab-graphics').on('click', function(){
+        $('#back').trigger('click');
+    });
+
     // $('#edit').on('click', function () {
     //     itemTarget.parent().html('<input type="text" class="form-control edit-text" placeholder="">')
     // });

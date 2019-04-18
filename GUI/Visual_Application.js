@@ -558,6 +558,7 @@ class Visual_Application {
         $('.color-picker__preview').css('background-color', '#000000');
         $('#change-color').attr('disabled', 'disabled');
         target.parents('.listview__item').remove();
+        $('#save-as').css('color', 'gray');
         this.chart.update()
     }
 
