@@ -492,12 +492,47 @@ class Visual_Application {
         setTimeout(function () { callback(); }, 100);
     }
 
-    Delete_Function(event_target) {
-        var name_item_clicked = (event_target.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text();
-        var index = this.Index_Of(name_item_clicked);
+    Show_Delete_Window(callback) {
+        swal({
+            title: 'Are you sure?',
+            text: 'The function is going to be eliminated',
+            type: 'warning',
+            showCancelButton: true,
+            buttonsStyling: false,
+            confirmButtonClass: 'btn btn-danger',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonClass: 'btn btn-light',
+            background: 'rgba(0, 0, 0, 0.96)',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result) {
+                swal({
+                    title: 'Are you sure?',
+                    text: 'Your function has been deleted',
+                    type: 'success',
+                    buttonsStyling: false,
+                    confirmButtonClass: 'btn btn-light',
+                    background: 'rgba(0, 0, 0, 0.96)',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                });
+
+                setTimeout(function () { callback(); }, 620);
+            }
+        }).catch(swal.noop);
+    }
+
+    Delete_Function(name, target) {
+        var index = this.Index_Of(name);
         this.chart.data.datasets.splice(index, 1);
         this.logic_application.functions_collection.splice(index, 1);
-        event_target.parents('.listview__item').remove();
+        this.Delete_Function_Metaheuristic_List(name);
+        this.Initialize_Information_Of_Functions();
+        $('#change-color').val('#000000')
+        $('.color-picker__preview').css('background-color', '#000000');
+        $('#change-color').attr('disabled', 'disabled');
+        target.parents('.listview__item').remove();
         this.chart.update()
     }
 

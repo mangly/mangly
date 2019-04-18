@@ -97,18 +97,25 @@ $(document).ready(function () {
     var selected_function;
     var legend_color;
 
-    $(document).on('click', '.zmdi-delete', function () {
-        dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Cancel', 'Accept'] }, (response) => {
-            if (response == 1) {
-                application.Delete_Function($(this));
-                application.Delete_Function_Metaheuristic_List(selected_function.name);
-                application.Initialize_Information_Of_Functions();
-                $('#change-color').val('#000000')
-                $('.color-picker__preview').css('background-color', '#000000');
-                $('#change-color').attr('disabled', 'disabled');
+    // $(document).on('click', '.zmdi-delete', function () {
+    //     dialog.showMessageBox(main_Window, { type: 'question', message: 'Do you want to delete this function', buttons: ['Cancel', 'Accept'] }, (response) => {
+    //         if (response == 1) {
+    //             application.Delete_Function($(this));
+    //             application.Delete_Function_Metaheuristic_List(selected_function.name);
+    //             application.Initialize_Information_Of_Functions();
+    //             $('#change-color').val('#000000')
+    //             $('.color-picker__preview').css('background-color', '#000000');
+    //             $('#change-color').attr('disabled', 'disabled');
 
-                selected_function = null;
-            }
+    //             selected_function = null;
+    //         }
+    //     });
+    // });
+
+    $(document).on('click', '.zmdi-delete', function () {
+        application.Show_Delete_Window(() => {
+            application.Delete_Function(selected_function.name, $(this));
+            selected_function = null
         });
     });
 
