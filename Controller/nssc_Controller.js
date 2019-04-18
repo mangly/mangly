@@ -103,9 +103,11 @@ $(document).ready(function () {
   })
 
   $('#remove-deme').on('click', function () {
-    order--;
+    if (order > 1) {
+      order--;
+      Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection, type);
+    }
 
-    if (order > 0) Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection, type);
     else console.log('error');
   });
 
