@@ -117,10 +117,42 @@ $(document).ready(function () {
     $(document).on('click', '.btn-delete', function () {
         if (selected_function && selected_function.name == ($(this).siblings('.listview__content').children('.listview__heading')).text()) {
             $("button[rel=popover]").popover('hide');
+
             application.Show_Delete_Window('The function is going to be eliminated', () => {
                 application.Delete_Function(selected_function.name, $(this));
                 selected_function = null
             });
+        }
+    });
+
+    $(document).on('click', '.btn-load', function () {
+        if (selected_function && selected_function.name == ($(this).siblings('.listview__content').children('.listview__heading')).text()) {
+            $("button[rel=popover]").popover('hide');
+
+            if (selected_function.model == 'nssc') {
+                $('#container-create-nssc').fadeOut(50, function () {
+                    $('#container-edit-nssc').fadeIn(500);
+                });
+
+                nssc_scenario = selected_function.scenario;
+                var type = selected_function.type;
+
+                application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
+                    if (type == 'Symmetrical') $('#demes-sv').removeAttr('hidden');
+                    else $('#demes-sv').attr('hidden', 'hidden');
+
+                    number_of_events = parseInt($('#count-events').val());
+                    order = parseInt($('#order-n').val());
+
+                    application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
+                    $('#demes-sv').val(order);
+                    Visual_Application.Hide_Corner_Jexcel();
+                });
+            }
+
+            else{
+                
+            }
         }
     });
 
@@ -366,24 +398,24 @@ $(document).ready(function () {
         }
 
         else {
-            $('#container-create-nssc').fadeOut(50, function () {
-                $('#container-edit-nssc').fadeIn(500);
-            });
+            // $('#container-create-nssc').fadeOut(50, function () {
+            //     $('#container-edit-nssc').fadeIn(500);
+            // });
 
-            nssc_scenario = selected_function.scenario;
-            var type = selected_function.type;
+            // nssc_scenario = selected_function.scenario;
+            // var type = selected_function.type;
 
-            application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
-                if (type == 'Symmetrical') $('#demes-sv').removeAttr('hidden');
-                else $('#demes-sv').attr('hidden', 'hidden');
+            // application.Load_Principal_Window_Data(selected_function.name, nssc_scenario, function () {
+            //     if (type == 'Symmetrical') $('#demes-sv').removeAttr('hidden');
+            //     else $('#demes-sv').attr('hidden', 'hidden');
 
-                number_of_events = parseInt($('#count-events').val());
-                order = parseInt($('#order-n').val());
+            //     number_of_events = parseInt($('#count-events').val());
+            //     order = parseInt($('#order-n').val());
 
-                application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
-                $('#demes-sv').val(order);
-                Visual_Application.Hide_Corner_Jexcel();
-            });
+            //     application.Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events);
+            //     $('#demes-sv').val(order);
+            //     Visual_Application.Hide_Corner_Jexcel();
+            // });
         }
     });
 
