@@ -185,7 +185,7 @@ $(document).ready(function () {
         // else if (sum != 2) dialog.showMessageBox(main_Window, { type: 'error', message: 'The sum of the sampling vector has to be 2', buttons: ['Accept'] });
     });
 
-    $(document).on('change', 'td', function (e) {
+    $(document).on('change', 'td', function () {
         var previous_sum = sum;
         sum = Application_Utilities.Sum(sampling_vector.jexcel('getRowData', 0));
         if (sum == 2) {

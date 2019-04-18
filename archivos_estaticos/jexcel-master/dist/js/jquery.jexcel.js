@@ -698,10 +698,10 @@
 
                 $(document).on('mousedown touchstart', $.fn.jexcel.mouseDownControls);
 
-                var old_value;
+                // var old_value;
                 // Global mouse click up controles
                 $.fn.jexcel.mouseUpControls = function (e) {
-                    old_value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
+                    // old_value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
                     if (e.target.id == 'jexcel_arrow') {
                         if (!$.fn.jexcel.current) {
                             $.fn.jexcel.current = $(e.target).parents('.jexcel').parent().prop('id');
@@ -1098,11 +1098,11 @@
                                         // My change 5 (changed comment code by next code)
                                         // $('#' + $.fn.jexcel.current).jexcel('closeEditor', $($.fn.jexcel.selectedCell), true);
                                         var value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
-                                        if (isNaN(value)) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), 0);
+                                        if (isNaN(value)) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), $.fn.jexcel.editionValue);
                                         else $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), value);
 
                                         var sum = $(this).jexcel('sumData', options.data[0]);
-                                        if (sum > 2) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), old_value);
+                                        if (sum > 2) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), $.fn.jexcel.editionValue);
                                         $($.fn.jexcel.selectedCell).removeClass('edition');
                                     }
                                 }
@@ -1120,11 +1120,11 @@
                                         // My change 4 (changed comment code by next code)
                                         // $('#' + $.fn.jexcel.current).jexcel('closeEditor', $($.fn.jexcel.selectedCell), true);
                                         var value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
-                                        if (isNaN(value)) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), 0);
+                                        if (isNaN(value)) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), $.fn.jexcel.editionValue);
                                         else $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), value);
 
                                         var sum = $(this).jexcel('sumData', options.data[0]);
-                                        if (sum > 2) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), old_value);
+                                        if (sum > 2) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), $.fn.jexcel.editionValue);
                                         $($.fn.jexcel.selectedCell).removeClass('edition');
                                     }
                                 }
@@ -1829,6 +1829,9 @@
                         // Close editor handler
                         $(editor).blur(function () {
                             $(main).jexcel('closeEditor', $(this).parent(), true);
+                            var value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
+                            
+                            if (isNaN(value)) $(cell).text($.fn.jexcel.editionValue);
                         });
                     }
                 }

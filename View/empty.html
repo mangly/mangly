@@ -64,12 +64,9 @@
                                 <div class="dropdown actions__item">
                                     <i data-toggle="dropdown" class="zmdi zmdi-more-vert"></i>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a id="add-matrix" class="dropdown-item">Add event</a>
-                                        <a id="remove-matrix" class="dropdown-item">Remove event</a>
-                                        <li class="divider dropdown-divider"></li>
+                                        <a id="add-matrix" class="dropdown-item">Add matrix</a>
                                         <a id="add-deme" class="dropdown-item">Add deme</a>
                                         <a id="remove-deme" class="dropdown-item">Remove deme</a>
-                                        <li class="divider dropdown-divider"></li>
                                         <a id="save-scenario" class="dropdown-item">Save scenario</a>
                                     </div>
                                 </div>
@@ -78,15 +75,6 @@
                     </div>
                 </header>
             </li>
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li> -->
         </ul>
 
         <section class="content" style="padding-top:75px">
@@ -125,23 +113,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="card p-4">
+                <div class="card p-4" id="container-matrices">
                     <div class="row">
                         <div class="col-sm-12">
-                            <div>
-                                <div id="matrix-collection" style="overflow-x: scroll; padding: 0 0 20px 0">
-                                    <ul style="list-style-type:none;" id="list-scenario">
+                            <div id="matrix-collection" style="overflow-x: scroll; padding: 0 0 20px 0">
+                                <ul style="list-style-type:none;" id="list-scenario">
 
-                                    </ul>
-                                    <div class="holder">
-                                    </div>
+                                </ul>
+                                <div class="holder">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- </div> -->
-                <!-- </div> -->
                 <button id="ok" class="btn btn-primary" type="submit">Accept</button>
             </div>
         </section>
@@ -150,7 +134,8 @@
     <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
     <!-- Javascript -->
     <!-- Vendors -->
-    <script src="vendors/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../archivos_estaticos/jQuery/jquery-3.1.1.min.js"></script>
+    <!-- <script src="vendors/bower_components/jquery/dist/jquery.min.js"></script> -->
     <script src="vendors/bower_components/popper.js/dist/umd/popper.min.js"></script>
     <script src="vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="vendors/bower_components/jquery.scrollbar/jquery.scrollbar.min.js"></script>
