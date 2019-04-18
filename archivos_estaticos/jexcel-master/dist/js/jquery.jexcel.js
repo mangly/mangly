@@ -1829,9 +1829,10 @@
                         // Close editor handler
                         $(editor).blur(function () {
                             $(main).jexcel('closeEditor', $(this).parent(), true);
-                            var value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
+                            var value = $(cell).text();
                             
-                            if (isNaN(value)) $(cell).text($.fn.jexcel.editionValue);
+                            if (value == '') $(cell).text($.fn.jexcel.editionValue);
+                            else $(cell).text(parseFloat(value));
                         });
                     }
                 }
