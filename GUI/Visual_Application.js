@@ -495,7 +495,7 @@ class Visual_Application {
         swal({
             title: 'Are you sure?',
             text: message,
-            type: 'warning',
+            type: 'question',
             showCancelButton: true,
             buttonsStyling: false,
             confirmButtonClass: 'btn btn-danger',
