@@ -536,6 +536,19 @@ class Visual_Application {
         })
     }
 
+    Show_Information_Window(message) {
+        swal({
+            title: 'Information',
+            text: message,
+            type: 'info',
+            buttonsStyling: false,
+            confirmButtonClass: 'btn btn-sm btn-light',
+            background: 'rgba(0, 0, 0, 0.96)',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        })
+    }
+
     Delete_Function(name, target) {
         var index = this.Index_Of(name);
         this.chart.data.datasets.splice(index, 1);

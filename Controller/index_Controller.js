@@ -46,27 +46,27 @@ $(document).ready(function () {
                     if (extension == 'psmc')
                         application.logic_application.Add_File_PSMC(arrPath[0], name, function (error) {
                             if (!error) application.Visualize_PSMC();
-                            else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
+                            else application.Show_Information_Window('The selected function already exists whit that name or it has the same behavior');
                         });
 
                     else if (extension == 'msmc' || extension == 'txt') {
                         application.logic_application.Add_File_MSMC(arrPath[0], name, function (error) {
                             if (!error) application.Visualize_MSMC();
-                            else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
+                            else application.Show_Information_Window('The selected function already exists whit that name or it has the same behavior');
                         });
                     }
 
                     else if (extension == 'psmcp') {
                         application.logic_application.Add_File_PSMCP(arrPath[0], function (error) {
                             if (!error) application.Visualize_PSMC();
-                            else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
+                            else application.Show_Information_Window('The selected function already exists whit that name or it has the same behavior');
                         });
                     }
 
                     else if (extension == 'msmcp') {
                         application.logic_application.Add_File_MSMCP(arrPath[0], function (error) {
                             if (!error) application.Visualize_MSMC();
-                            else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
+                            else application.Show_Information_Window('The selected function already exists whit that name or it has the same behavior');
                         });
                     }
 
@@ -77,7 +77,7 @@ $(document).ready(function () {
                 else if (extension == 'nssc') {
                     application.logic_application.Add_File_NSSC(arrPath[0], function (error) {
                         if (!error) application.Visualize_NSSC();
-                        else dialog.showMessageBox(main_Window, { type: 'error', message: 'The selected function already exists whit that name or it has the same behavior', buttons: ['Accept'] });
+                        else application.Show_Information_Window('The selected function already exists whit that name or it has the same behavior');
                     });
                 }
 
