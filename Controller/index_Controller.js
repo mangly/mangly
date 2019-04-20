@@ -224,7 +224,7 @@ $(document).ready(function () {
         application.Update_Colors(selected_function, $(this).val(), legend_color);
     });
 
-    $('#tab-graphics').on('click', function(){
+    $('#tab-graphics').on('click', function () {
         $('#back').trigger('click');
     });
 
@@ -487,16 +487,18 @@ $(document).ready(function () {
             }
 
             dialog.showSaveDialog(main_Window, options, function (filename) {
-                $('#save').css('color', 'gray');
-                var new_name;
-                if (extension.length == 4) new_name = Application_Utilities.Get_Name_Of_Path(filename, 5);
-                else new_name = Application_Utilities.Get_Name_Of_Path(filename, 6);
+                if (typeof filename != 'undefined') {
+                    $('#save').css('color', 'gray');
+                    var new_name;
+                    if (extension.length == 4) new_name = Application_Utilities.Get_Name_Of_Path(filename, 5);
+                    else new_name = Application_Utilities.Get_Name_Of_Path(filename, 6);
 
-                var function_clone_to_save = selected_function.Clone();
-                function_clone_to_save.name = new_name;
-                var function_save = JSON.stringify(function_clone_to_save);
+                    var function_clone_to_save = selected_function.Clone();
+                    function_clone_to_save.name = new_name;
+                    var function_save = JSON.stringify(function_clone_to_save);
 
-                Application.Save_File(filename, function_save);
+                    Application.Save_File(filename, function_save);
+                }
             });
         }
 
@@ -535,7 +537,9 @@ $(document).ready(function () {
             // var function_save = JSON.stringify(function_clone_to_save);
 
             // Application.Save_File(filename, function_save);
-            Application.Save_File(filename, curve_fiting_save);
+            if (typeof filename != 'undefined') {
+                Application.Save_File(filename, curve_fiting_save);
+            }
         });
     });
 
