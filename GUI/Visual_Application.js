@@ -606,14 +606,14 @@ class Visual_Application {
         }
     }
 
-    static Fill_Initial_Data_Vector(value, order = 0) {
-        var data = new Array([[value]]);
+    static Fill_Initial_Data_Vector(value, order) {
+        var row = new Array();
 
         for (let index = 0; index < order; index++) {
-            data[0].push(value);
+            row.push(value);
         }
 
-        return data;
+        return new Array(row);
     }
 
     static Fill_Initial_Data_Matrix(value, order) {
@@ -673,7 +673,7 @@ class Visual_Application {
 
         var matrix = $(id + matrix_collection.length);
 
-        if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector(1, order - 1));
+        if (vector) this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Vector(1, order));
 
         else this.Initialize_Matrix(matrix, this.Fill_Initial_Data_Matrix(0, order));
 
@@ -682,7 +682,7 @@ class Visual_Application {
     }
 
     static Build_Visual_Scenario(time_size, nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
-        this.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, order - 1));
+        this.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, order));
 
         for (let index = 0; index < number_of_events + 1; index++) {
             if (type == 'General') {
@@ -816,7 +816,7 @@ class Visual_Application {
     }
 
     Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
-        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, order - 1));
+        Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, order));
 
         for (let index = 0; index < number_of_events + 1; index++) {
             var value = 0;
