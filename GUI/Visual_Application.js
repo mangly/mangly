@@ -253,8 +253,8 @@ class Visual_Application {
             var last_element_add = this.logic_application.Get_Last_Function();
             var element_scale_by_default = last_element_add.Clone();
 
-            this.logic_application.Scale_Psmc_Function(element_scale_by_default, element_scale_by_default.Mu, element_scale_by_default.S);
-            last_element_add.Mu = element_scale_by_default.Mu / 1e-8;
+            this.logic_application.Scale_Psmc_Function(element_scale_by_default, element_scale_by_default.Mu * 1e-8, element_scale_by_default.S);
+            // last_element_add.Mu = element_scale_by_default.Mu / 1e-8;
 
             this.Visualize_Commun_Function(element_scale_by_default, $('#psmc-msmc-model'));
         }
@@ -266,8 +266,8 @@ class Visual_Application {
             var last_element_add = this.logic_application.Get_Last_Function();
             var element_scale_by_default = last_element_add.Clone();
 
-            this.logic_application.Scale_Msmc_Function(element_scale_by_default, element_scale_by_default.Mu);
-            last_element_add.Mu = element_scale_by_default.Mu / 1e-8;
+            this.logic_application.Scale_Msmc_Function(element_scale_by_default, element_scale_by_default.Mu * 1e-8);
+            // last_element_add.Mu = element_scale_by_default.Mu / 1e-8;
 
             this.Visualize_Commun_Function(element_scale_by_default, $('#psmc-msmc-model'));
         }
@@ -293,8 +293,8 @@ class Visual_Application {
             // var last_element_add = this.logic_application.Get_Last_Function();
             this.logic_application.Scale_NSSC_Function(function_nssc, function_nssc.N_ref);
 
-            if (function_psmc_msmc.model == 'psmc') this.logic_application.Scale_Psmc_Function(function_psmc_msmc, function_psmc_msmc.Mu, function_psmc_msmc.S);
-            else this.logic_application.Scale_Msmc_Function(function_psmc_msmc, function_psmc_msmc.Mu);
+            if (function_psmc_msmc.model == 'psmc') this.logic_application.Scale_Psmc_Function(function_psmc_msmc, function_psmc_msmc.Mu * 1e-8, function_psmc_msmc.S);
+            else this.logic_application.Scale_Msmc_Function(function_psmc_msmc, function_psmc_msmc.Mu * 1e-8);
             // var element_scale_by_default = last_element_add.Clone();
 
             // this.logic_application.Scale_NSSC_Function(element_scale_by_default, element_scale_by_default.N_ref);
@@ -335,13 +335,13 @@ class Visual_Application {
         var graphic = this.Get_Graphic(original_function.name);
 
         if (original_function.model == 'psmc') {
-            this.logic_application.Scale_Psmc_Function(clone_function, mu, s);
+            this.logic_application.Scale_Psmc_Function(clone_function, mu * 1e-8, s);
             original_function.S = s;
         }
 
-        else this.logic_application.Scale_Msmc_Function(clone_function, mu);
+        else this.logic_application.Scale_Msmc_Function(clone_function, mu * 1e-8);
 
-        original_function.Mu = mu / 1e-8;
+        original_function.Mu = mu;
         graphic.data = Application_Utilities.Generate_Data_To_Chart(clone_function.x_vector, clone_function.y_vector);
 
         this.chart.update();
@@ -360,17 +360,24 @@ class Visual_Application {
     }
 
     Reset_Scales(funct) {
-        this.Update_Scale_PSMC_MSMC(funct, this.logic_application.Mu, this.logic_application.S);
-
+        if (funct.model == 'psmc' || funct.model == 'msmc') {
+            this.Update_Scale_PSMC_MSMC(funct, this.logic_application.Mu, this.logic_application.S);
+            this.Reset_Slider('mu', document.getElementById("slider-mu"));
+        }
+        else {
+            this.Update_Scale_NSSC(funct, this.logic_application.N_ref);
+            this.Reset_Slider('n-ref', document.getElementById("slider-nref"));
+        }
         this.chart.update();
     }
 
     Reset_All_Scales() {
         for (const funct of this.logic_application.functions_collection) {
-            this.Update_Scale_PSMC_MSMC(funct, this.logic_application.Mu, this.logic_application.S);
+            this.Reset_Scales(funct);
+            // this.Update_Scale_PSMC_MSMC(funct, this.logic_application.Mu, this.logic_application.S);
         }
 
-        this.chart.update();
+        // this.chart.update();
     }
 
     Restart_NSSC_Options() {
@@ -1008,15 +1015,16 @@ class Visual_Application {
         }
     }
 
-    Reset_Slider(type, slider, input) {
+    Reset_Slider(type, slider) {
         if (type == 'mu') {
             slider.noUiSlider.set(1.25);
-            input.val(1.25e-8);
+            $('#input-slider-value-mu').val(1.25e-8);
+            $('#input-slider-value-s').val(100);
         }
 
         else if (type == 'n-ref') {
             slider.noUiSlider.set(500);
-            input.val(500)
+            $('#input-slider-value-nref').val(500);
         }
     }
 

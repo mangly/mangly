@@ -271,9 +271,9 @@ $(document).ready(function () {
     slider_mu.noUiSlider.on("slide", function (a, b) {
         // var mu = (Math.round(a[b] * 100) / 100) + 'e-8';
         $('#save').css('color', 'white');
-        var mu = a[b] + 'e-8';
+        var mu = a[b];
         var s = selected_function.S;
-        $('#input-slider-value-mu').val(mu);
+        $('#input-slider-value-mu').val(mu + 'e-8');
         application.Update_Scale_PSMC_MSMC(selected_function, mu, s);
     });
 
@@ -320,14 +320,10 @@ $(document).ready(function () {
 
     $('#reset-scales').on('click', function () {
         application.Reset_Scales(application.logic_application.Get_Function(selected_function.name));
-        $('#input-slider-value-s').val(100);
-        application.Reset_Slider('mu', slider_mu, $('#input-slider-value-mu'));
     });
 
     $('#reset-all-scales').on('click', function () {
         application.Reset_All_Scales();
-        $('#input-slider-value-s').val(100);
-        application.Reset_Slider('mu', slider_mu, $("#input-slider-value-mu"));
     });
 
     // $('#order-n').on('keyup', function () {

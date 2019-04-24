@@ -35,7 +35,7 @@ class Application {
     Add_File_PSMC(path, name, callback) {
         Python_Communicator.get_Model_PSMC(path, name, 'Python_Scripts/get_Model_PSMC.py', (element) => {
             var error = false;
-            var funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, this.Mu * 1e-8, this.S, null);
+            var funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, this.Mu, this.S, null);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
@@ -47,7 +47,7 @@ class Application {
     Add_File_MSMC(path, name, callback) {
         Python_Communicator.get_Model_MSMC(path, name, 'Python_Scripts/get_Model_MSMC.py', (element) => {
             var error = false;
-            var funct = new MSMC(element.name, element.x_vector, element.y_vector, this.Mu * 1e-8, null);
+            var funct = new MSMC(element.name, element.x_vector, element.y_vector, this.Mu, null);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
@@ -59,7 +59,7 @@ class Application {
     Add_File_PSMCP(path, callback) {
         var error = false;
         Application.Load_File(path, (element) => {
-            var funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, element.Mu * 1e-8, element.S, path);
+            var funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, element.Mu, element.S, path);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
@@ -72,7 +72,7 @@ class Application {
     Add_File_MSMCP(path, callback) {
         var error = false;
         Application.Load_File(path, (element) => {
-            var funct = new MSMC(element.name, element.x_vector, element.y_vector, element.Mu * 1e-8, path);
+            var funct = new MSMC(element.name, element.x_vector, element.y_vector, element.Mu, path);
 
             if (!this.Contains(funct)) this.functions_collection.push(funct);
             else error = true;
@@ -101,8 +101,8 @@ class Application {
             var object_psmc_msmc = curve_fit['psmc_msmc_function'];
             var psmc_msmc_function;
 
-            if(object_psmc_msmc.model == 'psmc') psmc_msmc_function = new PSMC(object_psmc_msmc.name, object_psmc_msmc.x_vector, object_psmc_msmc.y_vector, object_psmc_msmc.theta, object_psmc_msmc.rho, object_psmc_msmc.Mu * 1e-8, object_psmc_msmc.S, path);
-            else psmc_msmc_function = new MSMC(object_psmc_msmc.name, object_psmc_msmc.x_vector, object_psmc_msmc.y_vector, object_psmc_msmc.Mu * 1e-8, path);
+            if(object_psmc_msmc.model == 'psmc') psmc_msmc_function = new PSMC(object_psmc_msmc.name, object_psmc_msmc.x_vector, object_psmc_msmc.y_vector, object_psmc_msmc.theta, object_psmc_msmc.rho, object_psmc_msmc.Mu, object_psmc_msmc.S, path);
+            else psmc_msmc_function = new MSMC(object_psmc_msmc.name, object_psmc_msmc.x_vector, object_psmc_msmc.y_vector, object_psmc_msmc.Mu, path);
 
             var nssc_function = new NSSC(object_nssc.name, object_nssc.type, object_nssc.x_vector, object_nssc.y_vector, object_nssc.scenario, object_nssc.N_ref, path);
 
