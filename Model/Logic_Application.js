@@ -93,24 +93,20 @@ class Application {
         setTimeout(function () { callback(error); }, 100);
     }
 
-    Add_File_Curve_Fiting(path, callback) {
-        var actual_function_collection = this.functions_collection.slice();
+    Add_Files(path, callback) {
         this.functions_collection = [];
-        Application.Load_File(path, (curve_fit) => {
-            var object_nssc = curve_fit['nssc_funtion'];
-            var object_psmc_msmc = curve_fit['psmc_msmc_function'];
-            var psmc_msmc_function;
+        Application.Load_File(path, (application) => {
+            var funct;
+            for (const element of application.functions_collection) {
+                if (element.model == 'psmc') funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, element.Mu, element.S, path);
+                else if(element.model == 'msmc') funct = new MSMC(element.name, element.x_vector, element.y_vector, element.Mu, path);
+                else funct = new NSSC(element.name, element.type, element.x_vector, element.y_vector, element.scenario, element.N_ref, path);
 
-            if(object_psmc_msmc.model == 'psmc') psmc_msmc_function = new PSMC(object_psmc_msmc.name, object_psmc_msmc.x_vector, object_psmc_msmc.y_vector, object_psmc_msmc.theta, object_psmc_msmc.rho, object_psmc_msmc.Mu, object_psmc_msmc.S, path);
-            else psmc_msmc_function = new MSMC(object_psmc_msmc.name, object_psmc_msmc.x_vector, object_psmc_msmc.y_vector, object_psmc_msmc.Mu, path);
-
-            var nssc_function = new NSSC(object_nssc.name, object_nssc.type, object_nssc.x_vector, object_nssc.y_vector, object_nssc.scenario, object_nssc.N_ref, path);
-
-            this.functions_collection.push(nssc_function);
-            this.functions_collection.push(psmc_msmc_function);
+                this.functions_collection.push(funct);
+            }
         });
 
-        setTimeout(function () { callback(actual_function_collection); }, 100);
+        setTimeout(function () { callback(); }, 100);
     }
 
     Get_NSSC_Vectors(type, name, scenario, callback) {

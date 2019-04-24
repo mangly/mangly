@@ -3,7 +3,7 @@ const ipc = electron.ipcRenderer;
 
 const { dialog } = require('electron').remote;
 
-require('../archivos_estaticos/chartjs-plugin-zoom');
+require('chartjs-plugin-zoom');
 
 // require('chart.js')
 
@@ -46,7 +46,7 @@ $(document).ready(function () {
 
     application.Initialize_Information_Of_Functions();
 
-    $('#open-file').on('click', function () {
+    ipc.on('open-file', function () {
         var options = {
             filters: [
                 { name: 'File', extensions: ['psmc', 'txt', 'msmc', 'nssc'] }
@@ -98,10 +98,9 @@ $(document).ready(function () {
                     });
                 }
 
-                else if (extension == 'fit') {
-                    application.logic_application.Add_File_Curve_Fiting(arrPath[0], function (old_function_list) {
-                        application.Visualize_Curve_fiting();
-                        $.merge(application.logic_application.functions_collection, old_function_list);
+                else if (extension == 'adhos') {
+                    application.logic_application.Add_Files(arrPath[0], function () {
+                        application.Visualize_Application();
                     });
                 }
 
@@ -442,8 +441,8 @@ $(document).ready(function () {
         else $("div.holder").jPages("destroy");
     });
 
-    $('#save').on('click', function () {
-        if (selected_function && ($('#save').css('color') != "rgb(128, 128, 128)")) {
+    ipc.on('save', function () {
+        if (selected_function) {
             if (selected_function.path) {
                 $('#save').css('color', 'gray');
                 var function_save = JSON.stringify(selected_function);
@@ -461,13 +460,14 @@ $(document).ready(function () {
                 });
             }
 
-            else $('#save-as').trigger('click');
+            else ipc.send('save-as');
         }
 
+        else if (application.logic_application.functions_collection.length > 0) ipc.send('save-application');
         // else dialog.showMessageBox(main_Window, { type: 'error', message: 'NSSC model not selected', buttons: ['Accept'] });
     });
 
-    $('#save-as').on('click', function () {
+    ipc.on('save-as', function () {
         if (selected_function) {
             var extension = selected_function.model;
             if (extension == 'psmc') extension = 'psmcp';
@@ -498,29 +498,29 @@ $(document).ready(function () {
             });
         }
 
+        else if (application.logic_application.functions_collection.length > 0) ipc.send('save-application');
         // else dialog.showMessageBox(main_Window, { type: 'error', message: 'No function selected', buttons: ['Accept'] });
     });
 
-    $('#save-fit').on('click', function () {
-        var nssc_funtion = application.logic_application.Get_Function($('#nssc-model').val());
-        var psmc_msmc_function = application.logic_application.Get_Function($('#psmc-msmc-model').val());
-        var name_curve_fiting = nssc_funtion.name + '_' + psmc_msmc_function.name;
+    ipc.on('save-application', function () {
+        // var nssc_funtion = application.logic_application.Get_Function($('#nssc-model').val());
+        // var psmc_msmc_function = application.logic_application.Get_Function($('#psmc-msmc-model').val());
+        // var name_curve_fiting = nssc_funtion.name + '_' + psmc_msmc_function.name;
 
-        var curve_fiting_to_save = {
-            nssc_funtion: nssc_funtion,
-            psmc_msmc_function: psmc_msmc_function,
+        var application_save = {
+            functions_collection: application.logic_application.functions_collection,
         }
 
         var options = {
             title: 'Save...',
-            defaultPath: name_curve_fiting,
+            defaultPath: 'myAdhos',
 
             filters: [
-                { name: 'File', extensions: ['fit'] }
+                { name: 'File', extensions: ['adhos'] }
             ],
         }
 
-        var curve_fiting_save = JSON.stringify(curve_fiting_to_save);
+        var application_to_save = JSON.stringify(application_save);
 
         dialog.showSaveDialog(main_Window, options, function (filename) {
             // $('#save').css('color', 'gray');
@@ -534,7 +534,7 @@ $(document).ready(function () {
 
             // Application.Save_File(filename, function_save);
             if (typeof filename != 'undefined') {
-                Application.Save_File(filename, curve_fiting_save);
+                Application.Save_File(filename, application_to_save);
             }
         });
     });

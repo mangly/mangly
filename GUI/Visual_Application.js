@@ -285,23 +285,41 @@ class Visual_Application {
         }
     }
 
-    Visualize_Curve_fiting() {
-        if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
+    Visualize_Application() {
+        this.chart.data.datasets = [];
 
-            var function_nssc = this.logic_application.functions_collection[0].Clone();
-            var function_psmc_msmc = this.logic_application.functions_collection[1].Clone();
-            // var last_element_add = this.logic_application.Get_Last_Function();
-            this.logic_application.Scale_NSSC_Function(function_nssc, function_nssc.N_ref);
+        for (const element of this.logic_application.functions_collection) {
+            var funct_clone = element.Clone();
 
-            if (function_psmc_msmc.model == 'psmc') this.logic_application.Scale_Psmc_Function(function_psmc_msmc, function_psmc_msmc.Mu * 1e-8, function_psmc_msmc.S);
-            else this.logic_application.Scale_Msmc_Function(function_psmc_msmc, function_psmc_msmc.Mu * 1e-8);
-            // var element_scale_by_default = last_element_add.Clone();
+            if (element.model == 'psmc' || element.model == 'msmc') {
+                if (element.model == 'psmc') this.logic_application.Scale_Psmc_Function(funct_clone, funct_clone.Mu * 1e-8, funct_clone.S);
+                else this.logic_application.Scale_Msmc_Function(funct_clone, funct_clone.Mu * 1e-8);
 
-            // this.logic_application.Scale_NSSC_Function(element_scale_by_default, element_scale_by_default.N_ref);
+                this.Visualize_Commun_Function(funct_clone, $('#psmc-msmc-model'));
+            }
 
-            this.Visualize_Commun_Function(function_nssc, $('#nssc-model'));
-            this.Visualize_Commun_Function(function_psmc_msmc, $('#psmc-msmc-model'));
+            else {
+                this.logic_application.Scale_NSSC_Function(funct_clone, function_nssc.N_ref);
+                this.Visualize_Commun_Function(funct_clone, $('#nssc-model'));
+            }
         }
+
+        // if ((this.logic_application.functions_collection.length > this.chart.data.datasets.length)) {
+
+        //     var function_nssc = this.logic_application.functions_collection[0].Clone();
+        //     var function_psmc_msmc = this.logic_application.functions_collection[1].Clone();
+        //     // var last_element_add = this.logic_application.Get_Last_Function();
+        //     this.logic_application.Scale_NSSC_Function(function_nssc, function_nssc.N_ref);
+
+        //     if (function_psmc_msmc.model == 'psmc') this.logic_application.Scale_Psmc_Function(function_psmc_msmc, function_psmc_msmc.Mu * 1e-8, function_psmc_msmc.S);
+        //     else this.logic_application.Scale_Msmc_Function(function_psmc_msmc, function_psmc_msmc.Mu * 1e-8);
+        //     // var element_scale_by_default = last_element_add.Clone();
+
+        //     // this.logic_application.Scale_NSSC_Function(element_scale_by_default, element_scale_by_default.N_ref);
+
+        //     this.Visualize_Commun_Function(function_nssc, $('#nssc-model'));
+        //     this.Visualize_Commun_Function(function_psmc_msmc, $('#psmc-msmc-model'));
+        // }
     }
 
     Visualize_element_of_list(name, model, color) {

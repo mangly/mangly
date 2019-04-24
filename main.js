@@ -15,7 +15,7 @@ let build_nssc
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ darkTheme: true })
+  mainWindow = new BrowserWindow({ darkTheme: true, webPreferences: { nodeIntegration: true } })
   mainWindow.maximize()
 
   // and load the index.html of the app.
@@ -47,55 +47,81 @@ function createWindow() {
 app.on('ready', function () {
   createWindow()
 
-  /*   const template = [
-      {
-        label: 'Edit',
-        submenu: [
-          { role: 'undo' },
-          { role: 'redo' },
-          { type: 'separator' },
-          { role: 'cut' },
-          { role: 'copy' },
-          { role: 'paste' },
-          { role: 'pasteandmatchstyle' },
-          { role: 'delete' },
-          { role: 'selectall' }
-        ]
-      },
-      {
-        label: 'View',
-        submenu: [
-          { role: 'reload' },
-          //{ role: 'forcereload' },
-          { role: 'toggledevtools' },
-          { type: 'separator' },
-          { role: 'resetzoom' },
-          { role: 'zoomin' },
-          { role: 'zoomout' },
-          { type: 'separator' },
-          { role: 'togglefullscreen' }
-        ]
-      },
-      {
-        role: 'window',
-        submenu: [
-          { role: 'minimize' },
-          { role: 'close' }
-        ]
-      },
-      {
-        role: 'help',
-        submenu: [
-          {
-            label: 'Learn More',
-            click () { require('electron').shell.openExternal('https://electronjs.org') }
+  const template = [
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Open',
+          click: function () {
+            mainWindow.webContents.send('open-file')
           }
-        ]
-      }
-    ]
-  
-    const menu = Menu.buildFromTemplate(template) */
-  Menu.setApplicationMenu(null);
+        },
+        { type: 'separator' },
+        {
+          label: 'Save',
+          click: function () {
+            mainWindow.webContents.send('save')
+          }
+        },
+        {
+          label: 'Save as...',
+          click: function () {
+            saveAs()
+          }
+        },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        { role: 'undo' },
+        { role: 'redo' },
+        { type: 'separator' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'pasteandmatchstyle' },
+        { role: 'delete' },
+        { role: 'selectall' }
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        { role: 'reload' },
+        //{ role: 'forcereload' },
+        { role: 'toggledevtools' },
+        { type: 'separator' },
+        { role: 'resetzoom' },
+        { role: 'zoomin' },
+        { role: 'zoomout' },
+        { type: 'separator' },
+        { role: 'togglefullscreen' }
+      ]
+    },
+    {
+      role: 'window',
+      submenu: [
+        { role: 'minimize' },
+        { role: 'close' }
+      ]
+    },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Learn More',
+          click() { require('electron').shell.openExternal('https://electronjs.org') }
+        }
+      ]
+    }
+  ]
+
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu);
 
 })
 
@@ -118,7 +144,7 @@ app.on('activate', function () {
 })
 
 ipc.on('open-scenario-editor', function (event, args) {
-  build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent: mainWindow, modal: true, darkTheme: true });
+  build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent: mainWindow, modal: true, darkTheme: true, webPreferences: { nodeIntegration: true } });
   build_nssc.webContents.openDevTools()
 
 
@@ -140,4 +166,17 @@ ipc.on('open-scenario-editor', function (event, args) {
 ipc.on('nssc-json-result', function (event, args) {
   mainWindow.webContents.send('nssc-json-result', args)
   // build_nssc.close();
+});
+
+
+function saveAs() {
+  mainWindow.webContents.send('save-as');
+}
+
+ipc.on('save-as', function () {
+  saveAs();
+});
+
+ipc.on('save-application', function () {
+  mainWindow.webContents.send('save-application');
 });
