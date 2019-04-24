@@ -120,6 +120,8 @@ $(document).ready(function () {
             application.Show_Delete_Window('The function is going to be eliminated', () => {
                 application.Delete_Function(selected_function.name, $(this));
                 selected_function = null
+                compute_distance = false;
+                application.Hide_Panel_Distance();
             });
         }
     });
@@ -559,14 +561,11 @@ $(document).ready(function () {
         if ($(this).val() != '... PSMC / MSMC ...' && $('#nssc-model').val() != '... NSSC ...') {
             compute_distance = true;
             application.Show_Distance();
-            application.Change_Information_Of_Functions();
             $('#start_metaheuristic').removeAttr('disabled');
             $('#save-fit').removeAttr('disabled');
         }
         else {
-            $('#distance-value-col').fadeOut(50, function () {
-                $('.theta-rho').fadeIn(500);
-            });
+            application.Hide_Panel_Distance();
 
             $('#start_metaheuristic').attr('disabled', 'disabled');
             $('#save-fit').attr('disabled', 'disabled');
@@ -596,14 +595,11 @@ $(document).ready(function () {
         if (name_model != '... NSSC ...' && $('#psmc-msmc-model').val() != '... PSMC / MSMC ...') {
             compute_distance = true;
             application.Show_Distance();
-            application.Change_Information_Of_Functions();
             $('#start_metaheuristic').removeAttr('disabled');
             $('#save-fit').removeAttr('disabled');
         }
         else {
-            $('#distance-value-col').fadeOut(50, function () {
-                $('.theta-rho').fadeIn(500);
-            });
+            application.Hide_Panel_Distance();
 
             $('#start_metaheuristic').attr('disabled', 'disabled');
             $('#save-fit').attr('disabled', 'disabled');

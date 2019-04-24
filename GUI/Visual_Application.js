@@ -299,7 +299,7 @@ class Visual_Application {
             }
 
             else {
-                this.logic_application.Scale_NSSC_Function(funct_clone, function_nssc.N_ref);
+                this.logic_application.Scale_NSSC_Function(funct_clone, funct_clone.N_ref);
                 this.Visualize_Commun_Function(funct_clone, $('#nssc-model'));
             }
         }
@@ -487,11 +487,15 @@ class Visual_Application {
         $('#model-subtitle').text('Model by which the graph is based');
     }
 
-    Change_Information_Of_Functions() {
-        // $('#model').text('The distance between curves is:');
-        // $('#model-subtitle').text('Distance between PSMC and NSSC models')
+    Show_Panel_Distance() {
         $('.theta-rho').fadeOut(50, function () {
             $('#distance-value-col').fadeIn(500);
+        });
+    }
+
+    Hide_Panel_Distance() {
+        $('#distance-value-col').fadeOut(50, function () {
+            $('.theta-rho').fadeIn(500);
         });
     }
 
@@ -592,8 +596,9 @@ class Visual_Application {
         var nssc_model = this.logic_application.Get_Function($('#nssc-model').val());
         var vectors = Application_Utilities.Generate_Inverse_Data_To_Chart(psmc_msmc_model_data);
 
-        this.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), function (result) {
+        this.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), (result) => {
             $('#distance-value').text(result);
+            this.Show_Panel_Distance();
         });
     }
 
