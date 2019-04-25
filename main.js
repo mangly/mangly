@@ -144,7 +144,7 @@ app.on('activate', function () {
 })
 
 ipc.on('open-scenario-editor', function (event, args) {
-  build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent: mainWindow, modal: true, darkTheme: true, webPreferences: { nodeIntegration: true } });
+  build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent: mainWindow, modal: true, darkTheme: true, webPreferences: { nodeIntegration: true }, autoHideMenuBar:true });
   build_nssc.webContents.openDevTools()
 
 
