@@ -118,10 +118,12 @@ $(document).ready(function () {
             $("button[rel=popover]").popover('hide');
 
             application.Show_Delete_Window('The function is going to be eliminated', () => {
+                if ($('#nssc-model').val() == selected_function.name || $('#psmc-msmc-model').val() == selected_function.name) {
+                    compute_distance = false;
+                    application.Hide_Panel_Distance();
+                }
                 application.Delete_Function(selected_function.name, $(this));
                 selected_function = null
-                compute_distance = false;
-                application.Hide_Panel_Distance();
             });
         }
     });
@@ -491,6 +493,7 @@ $(document).ready(function () {
                     if (extension.length == 4) new_name = Application_Utilities.Get_Name_Of_Path(filename, 5);
                     else new_name = Application_Utilities.Get_Name_Of_Path(filename, 6);
 
+                    selected_function.path = filename;
                     var function_clone_to_save = selected_function.Clone();
                     function_clone_to_save.name = new_name;
                     var function_save = JSON.stringify(function_clone_to_save);
@@ -508,6 +511,8 @@ $(document).ready(function () {
         // var nssc_funtion = application.logic_application.Get_Function($('#nssc-model').val());
         // var psmc_msmc_function = application.logic_application.Get_Function($('#psmc-msmc-model').val());
         // var name_curve_fiting = nssc_funtion.name + '_' + psmc_msmc_function.name;
+
+
 
         var application_save = {
             functions_collection: application.logic_application.functions_collection,
