@@ -12,6 +12,7 @@ class Application {
         this.Mu = 1.25;
         this.S = 100;
         this.N_ref = 500;
+        this.path = null;
     }
 
     Contains(funct) {
@@ -97,6 +98,7 @@ class Application {
         this.functions_collection = [];
         Application.Load_File(path, (application) => {
             var funct;
+            this.path = path;
             for (const element of application.functions_collection) {
                 if (element.model == 'psmc') funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, element.Mu, element.S, path);
                 else if(element.model == 'msmc') funct = new MSMC(element.name, element.x_vector, element.y_vector, element.Mu, path);

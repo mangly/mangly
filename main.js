@@ -180,3 +180,7 @@ ipc.on('save-as', function () {
 ipc.on('save-application', function () {
   mainWindow.webContents.send('save-application');
 });
+
+ipc.on('save-application-as', function () {
+  mainWindow.webContents.send('save-application-as');
+});

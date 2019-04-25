@@ -503,17 +503,43 @@ $(document).ready(function () {
             });
         }
 
-        else if (application.logic_application.functions_collection.length > 0) ipc.send('save-application');
+        else if (application.logic_application.functions_collection.length > 0) ipc.send('save-application-as');
         // else dialog.showMessageBox(main_Window, { type: 'error', message: 'No function selected', buttons: ['Accept'] });
     });
 
     ipc.on('save-application', function () {
+        // if (selected_function) {
+        if (application.logic_application.path) {
+            var application_save = {
+                functions_collection: application.logic_application.functions_collection,
+            }
+
+            var application_to_save = JSON.stringify(application_save);
+            Application.Save_File(application.logic_application.path, application_to_save);
+
+            $.notify('<strong>Saving...</strong> Do not close this page', {
+                allow_dismiss: false,
+                showProgressbar: true,
+                delay: 1000,
+                type: 'primary',
+                placement: {
+                    align: "center",
+                    from: "bottom"
+                }
+            });
+        }
+
+        else ipc.send('save-application-as');
+        // }
+
+        // else if (application.logic_application.functions_collection.length > 0) ipc.send('save-application');
+        // else dialog.showMessageBox(main_Window, { type: 'error', message: 'NSSC model not selected', buttons: ['Accept'] });
+    });
+
+    ipc.on('save-application-as', function () {
         // var nssc_funtion = application.logic_application.Get_Function($('#nssc-model').val());
         // var psmc_msmc_function = application.logic_application.Get_Function($('#psmc-msmc-model').val());
         // var name_curve_fiting = nssc_funtion.name + '_' + psmc_msmc_function.name;
-
-
-
         var application_save = {
             functions_collection: application.logic_application.functions_collection,
         }
@@ -540,6 +566,7 @@ $(document).ready(function () {
             // var function_save = JSON.stringify(function_clone_to_save);
 
             // Application.Save_File(filename, function_save);
+            application.logic_application.path = filename;
             if (typeof filename != 'undefined') {
                 Application.Save_File(filename, application_to_save);
             }
