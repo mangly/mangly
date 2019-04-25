@@ -573,6 +573,13 @@ $(document).ready(function () {
         });
     });
 
+    $('#save-fit').on('click', function(){
+        selected_function = null;
+        $('.custom-control-input').prop('checked', false);
+
+        ipc.send('save-application');
+    });
+
     $('#mycanvas').bind('mousewheel', function (e) {
         if (e.originalEvent.wheelDelta / 120 > 0) {
             $('#zoom').removeClass('zmdi-zoom-out');
@@ -594,7 +601,7 @@ $(document).ready(function () {
             compute_distance = true;
             application.Show_Distance();
             $('#start_metaheuristic').removeAttr('disabled');
-            $('#save-fit').removeAttr('disabled');
+            // $('#save-fit').removeAttr('disabled');
         }
         else {
             application.Hide_Panel_Distance();
@@ -628,7 +635,7 @@ $(document).ready(function () {
             compute_distance = true;
             application.Show_Distance();
             $('#start_metaheuristic').removeAttr('disabled');
-            $('#save-fit').removeAttr('disabled');
+            // $('#save-fit').removeAttr('disabled');
         }
         else {
             application.Hide_Panel_Distance();
@@ -671,6 +678,7 @@ $(document).ready(function () {
 
     $('#stop-yes').on('click', function () {
         $('#distance-value').text(metaheuristic_distance_result);
+        $('#save-fit').removeAttr('disabled');
         application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
         selected_function.N_ref = metaheuristic_n_ref_result;
         application.Update_NSSC(selected_function);
