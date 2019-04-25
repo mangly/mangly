@@ -1,9 +1,8 @@
 from __future__ import division
 import math, sys, json, random
 from model import Pnisland
-from metaheuristhics_utilities import get_scenario, multi_dim_conversion, valid_state, get_optimal_scenario, best_initial_n_ref, get_best_values, get_initial_bounds, get_initial_state
-from functions import get_NSSC_vectors
-
+from get_File_Results import get_NSSC_vectors
+from metaheuristics_utilities import get_scenario, multi_dim_conversion, valid_state, get_optimal_scenario, best_initial_n_ref, get_best_values, get_initial_bounds, get_initial_state
 
 vectors = json.loads(sys.argv[1])
 scenario_NSSC = json.loads(sys.argv[2])

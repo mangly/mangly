@@ -113,7 +113,7 @@ class Application_Utilities {
         return sum;
     }
 
-    static Get_Name_Of_Path(path, count){
+    static Get_Name_Of_Path(path, count) {
         var path_split = path.split('/');
         var new_name = path_split[path_split.length - 1].slice(0, -count);
 

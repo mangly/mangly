@@ -1,6 +1,7 @@
-import sys, json, random
+import numpy as np
+from model import Pnisland
 
-def get_PSMC_results(filename):
+def get_PSMC_results(filename, name):
     """
     Read the final output of PSMC and return a dictionary of
     six elements: name, model, the time vector, the IICR_2 vector, 
@@ -24,9 +25,9 @@ def get_PSMC_results(filename):
     theta = float(theta)
     rho = float(rho)
 
-    return {'name': '', 'model':'psmc', 'time' : time, 'IICR_2': IICR_2, 'theta': theta, 'rho': rho}
+    return {'name': name, 'model':'psmc', 'x_vector' : time, 'y_vector': IICR_2, 'theta': theta, 'rho': rho}
 
-def get_MSMC_results(filename):
+def get_MSMC_results(filename, name):
     """
     Read the final output of MSMC and return a tuple
     containing two list (time, IICR_k)
@@ -40,31 +41,18 @@ def get_MSMC_results(filename):
     IICR_k = [v.split('\t')[3] for v in lines]
     IICR_k = [float(v) for v in IICR_k[1:]]
 
-    return {'name': '', 'model':'msmc', 'time' : time, 'IICR_k': IICR_k}
+    return {'name': name, 'model':'msmc', 'x_vector' : time, 'y_vector': IICR_k}
 
-def get_File_collection_result(path_collection):
-    file_collection = []
-    file_result = {}
+def get_NSSC_vectors(type, scenario, start = 0, end = 500, n = 500):
+    model = 'initializing'
 
-    for i in range(1, path_collection.__len__()):
-        path = path_collection[i]
-        tmp = path.split('/')
-        name_and_extension = tmp[tmp.__len__()-1]
-        name = name_and_extension[:name_and_extension.find('.')]
+    if(type == "General"):
+        model = NSSC(scenario)
 
-        if(name_and_extension.endswith('psmc')):
-            file_result = get_PSMC_results(path)
-        
-        elif(name_and_extension.endswith('msmc') or name_and_extension.endswith('txt')):
-            file_result = get_MSMC_results(path)
+    elif(type == 'Symmetrical'):
+        model = Pnisland(scenario)
 
-        file_result['name'] = name
-        file_collection.append(file_result)
-    
-    return {'file_collection': file_collection}
+    x_vector = [0.1*(np.exp(i * np.log(1+10*end)/n)-1) for i in range(n+1)]
+    IICR_specie = list(model.evaluateIICR(x_vector))
 
-# path_collection = ['/home/hector/PSMC/Dai_upper.psmc', '/home/hector/PSMC/example_output_MSMC.msmc']
-print(json.dumps(get_File_collection_result(sys.argv)))
-# print(get_File_collection_result(path_collection))
-
-
+    return {'x_vector': x_vector, 'y_vector': IICR_specie}

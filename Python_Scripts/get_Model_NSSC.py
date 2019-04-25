@@ -1,5 +1,5 @@
 import sys, json
-from metaheuristics_utilities import get_NSSC_vectors
+from get_File_Results import get_NSSC_vectors
 
 model_type = sys.argv[2]
 scenario = json.loads(sys.argv[1])
