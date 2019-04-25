@@ -286,8 +286,13 @@ class Visual_Application {
     }
 
     Visualize_Application() {
-        this.chart.data.datasets = [];
-        $('.btn-delete').parents('.listview__item').remove();
+        if (this.chart.data.datasets.length > 0) {
+            for (const element of this.chart.data.datasets) {
+                this.Delete_Function_Metaheuristic_List(element.label);
+            }
+            this.chart.data.datasets = [];
+            $('.btn-delete').parents('.listview__item').remove();
+        }
 
         for (const element of this.logic_application.functions_collection) {
             var funct_clone = element.Clone();
@@ -618,23 +623,21 @@ class Visual_Application {
     }
 
     Delete_Function_Metaheuristic_List(name) {
-        var deleted = false;
         $('#psmc-msmc-model option').each(function () {
             if ($(this).text() == name) {
                 $(this).remove();
-                deleted = true;
-                return false;
+                return true;
             }
         });
 
-        if (!deleted) {
-            $('#nssc-model option').each(function () {
-                if ($(this).text() == name) {
-                    $(this).remove();
-                    return false;
-                }
-            });
-        }
+        $('#nssc-model option').each(function () {
+            if ($(this).text() == name) {
+                $(this).remove();
+                return true;
+            }
+        });
+
+        return false;
     }
 
     static Fill_Initial_Data_Vector(value, order) {
