@@ -287,6 +287,7 @@ class Visual_Application {
 
     Visualize_Application() {
         this.chart.data.datasets = [];
+        $('.btn-delete').parents('.listview__item').remove();
 
         for (const element of this.logic_application.functions_collection) {
             var funct_clone = element.Clone();
