@@ -1,5 +1,5 @@
 import numpy as np
-from model import Pnisland
+from model import NSSC, Pnisland
 
 def get_PSMC_results(filename, name):
     """
