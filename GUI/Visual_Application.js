@@ -840,15 +840,6 @@ class Visual_Application {
         this.Configuration_Vector();
     }
 
-    static Valid_Time_Of_Change(previous_value_time, new_value_time, next_value_time) {
-        if (new_value_time != '' || new_value_time != 0) {
-            if (typeof next_value_time === 'undefined') return previous_value_time < new_value_time;
-            else return previous_value_time < new_value_time && new_value_time < next_value_time;
-        }
-
-        return false;
-    }
-
     Build_Visual_Scenario_With_Sliders(nssc_scenario, matrix_collection, deme_vector_collection, sampling_vector, order, type, number_of_events) {
         Visual_Application.Initialize_Matrix(sampling_vector, Visual_Application.Fill_Initial_Data_Vector(0, order));
 
@@ -940,10 +931,11 @@ class Visual_Application {
             });
 
             $('#time' + index).on('change', function (event) {
-                var previous_time_value = $('#time' + (index - 1)).val();
-                var next_time_value = $('#time' + (index + 1)).val();
+                var previous_time_value = parseFloat($('#time' + (index - 1)).val());
+                var new_time_value = parseFloat($(this).val());
+                var next_time_value = parseFloat($('#time' + (index + 1)).val());
 
-                if (!Visual_Application.Valid_Time_Of_Change(previous_time_value, $(this).val(), next_time_value)) {
+                if (!Application_Utilities.Valid_Time_Of_Change(previous_time_value, new_time_value, next_time_value)) {
                     $(this).val(old_value);
                     event.preventDefault();
                 }

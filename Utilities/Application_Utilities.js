@@ -79,6 +79,15 @@ class Application_Utilities {
         else return false;
     }
 
+    static Valid_Time_Of_Change(previous_value_time, new_value_time, next_value_time) {
+        if (new_value_time != '' || new_value_time != 0) {
+            if (typeof next_value_time === 'undefined') return previous_value_time < new_value_time;
+            else return previous_value_time < new_value_time && new_value_time < next_value_time;
+        }
+
+        return false;
+    }
+
     static Allow_Only_Number(evt, type) {
         var charCode = evt.charCode;
 
@@ -105,7 +114,7 @@ class Application_Utilities {
     static Sum(data) {
         var sum = 0;
         for (let index = 0; index < data.length; index++) {
-            const element = data[index];
+            const element = parseFloat(data[index]);
 
             sum += element;
         }
