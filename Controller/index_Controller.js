@@ -166,11 +166,11 @@ $(document).ready(function () {
     });
 
     $('#card-canvas').on('keydown', function (e) {
-        if (e.ctrlKey) $('#canvas-container').removeClass('disabled');
+        if (e.ctrlKey) $('#canvas-container').removeClass('disabledCanvas');
     });
 
     $('#card-canvas').on('keyup', function () {
-        $('#canvas-container').addClass('disabled');
+        $('#canvas-container').addClass('disabledCanvas');
     });
 
     $('.dropdown ul li').on('click', function () {
@@ -194,6 +194,7 @@ $(document).ready(function () {
         if (sum == 2) {
             $('#save').css('color', 'white');
             $('#container-nref').removeClass('disabled');
+            $('#matrices-deme-sizes').removeClass('disabled');
             $('#container-matrices').removeClass('disabled');
             var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
 
@@ -211,6 +212,7 @@ $(document).ready(function () {
 
             else {
                 $('#container-nref').addClass('disabled');
+                $('#matrices-deme-sizes').addClass('disabled');
                 $('#container-matrices').addClass('disabled');
             }
 

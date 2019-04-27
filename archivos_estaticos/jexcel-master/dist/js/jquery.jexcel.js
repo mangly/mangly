@@ -1170,27 +1170,29 @@
                                     }
                                 }
                                 e.preventDefault();
-                            } else if (e.which == 46) {
-                                // Delete (erase cell in case no edition is running)
-                                if ($.fn.jexcel.defaults[$.fn.jexcel.current].editable == true) {
-                                    if (!$($.fn.jexcel.selectedCell).hasClass('edition')) {
-                                        if ($.fn.jexcel.selectedRow) {
-                                            if (confirm('Are you sure to delete the selected rows?')) {
-                                                $('#' + $.fn.jexcel.current).jexcel('deleteRow');
-                                                $('#' + $.fn.jexcel.current).jexcel('resetSelection');
-                                            }
-                                        } else if ($.fn.jexcel.selectedHeader) {
-                                            if (confirm('Are you sure to delete the selected columns?')) {
-                                                var columns = $('#' + $.fn.jexcel.current).find('thead.jexcel_label').find('.selected');
-                                                $('#' + $.fn.jexcel.current).jexcel('deleteColumn', parseInt($(columns[0]).prop('id').split('-')[1]), parseInt(columns.length));
-                                            }
-                                        } else {
-                                            // Change value. My change 6. Change '' by 0
-                                            $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), 0);
-                                        }
-                                    }
-                                }
-                            } else {
+                            } 
+                            // else if (e.which == 46) {
+                            //     // Delete (erase cell in case no edition is running)
+                            //     if ($.fn.jexcel.defaults[$.fn.jexcel.current].editable == true) {
+                            //         if (!$($.fn.jexcel.selectedCell).hasClass('edition')) {
+                            //             if ($.fn.jexcel.selectedRow) {
+                            //                 if (confirm('Are you sure to delete the selected rows?')) {
+                            //                     $('#' + $.fn.jexcel.current).jexcel('deleteRow');
+                            //                     $('#' + $.fn.jexcel.current).jexcel('resetSelection');
+                            //                 }
+                            //             } else if ($.fn.jexcel.selectedHeader) {
+                            //                 if (confirm('Are you sure to delete the selected columns?')) {
+                            //                     var columns = $('#' + $.fn.jexcel.current).find('thead.jexcel_label').find('.selected');
+                            //                     $('#' + $.fn.jexcel.current).jexcel('deleteColumn', parseInt($(columns[0]).prop('id').split('-')[1]), parseInt(columns.length));
+                            //                 }
+                            //             } else {
+                            //                 // Change value. My change 6. Change '' by 0
+                            //                 $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), 0);
+                            //             }
+                            //         }
+                            //     }
+                            // } 
+                            else {
                                 if (e.metaKey && !e.shiftKey && !e.ctrlKey) {
                                     if (!$($.fn.jexcel.selectedCell).hasClass('edition')) {
                                         if (e.which == 67) {
