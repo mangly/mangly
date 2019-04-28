@@ -81,7 +81,7 @@ class Application_Utilities {
 
     static Valid_Time_Of_Change(previous_value_time, new_value_time, next_value_time) {
         if (new_value_time != '' || new_value_time != 0) {
-            if (typeof next_value_time === 'undefined') return previous_value_time < new_value_time;
+            if (isNaN(next_value_time)) return previous_value_time < new_value_time;
             else return previous_value_time < new_value_time && new_value_time < next_value_time;
         }
 
