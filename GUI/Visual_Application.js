@@ -910,40 +910,46 @@ class Visual_Application {
 
             slider_t.noUiSlider.set($('#time' + index).val());
 
+            var old_value;
+            $('#time' + index).on('click', function () {
+                old_value = parseFloat($(this).val());
+            });
+
+            slider_t.noUiSlider.on("start", (a, b) => {
+                old_value = parseFloat($('#time' + index).val());
+            });
+
             slider_t.noUiSlider.on("set", (a, b) => {
                 $('#save').css('color', 'white');
-                var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), count);
 
-                this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
-                    // this.Update_NSSC(nssc_function);
-                    this.Update_NSSC(nssc_function, nssc_function.N_ref);
-                    if ($('#distance-value-col').css('display') != 'none') this.Show_Distance();
-                });
+                var previous_time_value = parseFloat($('#time' + (index - 1)).val());
+                var new_time_value = parseFloat(a[b]);
+                var next_time_value = parseFloat($('#time' + (index + 1)).val());
+
+                if (!Application_Utilities.Valid_Time_Of_Change(previous_time_value, new_time_value, next_time_value)) {
+                    $('#time' + index).val(old_value);
+                    slider_t.noUiSlider.set(old_value);
+                }
+
+                else if (a[b] != old_value) {
+                    old_value = parseFloat(a[b]);
+
+                    var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), count);
+
+                    this.logic_application.Get_NSSC_Vectors(type, $('#nssc-name').val(), scenario_update, (nssc_function) => {
+                        // this.Update_NSSC(nssc_function);
+                        this.Update_NSSC(nssc_function, nssc_function.N_ref);
+                        if ($('#distance-value-col').css('display') != 'none') this.Show_Distance();
+                    });
+                }
             });
 
             slider_t.noUiSlider.on("slide", (a, b) => {
                 document.getElementById("time" + index).value = a[b];
             });
 
-            var old_value;
-            $('#time' + index).on('click', function () {
-                old_value = $(this).val();
-            });
-
             $('#time' + index).on('change', function (event) {
-                var previous_time_value = parseFloat($('#time' + (index - 1)).val());
-                var new_time_value = parseFloat($(this).val());
-                var next_time_value = parseFloat($('#time' + (index + 1)).val());
-
-                if (!Application_Utilities.Valid_Time_Of_Change(previous_time_value, new_time_value, next_time_value)) {
-                    $(this).val(old_value);
-                    event.preventDefault();
-                }
-
-                else {
-                    old_value = $(this).val();
-                    slider_t.noUiSlider.set($(this).val());
-                }
+                slider_t.noUiSlider.set($(this).val());
             });
 
             if (type == 'Symmetrical') {
