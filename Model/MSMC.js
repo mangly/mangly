@@ -1,7 +1,7 @@
 'use strict'
 
 var Application_Utilities = require('../Utilities/Application_Utilities');
-var Abstract_Model = require('../Model/Abstract_Model');
+var Abstract_Model = require('./Model');
 
 class MSMC extends Abstract_Model {
     constructor(name, x_vector, y_vector, Mu, path) {

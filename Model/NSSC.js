@@ -1,7 +1,7 @@
 'use strict'
 
 var Application_Utilities = require('../Utilities/Application_Utilities');
-var Abstract_Model = require('../Model/Abstract_Model');
+var Abstract_Model = require('./Model');
 
 class NSSC extends Abstract_Model {
     constructor(name, type, x_vector, y_vector, scenario, N_ref, path) {
