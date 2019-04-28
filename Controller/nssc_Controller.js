@@ -150,3 +150,22 @@ $(document).ready(function () {
     else Application_Utilities.Allow_Only_Number(e, 'float');
   });
 });
+
+var old_value;
+$(document).on('click', '.time', function () {
+  old_value = parseFloat($(this).val());
+});
+
+$(document).on('change', '.time', function () {
+  var previous_time_value = parseFloat($('#time' + (parseInt($(this).prop('id').substring(4)) - 1)).val());
+  var new_time_value = parseFloat($(this).val());
+  var next_time_value = parseFloat($('#time' + (parseInt($(this).prop('id').substring(4)) + 1)).val());
+
+  if (!Application_Utilities.Valid_Time_Of_Change(previous_time_value, new_time_value, next_time_value)) {
+    $(this).val(old_value);
+  }
+
+  else {
+    old_value = parseFloat($(this).val());
+  }
+});
