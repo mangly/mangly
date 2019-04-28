@@ -1,18 +1,16 @@
 'use strict'
 
 var Application_Utilities = require('../Utilities/Application_Utilities');
+var Abstract_Model = require('../Model/Abstract_Model');
 
-class PSMC {
+class PSMC extends Abstract_Model {
     constructor(name, x_vector, y_vector, theta, rho, Mu, S, path) {
-        this.name = name;
-        this.x_vector = x_vector;
-        this.y_vector = y_vector;
+        super(name, x_vector, y_vector, path);
         this.theta = theta;
         this.rho = rho;
         this.model = 'psmc';
         this.Mu = Mu;
         this.S = S;
-        this.path = path;
     }
 
     Clone() {

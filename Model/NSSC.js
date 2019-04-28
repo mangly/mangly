@@ -1,17 +1,15 @@
 'use strict'
 
 var Application_Utilities = require('../Utilities/Application_Utilities');
+var Abstract_Model = require('../Model/Abstract_Model');
 
-class NSSC {
+class NSSC extends Abstract_Model {
     constructor(name, type, x_vector, y_vector, scenario, N_ref, path) {
-        this.name = name;
-        this.x_vector = x_vector;
-        this.y_vector = y_vector;
+        super(name, x_vector, y_vector, path);
         this.scenario = scenario
         this.model = 'nssc';
         this.type = type;
         this.N_ref = N_ref;
-        this.path = path;
     }
 
     Clone() {

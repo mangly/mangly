@@ -1,15 +1,13 @@
 'use strict'
 
 var Application_Utilities = require('../Utilities/Application_Utilities');
+var Abstract_Model = require('../Model/Abstract_Model');
 
-class MSMC {
-    constructor(name, x_vector, y_vector, Mu, path){
-        this.name = name;
-        this.x_vector = x_vector;
-        this.y_vector = y_vector;
+class MSMC extends Abstract_Model {
+    constructor(name, x_vector, y_vector, Mu, path) {
+        super(name, x_vector, y_vector, path);
         this.model = 'msmc';
         this.Mu = Mu;
-        this.path = path;
     }
 
     Clone() {
