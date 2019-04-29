@@ -285,7 +285,7 @@ $(document).ready(function () {
     $('#input-slider-value-mu').on('change', function () {
         $('#save').css('color', 'white');
         document.getElementById("slider-mu").noUiSlider.set($(this).val() / 1e-8);
-        application.Update_Scale_PSMC_MSMC(selected_function, $(this).val(), selected_function.S);
+        application.Update_Scale_PSMC_MSMC(selected_function, $(this).val() / 1e-8, selected_function.S);
     });
 
     $('#input-slider-value-s').on('change', function () {
@@ -575,7 +575,7 @@ $(document).ready(function () {
         });
     });
 
-    $('#save-fit').on('click', function(){
+    $('#save-fit').on('click', function () {
         selected_function = null;
         $('.custom-control-input').prop('checked', false);
 
