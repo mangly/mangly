@@ -1149,6 +1149,12 @@
                                     } else {
                                         $('#' + $.fn.jexcel.current).jexcel('closeEditor', $($.fn.jexcel.selectedCell), true);
                                     }
+
+                                    // My change
+                                    var value = $('#' + $.fn.jexcel.current).jexcel('getValue', $.fn.jexcel.selectedCell);
+                                    if (isNaN(value)) $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), $.fn.jexcel.editionValue);
+                                    else $('#' + $.fn.jexcel.current).jexcel('setValue', $('#' + $.fn.jexcel.current).find('.highlight'), value);
+                                    //
                                 }
                                 // Tab key - Get the id of the selected cell
                                 if ($.fn.jexcel.defaults[$.fn.jexcel.current].allowInsertColumn == true) {
@@ -1170,7 +1176,7 @@
                                     }
                                 }
                                 e.preventDefault();
-                            } 
+                            }
                             // else if (e.which == 46) {
                             //     // Delete (erase cell in case no edition is running)
                             //     if ($.fn.jexcel.defaults[$.fn.jexcel.current].editable == true) {
@@ -1829,11 +1835,11 @@
                         }
 
                         // Close editor handler
-                        $(editor).blur(function () {
+                        $(editor).blur(function (e) {
                             $(main).jexcel('closeEditor', $(this).parent(), true);
                             var value = $(cell).text();
-                            
-                            if (value == '') $(cell).text($.fn.jexcel.editionValue);
+
+                            if (value == '' || value == '.') $(cell).text(parseFloat($.fn.jexcel.editionValue));
                             else $(cell).text(parseFloat(value));
                         });
                     }

@@ -196,11 +196,14 @@ $(document).ready(function () {
             $('#container-nref').removeClass('disabled');
             $('#matrices-deme-sizes').removeClass('disabled');
             $('#container-matrices').removeClass('disabled');
-            var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
 
-            application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
-                application.Update_NSSC(nssc_function);
-            });
+            if (Application_Utilities.Valid_Number($(this).find('.editor').val())) {
+                var scenario_update = Application.Build_Scenario_Update(selected_function.type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), number_of_events + 1);
+
+                application.logic_application.Get_NSSC_Vectors(selected_function.type, selected_function.name, scenario_update, function (nssc_function) {
+                    application.Update_NSSC(nssc_function);
+                });
+            }
         }
 
         else {
@@ -223,6 +226,18 @@ $(document).ready(function () {
     $(document).on('keypress', '.edition', function (e) {
         if (matrix.prop('id') == 'sampling-vector') Application_Utilities.Allow_Only_Number(e, 'int');
         else Application_Utilities.Allow_Only_Number(e, 'float');
+    });
+
+    $('#input-slider-value-mu').on('click', function (e) {
+        old_value = parseFloat($(this).val());
+    });
+
+    $('#input-slider-value-mu').on('keypress', function (e) {
+        Application_Utilities.Allow_Only_Number(e, 'sn');
+    });
+
+    $('#input-slider-value-s').on('keypress', function (e) {
+        Application_Utilities.Allow_Only_Number(e, 'int');
     });
 
     $("#change-color").on("change", function () {
@@ -282,15 +297,22 @@ $(document).ready(function () {
         application.Update_Scale_PSMC_MSMC(selected_function, mu, s);
     });
 
-    $('#input-slider-value-mu').on('change', function () {
+    $('#input-slider-value-mu').on('change', function (e) {
         $('#save').css('color', 'white');
+
+        if (!Application_Utilities.Valid_Euler_Number($(this).val())) {
+            $(this).val(old_value);
+            e.preventDefault();
+        }
+
         document.getElementById("slider-mu").noUiSlider.set($(this).val() / 1e-8);
-        application.Update_Scale_PSMC_MSMC(selected_function, $(this).val() / 1e-8, selected_function.S);
+        application.Update_Scale_PSMC_MSMC(selected_function, parseFloat($(this).val() / 1e-8), parseInt(selected_function.S));
+        old_value = parseFloat($(this).val());
     });
 
     $('#input-slider-value-s').on('change', function () {
         $('#save').css('color', 'white');
-        application.Update_Scale_PSMC_MSMC(selected_function, $('#input-slider-value-mu').val(), $(this).val());
+        application.Update_Scale_PSMC_MSMC(selected_function, parseFloat($('#input-slider-value-mu').val() / 1e-8), parseInt($(this).val()));
     });
 
     //Start N_ref--------------

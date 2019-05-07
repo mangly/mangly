@@ -88,28 +88,64 @@ class Application_Utilities {
         return false;
     }
 
+    static Number_Of_Occurrences(text, char) {
+        var count = 0;
+
+        for (const element of text) {
+            if (element == char) count++;
+        }
+
+        return count;
+    }
+
+    static Valid_Euler_Number(number) {
+        if (Application_Utilities.Number_Of_Occurrences(number, '.') > 1 || Application_Utilities.Number_Of_Occurrences(number, 'e') > 1 || Application_Utilities.Number_Of_Occurrences(number, '-') > 1) return false;
+
+        var split = number.split('e');
+
+        if (split[1] != '-8') return false;
+
+        return true;
+    }
+
+    static Valid_Number(number){
+        if (Application_Utilities.Number_Of_Occurrences(number, '.') > 1) return false;
+
+        var split = number.split('.');
+
+        if (split[0] == '') return false;
+
+        return true;
+    }
+
     static Allow_Only_Number(evt, type) {
         var charCode = evt.charCode;
 
         if (type == 'float') {
-            if (!((charCode >= 48 && charCode <= 57) || charCode == 46)) {
+            if (!((charCode >= 48 && charCode <= 57) || charCode == 46 || charCode == 13)) {
+                evt.preventDefault();
+            }
+        }
+
+        else if (type == 'sn') {
+            if (!((charCode >= 48 && charCode <= 57) || charCode == 46 || charCode == 101 || charCode == 45 || charCode == 13)) {
                 evt.preventDefault();
             }
         }
 
         else {
-            if (!(charCode >= 48 && charCode <= 57)) {
+            if (!(charCode >= 48 && charCode <= 57 || charCode == 13)) {
                 evt.preventDefault();
             }
         }
     }
 
-    static Is_Int_Type(number) {
-        var position = number.indexOf('.');
+    // static Is_Int_Type(number) {
+    //     var position = number.indexOf('.');
 
-        if (position >= 0) return false;
-        return true;
-    }
+    //     if (position >= 0) return false;
+    //     return true;
+    // }
 
     static Sum(data) {
         var sum = 0;
