@@ -147,6 +147,7 @@ $(document).ready(function () {
 
   $(document).on('keypress', '.edition', function (e) {
     if (matrix.prop('id') == 'sampling-vector') Application_Utilities.Allow_Only_Number(e, 'int');
+    else if (matrix.prop('id').substring(0, 4) == 'deme') Application_Utilities.Allow_Only_Number(e, 'non_negative');
     else Application_Utilities.Allow_Only_Number(e, 'float');
   });
 });

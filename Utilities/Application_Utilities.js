@@ -146,6 +146,12 @@ class Application_Utilities {
             }
         }
 
+        else if(type == 'non_negative'){
+            if (!(charCode > 48 && charCode <= 57 || charCode == 13)) {
+                evt.preventDefault();
+            }
+        }
+
         else {
             if (!(charCode >= 48 && charCode <= 57 || charCode == 13)) {
                 evt.preventDefault();
