@@ -995,10 +995,13 @@ class Visual_Application {
                 });
 
                 $('#M' + index).on('change', function () {
-                    if (Application_Utilities.Valid_Number($(this).val())) slider_m.noUiSlider.set($(this).val());
+                    if (Application_Utilities.Valid_Number($(this).val())) {
+                        slider_m.noUiSlider.set($(this).val());
+                        old_value = parseFloat($(this).val());
+                    }
                     else $(this).val(old_value);
                 });
-    
+
                 $('#M' + index).on('keypress', function (event) {
                     Application_Utilities.Allow_Only_Number(event, 'float');
                 });
@@ -1041,10 +1044,13 @@ class Visual_Application {
                 });
 
                 $('#c' + index).on('change', function () {
-                    if (Application_Utilities.Valid_Number($(this).val())) slider_c.noUiSlider.set($(this).val());
+                    if (Application_Utilities.Valid_Number($(this).val())) {
+                        slider_c.noUiSlider.set($(this).val());
+                        old_value = parseFloat($(this).val());
+                    }
                     else $(this).val(old_value);
                 });
-    
+
                 $('#c' + index).on('keypress', function (event) {
                     Application_Utilities.Allow_Only_Number(event, 'float');
                 });
