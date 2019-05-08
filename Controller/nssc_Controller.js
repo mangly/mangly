@@ -153,6 +153,7 @@ $(document).ready(function () {
 });
 
 var old_value;
+//Time--------------------------------------------
 $(document).on('click', '.time', function () {
   old_value = parseFloat($(this).val());
 });
@@ -167,5 +168,33 @@ $(document).on('change', '.time', function () {
   var next_time_value = parseFloat($('#time' + (parseInt($(this).prop('id').substring(4)) + 1)).val());
 
   if (Application_Utilities.Valid_Number($(this).val()) && Application_Utilities.Valid_Time_Of_Change(previous_time_value, new_time_value, next_time_value)) old_value = parseFloat($(this).val());
+  else $(this).val(old_value);
+});
+
+//M-----------------------------------------------
+$(document).on('click', '.M', function () {
+  old_value = parseFloat($(this).val());
+});
+
+$(document).on('keypress', '.M', function (e) {
+  Application_Utilities.Allow_Only_Number(e, 'float');
+});
+
+$(document).on('change', '.M', function () {
+  if (Application_Utilities.Valid_Number($(this).val()) && Application_Utilities.Valid_M($(this).val())) old_value = parseFloat($(this).val());
+  else $(this).val(old_value);
+});
+
+//C-----------------------------------------------
+$(document).on('click', '.c', function () {
+  old_value = parseFloat($(this).val());
+});
+
+$(document).on('keypress', '.c', function (e) {
+  Application_Utilities.Allow_Only_Number(e, 'float');
+});
+
+$(document).on('change', '.c', function () {
+  if (Application_Utilities.Valid_Number($(this).val()) && Application_Utilities.Valid_C($(this).val())) old_value = parseFloat($(this).val());
   else $(this).val(old_value);
 });
