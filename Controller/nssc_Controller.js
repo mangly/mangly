@@ -156,6 +156,10 @@ $(document).on('click', '.time', function () {
   old_value = parseFloat($(this).val());
 });
 
+$(document).on('keypress', '.time', function (e) {
+  Application_Utilities.Allow_Only_Number(e, 'float');
+});
+
 $(document).on('change', '.time', function () {
   var previous_time_value = parseFloat($('#time' + (parseInt($(this).prop('id').substring(4)) - 1)).val());
   var new_time_value = parseFloat($(this).val());
