@@ -113,7 +113,7 @@ class Application_Utilities {
 
         var split = number.split('.');
 
-        if (split[0] == '') return false;
+        if (split[0] == '' || split[1] == '') return false;
 
         return true;
     }

@@ -240,6 +240,10 @@ $(document).ready(function () {
         Application_Utilities.Allow_Only_Number(e, 'int');
     });
 
+    $('#input-slider-value-nref').on('keypress', function (e) {
+        Application_Utilities.Allow_Only_Number(e, 'int');
+    });
+
     $("#change-color").on("change", function () {
         application.Update_Colors(selected_function, $(this).val(), legend_color);
     });
