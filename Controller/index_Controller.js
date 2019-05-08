@@ -244,6 +244,18 @@ $(document).ready(function () {
         Application_Utilities.Allow_Only_Number(e, 'int');
     });
 
+    $('#demes-sv').on('click', function (e) {
+        old_value = parseInt($(this).val());
+    });
+
+    $('#demes-sv').on('change', function (e) {
+        if (!Application_Utilities.Valid_Sampling_Vector(parseInt($(this).val()))) $(this).val(old_value);
+    });
+
+    $('#demes-sv').on('keypress', function (e) {
+        Application_Utilities.Allow_Only_Number(e, 'int');
+    });
+
     $("#change-color").on("change", function () {
         application.Update_Colors(selected_function, $(this).val(), legend_color);
     });

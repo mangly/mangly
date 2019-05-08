@@ -108,7 +108,7 @@ class Application_Utilities {
         return true;
     }
 
-    static Valid_Number(number){
+    static Valid_Number(number) {
         if (Application_Utilities.Number_Of_Occurrences(number, '.') > 1) return false;
 
         var split = number.split('.');
@@ -116,6 +116,18 @@ class Application_Utilities {
         if (split[0] == '' || split[1] == '') return false;
 
         return true;
+    }
+
+    static Valid_M_C(n) {
+        return n >= 1;
+    }
+
+    static Valid_Sampling_Vector(n) {
+        return n >= 2;
+    }
+
+    static Valid_Sampling_Vector(n) {
+        return n >= 2;
     }
 
     static Allow_Only_Number(evt, type) {
