@@ -948,7 +948,7 @@ class Visual_Application {
                 document.getElementById("time" + index).value = a[b];
             });
 
-            $('#time' + index).on('change', function (event) {
+            $('#time' + index).on('change', function () {
                 if (Application_Utilities.Valid_Number($(this).val())) slider_t.noUiSlider.set($(this).val());
                 else $(this).val(old_value);
             });
@@ -962,10 +962,10 @@ class Visual_Application {
                 const slider_m = slider_mlist[index];
 
                 noUiSlider.create(slider_m, {
-                    start: [0],
+                    start: [1],
                     connect: "lower",
                     step: 0.01,
-                    range: { min: 0, max: 100 },
+                    range: { min: 1, max: 100 },
 
                     format: wNumb({
                         decimals: 2,
@@ -973,6 +973,11 @@ class Visual_Application {
                 });
 
                 slider_m.noUiSlider.set($('#M' + index).val());
+
+                var old_value;
+                $('#M' + index).on('click', function () {
+                    old_value = parseFloat($(this).val());
+                });
 
                 slider_m.noUiSlider.on("set", (a, b) => {
                     $('#save').css('color', 'white');
@@ -990,7 +995,12 @@ class Visual_Application {
                 });
 
                 $('#M' + index).on('change', function () {
-                    slider_m.noUiSlider.set($(this).val());
+                    if (Application_Utilities.Valid_Number($(this).val())) slider_m.noUiSlider.set($(this).val());
+                    else $(this).val(old_value);
+                });
+    
+                $('#M' + index).on('keypress', function (event) {
+                    Application_Utilities.Allow_Only_Number(event, 'float');
                 });
                 //---------------------
 
@@ -998,10 +1008,10 @@ class Visual_Application {
                 const slider_c = slider_clist[index];
 
                 noUiSlider.create(slider_c, {
-                    start: [0],
+                    start: [1],
                     connect: "lower",
                     step: 0.01,
-                    range: { min: 0, max: 1000 },
+                    range: { min: 1, max: 1000 },
 
                     format: wNumb({
                         decimals: 2,
@@ -1009,6 +1019,11 @@ class Visual_Application {
                 });
 
                 slider_c.noUiSlider.set($('#c' + index).val());
+
+                var old_value;
+                $('#c' + index).on('click', function () {
+                    old_value = parseFloat($(this).val());
+                });
 
                 slider_c.noUiSlider.on("set", (a, b) => {
                     $('#save').css('color', 'white');
@@ -1026,7 +1041,12 @@ class Visual_Application {
                 });
 
                 $('#c' + index).on('change', function () {
-                    slider_c.noUiSlider.set($(this).val());
+                    if (Application_Utilities.Valid_Number($(this).val())) slider_c.noUiSlider.set($(this).val());
+                    else $(this).val(old_value);
+                });
+    
+                $('#c' + index).on('keypress', function (event) {
+                    Application_Utilities.Allow_Only_Number(event, 'float');
                 });
                 //---------------------
             }
