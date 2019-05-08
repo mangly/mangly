@@ -166,11 +166,6 @@ $(document).on('change', '.time', function () {
   var new_time_value = parseFloat($(this).val());
   var next_time_value = parseFloat($('#time' + (parseInt($(this).prop('id').substring(4)) + 1)).val());
 
-  if (!Application_Utilities.Valid_Time_Of_Change(previous_time_value, new_time_value, next_time_value)) {
-    $(this).val(old_value);
-  }
-
-  else {
-    old_value = parseFloat($(this).val());
-  }
+  if (Application_Utilities.Valid_Number($(this).val()) && Application_Utilities.Valid_Time_Of_Change(previous_time_value, new_time_value, next_time_value)) old_value = parseFloat($(this).val());
+  else $(this).val(old_value);
 });
