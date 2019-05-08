@@ -112,22 +112,23 @@ class Application_Utilities {
         if (Application_Utilities.Number_Of_Occurrences(number, '.') > 1) return false;
 
         var split = number.split('.');
-
-        if (split[0] == '' || split[1] == '') return false;
-
-        return true;
+        return !(split[0] == '' || split[1] == '');
     }
 
-    static Valid_M_C(n) {
-        return n >= 1;
+    static Valid_NREF(nref) {
+        return nref != '' && nref >= 1 && nref <= 10000;
+    }
+
+    static Valid_M(m) {
+        return m != '' && m >= 1 && m <= 100;
+    }
+
+    static Valid_C(c) {
+        return c != '' && c >= 1 && c <= 1000;
     }
 
     static Valid_Sampling_Vector(n) {
-        return n >= 2;
-    }
-
-    static Valid_Sampling_Vector(n) {
-        return n >= 2;
+        return n != '' && n >= 2 && n <= 1000;
     }
 
     static Allow_Only_Number(evt, type) {

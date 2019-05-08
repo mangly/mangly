@@ -236,8 +236,16 @@ $(document).ready(function () {
         Application_Utilities.Allow_Only_Number(e, 'sn');
     });
 
+    $('#input-slider-value-s').on('click', function (e) {
+        old_value = parseInt($(this).val());
+    });
+
     $('#input-slider-value-s').on('keypress', function (e) {
         Application_Utilities.Allow_Only_Number(e, 'int');
+    });
+
+    $('#input-slider-value-nref').on('click', function (e) {
+        old_value = parseInt($(this).val());
     });
 
     $('#input-slider-value-nref').on('keypress', function (e) {
@@ -249,7 +257,12 @@ $(document).ready(function () {
     });
 
     $('#demes-sv').on('change', function (e) {
-        if (!Application_Utilities.Valid_Sampling_Vector(parseInt($(this).val()))) $(this).val(old_value);
+        if (!Application_Utilities.Valid_Sampling_Vector(parseInt($(this).val()))) {
+            $(this).val(old_value);
+            e.preventDefault();
+        }
+
+        old_value = parseInt($(this).val());
     });
 
     $('#demes-sv').on('keypress', function (e) {
@@ -328,7 +341,13 @@ $(document).ready(function () {
 
     $('#input-slider-value-s').on('change', function () {
         $('#save').css('color', 'white');
+        if (!Application_Utilities.Valid_Number($(this).val())) {
+            $(this).val(old_value);
+            e.preventDefault();
+        }
+
         application.Update_Scale_PSMC_MSMC(selected_function, parseFloat($('#input-slider-value-mu').val() / 1e-8), parseInt($(this).val()));
+        old_value = parseInt($(this).val());
     });
 
     //Start N_ref--------------
@@ -344,10 +363,15 @@ $(document).ready(function () {
         })
     })
 
-    $('#input-slider-value-nref').on('change', function () {
+    $('#input-slider-value-nref').on('change', function (e) {
         $('#save').css('color', 'white');
+        if (!Application_Utilities.Valid_NREF(parseInt($(this).val()))) {
+            $(this).val(old_value);
+            e.preventDefault();
+        }
         document.getElementById("slider-nref").noUiSlider.set($(this).val());
         application.Update_Scale_NSSC(selected_function, $('#input-slider-value-nref').val());
+        old_value = parseInt($(this).val());
     });
 
     slider_nref.noUiSlider.on('slide', function (a, b) {
