@@ -80,7 +80,7 @@ class Application_Utilities {
     }
 
     static Valid_Time_Of_Change(previous_value_time, new_value_time, next_value_time) {
-        if (new_value_time != '' || new_value_time != 0) {
+        if (new_value_time != '' && new_value_time > 0 && new_value_time <= 100) {
             if (isNaN(next_value_time)) return previous_value_time < new_value_time;
             else return previous_value_time < new_value_time && new_value_time < next_value_time;
         }

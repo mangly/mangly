@@ -923,7 +923,7 @@ class Visual_Application {
                 $('#save').css('color', 'white');
 
                 var previous_time_value = parseFloat($('#time' + (index - 1)).val());
-                var new_time_value = parseFloat(a[b]);
+                var new_time_value = parseFloat($('#time' + index).val());
                 var next_time_value = parseFloat($('#time' + (index + 1)).val());
 
                 if (!Application_Utilities.Valid_Time_Of_Change(previous_time_value, new_time_value, next_time_value)) {
@@ -931,8 +931,8 @@ class Visual_Application {
                     slider_t.noUiSlider.set(old_value);
                 }
 
-                else if (a[b] != old_value) {
-                    old_value = parseFloat(a[b]);
+                else if (new_time_value != old_value) {
+                    old_value = new_time_value;
 
                     var scenario_update = Application.Build_Scenario_Update(type, matrix_collection, deme_vector_collection, sampling_vector.jexcel('getRowData', 0), count);
 
@@ -995,7 +995,7 @@ class Visual_Application {
                 });
 
                 $('#M' + index).on('change', function () {
-                    if (Application_Utilities.Valid_Number($(this).val())) {
+                    if (Application_Utilities.Valid_Number($(this).val()) && Application_Utilities.Valid_M($(this).val())) {
                         slider_m.noUiSlider.set($(this).val());
                         old_value = parseFloat($(this).val());
                     }
@@ -1044,7 +1044,7 @@ class Visual_Application {
                 });
 
                 $('#c' + index).on('change', function () {
-                    if (Application_Utilities.Valid_Number($(this).val())) {
+                    if (Application_Utilities.Valid_Number($(this).val()) && Application_Utilities.Valid_C($(this).val())) {
                         slider_c.noUiSlider.set($(this).val());
                         old_value = parseFloat($(this).val());
                     }
