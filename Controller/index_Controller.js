@@ -229,6 +229,32 @@ $(document).ready(function () {
         else Application_Utilities.Allow_Only_Number(e, 'float');
     });
 
+    $('#count-events').on('click', function () {
+        old_value = parseInt($(this).val());
+    });
+
+    $('#count-events').on('keypress', function (e) {
+        Application_Utilities.Allow_Only_Number(e, 'non_negative');
+    });
+
+    $('#count-events').on('change', function () {
+        if(Application_Utilities.Valid_Number_Of_Events($(this).val())) old_value = parseInt($(this).val());
+        else $(this).val(old_value);
+    });
+
+    $('#order-n').on('click', function () {
+        old_value = parseInt($(this).val());
+    });
+
+    $('#order-n').on('keypress', function (e) {
+        Application_Utilities.Allow_Only_Number(e, 'non_negative');
+    });
+
+    $('#order-n').on('change', function () {
+        if(Application_Utilities.Valid_Number_Of_Demes($(this).val())) old_value = parseInt($(this).val());
+        else $(this).val(old_value);
+    });
+
     $('#input-slider-value-mu').on('click', function (e) {
         old_value = parseFloat($(this).val());
     });

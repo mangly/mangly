@@ -406,7 +406,7 @@ class Visual_Application {
 
     Restart_NSSC_Options() {
         $('#count-events').val(1);
-        $('#order-n').val(1);
+        $('#order-n').val(2);
         $('#nssc-name').val('NSSC new model');
 
         $('#type-nssc-model').val('General');

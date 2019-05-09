@@ -131,6 +131,14 @@ class Application_Utilities {
         return n != '' && n >= 2 && n <= 1000;
     }
 
+    static Valid_Number_Of_Events(n){
+        return n != '' && n >= 1;
+    }
+
+    static Valid_Number_Of_Demes(n){
+        return n != '' && n >= 2;
+    }
+
     static Allow_Only_Number(evt, type) {
         var charCode = evt.charCode;
 
