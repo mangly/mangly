@@ -772,7 +772,7 @@ $(document).ready(function () {
     });
 
     $('#stop-yes').on('click', function () {
-        if ($(this).html() == 'yes') {
+        if ($(this).html() == 'Yes') {
             $('#distance-value').text(metaheuristic_distance_result);
             $('#save-fit').removeAttr('disabled');
             application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
@@ -787,6 +787,10 @@ $(document).ready(function () {
             metaheuristic_process_interrupted = true;
             application.logic_application.Stop_Python_Communicator();
         }
+    });
+
+    $('#no').on('click', function(){
+        $('#modal-default').modal('hide');
     });
 
     $('#es').on('click', function () {
