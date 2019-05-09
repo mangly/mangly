@@ -13,6 +13,7 @@ class Application {
         this.S = 100;
         this.N_ref = 500;
         this.path = null;
+        this.python_communicator = new Python_Communicator();
     }
 
     Contains(funct) {
@@ -34,7 +35,7 @@ class Application {
     }
 
     Add_File_PSMC(path, name, callback) {
-        Python_Communicator.get_Model_PSMC(path, name, 'Python_Scripts/get_Model_PSMC.py', (element) => {
+        this.python_communicator.get_Model_PSMC(path, name, 'Python_Scripts/get_Model_PSMC.py', (element) => {
             var error = false;
             var funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, this.Mu, this.S, null);
 
@@ -46,7 +47,7 @@ class Application {
     }
 
     Add_File_MSMC(path, name, callback) {
-        Python_Communicator.get_Model_MSMC(path, name, 'Python_Scripts/get_Model_MSMC.py', (element) => {
+        this.python_communicator.get_Model_MSMC(path, name, 'Python_Scripts/get_Model_MSMC.py', (element) => {
             var error = false;
             var funct = new MSMC(element.name, element.x_vector, element.y_vector, this.Mu, null);
 
@@ -112,7 +113,7 @@ class Application {
     }
 
     Get_NSSC_Vectors(type, name, scenario, callback) {
-        Python_Communicator.get_Model_NSSC(type, scenario, 'Python_Scripts/get_Model_NSSC.py', (results) => {
+        this.python_communicator.get_Model_NSSC(type, scenario, 'Python_Scripts/get_Model_NSSC.py', (results) => {
             var nssc_function = this.Get_Function(name);
             if (!nssc_function) {
                 var nssc = new NSSC(name, type, results.x_vector, results.y_vector, scenario, this.N_ref, null);
@@ -132,20 +133,20 @@ class Application {
 
     Get_Optimal_Values_Metaheuristics(vectors, scenario_NSSC, n_ref, metaheuristic_name, callback) {
         if (metaheuristic_name == 'Differential Evolution') {
-            Python_Communicator.get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, 'Python_Scripts/Differential_Evolution.py', (results) => {
+            this.python_communicator.get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, 'Python_Scripts/Differential_Evolution.py', (results) => {
                 callback(results)
             });
         }
 
         else {
-            Python_Communicator.get_Optimal_Values_Metaheuristic_PSO(vectors, scenario_NSSC, n_ref, 'Python_Scripts/pso.py', (results) => {
+            this.python_communicator.get_Optimal_Values_Metaheuristic_PSO(vectors, scenario_NSSC, n_ref, 'Python_Scripts/pso.py', (results) => {
                 callback(results)
             });
         }
     }
 
     Compute_Distance(vectors, scenario_NSSC, n_ref, callback) {
-        Python_Communicator.compute_Distance(vectors, scenario_NSSC, n_ref, 'Python_Scripts/compute_Distance.py', (results) => {
+        this.python_communicator.compute_Distance(vectors, scenario_NSSC, n_ref, 'Python_Scripts/compute_Distance.py', (results) => {
             callback(results)
         });
     }
@@ -191,6 +192,10 @@ class Application {
 
     Get_Last_Function() {
         return this.functions_collection[this.functions_collection.length - 1];
+    }
+
+    Stop_Python_Communicator(){
+        this.python_communicator.kill_Process('Differential_Evolution.py');
     }
 
     static Build_General_Scenario_NSSC(matrix_collection, deme_vector_collection, sampling_vector) {

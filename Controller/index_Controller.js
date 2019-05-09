@@ -238,7 +238,7 @@ $(document).ready(function () {
     });
 
     $('#count-events').on('change', function () {
-        if(Application_Utilities.Valid_Number_Of_Events($(this).val())) old_value = parseInt($(this).val());
+        if (Application_Utilities.Valid_Number_Of_Events($(this).val())) old_value = parseInt($(this).val());
         else $(this).val(old_value);
     });
 
@@ -251,7 +251,7 @@ $(document).ready(function () {
     });
 
     $('#order-n').on('change', function () {
-        if(Application_Utilities.Valid_Number_Of_Demes($(this).val())) old_value = parseInt($(this).val());
+        if (Application_Utilities.Valid_Number_Of_Demes($(this).val())) old_value = parseInt($(this).val());
         else $(this).val(old_value);
     });
 
@@ -740,7 +740,9 @@ $(document).ready(function () {
     var metaheuristic_n_ref_result;
     var metaheuristic_distance_result;
     var metaheuristic_vectors_result;
+    var metaheuristic_process_interrupted;
     $('#start_metaheuristic').on('click', function () {
+        metaheuristic_process_interrupted = false;
         if ($('#nssc-model').val() != '... NSSC ...' && $('#psmc-msmc-model').val() != '... PSMC / MSMC ...') {
             $('#modal-default').modal({
                 backdrop: 'static',
@@ -748,33 +750,43 @@ $(document).ready(function () {
             });
             application.Show_Optimal_Values_Metaheuristics(function (metaheuristic_results) {
                 // $('#modal-default').modal('hide');
-                $('.modal-title').text('Do you want evaluate this solution?')
-                $('#stop-yes').html('Yes');
-                $('#no').fadeIn(500);
-                $('#function_processing').fadeOut(50, function () {
-                    $('.solution').fadeIn(500, function () {
-                        metaheuristic_scenario_result = metaheuristic_results.optimal_scenario;
-                        metaheuristic_distance_result = metaheuristic_results.distance;
-                        metaheuristic_n_ref_result = metaheuristic_results.n_ref;
-                        metaheuristic_vectors_result = metaheuristic_results.vectors;
+                if (!metaheuristic_process_interrupted) {
+                    $('.modal-title').text('Do you want evaluate this solution?')
+                    $('#stop-yes').html('Yes');
+                    $('#no').fadeIn(500);
+                    $('#function_processing').fadeOut(50, function () {
+                        $('.solution').fadeIn(500, function () {
+                            metaheuristic_scenario_result = metaheuristic_results.optimal_scenario;
+                            metaheuristic_distance_result = metaheuristic_results.distance;
+                            metaheuristic_n_ref_result = metaheuristic_results.n_ref;
+                            metaheuristic_vectors_result = metaheuristic_results.vectors;
 
-                        best_distance = parseFloat($('#distance-value').text()) > parseFloat(metaheuristic_distance_result);
-                        if (best_distance) $('.solution').html('The algorithm obtained an acceptable solution');
-                        else $('.solution').html('The algorithm did not obtain an acceptable solution');
+                            best_distance = parseFloat($('#distance-value').text()) > parseFloat(metaheuristic_distance_result);
+                            if (best_distance) $('.solution').html('The algorithm obtained an acceptable solution');
+                            else $('.solution').html('The algorithm did not obtain an acceptable solution');
+                        });
                     });
-                });
+                }
             });
         }
     });
 
     $('#stop-yes').on('click', function () {
-        $('#distance-value').text(metaheuristic_distance_result);
-        $('#save-fit').removeAttr('disabled');
-        application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
-        selected_function.N_ref = metaheuristic_n_ref_result;
-        application.Update_NSSC(selected_function);
-        $('#input-slider-value-nref').val(selected_function.N_ref);
-        document.getElementById("slider-nref").noUiSlider.set(selected_function.N_ref);
+        if ($(this).html() == 'yes') {
+            $('#distance-value').text(metaheuristic_distance_result);
+            $('#save-fit').removeAttr('disabled');
+            application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
+            selected_function.N_ref = metaheuristic_n_ref_result;
+            application.Update_NSSC(selected_function);
+            $('#input-slider-value-nref').val(selected_function.N_ref);
+            document.getElementById("slider-nref").noUiSlider.set(selected_function.N_ref);
+        }
+
+        else {
+            application.Show_Information_Window('The process was interrupted for a user');
+            metaheuristic_process_interrupted = true;
+            application.logic_application.Stop_Python_Communicator();
+        }
     });
 
     $('#es').on('click', function () {

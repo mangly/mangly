@@ -2,19 +2,15 @@
 const ps = require('python-shell');
 
 class Python_Communicator {
+    constructor(){
+        this.process_metaheuristics = null;
+    }
+    
+    kill_Process(){
+        this.process_metaheuristics.childProcess.kill();
+    }
 
-    // static get_File_Results(path_collection, python_script, callback) {
-    //     let options = {
-    //         mode: 'text',
-    //         args: path_collection,
-    //     };
-
-    //     ps.PythonShell.run(python_script, options, function (err, results) {
-    //         if (err) throw err;
-    //         else callback(JSON.parse(results))
-    //     });
-    // }
-    static get_Model_PSMC(path, name, python_script, callback) {
+    get_Model_PSMC(path, name, python_script, callback) {
         let options = {
             mode: 'text',
             args: [path, name]
@@ -26,7 +22,7 @@ class Python_Communicator {
         });
     }
 
-    static get_Model_MSMC(path, name, python_script, callback) {
+    get_Model_MSMC(path, name, python_script, callback) {
         let options = {
             mode: 'text',
             args: [path, name]
@@ -38,7 +34,7 @@ class Python_Communicator {
         });
     }
 
-    static get_Model_NSSC(type, json, python_script, callback) {
+    get_Model_NSSC(type, json, python_script, callback) {
         let options = {
             mode: 'text',
             args: [JSON.stringify(json), type]
@@ -50,7 +46,7 @@ class Python_Communicator {
         });
     }
 
-    static compute_Distance(vectors, scenario_NSSC, n_ref, python_script, callback) {
+    compute_Distance(vectors, scenario_NSSC, n_ref, python_script, callback) {
         let options = {
             mode: 'text',
             args: [JSON.stringify(vectors), JSON.stringify(scenario_NSSC), n_ref]
@@ -62,19 +58,19 @@ class Python_Communicator {
         });
     }
 
-    static get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, python_script, callback) {
+    get_Optimal_Values_Metaheuristic_DE(vectors, scenario_NSSC, n_ref, python_script, callback) {
         let options = {
             mode: 'text',
             args: [JSON.stringify(vectors), JSON.stringify(scenario_NSSC), n_ref]
         };
 
-        ps.PythonShell.run(python_script, options, function (err, results) {
+        this.process_metaheuristics = ps.PythonShell.run(python_script, options, function (err, results) {
             if (err) throw err;
             else callback(JSON.parse(results));
         });
     }
 
-    static get_Optimal_Values_Metaheuristic_PSO(vectors, scenario_NSSC, n_ref, python_script, callback) {
+    get_Optimal_Values_Metaheuristic_PSO(vectors, scenario_NSSC, n_ref, python_script, callback) {
         let options = {
             mode: 'text',
             args: [JSON.stringify(vectors), JSON.stringify(scenario_NSSC), n_ref]
