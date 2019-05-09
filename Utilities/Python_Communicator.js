@@ -2,11 +2,11 @@
 const ps = require('python-shell');
 
 class Python_Communicator {
-    constructor(){
+    constructor() {
         this.process_metaheuristics = null;
     }
-    
-    kill_Process(){
+
+    kill_Process() {
         this.process_metaheuristics.childProcess.kill();
     }
 
@@ -76,7 +76,7 @@ class Python_Communicator {
             args: [JSON.stringify(vectors), JSON.stringify(scenario_NSSC), n_ref]
         };
 
-        ps.PythonShell.run(python_script, options, function (err, results) {
+        this.process_metaheuristics = ps.PythonShell.run(python_script, options, function (err, results) {
             if (err) throw err;
             else callback(JSON.parse(results));
         });
