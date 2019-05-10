@@ -789,8 +789,12 @@ $(document).ready(function () {
         }
     });
 
-    $('#no').on('click', function(){
-        $('#modal-default').modal('hide');
+    $('#no').on('click', function () {
+        $('.solution').fadeOut(function(){
+            $('#stop-yes').html('Stop');
+           $('#no').hide(); 
+           $('#function_processing').show();
+        });
     });
 
     $('#es').on('click', function () {

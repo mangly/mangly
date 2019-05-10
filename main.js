@@ -15,7 +15,7 @@ let build_nssc
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ darkTheme: true, webPreferences: { nodeIntegration: true } })
+  mainWindow = new BrowserWindow({ darkTheme: true, webPreferences: { nodeIntegration: true }, icon: path.join(__dirname, './archivos_estaticos/icono.png')})
   mainWindow.maximize()
 
   // and load the index.html of the app.
@@ -144,7 +144,7 @@ app.on('activate', function () {
 })
 
 ipc.on('open-scenario-editor', function (event, args) {
-  build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent: mainWindow, modal: true, darkTheme: true, webPreferences: { nodeIntegration: true }, autoHideMenuBar:true });
+  build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent: mainWindow, modal: true, darkTheme: true, webPreferences: { nodeIntegration: true }, autoHideMenuBar: true });
   build_nssc.webContents.openDevTools()
 
 
