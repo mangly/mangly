@@ -88,7 +88,7 @@ $(document).ready(function () {
                     }
 
                     $('#options-scale-axis *').removeAttr('disabled');
-                    $('#switch-selection').removeAttr('disabled');
+                    $('#delete-all').prop('disabled', false);
                 }
 
                 else if (extension == 'nssc') {
@@ -96,12 +96,16 @@ $(document).ready(function () {
                         if (!error) application.Visualize_NSSC();
                         else application.Show_Information_Window('The selected function already exists whit that name or it has the same behavior');
                     });
+
+                    $('#delete-all').prop('disabled', false);
                 }
 
                 else if (extension == 'adhos') {
                     application.logic_application.Add_Files(arrPath[0], function () {
                         application.Visualize_Application();
                     });
+
+                    $('#delete-all').prop('disabled', false);
                 }
 
                 else application.Show_Error_Window('Invalid file: ' + name + '.' + extension);
@@ -163,6 +167,14 @@ $(document).ready(function () {
         selected_function = application.logic_application.Get_Function(($(this).parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text());
         legend_color = $(this).parents('.custom-control').children('.custom-control--char__helper');
         selected_function = application.Select_Function($(this), selected_function, slider_mu);
+    });
+
+    $('#delete-all').on('click', function () {
+        application.Show_Delete_Window('All functions are going to be eliminated', () => {
+            application.Delete_All_Function();
+            $(this).prop('disabled', true);
+        });
+
     });
 
     $('#card-canvas').on('keydown', function (e) {
@@ -790,10 +802,10 @@ $(document).ready(function () {
     });
 
     $('#no').on('click', function () {
-        $('.solution').fadeOut(function(){
+        $('.solution').fadeOut(function () {
             $('#stop-yes').html('Stop');
-           $('#no').hide(); 
-           $('#function_processing').show();
+            $('#no').hide();
+            $('#function_processing').show();
         });
     });
 

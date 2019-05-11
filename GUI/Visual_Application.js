@@ -542,8 +542,7 @@ class Visual_Application {
         }).then((result) => {
             if (result) {
                 swal({
-                    title: 'Are you sure?',
-                    text: 'Your function has been deleted',
+                    text: 'Operation performed correctly',
                     type: 'success',
                     buttonsStyling: false,
                     confirmButtonClass: 'btn btn-light',
@@ -595,6 +594,13 @@ class Visual_Application {
         target.parents('.listview__item').remove();
         $('#save-as').css('color', 'gray');
         this.chart.update()
+    }
+
+    Delete_All_Function(){
+        this.chart.data.datasets = [];
+        this.logic_application.functions_collection = [];
+        $('.btn-delete').parents('.listview__item').remove();
+        this.chart.update();
     }
 
     Show_Distance() {
