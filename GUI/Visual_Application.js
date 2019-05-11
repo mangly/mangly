@@ -750,6 +750,12 @@ class Visual_Application {
         }
 
         if (nssc_scenario) {
+            var sum = Application_Utilities.Sum(nssc_scenario.samplingVector);
+            if (sum == 2) {
+                $('#container-matrices').removeClass('disabled');
+                $('#matrices-deme-sizes').removeClass('disabled');
+            }
+
             if (type == 'General') Application.Load_General_Scenario(nssc_scenario, sampling_vector, matrix_collection, deme_vector_collection);
             else if (type == 'Symmetrical') Application.Load_Symmetrical_Scenario(nssc_scenario, sampling_vector);
         }
