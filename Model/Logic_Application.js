@@ -101,9 +101,9 @@ class Application {
             var funct;
             this.path = path;
             for (const element of application.functions_collection) {
-                if (element.model == 'psmc') funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, element.Mu, element.S, path);
-                else if(element.model == 'msmc') funct = new MSMC(element.name, element.x_vector, element.y_vector, element.Mu, path);
-                else funct = new NSSC(element.name, element.type, element.x_vector, element.y_vector, element.scenario, element.N_ref, path);
+                if (element.model == 'psmc') funct = new PSMC(element.name, element.x_vector, element.y_vector, element.theta, element.rho, element.Mu, element.S, element.path);
+                else if(element.model == 'msmc') funct = new MSMC(element.name, element.x_vector, element.y_vector, element.Mu, element.path);
+                else funct = new NSSC(element.name, element.type, element.x_vector, element.y_vector, element.scenario, element.N_ref, element.path);
 
                 this.functions_collection.push(funct);
             }
