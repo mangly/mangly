@@ -605,6 +605,9 @@ class Visual_Application {
         this.chart.data.datasets = [];
         this.logic_application.functions_collection = [];
         $('.btn-delete').parents('.listview__item').remove();
+        $('#change-color').val('#000000')
+        $('.color-picker__preview').css('background-color', '#000000');
+        $('#change-color').attr('disabled', 'disabled');
         this.chart.update();
     }
 

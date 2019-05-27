@@ -124,6 +124,7 @@ $(document).ready(function () {
             application.Show_Delete_Window('The function is going to be eliminated', () => {
                 if ($('#nssc-model').val() == selected_function.name || $('#psmc-msmc-model').val() == selected_function.name) {
                     compute_distance = false;
+                    $('#start_metaheuristic').prop('disabled', true);
                     application.Hide_Panel_Distance();
                 }
                 application.Delete_Function(selected_function.name, $(this));
@@ -173,6 +174,10 @@ $(document).ready(function () {
         application.Show_Delete_Window('All functions are going to be eliminated', () => {
             application.Delete_All_Function();
             $(this).prop('disabled', true);
+
+            compute_distance = false;
+            $('#start_metaheuristic').prop('disabled', true);
+            application.Hide_Panel_Distance();
         });
 
     });
