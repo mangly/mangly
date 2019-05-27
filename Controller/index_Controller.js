@@ -785,13 +785,14 @@ $(document).ready(function () {
 
     $('#stop-yes').on('click', function () {
         if ($(this).html() == 'Yes') {
-            $('#distance-value').text(metaheuristic_distance_result);
+            // $('#distance-value').text(metaheuristic_distance_result);
             $('#save-fit').removeAttr('disabled');
             application.logic_application.Update_NSSC(selected_function, metaheuristic_scenario_result, metaheuristic_vectors_result);
             selected_function.N_ref = metaheuristic_n_ref_result;
             application.Update_NSSC(selected_function);
             $('#input-slider-value-nref').val(selected_function.N_ref);
             document.getElementById("slider-nref").noUiSlider.set(selected_function.N_ref);
+            $('#no').trigger('click');
         }
 
         else {
@@ -807,15 +808,6 @@ $(document).ready(function () {
             $('#no').hide();
             $('#function_processing').show();
         });
-    });
-
-    $('#es').on('click', function () {
-        // $('#modal-default').modal({
-        //     backdrop: 'static',
-        //     keyboard: false
-        // });
-
-        // $('body').attr('disabled', 'disabled')
     });
 
     // $('#get-distance').on('click', function () {

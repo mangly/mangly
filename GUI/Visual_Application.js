@@ -137,6 +137,8 @@ class Visual_Application {
                 }
             },
         });
+
+        this.update_distance = true;
     }
 
     Index_Of(name_graphic) {
@@ -495,12 +497,12 @@ class Visual_Application {
 
     Show_Panel_Distance() {
         $('.theta-rho').fadeOut(50, function () {
-            $('#distance-value-col').fadeIn(500);
+            $('.distance-value-col').fadeIn(500);
         });
     }
 
     Hide_Panel_Distance() {
-        $('#distance-value-col').fadeOut(50, function () {
+        $('.distance-value-col').fadeOut(50, function () {
             $('.theta-rho').fadeIn(500);
         });
     }
@@ -596,7 +598,7 @@ class Visual_Application {
         this.chart.update()
     }
 
-    Delete_All_Function(){
+    Delete_All_Function() {
         this.chart.data.datasets = [];
         this.logic_application.functions_collection = [];
         $('.btn-delete').parents('.listview__item').remove();
@@ -610,6 +612,12 @@ class Visual_Application {
 
         this.logic_application.Compute_Distance(vectors, nssc_model.scenario, $('#input-slider-value-nref').val(), (result) => {
             $('#distance-value').text(result);
+
+            if (this.update_distance) {
+                $('#original-distance').text(result);
+                this.update_distance = false;
+            }
+
             this.Show_Panel_Distance();
         });
     }
