@@ -27,6 +27,7 @@ $(document).ready(function () {
 
   $('#add-matrix').on('click', function () {
     var index = $("#list-scenario").children().length;
+    $('#remove-matrix').removeClass('disabled');
 
     if (type == 'General') {
       var html_time_dime_sizes = '<li id = "scen' + index + '"><div class="row pt-4"><div class="col-sm-2"><div class="form-group"><span>Time of change:</span><input id="time' + matrix_collection.length + '" type="text" class="form-control input-mask"><i class="form-group__bar"></i></div></div><div class="col-sm-10"><span>Deme Sizes:</span><div class="matrix 1xn" style="padding:20px 0 40px 0 0" id="deme' + matrix_collection.length + '"></div>';
@@ -54,8 +55,7 @@ $(document).ready(function () {
     var count = $('#list-scenario').children().length;
 
     if (count > 1) $('#list-scenario').children().eq(count - 1).remove();
-    else console.log('error');
-
+    if(count - 1 == 1) $(this).addClass('disabled');
   });
 
   $('#switch-selection-pagination').on('change', function () {
@@ -99,16 +99,18 @@ $(document).ready(function () {
 
   $('#add-deme').on('click', function () {
     Visual_Application.Add_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection, type);
+
     order++;
+    $('#remove-deme').removeClass('disabled');
   })
 
   $('#remove-deme').on('click', function () {
     if (order > 1) {
       order--;
+      if (order == 1) $(this).addClass('disabled');
+
       Visual_Application.Delete_Deme(1, order, deme_vector_collection, sampling_vector, matrix_collection, type);
     }
-
-    else console.log('error');
   });
 
   var matrix;
