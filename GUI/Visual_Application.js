@@ -599,6 +599,9 @@ class Visual_Application {
     }
 
     Delete_All_Function() {
+        for (const element of this.logic_application.functions_collection) {
+            this.Delete_Function_Metaheuristic_List(element.name);
+        }
         this.chart.data.datasets = [];
         this.logic_application.functions_collection = [];
         $('.btn-delete').parents('.listview__item').remove();
