@@ -103,7 +103,7 @@ class Application_Utilities {
 
         var split = number.split('e');
 
-        if (split[1] != '-8' || parseFloat(split[0]) <= min || parseFloat(split[0]) > max) return false;
+        if (split[1] != '-8' || split[0] == "" || parseFloat(split[0]) <= min || parseFloat(split[0]) > max) return false;
 
         return true;
     }
