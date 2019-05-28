@@ -815,6 +815,13 @@ $(document).ready(function () {
         });
     });
 
+    ipc.on('open-about', function(){
+        $('#modal-about').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+    });
+
     // $('#get-distance').on('click', function () {
     //     var psmc_msmc_model_data = application.Get_Graphic($('#psmc-msmc-model').val()).data;
     //     var nssc_model = application.logic_application.Get_Function($('#nssc-model').val());

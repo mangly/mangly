@@ -15,7 +15,7 @@ let build_nssc
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ darkTheme: true, webPreferences: { nodeIntegration: true }, icon: path.join(__dirname, './archivos_estaticos/icono.png')})
+  mainWindow = new BrowserWindow({ darkTheme: true, webPreferences: { nodeIntegration: true }, icon: path.join(__dirname, './archivos_estaticos/icono.png') })
   mainWindow.maximize()
 
   // and load the index.html of the app.
@@ -27,7 +27,7 @@ function createWindow() {
   }))
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -74,26 +74,29 @@ app.on('ready', function () {
         { role: 'quit' }
       ]
     },
-    {
-      label: 'Edit',
-      submenu: [
-        { role: 'undo' },
-        { role: 'redo' },
-        { type: 'separator' },
-        { role: 'cut' },
-        { role: 'copy' },
-        { role: 'paste' },
-        { role: 'pasteandmatchstyle' },
-        { role: 'delete' },
-        { role: 'selectall' }
-      ]
-    },
+    // {
+    //   label: 'Edit',
+    //   submenu: [
+    //     { role: 'undo' },
+    //     { role: 'redo' },
+    //     { type: 'separator' },
+    //     { role: 'cut' },
+    //     { role: 'copy' },
+    //     { role: 'paste' },
+    //     { role: 'pasteandmatchstyle' },
+    //     { role: 'delete' },
+    //     { role: 'selectall' }
+    //   ]
+    // },
     {
       label: 'View',
       submenu: [
-        { role: 'reload' },
+        {
+          label: 'Restart application',
+          role: 'reload',
+        },
         //{ role: 'forcereload' },
-        { role: 'toggledevtools' },
+        // { role: 'toggledevtools' },
         { type: 'separator' },
         { role: 'resetzoom' },
         { role: 'zoomin' },
@@ -113,9 +116,14 @@ app.on('ready', function () {
       role: 'help',
       submenu: [
         {
-          label: 'Learn More',
-          click() { require('electron').shell.openExternal('https://electronjs.org') }
-        }
+          label: 'Documentation'
+        },
+        {
+          label: 'About',
+          click: function () {
+            mainWindow.webContents.send('open-about');
+          }
+        },
       ]
     }
   ]
@@ -145,7 +153,7 @@ app.on('activate', function () {
 
 ipc.on('open-scenario-editor', function (event, args) {
   build_nssc = new BrowserWindow({ width: 1040, height: 700, title: 'Plot NSSC model', parent: mainWindow, modal: true, darkTheme: true, webPreferences: { nodeIntegration: true }, autoHideMenuBar: true });
-  build_nssc.webContents.openDevTools()
+  // build_nssc.webContents.openDevTools()
 
 
   build_nssc.loadURL(url.format({
