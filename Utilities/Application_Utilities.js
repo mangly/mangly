@@ -98,12 +98,12 @@ class Application_Utilities {
         return count;
     }
 
-    static Valid_Euler_Number(number) {
+    static Valid_Euler_Number(number, min, max) {
         if (Application_Utilities.Number_Of_Occurrences(number, '.') > 1 || Application_Utilities.Number_Of_Occurrences(number, 'e') > 1 || Application_Utilities.Number_Of_Occurrences(number, '-') > 1) return false;
 
         var split = number.split('e');
 
-        if (split[1] != '-8') return false;
+        if (split[1] != '-8' || parseFloat(split[0]) <= min || parseFloat(split[0]) > max) return false;
 
         return true;
     }
@@ -131,11 +131,11 @@ class Application_Utilities {
         return n != '' && n >= 2 && n <= 1000;
     }
 
-    static Valid_Number_Of_Events(n){
+    static Valid_Number_Of_Events(n) {
         return n != '' && n >= 1;
     }
 
-    static Valid_Number_Of_Demes(n){
+    static Valid_Number_Of_Demes(n) {
         return n != '' && n >= 2;
     }
 
@@ -154,7 +154,7 @@ class Application_Utilities {
             }
         }
 
-        else if(type == 'non_negative'){
+        else if (type == 'non_negative') {
             if (!(charCode > 48 && charCode <= 57 || charCode == 13)) {
                 evt.preventDefault();
             }

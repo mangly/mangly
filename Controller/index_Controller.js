@@ -373,7 +373,7 @@ $(document).ready(function () {
     $('#input-slider-value-mu').on('change', function (e) {
         $('#save').css('color', 'white');
 
-        if (!Application_Utilities.Valid_Euler_Number($(this).val())) {
+        if (!Application_Utilities.Valid_Euler_Number($(this).val(), 0, 3)) {
             $(this).val(old_value);
             e.preventDefault();
         }
@@ -383,7 +383,7 @@ $(document).ready(function () {
         old_value = parseFloat($(this).val());
     });
 
-    $('#input-slider-value-s').on('change', function () {
+    $('#input-slider-value-s').on('change', function (e) {
         $('#save').css('color', 'white');
         if (!Application_Utilities.Valid_Number($(this).val())) {
             $(this).val(old_value);
