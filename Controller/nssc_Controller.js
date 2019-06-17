@@ -129,6 +129,9 @@ $(document).ready(function () {
     if (sum == 2) {
       $('#container-matrices').removeClass('disabled');
       $('#matrices-deme-sizes').removeClass('disabled');
+      $('#ok').removeClass('disabled');
+      $('#ok').removeClass('disabled');
+      $('.options-nssc-windows').removeClass('disabled');
     }
 
     else {
@@ -141,6 +144,8 @@ $(document).ready(function () {
       else {
         $('#container-matrices').addClass('disabled');
         $('#matrices-deme-sizes').addClass('disabled');
+        $('#ok').addClass('disabled');
+        $('.options-nssc-windows').addClass('disabled');
       }
 
       $(this).removeClass('edition');

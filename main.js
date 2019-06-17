@@ -27,7 +27,7 @@ function createWindow() {
   }))
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -173,7 +173,7 @@ ipc.on('open-scenario-editor', function (event, args) {
 
 ipc.on('nssc-json-result', function (event, args) {
   mainWindow.webContents.send('nssc-json-result', args)
-  // build_nssc.close();
+  build_nssc.close();
 });
 
 

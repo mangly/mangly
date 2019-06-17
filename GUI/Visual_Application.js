@@ -233,6 +233,24 @@ class Visual_Application {
         return selected_function_result;
     }
 
+    Select_NSSC_Model_For_Fit(name_model){
+        var target;
+        // var name_model = $(this).val();
+        var list_graphics = $('.custom-control-input');
+
+        for (let index = 0; index < list_graphics.length; index++) {
+            const element = list_graphics.eq(index);
+
+            if (name_model == (element.parents('.custom-control').siblings('.listview__content').children('.listview__heading')).text()) {
+                element.prop('checked', 'true');
+                target = element;
+                break;
+            }
+        }
+
+        return target;
+    }
+
     Add_model_compute_distance(control, name) {
         control.append('<option>' + name + '</option>')
     }
@@ -774,6 +792,8 @@ class Visual_Application {
             if (sum == 2) {
                 $('#container-matrices').removeClass('disabled');
                 $('#matrices-deme-sizes').removeClass('disabled');
+                $('#ok').removeClass('disabled');
+                $('.options-nssc-windows').removeClass('disabled');
             }
 
             if (type == 'General') Application.Load_General_Scenario(nssc_scenario, sampling_vector, matrix_collection, deme_vector_collection);
